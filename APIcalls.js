@@ -22,14 +22,14 @@ function displayWelcome(){
 }
 
 function logout(){
-    window.location.replace('https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2287VH&redirect_uri=https%3A%2F%2FNatureWalk.github.io&prompt=login&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight');
+    window.location.replace('https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2287VH&redirect_uri=http%3A%2F%2FNatureWalk.github.io&prompt=login&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight');
 }
 
 
 function authorize(){
 if (!window.location.hash) {
 console.log("redirecting");
-    	window.location.replace('https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2287VH&redirect_uri=https%3A%2F%2FNatureWalk.github.io&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight');
+    	window.location.replace('https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2287VH&redirect_uri=http%3A%2F%2FNatureWalk.github.io&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight');
 	} else {
     	var fragmentQueryParameters = {};
     	window.location.hash.slice(1).replace(
