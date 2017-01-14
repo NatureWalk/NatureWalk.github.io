@@ -28,7 +28,7 @@ function logout(){
 
 function authorize(){
 if (!window.location.hash) {
-console.log("redirecting");
+console.log("testing update");
     	window.location.replace('https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2287VH&redirect_uri=http%3A%2F%2FNatureWalk.github.io&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight');
 	} else {
     	var fragmentQueryParameters = {};
