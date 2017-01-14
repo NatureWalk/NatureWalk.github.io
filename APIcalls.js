@@ -13,6 +13,7 @@ function reload(){
 }
 
 function displaySteps(){
+	console.log("testing update");
 	document.getElementById("steps").innerHTML = "You have logged " + stepCount + " steps";
 }
 
