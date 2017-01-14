@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js">
+</script>
+
+</head>
+<body>
+<!-- ps for welcome message, curent step count
+     buttons for logging out, reloading fitbit data
+     all functions are defined in APIcalls.js
+ -->
+<p id="user">Logging in . . .</p>
+<p id="steps"></p>
+<button id="getSteps" onClick=reload()>Get Steps</button>
+<button id="logout" onClick=logout()>logout</button>
+
+<!-- Logs user in to fitbit
+	sets values for following variables:
+	userName - the user's fitbit display name
+	userID - unique code for each user set by fitbit
+	stepCount - total lifetime steps for the user
+-->
+<script src="APIcalls.js"></script>
+<script>
+console.log("user: " + userName);
+console.log("user ID: " + userID);
+console.log("steps: " + stepCount);
+</script>
+</body>
+</html>
