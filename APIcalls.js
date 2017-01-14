@@ -6,26 +6,14 @@ var stepCount;
 authorize();
 getUserInfo();
 getNewSteps();
-console.log(userID);
+//console.log(userID);
 
-function reload(){
-	getNewSteps();
-}
-
-function displaySteps(){
-	console.log("testing update");
-	document.getElementById("steps").innerHTML = "You have logged " + stepCount + " steps";
-}
-
-function displayWelcome(){
-	document.getElementById("user").innerHTML = "Welcome to Nature Walk, " + userName;
-}
-
+//logs the user out of fitbit and redirects to fitbit login
 function logout(){
     window.location.replace('https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2287VH&redirect_uri=http%3A%2F%2FNatureWalk.github.io&prompt=login&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight');
 }
 
-
+//redirects to fitbit login for authentication if needed
 function authorize(){
 if (!window.location.hash) {
 console.log("testing update");
@@ -41,7 +29,7 @@ console.log("testing update");
 }
 	
 	
-
+//AJAX call to get user data and set values for userName and userID
  function getUserInfo(){ 
   $.ajax({
   type: 'GET',
@@ -64,11 +52,12 @@ console.log("testing update");
       		var obj = JSON.parse(text);
       		userName = obj.user.displayName;
       		userID = obj.user.encodedId;
-      		displayWelcome();
+      		//displayWelcome();
   }
 });
 }
 
+//AJAX call to get user lifetime step count and set value of stepCount
  function getNewSteps(){ 
   $.ajax({
   type: 'GET',
@@ -92,7 +81,7 @@ console.log("testing update");
       		var obj = JSON.parse(text);
       		//console.log(arr);
       		stepCount = obj.lifetime.total.steps;
-      		displaySteps();
+      		//displaySteps();
   }
 });
 }
