@@ -23,7 +23,7 @@ var screenMan = new ScreenManager();
 var game = new Screen(true, true);
 screenMan.push(game);
 game.init = function() {
-    this.addChild(background);
+    this.push(background);
 }
 
 function overlap(a, b) {
