@@ -2,7 +2,7 @@
 //----------------------------------------------------------------------
 //A viewed game state
 function Screen(alwaysUpdate, alwaysDraw){
-    Sprite.call(this);
+    this.objects = [];
 
     //Boolean
     this.alwaysUpdate = alwaysUpdate;
@@ -12,23 +12,40 @@ function Screen(alwaysUpdate, alwaysDraw){
 
     this.initialized = false;
 }
-Screen.prototype = new Sprite();
 
-Screen.prototype.init = function(){
+//What runs when the screen is initially loaded
+Screen.prototype.init = function() {
+}
+
+Screen.prototype.push = function(object) {
+    this.objects.push(object);
+}
+
+Screen.prototype.remove = function(object) {
+    for (var i in this.objects) {
+        if (this.objects[i] == object) {
+            this.objects.splice(i,1);
+        }
+    }
 }
 
 //Needed because inheriting from sprite apparently doesn't work right in Firefox
 Screen.prototype.draw = function() {
-    this.drawChildren();
+    for (var i in this.objects) {
+        this.objects[i].draw();
+    }
+}
+
+Screen.prototype.update = function() {
+    for (var i in this.objects) {
+        this.objects[i].update();
+    }
 }
 
 //Object holding Screens
 function ScreenManager(){
-    Sprite.call(this);
-
     this.screens = [];
 }
-ScreenManager.prototype = new Sprite();
 
 ScreenManager.prototype.push = function(screen){
     for (var i in this.screens) {
@@ -72,7 +89,7 @@ ScreenManager.prototype.update = function(){
 
 ScreenManager.prototype.draw = function(){
     var screens = this.screens;
-    console.log("drawing");
+
     for(var i in screens){
 
         if(screens[i].alwaysDraw || screens[i] == screens[screens.length-1]){
