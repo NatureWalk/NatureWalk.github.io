@@ -1,4 +1,13 @@
 var canvas = document.getElementById("canvas");
+canvas.addEventListener('mousemove', function(evt) {
+ findTarget(evt);   
+});
+canvas.addEventListener('mousedown', function(evt) {
+ findTarget(evt);   
+});
+canvas.addEventListener('mouseup', function(evt) {
+ findTarget(evt);   
+});
 var ctx = canvas.getContext("2d");
 var w = canvas.width;
 var h = canvas.height;
