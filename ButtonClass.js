@@ -1,96 +1,24 @@
-/*
-* Button Class Functionality
-* 1. Must be drawable on a canvas. 
-    a. Needs a position on the canvas. DONE
-    b. Needs an image to be drawn on the canvas. DONE (Tentatively)
-    c. Needs an "on hover" and "on pressed" animation. DONE
-* 2. Must have a parameter that is another function, and call that function. DONE(Tentatively) Accepts up to three parameters too. 
-* 3. Button classifications? 
-    a. Toggle/Radio. DONE
-    b. Increment/Decrement Not necessary.
-*/
+/* EXAMPLE BUTTON CREATION:
+ * 1. Create button with: var btn = new Button(function_to_call, parameterArray_for_function);
+ 
+ * 2. Set the button source images with: btn.setSrc(srcPrimary, srcSecondary);
+ 
+ * 3. Set the button attributes with: btn.setSpriteAttributes(xCoord, yCoord, width_of_image, height_of_image, name(optional)); 
+ 
+ * 4. Push the button into the screen's button array with: name_of_screen.buttonArray.push(btn);
+ 
+ NOTE: This must be done during the screen's initialization period or the buttons will not show up. 
 
-var btnAry = [];
-//Function to get the mouse position
-//Credit -- 
-// "http://stackoverflow.com/questions/24384368/simple-button-in-html5-canvas"
+ */
 
-
-/* Constructor function. Takes in a function that will be called when the button is released. */
-var Button = Function(_function) {
-    //Directly calls the Sprite class to inherit Sprite's attributes. 
-    Sprite.call(this);  
-    
-    //Inherits all the Sprite prototype functions. 
-    Button.prototype = new Sprite();
-    
-    //Button attributes. 
-    this.hovered = false;
-    this.func = _function;
-    //Could add a this.params to potentially call more functions. 
-    this.isToggleButton = false;
-    
-    //ONLY USE THIS IS this.isToggleButton IS TRUE
-    this.isToggled = false;
-}
-
-Button.prototype.constructor = Button;
-Button.prototype.spriteAttributes = function(x, y, width, height, name) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    if (name === undefined) {
-        this.name = "button";
-    } else {
-        this.name = name;
-    }
-}
-Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
-    this.image.src = srcPrimary;
-    this.onMouseUpImage.src = srcPrimary;
-    this.onMouseDownImage.src = srcSecondary;
-}
-/*
-isInside: Checks the position of the mouse in relation to this button.
-Params: position of the mouse on the canvas. 
-Returns: Boolean indicating if cursor is within this button's boundaries. 
-*/
-Button.prototype.isInside = function(mousePos) {
-    return ((mousePos.x > this.x && mousePos.x < this.x+100) &&
-            (mousePos.y > this.y && mousePos.y < this.y+100));
-}
-Button.prototype.toggle = function() {
-    if (this.isToggled) {this.isToggled = false;} 
-    else {this.isToggled = true;}
-}
-Button.prototype.mouseEventManager = mouseEventManager;
-Button.prototype.onMouseMove = onMouseMove;
-Button.prototype.onMouseClick = onMouseClick;
-Button.prototype.onMouseDown = onMouseDown;
-Button.prototype.onMouseUp = onMouseUp;
-
-    
 /**************MOUSE INTERFACING*****************/
-/*
-isInside: Checks the position of the mouse in relation to this button.
-Params: position of the mouse on the canvas. 
-Returns: Boolean indicating if cursor is within this button's boundaries. 
-*/
-/*
-function isInside(mousePos) {
-    return ((mousePos.x > this.x && mousePos.x < this.x+100) &&
-            (mousePos.y > this.y && mousePos.y < this.y+100));
-}
-*/
-
 /*
 mouseEventManager: Canvas passes the mouse event here, then this function calls the correct function according to the event. 
 Params: "evt" the mouse event that is being invoked. 
 Returns: None. 
 */
+
 function mouseEventManager(evt) {
-    console.log(evt);
     switch(evt){
             case"mousemove":
                 this.onMouseMove();
@@ -114,6 +42,7 @@ function mouseEventManager(evt) {
     }
 }
 
+
 /*
 onMouseEnter: Function that is called when the mouse enters the button's perimeter. 
 Params: None.
@@ -122,7 +51,6 @@ NOTE: Is only called the first time onMouseMove() is called.
 */
 function onMouseEnter() {
     //If cursor is over 
-    //Set this.color to this.hoverColor.
     this.hovered = true;
     console.log("enter");
 }
@@ -136,6 +64,8 @@ function onMouseLeave() {
     //If cursor is over 
     //Set this.color to this.hoverColor.
     this.hovered = false;
+    this.isPressed = false;
+    this.image.src = this.onMouseUpImageSrc;
     console.log("left");
 }
 /*
@@ -146,14 +76,13 @@ Returns: None
 */
 function onMouseMove() {
     //If cursor is over 
-    //Set this.color to this.hoverColor.
     if (!this.hovered) {
         this.onMouseEnter();
     }
-    //console.log("moved");
+    //DEBUG: console.log(this.isPressed);
 }
 
-/*
+/*   DEPRECATED
 onMouseClick: Function that is called when the mouse is clicked on the button. When clicked, it will call whatever function it has been given in this.func. 
 Params: None.
 Returns: None.
@@ -171,16 +100,14 @@ Params: None.
 Returns: None.
 */
 function onMouseDown() {
-    //this.color = "#00FF00"
-    this.img.src = "https://i.ytimg.com/vi/_hyE2NO7HnU/maxresdefault.jpg";
+    this.image.src = this.onMouseDownImageSrc;
     //For toggle functionality.
     if (this.isToggleButton === true) {
         this.toggle();
         this.callFunction();
     }
-
-    //this.img.src = this.onMouseDownImage.src;
-    console.log("pressed");
+    this.isPressed = true;
+    //DEBUG: console.log("pressed");
 }
 
 /*
@@ -189,10 +116,13 @@ Params: None.
 Returns: None.
 */
 function onMouseUp() {
-    this.img.src = "https://vienna-wv.com/images/tree.jpg";
-    //this.img.src = this.onMouseUpImage.src;
-    this.callFunction();
-    console.log("released");
+    this.image.src = this.onMouseUpImageSrc;
+    if (this.isPressed) {
+        this.callFunction();
+        this.isPressed = false;
+    }
+    
+    //DEBUG: console.log("released");
 }
 
 /**************UTILITIES*****************/
@@ -218,52 +148,89 @@ function callFunction() {
     }
 }
 
-function update() {
-    //Check if cursor is over the button. 
+/*
+setSpriteAttributes: An easy way to set the sprite attributes for the button. 
+Params: 
+-x: the x coordinate on the canvas. 
+-y: the y coordinate on the canvas.
+-width: the width of the image source.
+-height: the height of the image source. 
+-name: the compiler name for the button (optional).
+Returns: None.
+*/
+function setSpriteAttributes(x, y, width, height, name) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    if (name === undefined) {
+        this.name = "button";
+    } else {
+        this.name = name;
+    }
 }
-function draw() {
-    ctx.drawImage(this.img, this.x, this.y, 50, 50);
-} 
-function debugMessage(str){
-    console.log(str)
-}
+
 
 /*
-var btn = new Button(10, 20, function(){alert("hello world")})
-console.log(btn);
-btn.debugMessage("Hello World!!!!!");
+* Button Class Functionality
+* 1. Must be drawable on a canvas. 
+    a. Needs a position on the canvas. DONE
+    b. Needs an image to be drawn on the canvas. DONE
+    c. Needs an "on hover" and "on pressed" animation. DONE
+* 2. Must have a parameter that is another function, and call that function. DONE. Accepts up to three parameters. 
+* 3. Button classifications? 
+    a. Toggle/Radio. DONE
 */
-function incrementTheseArys(numAry, numAry2, numAry3) {
-    for(var i = 0; i < numAry.length; i++) {
-        numAry[i]++;
-    }
-    if (numAry2 !== undefined) {
-        for (var j = 0; j < numAry2.length; j++) {
-            numAry2[j]++;   
-        }
-    }
-    if (numAry3 !== undefined) {
-        for (var k = 0; k < numAry3.length; k++) {
-            numAry3[k]++;   
-        }
-    }
-    console.log(numAry);
-    console.log(numAry2);
-    console.log(numAry3);
+
+/* 
+Constructor function. 
+Params: _function: Takes in a function that will be called when the button is released. 
+        _params:   Takes in an array of up to three parameters that must be passed into the function.  
+Returns: None.
+*/
+function Button(_function, _params) {
+    //Directly calls the Sprite class to inherit Sprite's attributes. 
+    Sprite.call(this);  
+    //Inherits all the Sprite prototype functions. 
+    Button.prototype = Object.create(Button.prototype);
+    //Button attributes. 
+    this.hovered = false;
+    this.isPressed = false;
+    this.func = _function;
+    this.params = _params;
+    this.isToggleButton = false;
+    
+    //ONLY USE THIS IS this.isToggleButton IS TRUE
+    this.isToggled = false;
+    this.onMouseUpImageSrc;
+    this.onMouseDownImageSrc;
 }
-
-var img = new Image(100, 196);
-img.src = "https://vienna-wv.com/images/tree.jpg";
-btnAry[0] = new Button("test", 10, 20, function(){alert("hello world")}, img);
-
-var params1 = [[1,2,3], [50,51]];
-btnAry[1] = new Button("test", 70, 20, incrementTheseArys, img, params1);
-
-var twodary = [[1,3,5], 1];
-incrementTheseArys(twodary[0], twodary[1]);
-function update() {
-    btnAry[0].draw();
-    btnAry[1].draw();
+Button.prototype.constructor = Button;
+Button.prototype.setSpriteAttributes = setSpriteAttributes;
+Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
+    this.image.src = srcPrimary;
+    this.onMouseUpImageSrc = srcPrimary;
+    this.onMouseDownImageSrc = srcSecondary;
 }
-
-setInterval(update, 100); 
+Button.prototype.update = function () {
+    
+}
+Button.prototype.draw = function () {
+    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+}
+/*toggle: changes the status of 'isToggled'. 
+Params: None.
+Returns: None.
+*/
+Button.prototype.toggle = function() {
+    if (this.isToggled) {this.isToggled = false;} 
+    else {this.isToggled = true;}
+    console.log("Toggled");
+}
+Button.prototype.mouseEventManager = mouseEventManager;
+Button.prototype.onMouseMove = onMouseMove;
+Button.prototype.onMouseEnter = onMouseEnter;
+Button.prototype.onMouseLeave = onMouseLeave;
+Button.prototype.onMouseDown = onMouseDown;
+Button.prototype.onMouseUp = onMouseUp;
+Button.prototype.callFunction = callFunction;

@@ -3,6 +3,7 @@
 //A viewed game state
 function Screen(alwaysUpdate, alwaysDraw){
     this.objects = [];
+    this.buttonArray = [];
 
     //Boolean
     this.alwaysUpdate = alwaysUpdate;
