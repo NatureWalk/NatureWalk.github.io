@@ -20,7 +20,9 @@ var animal = new function(){
 
 inheritsFrom(animal, Sprite);
 
-
+var frog = new function(){
+	this.armor = 
+}
 	
 
 
