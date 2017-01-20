@@ -90,6 +90,7 @@ ScreenManager.prototype.update = function(){
 
 ScreenManager.prototype.draw = function(){
     var screens = this.screens;
+    
 
     for(var i in screens){
 
