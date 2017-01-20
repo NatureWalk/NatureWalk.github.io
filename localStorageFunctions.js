@@ -1,21 +1,21 @@
 //functions for persistent local storage of steps and multilipers.
 //All functions convert parameters to strings before storing and return floats when retrieving stored data
-
+//uses variable stepCount created in APIcalls.js
 
 //save a player's current stats for steps and multipliers in local storage
-function saveStats(id, steps, mult){
+function saveStats(id, steps, mult, ingame){
 	if(isFirstTimeUser(id)){
-		createData(id, steps, mult);
+		createData(id, steps, mult, ingame);
 	} else {
 		updateMult(id, mult);
 		updateSteps(id, steps);
+		updateIngame(id, ingame);
 	};
 }
 
-//replaces current saved multiplier for a player with current saved multiplier plus newMult
+//replaces current saved multiplier for a player with newMult
 function updateMult(playerID, newMult){
-	var toAdd = parseFloat(getData(playerID, "mult")) + newMult;
-	updateData(playerID, "mult", toAdd.toString());
+	updateData(playerID, "mult", newMult.toString());
 }
 
 
@@ -25,20 +25,26 @@ function updateSteps(playerID, newSteps){
 }
 
 
+function updateIngame(playerID, newIngame){
+	updateData(playerID, "ingame", newIngame.toString());
+}
+
+
 //saves steps and multiplier for a player in local storage by creating a JSON object, converting it to a string and saving in local storage
-function createData(playerID, steps, mult){
-	var myObj = { "steps":steps.toString(), "mult":mult.toString() };
+function createData(playerID, steps, mult, ingame){
+	var myObj = { "steps":steps.toString(), "mult":mult.toString(), "ingame":ingame.toString()};
 	var myJSON = JSON.stringify(myObj);
 	localStorage.setItem(playerID.toString(), myJSON);
 }
 
-//returns the value(as a string) associated with the key for a player
+
+//returns the value(as a float) associated with the key for a player
 function getData(playerID, key){
 	var item = key.toString()
 	var text = localStorage.getItem(playerID.toString());
 	var obj = JSON.parse(text);
-	console.log(obj[item]);
-	return obj[item];
+	//console.log(key + ": " + obj[item]);
+	return parseFloat(obj[item]);
 }
 
 
