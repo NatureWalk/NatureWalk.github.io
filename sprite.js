@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------
 //Sprite object with default x,y,width, and height.
 //Has children array and functions to update across inheritence.
-//Use Sprite.call(this); and .prototype = new Sprite(); to inherit the sprite class.
+//Use Sprite.call(this); for a function class and = new Sprite(); for a prototype or variable.
 function Sprite() {
     this.image = new Image();
     this.x = 0;
@@ -14,6 +14,7 @@ function Sprite() {
     this.children = [];
 }
 
+//Shortcut to set an image
 Sprite.prototype.setSrc = function(src) {
     this.image.src = src;
 }
@@ -36,6 +37,7 @@ Sprite.prototype.draw = function() {
     this.drawChildren();
 };
 
+//If you override, keep this.updateChildren();
 Sprite.prototype.update = function() {
     this.updateChildren();
 }
