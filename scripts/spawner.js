@@ -11,13 +11,13 @@ var spawnRate = 1500;
 // time since last spawn
 var lastSpawn = -1;
 
-// this array holds all spawned object
+// this array holds all spawned objects
 var objects = [];
 
 // save the starting time (used to calc elapsed time)
 var startTime = Date.now();
 
-// start animating
+// start drawing
 animate();
 
 function randomNum (min, max) {
@@ -27,7 +27,7 @@ function randomNum (min, max) {
 
 function spawnRandomObject() {
 
-    // select a random type for this new object
+    // select a random type (color) for this new object
     var t;
 
     if (Math.random() < 0.50) {
@@ -37,7 +37,7 @@ function spawnRandomObject() {
     }
 
     // create the new object
-    var object = {
+    var object = { //can have a variety of parameters for the objects
         // set this objects type
         type: t,
         // set x randomly but at least 15px off the canvas edges
@@ -47,12 +47,18 @@ function spawnRandomObject() {
     }
 
     // add the new object to the objects[] array
+	// can later be changed to use the full engine
     objects.push(object);
 	
 	spawnCount += 1;
 }
 
-
+/*function removeObject() {
+	if(collision code) {
+		// splice attempts to add in a new element, but you can use it to remove if you leave out parameters.
+		objects.splice(0, the one that was clicked);
+	}
+}*/
 
 function animate() {
 
@@ -75,9 +81,9 @@ function animate() {
 
     for (var i = 0; i < objects.length; i++) {
         var object = objects[i];
-        ctx.beginPath();
-        ctx.arc(object.x, object.y, 8, 0, Math.PI * 2);
-        ctx.closePath();
+		ctx.beginPath();
+		ctx.rect(object.x, object.y, 10, 10);
+		ctx.closePath();
         ctx.fillStyle = object.type;
         ctx.fill();
     }
