@@ -19,6 +19,18 @@ Sprite.prototype.setSrc = function(src) {
     this.image.src = src;
 }
 
+Sprite.prototype.setSpriteAttributes = function(x, y, width, height, name) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    if (name === undefined) {
+        this.name = "button";
+    } else {
+        this.name = name;
+    }
+}
+
 //Ham-fistedly puts x and y in the center
 Sprite.prototype.center = function() {
     this.x = this.x-this.width/2;

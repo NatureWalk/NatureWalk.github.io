@@ -8,6 +8,7 @@
 //--Pause Menu--
 function Screen(alwaysUpdate, alwaysDraw){
     this.objects = [];
+    this.buttonArray = [];
 
     //Boolean
     this.alwaysUpdate = alwaysUpdate;
@@ -92,6 +93,7 @@ ScreenManager.prototype.update = function(){
 
 ScreenManager.prototype.draw = function(){
     var screens = this.screens;
+    
 
     for(var i in screens){
 
