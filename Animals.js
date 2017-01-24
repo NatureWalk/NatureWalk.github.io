@@ -40,6 +40,7 @@ var animal_data = {
 // Lifespan - The amount of time that the animal survives before being removed form the map.
 
 // @todo steps?
+// @todo timer functions for multipliers and effects
 
 var animal = new function(){
 	this.armor = 0;

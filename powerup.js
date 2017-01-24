@@ -15,6 +15,14 @@ powerup.prototype.empower = function(animal) {
     animal.empowered = true;
 }
 
+function spawnMultiplier() {
+
+}
+
+
+
+//The special skills unlocked from milestones
+//@todo inherit from button?
 var specials = [];
 
 //Global speed boost
@@ -38,5 +46,10 @@ inheritsFrom(sp_02, powerup);
 sp_02.name = "invincibility on animal";
 
 sp_02.activated = function() {
-    
+    //this.empower(selectAnimal())
 }
+
+sp_02.empower = function(animal) {
+	animal.makeInvincible()
+}
+
