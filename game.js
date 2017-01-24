@@ -39,6 +39,11 @@ canvas.addEventListener('mouseup', function(evt) {
     mouseman.findTarget(evt);   
 });
 
+var enemytest = new Enemy();
+enemytest.setSrc("TestEnemy.png");
+enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
+enemytest.calculateAngle();
+
 screenMan.push(game);
 
 game.init = function() {
@@ -46,10 +51,9 @@ game.init = function() {
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach(function(elem) {
             game.push(elem);
-            console.log(elem.mouseEventManager);
         });
     }
-    
+    this.push(enemytest);
 }
 
 function buttonsetup() {

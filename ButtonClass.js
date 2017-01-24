@@ -1,5 +1,8 @@
 /* EXAMPLE BUTTON CREATION:
  * 1. Create button with: var btn = new Button(function_to_call, parameterArray_for_function);
+    NOTE: When giving the button a function do not add parentheses.
+    Ex. new Button(myFunction, paramAry); 
+    Not. new Button(myFunction(), paramAry);
  
  * 2. Set the button source images with: btn.setSrc(srcPrimary, srcSecondary);
  
@@ -52,7 +55,7 @@ NOTE: Is only called the first time onMouseMove() is called.
 function onMouseEnter() {
     //If cursor is over 
     this.hovered = true;
-    console.log("enter");
+    //console.log("enter");
 }
 /*
 onMouseLeave: Function that is called when the mouse leaves the button's perimeter. 
@@ -66,7 +69,7 @@ function onMouseLeave() {
     this.hovered = false;
     this.isPressed = false;
     this.image.src = this.onMouseUpImageSrc;
-    console.log("left");
+    //console.log("left");
 }
 /*
 onMouseMove: Function that is called when the mouse is moving over the button. Called every time the mouse moves. 
@@ -191,8 +194,12 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);  
+    this.onMouseUpImageSrc;
+    this.onMouseDownImageSrc;
+    
     //Inherits all the Sprite prototype functions. 
     Button.prototype = Object.create(Button.prototype);
+    
     //Button attributes. 
     this.hovered = false;
     this.isPressed = false;
@@ -200,10 +207,8 @@ function Button(_function, _params) {
     this.params = _params;
     this.isToggleButton = false;
     
-    //ONLY USE THIS IS this.isToggleButton IS TRUE
+    //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
-    this.onMouseUpImageSrc;
-    this.onMouseDownImageSrc;
 }
 Button.prototype.constructor = Button;
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
@@ -212,9 +217,7 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
 }
-Button.prototype.update = function () {
-    
-}
+Button.prototype.update = function () {}
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 }
