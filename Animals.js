@@ -39,12 +39,15 @@ var animal_data = {
 // Capacity - The number of items the animal can pick up before being removed from the map.
 // Lifespan - The amount of time that the animal survives before being removed form the map.
 
+// @todo steps?
+
 var animal = new function(){
 	this.armor = 0;
 	this.speed = 0;
 	this.capacity = 0;
 	this.lifespan = 0;
 	this.identity = 'none';
+	this.empowered = false;
 	
 }
 
