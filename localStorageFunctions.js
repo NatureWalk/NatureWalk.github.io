@@ -19,6 +19,14 @@ function updateMult(playerID, newMult){
 }
 
 
+//function to call when a multiplier is collected by an animal
+//add newly collected multiplier(newMult) to mult in storage for player and save to local storage
+function multCollected(playerID, newMult){
+	var multToSave = getData(playerID, mult) + newMult;
+	updateMult(playerID, multToSave);
+}
+
+
 //replaces current saved step count with newSteps
 function updateSteps(playerID, newSteps){
 	updateData(playerID, "steps", newSteps.toString());
