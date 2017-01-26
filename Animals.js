@@ -49,10 +49,12 @@ var animal = new function(){
 	this.lifespan = 0;
 	this.identity = 'none';
 	this.empowered = false;
-	
+	this.effects = {}
 }
 
 inheritsFrom(animal, Sprite);
+
+
 
 var frog = new function(){
 	this.armor = animal_data["frog_armor"];

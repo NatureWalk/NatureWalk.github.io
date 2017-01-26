@@ -2,21 +2,24 @@
 // The multipliers that animals will be able to pick up.
 
 var powerup = new function() {
-    this.multiplier = 0;
+    this.multiplier = 1;
+    this.date;
+    this.lifespan;
 }
 
 inheritsFrom(powerup, Sprite);
 
-powerup.prototype.activated = function() {
+powerup.prototype.activate = function() {
     console.log("Activated powerup:"+this.name)
+    multCollected(playerID,this.multiplier)
 }
 
+
+
+
+//EXPERIMENTAL
 powerup.prototype.empower = function(animal) {
     animal.empowered = true;
-}
-
-function spawnMultiplier() {
-
 }
 
 
