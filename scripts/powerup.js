@@ -1,13 +1,18 @@
 // ------- powerup class --------
 // The multipliers that animals will be able to pick up.
 
-var powerup = new function() {
-    this.multiplier = 1;
+function powerup() {
+    multiplier = 1;
     this.date;
     this.lifespan;
+    this.button = new Button(function() {console.log("multiplier:"+this.parent.multiplier)})
 }
 
-inheritsFrom(powerup, Sprite);
+inheritsFrom(powerup, Sprite)
+
+powerup.prototype.draw = function() {
+    this.button.draw()
+}
 
 powerup.prototype.activate = function() {
     console.log("Activated powerup:"+this.name)
@@ -21,7 +26,7 @@ powerup.prototype.empower = function(animal) {
 
 
 
-//The special skills unlocked from milestones
+/*//The special skills unlocked from milestones
 //@todo inherit from button?
 var specials = [];
 
@@ -53,3 +58,4 @@ sp_02.empower = function(animal) {
 	animal.makeInvincible()
 }
 
+*/

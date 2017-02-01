@@ -205,9 +205,14 @@ function Button(_function, _params) {
     this.onMouseUpImageSrc;
     this.onMouseDownImageSrc;
 }
+Button.prototype.changeFunc = function(_function, _params) {
+    this.func = _function;
+    this.params = _params;
+}
 Button.prototype.constructor = Button;
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
+    this.image = new Image();
     this.image.src = srcPrimary;
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;

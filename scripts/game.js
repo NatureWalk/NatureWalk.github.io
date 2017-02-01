@@ -1,6 +1,6 @@
 
 
-fitbit_start(); //Make the fitbit work before anything else.
+//fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -11,7 +11,7 @@ var h = canvas.height;
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
 var background = new Sprite();
-background.setSrc("nwalk1.jpg");
+background.setSrc("images/nwalk1.jpg");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = 1280;
 background.height = 720;
@@ -49,7 +49,7 @@ game.init = function() {
             console.log(elem.mouseEventManager);
         });
     }
-    
+    this.push(new Spawner())
 }
 
 function buttonsetup() {

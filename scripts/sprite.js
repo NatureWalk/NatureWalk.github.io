@@ -16,6 +16,7 @@ function Sprite() {
 
 //Shortcut to set an image
 Sprite.prototype.setSrc = function(src) {
+    this.image = new Image();
     this.image.src = src;
 }
 
