@@ -10,6 +10,8 @@ var h = canvas.height;
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
+var dataTracker = new DataTracker();
+
 var background = new Sprite();
 //background.setSrc("nwalk1.jpg");
 background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
@@ -18,7 +20,7 @@ background.height = 720;
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
-game.buttonArray = [];
+//game.buttonArray = [];
 buttonsetup();
 var mouseman = new MouseManager();
 
@@ -41,6 +43,11 @@ canvas.addEventListener('mouseup', function(evt) {
     mouseman.findTarget(evt);   
 });
 
+var enemytest = new Enemy();
+enemytest.setSrc("TestEnemy.png");
+enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
+console.log("Enemy Created");
+
 screenMan.push(game);
 
 game.init = function() {
@@ -51,10 +58,9 @@ game.init = function() {
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach(function(elem) {
             game.push(elem);
-            console.log(elem.mouseEventManager);
         });
     }
-    
+    this.push(enemytest);
 }
 
 function buttonsetup() {
@@ -65,7 +71,7 @@ function buttonsetup() {
     game.buttonArray.push(start); 
     /*EXAMPLE BUTTON SETUP */
     
-    var end = new Button(function() {alert("Game has finished")});
+    var end = new Button(dataTracker.getTime);
     end.setSrc("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Five-pointed_star.svg/1088px-Five-pointed_star.svg.png", "http://pngimg.com/upload/star_PNG1595.png")
     end.setSpriteAttributes(500, 300, 100, 100, "test3");
     game.buttonArray.push(end); 
