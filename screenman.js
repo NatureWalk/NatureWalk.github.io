@@ -38,6 +38,7 @@ Screen.prototype.draw = function() {
 }
 
 Screen.prototype.update = function() {
+	console.log(this.objects);
     for (var i in this.objects) {
         this.objects[i].update();
     }

@@ -6,22 +6,22 @@
 
 var animal_data = {
 	frog_armor:0,
-	frog_speed:1,
+	frog_speed:5,
 	frog_capacity:2,
 	frog_lifespan:150,
 	
 	deer_armor:0,
-	deer_speed:1,
+	deer_speed:5,
 	deer_capacity:2,
 	deer_lifespan:150,
 	
 	bunny_armor:0,
-	bunny_speed:1,
+	bunny_speed:5,
 	bunny_capacity:2,
 	bunny_lifespan:150,
 	
 	bird_armor:0,
-	bird_speed:1,
+	bird_speed:5,
 	bird_capacity:2,
 	bird_lifespan:150
 	
@@ -39,7 +39,7 @@ var animal_data = {
 // Capacity - The number of items the animal can pick up before being removed from the map.
 // Lifespan - The amount of time that the animal survives before being removed form the map.
 
-var animal = new function(){
+var animal = function(){
 	this.armor = 0;
 	this.speed = 0;
 	this.capacity = 0;
@@ -50,44 +50,118 @@ var animal = new function(){
 
 inheritsFrom(animal, Sprite);
 
-var frog = new function(){
+var frog = function(xpos, ypos){
 	this.armor = animal_data["frog_armor"];
 	this.speed = animal_data["frog_speed"];
 	this.capacity = animal_data["frog_capacity"];
 	this.lifespan = animal_data["frog_lifespan"];
-	this.identity = 'frog';
+	this.width = 100;
+	this.height = 100;
+	this.name = 'frog';
+	this.x = xpos;
+	this.y = ypos;
 }
 
 inheritsFrom(frog, animal);
 
-var bunny = new function(){
+frog.prototype.update = function(){
+	this.y += this.speed;
+}
+frog.prototype.draw = function(){
+	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+}
+
+
+var bunny = function(xpos, ypos){
 	this.armor = animal_data["bunny_armor"];
 	this.speed = animal_data["bunny_speed"];
 	this.capacity = animal_data["bunny_capacity"];
 	this.lifespan = animal_data["bunny_lifespan"];
-	this.identity = 'bunny';
+	this.width = 100;
+	this.height = 100;
+	this.name = 'bunny';
+	this.x = xpos;
+	this.y = ypos;
 }
 
 inheritsFrom(bunny, animal);
 
+bunny.prototype.update = function(){
+	this.x += this.speed;
+}
+bunny.prototype.draw = function(){
+	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+}
 
-var deer = new function(){
+
+
+var deer = function(xpos, ypos){
 	this.armor = animal_data["deer_armor"];
 	this.speed = animal_data["deer_speed"];
 	this.capacity = animal_data["deer_capacity"];
 	this.lifespan = animal_data["deer_lifespan"];
-	this.identity = 'deer';
+	this.width = 100;
+	this.height = 100;
+	this.name = 'deer';
+	this.x = xpos;
+	this.y = ypos;
 }
-
 inheritsFrom(deer, animal);	
 
-var bird = new function(){
+deer.prototype.update = function(){
+	console.log(this);
+}
+deer.prototype.draw = function(){
+	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+}
+
+
+
+var bird = function(xpos, ypos){
 	this.armor = animal_data["bird_armor"];
 	this.speed = animal_data["bird_speed"];
 	this.capacity = animal_data["bird_capacity"];
 	this.lifespan = animal_data["bird_lifespan"];
-	this.identity = 'bird';
+	this.counter = 0;
+	this.angle = Math.random()*2*Math.PI
+	this.xspeed = Math.sin(this.angle) * animal_data["bird_speed"];
+	this.yspeed = Math.cos(this.angle) * animal_data["bird_speed"];
+	this.width = 100;
+	this.height = 100;
+	this.name = 'bird';
+	this.x = xpos;
+	this.y = ypos;
 }
 
 inheritsFrom(bird, animal);
+
+bird.prototype.update = function(){
+	this.counter++;
+	if(this.counter == 60){
+		this.counter = 0;
+		this.angle = Math.random()*2*Math.PI
+		this.xspeed = Math.sin(this.angle) * this.speed;
+		this.yspeed = Math.cos(this.angle) * this.speed;
+	}
+	this.x += this.xspeed;
+	this.y += this.yspeed;
+}
+bird.prototype.draw = function(){
+	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+}
+
+var setupAnimal = function(ani){
+	ani.image = new Image();
+	if(ani.name == 'frog'){
+    	ani.setSrc('https://img.clipartfest.com/d8753347c94b1e9a3409332726861e4a_free-frog-clipart-clip-art-frog-clipart_2400-2179.jpeg');
+	} else if(ani.name == 'bunny'){
+		ani.setSrc('http://clipart-library.com/data_images/293245.jpg');
+	} else if(ani.name == 'deer'){
+		ani.setSrc('http://images.clipartpanda.com/deer-clip-art-deer05_Clipart_Free.png');
+	} else if(ani.name == 'bird'){
+		ani.setSrc('https://s-media-cache-ak0.pinimg.com/736x/77/0a/3f/770a3fc30e148471019fe729b311d3f0.jpg');
+	}
+	
+}
+	
 

@@ -1,6 +1,6 @@
 
 
-fitbit_start(); //Make the fitbit work before anything else.
+//fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -11,8 +11,8 @@ var h = canvas.height;
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
 var background = new Sprite();
-background.setSrc("nwalk1.jpg");
-//background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
+//background.setSrc("nwalk1.jpg");
+background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = 1280;
 background.height = 720;
 var screenMan = new ScreenManager();
@@ -21,6 +21,8 @@ var game = new Screen(true, true);
 game.buttonArray = [];
 buttonsetup();
 var mouseman = new MouseManager();
+
+
 
 console.log("game set up");
 
@@ -43,6 +45,9 @@ screenMan.push(game);
 
 game.init = function() {
     this.push(background);
+    //var test_bird = new bird(800, 500);
+    //setupAnimal(test_bird);
+    //game.push(test_bird);
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach(function(elem) {
             game.push(elem);
