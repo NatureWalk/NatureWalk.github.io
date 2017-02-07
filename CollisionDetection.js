@@ -1,175 +1,123 @@
-/**
- * QuadTree object.
- *
- * The quadrant indexes are numbered as below:
- *     |
- *  1  |  0
- * —-+—-
- *  2  |  3
- *     |
- */
-function QuadTree(lvl, boundbox) {
-	var maxObjects = 10;
-	this.bounds = boundBox || {
-		x: 0,
-		y: 0,
-		width: 0,
-		height: 0
-	};
-	var objects = [];
-	this.nodes = [];
-	var level = lvl || 0;
-	var maxLevels = 5;
-	/*
-	 * Clears the quadTree and all nodes of objects
-	 */
-	this.clear = function() {
-		objects = [];
-		for (var i = 0; i < this.nodes.length; i++) {
-			this.nodes[i].clear();
-		}
-		this.nodes = [];
-	};
+canvas = document.getElementById("myCanvas");
+context = canvas.getContext("2d");
+
+//create an object array
+var objectList = [];
+
+var square = new function() {
+//default object characteristics
+	this.x=0,
+	this.y=0,
+	this.width = 50,
+	this.height = 50,
+	this.speedX=10,
+	this.speedY=5,
+	this.collidablewith = "circle",
+	this.type = "square",
+	this.Draw= function(){
 	
-	/*
-	* Splits the node into four subnodes by dividing 
-	* the node into four equal parts and initializing the four subnodes with the new bounds.
-	*/
-	
-	this.split = function(){
-	var subWidth = this.bounds.width/2;
-	var subHeight = this.bounds.height/2;
-	var x = this.bounds.x;
-	var y = this.bounds.y;
-	
-	this.nodes[0] = new Quadtree(lvl+1, {x: x+subWidth, y: y, width: subWidth, height: subHeight});  
-	this.nodes[1] = new Quadtree(lvl+1, {x: x, y: y, width: subWidth, height: subHeight});
-	this.nodes[2] = new Quadtree(lvl+1, {x: x, y: y+subHeight, width: subWidth, height: subHeight});
-	this.nodes[3] = new Quadtree(lvl+1, {x: x+subWidth, y: y+subHeight, width: subWidth, height: subHeight});
-	};
-	
-/*
- * Determine which node the object belongs to. -1 means
- * object cannot completely fit within a child node and is part
- * of the parent node
- */
-	this.getIndex = function(obj){
-	var index = -1;
-	var verticalMidpoint = this.bounds.x + (this.bounds.width / 2);
-	var horizontalMidpoint = this.bounds.y + (this.bounds.height / 2);
-	
-	// Object can completely fit within the top quadrants
-	var topQuadrant = (obj.y < horizontalMidpoint && obj.y + obj.height < horizontalMidpoint);
-	// Object can completely fit within the bottom quadrants
-	var bottomQuadrant = (obj.y > horizontalMidpoint);
-	
-	// Object can completely fit within the left quadrants
-	if (obj.x < verticalMidpoint && obj.x + obj.width < verticalMidpoint){
-		if(topqQuadrant){
-			index = 1;
-		}
-		else if(bottomQuadrant){
-			index = 2;
+	// display coordinates on the canvas for testing
+		context.font = "12px Verdana";
+		context.fillStyle = "black";
+		context.fillText("coord x: " + this.x, 20 ,20);
+		context.fillText("coord y: " + this.y, 20 ,32);
+		
+		//draw the image of the object
+	    context.fillRect(this.x, this.y, this.width, this.height);
+		
+		//default movement
+		this.x += this.speedX;
+		this.y += this.speedY;
+		
+		//check if there is collision
+		if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.type)){
+			//what happens if collision comes back true
+			this.speedX=-this.speedX;
+			this.speedY= -this.speedY;
 		}
 	}
+};
+//push object to the object array
+objectList.push(square);
+
+var circle =  new function(){
+//default object characteristics
+	this.x=70,
+	this.y=70,
+	this.width = 20,
+	this.height = 20,
+	this.speedX=20,
+	this.speedY=15,
+	this.collidablewith = "square",
+	this.type = "circle",
+	this.Draw = function(){
 	
-	// Object can completely fit within the right quadrants
-	else if (obj.x > verticalMidpoint){
-		if(topQuadrant){
-			index = 0;
-		}
+	// display coordinates on the canvas for testing
+		context.font = "12px Verdana";
+		context.fillStyle = "blue";
+		context.fillText("coord x: " + this.x, 20 ,48);
+		context.fillText("coord y: " + this.y, 20 ,60);
 		
-		else if(bottomQuadrant){
-			index = 3;
+		//draw the image of the object
+	    context.fillRect(this.x,this.y, this.width, this.height);
+		
+		//default movement
+		this.x += this.speedX;
+		this.y += this.speedY;
+		
+		//check if there is collision
+		if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.type)){
+			//what happens if collision comes back true
+			this.speedX=-this.speedX;
+			this.speedY= -this.speedY;
 		}
 	}
+};
+//push object to the object array
+objectList.push(circle);
+
+
+function draw(){
+	canvas.width = canvas.width;
 	
-	return index;
-	};
+	//display object array contents on canvas for testing
+	context.font = "12px Verdana";
+	context.fillStyle = "black";
+	context.fillText("objects in array: " + objectList , 400 ,20);
 	
-	this.insert = function(obj){
-		if(this.nodes[0] != null){
-		var index = this.getIndex(obj);
-		
-			if(index != -1){
-				this.nodes[index].insert(obj);
-		
-				return;
-			}
+	square.Draw();
+	circle.Draw();
+}
+
+
+function game_loop(){
+	draw();
+}
+
+
+function collisionChecker(x , y, width, height, collidablewith, type){
+
+// boundary collision detection
+		if(x >= 800 || x<0){
+		return true;
 		}
-		objects.push(obj);
-		
-		if(objects.length > maxObjects && level < maxLevels){
-			if(this.nodes[0] == null){
-				this.split();
-			}
-			
-			var i = 0;
-			while( i < objects.length){
-				var index = this.getIndex(objects[i]);
-				if(index != -1){
-					this.nodes[index].insert((objects.splice(i,1))[0]);  // objects.remove(i)
-				}
-				else{
-					i++;
-				}
-			}
-		}
-	};	
-	
-	this.getObjects = function(returnObjects, obj){
-		var index = this.getIndex(obj);
-		if(index != -1 && this.nodes[0] != null){
-			this.nodes[index].getObjects(returnObjects, obj);
+		else if (y >= 600 || y <0){
+		return true;
 		}
 		
-		for (var i = 0, i<objects.length; i++) {
-			returnedObjects.push(objects[i]);
-		}
-		return returnedObjects;
-	};
-}
-
-// Object classes and their properties
-function objectName(){
-
-}
-
-/*
- * Creates the Game object which will hold all objects and data for
- * the game.
- */
-function Game(){
-	this.quadTree = new QuadTree({x:0,y:0,width:this.mainCanvas.width,height:this.mainCanvas.height});
-}
-
-function animate() {
-	/*Insert and clear objects
-	* for example:
-	* game.quadTree.clear();
-	* game.quadTree.insert(game.object);
-	*/
-	collisionChecker();
-}
-
-function collisionChecker(){
-var objects = [];
-	game.quadTree.getAllObjects(objects);
-
-	for (var x = 0, len = objects.length; x < len; x++) {
-		game.quadTree.findObjects(obj = [], objects[x]);
-
-		for (y = 0, length = obj.length; y < length; y++) {
-
-			// DETECT COLLISION ALGORITHM
-			if (objects[x].collidableWith === obj[y].type &&
-				(objects[x].x < obj[y].x + obj[y].width &&
-			     objects[x].x + objects[x].width > obj[y].x &&
-				 objects[x].y < obj[y].y + obj[y].height &&
-				 objects[x].y + objects[x].height > obj[y].y)) {
-				objects[x].isColliding = true;
-				obj[y].isColliding = true;
+					// object collision detection within the array
+		for(var i = 0; i<objectList.length; i++){
+			if (collidablewith === objectList[i].type &&
+				(x < objectList[i].x + objectList[i].width &&
+			     x + width > objectList[i].x &&
+				 y < objectList[i].y + objectList[i].height &&
+				 y + height > objectList[i].y)) {
+				return true;
 			}
 		}
-	}
+		
+
+		
 }
+
+setInterval(game_loop, 30);

@@ -1,42 +1,17 @@
 <!DOCTYPE html>
+
 <html>
-<head>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js">
-</script>
+	<head>
+		<!-- This file is where your CSS code goes. It can totally be blank -->
+		
+	</head>
 
-</head>
-<body>
-
-<!-- Logs user in to fitbit and sets the following:
-	variables:
-	  userName - the user's fitbit display name
-	  userID - unique code for each user set by fitbit
-	  stepCount - total lifetime steps for the user
-	functions:
-	  authorize() - redirects to fitbit authentication if required
-	  getUserInfo() - set userName and userID
-	  getNewSteps() - set stepCount
-	  logout() - logs user out and redirects to fitbit login
--->
-
-<canvas id= "canvas" width= "1280" height="720"  ></canvas>
-    <script src= "howler.min.js"></script>
-    <script src= "APIcalls.js"></script>
-    <script src= "engine.js"></script>
-    <script src= "sprite.js"></script>
-    <script src= "ButtonClass.js"></script>
-    <script src= "mousetracker.js"></script>
-    <script src= "screenman.js"></script>
-    <script src= "Animals.js"></script>
-    <script src= "game.js"></script>
-
-	
-<!-- prints variables set by APIcalls.js to console -->
-<script>
-	console.log("user: " + userName);
-	console.log("user ID: " + userID);
-	console.log("steps: " + stepCount);
-</script>
-	
-</body>
+	<body>
+		<!-- Copy-paste "HTML" section from JSFiddle under this comment -->
+		<canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;">
+</canvas>
+		
+		<!-- This file is where your Javascript code goes -->
+		<script src="CollisionDetection.js"></script>
+	</body>
 </html>
