@@ -13,10 +13,15 @@ context = canvas.getContext("2d");
  */
 function QuadTree(lvl, boundbox) {
 	var maxObjects = 10;
-	this.bounds = boundbox;
+	this.bounds = boundbox || {
+		x: 0,
+		y: 0,
+		width: 0,
+		height: 0
+	};
 	var objects = [];
 	this.nodes = [];
-	var level = lvl;
+	var level = lvl || 0;
 	var maxLevels = 5;
 	/*
 	 * Clears the quadTree and all nodes of objects
@@ -90,49 +95,35 @@ function QuadTree(lvl, boundbox) {
  * exceeds the capacity, it will split and add all
  * objects to their corresponding nodes.
  */
-	this.insert = function(obj) {
-		if (typeof obj === "undefined") {
-			return;
-		}
-
-		if (obj instanceof Array) {
-			for (var i = 0, len = obj.length; i < len; i++) {
-				this.insert(obj[i]);
-			}
-
-			return;
-		}
-
-		if (this.nodes.length) {
-			var index = this.getIndex(obj);
-			if (index != -1) {
+	this.insert = function(obj){
+		if(this.nodes[0] != null){
+		var index = this.getIndex(obj);
+		
+			if(index != -1){
 				this.nodes[index].insert(obj);
-
+		
 				return;
 			}
 		}
-
 		objects.push(obj);
-
-		// Prevent infinite splitting
-		if (objects.length > maxObjects && level < maxLevels) {
-			if (this.nodes[0] == null) {
+		
+		if(objects.length > maxObjects && level < maxLevels){
+			if(this.nodes[0] == null){
 				this.split();
 			}
-
+			
 			var i = 0;
-			while (i < objects.length) {
-
+			while( i < objects.length){
 				var index = this.getIndex(objects[i]);
-				if (index != -1) {
-					this.nodes[index].insert((objects.splice(i,1))[0]);
+				if(index != -1){
+					this.nodes[index].insert((objects.splice(i,1))[0]);  // objects.remove(i)
 				}
-				else {
+				else{
 					i++;
 				}
 			}
 		}
-	};
+	};	
 	
 		/*
 	 * Get all objects in the quadTree
@@ -163,86 +154,107 @@ function QuadTree(lvl, boundbox) {
 }
 
 
-var square = {
-	x:0,
-	y:0,
-	speedX:5,
-	speedY:1,
-	Draw: function(){
-		context.font = "12px Verdana";
+function Drawable() {
+	this.init = function(x, y, width, height) {
+		// Default variables
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+
+	this.speed = 0;
+	this.canvasWidth = 0;
+	this.canvasHeight = 0;
+	this.collidableWith = "";
+	this.isColliding = false;
+	this.type = "";
+
+	// Define abstract function to be implemented in child objects
+	this.draw = function() {
+	};
+	this.move = function() {
+	};
+	this.isCollidableWith = function(object) {
+		return (this.collidableWith === object.type);
+	};
+}
+
+// Object classes go here and their properties
+function square(){
+    this.alive = false;
+	this.collidableWith = "circle";
+	this.type = "enemy";
+	
+	this.spawn = function(x, y, speed) {
+		this.x = x;
+		this.y = y;
+		this.speedX = 5;
+		this.speedY = 5;
+		this.alive = true;
+		this.leftEdge = this.x - 90;
+		this.rightEdge = this.x + 90;
+		this.bottomEdge = this.y + 140;
+	};
+
+	this.draw = function(){
 		context.fillStyle = "black";
-		context.fillText("coord x: " + this.x, 20 ,20);
-		context.fillText("coord y: " + this.y, 20 ,32);
-	    context.fillRect(this.x, this.y, 20, 20);
+	    context.fillRect(0, 0, 800, 600);
 		this.x += this.speedX;
 		this.y += this.speedY;
 		
-		if(this.x >= 800 || this.x<=0){
+		if(this.x <= 800){
 		this.speedX = -this.speedX
 		}
-		else if (this.y >= 600 || this.y <=0){
+	else if (this.y <= 600){
 		this.speedY = -this.speedY
 		}
-	}
-};
+	};
+	
+	this.clear = function(){
+		this.x = 0;
+		this.y = 0;
+		this.speedX = 0;
+		this.speedY = 0;
+		this.alive = false;
+		this.isColliding = false;
+	};
+}
+square.prototype = new Drawable();
 
-var circle =  new function(){
-	this.x=200,
-	this.y=200,
-	this.speedX=5,
-	this.speedY=5,
-	this.collidablewith = "square",
-	this.type = "circle"
-	this.Draw = function(){
-		context.font = "12px Verdana";
-		context.fillStyle = "blue";
-		context.fillText("coord x: " + this.x, 20 ,48);
-		context.fillText("coord y: " + this.y, 20 ,60)
-	    context.fillRect(this.x, this.y, 20, 20);
-		this.x += this.speedX;
-		this.y += this.speedY;
-		
-		if(this.x >= 800 || this.x<0){
-		this.speedX = -this.speedX
-		}
-		else if (this.y >= 600 || this.y <0){
-		this.speedY = -this.speedY
-		}
-	}
-};
-function update(){
-	this.quad = new QuadTree({x:0,y:0,width:800,height:600});
+/*
+ * Creates the Game object which will hold all objects and data for
+ * the game.
+ */
+function Game(){
 	
-	quad.clear();
-	//quad.insert(square);
-	quad.insert(circle);
+	this.quadTree = new QuadTree({x:0,y:0,width:800,height:600});
 	
-	//collisionChecker();
+	this.square = new square();
+
+	this.start = function(){
+		this.square.draw();
+		animate();
+	};
 }
 
-function draw(){
-	canvas.width = canvas.width;
+function animate() {
+	/*Insert and clear objects
+	* for example:
+	* game.quadTree.clear();
+	* game.quadTree.insert(game.object);
+	*/
+	game.QuadTree.clear();
+	game.QuadTree.insert(this.square);
 	
-	var objects = [];
-	objects.push(square);
+	collisionChecker();
 	
-	context.font = "12px Verdana";
-	context.fillStyle = "black";
-	context.fillText("objects: " + objects[0] , 100 ,20);
 	
-	square.Draw();
-	circle.Draw();
-}
-
-
-function game_loop(){
-	update();
-	draw();
 }
 
 function collisionChecker(){
 var objects = [];
-update.quad.getAllObjects(objects);
+game.quadTree.getAllObjects(objects);
 
 	for (var x = 0, len = objects.length; x < len; x++) {
 		game.quadTree.getObjects(obj = [], objects[x]);
@@ -262,4 +274,4 @@ update.quad.getAllObjects(objects);
 	}
 }
 
-setInterval(game_loop, 30);
+setInterval(Game, 30);
