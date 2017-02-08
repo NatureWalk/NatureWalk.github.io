@@ -1,6 +1,11 @@
 //----------------------Menu System Functions---------------------------
 //----------------------------------------------------------------------
 //A viewed game state
+//Contains all updated and displayed game objects in a screen
+//alwaysUpdate is for screens you want running in the background
+//--Pop-up Menu--
+//alwaysDraw is for screens drawn in the background
+//--Pause Menu--
 function Screen(alwaysUpdate, alwaysDraw){
     this.objects = [];
     this.buttonArray = [];
@@ -9,12 +14,11 @@ function Screen(alwaysUpdate, alwaysDraw){
     this.alwaysUpdate = alwaysUpdate;
     this.alwaysDraw = alwaysDraw;
 
-    this.stage = new Sprite();
-
     this.initialized = false;
 }
 
 //What runs when the screen is initially loaded
+//Often is where you add objects
 Screen.prototype.init = function() {
 }
 
@@ -30,7 +34,6 @@ Screen.prototype.remove = function(object) {
     }
 }
 
-//Needed because inheriting from sprite apparently doesn't work right in Firefox
 Screen.prototype.draw = function() {
     for (var i in this.objects) {
         this.objects[i].draw();

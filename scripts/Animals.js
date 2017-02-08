@@ -39,18 +39,24 @@ var animal_data = {
 // Capacity - The number of items the animal can pick up before being removed from the map.
 // Lifespan - The amount of time that the animal survives before being removed form the map.
 
-var animal = function(){
+// @todo steps?
+// @todo timer functions for multipliers and effects
+
+var animal = new function(){
 	this.armor = 0;
 	this.speed = 0;
 	this.capacity = 0;
 	this.lifespan = 0;
 	this.identity = 'none';
-	
+	this.empowered = false;
+	this.effects = {}
 }
 
 inheritsFrom(animal, Sprite);
 
-var frog = function(xpos, ypos){
+
+
+var frog = new function(){
 	this.armor = animal_data["frog_armor"];
 	this.speed = animal_data["frog_speed"];
 	this.capacity = animal_data["frog_capacity"];

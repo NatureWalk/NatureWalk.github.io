@@ -61,6 +61,7 @@ game.init = function() {
         });
     }
     this.push(enemytest);
+    this.push(new Spawner())
 }
 
 function buttonsetup() {

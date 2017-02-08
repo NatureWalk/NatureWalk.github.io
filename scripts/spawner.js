@@ -1,52 +1,38 @@
-// a count of how many objects currently exist
-var spawnCount = 0;
+//Updated by Dan to be more object oriented, 1/31/17
 
-// the time in ms between object spawns
-var spawnRate = 1500;
-
-// time since last spawn
-var lastSpawn = -1;
-
-// this array holds all spawned objects
-var objects = [];
-
-// save the starting time (used to calc elapsed time)
-var startTime = Date.now();
-
-// start drawing
-animate();
-
+//Helper Function
 function randomNum (min, max) {
 	var num = Math.random() * (max - min) + min;
 	return Math.floor(num);	
 }
 
-function spawnRandomObject() {
 
-    // select a random type (color) for this new object
-    var t;
+function Spawner() {
+    this.powerups = [];
+    this.spawnCount = 0;
+    this.spawnRate = 1500;
+    this.lastSpawn = -1;
+    this.startTime = Date.now();
+}
 
-    if (Math.random() < 0.50) {
-        t = "red";
-    } else {
-        t = "blue";
-    }
-
+Spawner.prototype.spawnRandomObject = function() {
     // create the new object
-    var object = { //can have a variety of parameters for the objects
-        // set this objects type
-        type: t,
-        // set x randomly but at least 15px off the canvas edges
-        x: Math.random() * (canvas.width - 30) + 15,
-        // set y to start on the line where objects are spawned
-        y: Math.random() * (canvas.height - 30) + 15,
-    }
-
+    var object = new powerup();
+    object.multiplier = randomNum(2,10);
+    object.setSrc("images/Coin.png");
+    object.button.setSrc("images/Coin.png","images/Coin.png")
+    object.x = object.button.x = Math.random() * (canvas.width - 30) + 15
+    object.y = object.button.y = Math.random() * (canvas.height - 30) + 15
+    object.width = object.button.width = 20;
+    object.height = object.button.height = 20;
     // add the new object to the objects[] array
 	// can later be changed to use the full engine
-    objects.push(object);
-	
-	spawnCount += 1;
+    var mult = object.multiplier;
+    object.button.changeFunc(function() {console.log("Multiplier x"+mult)})
+    game.buttonArray.push(object.button);
+    game.push(object.button);
+    this.powerups.push(object);
+	this.spawnCount += 1;
 }
 
 /*function removeObject() {
@@ -56,28 +42,20 @@ function spawnRandomObject() {
 	}
 }*/
 
-function animate() {
+Spawner.prototype.update = function() {
 
     // get the elapsed time
     var time = Date.now();
 
     // see if its time to spawn a new object
-    if ((time > (lastSpawn + spawnRate)) && spawnCount < 5) {
-        lastSpawn = time;
-        spawnRandomObject();
+    if ((time > (this.lastSpawn + this.spawnRate)) && this.spawnCount < 5) {
+        this.lastSpawn = time;
+        this.spawnRandomObject();
     }
+}
 
-    // request another animation frame
-    requestAnimationFrame(animate);
-
-
-    for (var i = 0; i < objects.length; i++) {
-        var object = objects[i];
-		ctx.beginPath();
-		ctx.rect(object.x, object.y, 10, 10);
-		ctx.closePath();
-        ctx.fillStyle = object.type;
-        ctx.fill();
-    }
+Spawner.prototype.draw = function() {
 
 }
+
+
