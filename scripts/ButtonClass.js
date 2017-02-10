@@ -204,10 +204,6 @@ Button.prototype.changeFunc = function(_function, _params) {
     this.params = _params;
 }
 Button.prototype.constructor = Button;
-<<<<<<< HEAD:ButtonClass.js
-
-Button.prototype.update = function () {}
-=======
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.image = new Image();
@@ -218,7 +214,6 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
 Button.prototype.update = function () {
     
 }
->>>>>>> refs/remotes/origin/dan:scripts/ButtonClass.js
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 }

@@ -52,9 +52,9 @@ screenMan.push(game);
 
 game.init = function() {
     this.push(background);
-    //var test_bird = new bird(800, 500);
-    //setupAnimal(test_bird);
-    //game.push(test_bird);
+    var test_bird = new bird(800, 500);
+    setupAnimal(test_bird);
+    this.push(test_bird);
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach(function(elem) {
             game.push(elem);

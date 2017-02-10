@@ -3,7 +3,7 @@ var dataObj = {
     sessionStartTime: 0,    
 }
 
-function DataTracker() {
+var DataTracker = function() {
     //this.timePlayed = 0;
     //this.sessionStartTime = 0;
     /*
