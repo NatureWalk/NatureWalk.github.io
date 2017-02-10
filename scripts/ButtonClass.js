@@ -1,5 +1,8 @@
 /* EXAMPLE BUTTON CREATION:
  * 1. Create button with: var btn = new Button(function_to_call, parameterArray_for_function);
+    NOTE: When giving the button a function do not add parentheses.
+    Ex. new Button(myFunction, paramAry); 
+    Not. new Button(myFunction(), paramAry);
  
  * 2. Set the button source images with: btn.setSrc(srcPrimary, srcSecondary);
  
@@ -7,8 +10,10 @@
  
  * 4. Push the button into the screen's button array with: name_of_screen.buttonArray.push(btn);
  
+ * 5. Push the button to the screen itself with: 
+ name_of_screen.push(btn);
+ 
  NOTE: This must be done during the screen's initialization period or the buttons will not show up. 
-
  */
 
 /**************MOUSE INTERFACING*****************/
@@ -23,16 +28,6 @@ function mouseEventManager(evt) {
             case"mousemove":
                 this.onMouseMove();
                 break;
-            /*
-            case"mouseover": 
-                //console.log("Moused Over");
-                this.onMouseEnter();
-                break;
-            case"mouseout": 
-                //console.log("Moused Over");
-                this.onMouseLeave();
-                break;
-            */
             case"mousedown": 
                 this.onMouseDown();
                 break;
@@ -42,7 +37,6 @@ function mouseEventManager(evt) {
     }
 }
 
-
 /*
 onMouseEnter: Function that is called when the mouse enters the button's perimeter. 
 Params: None.
@@ -50,9 +44,7 @@ Returns: None.
 NOTE: Is only called the first time onMouseMove() is called. 
 */
 function onMouseEnter() {
-    //If cursor is over 
     this.hovered = true;
-    console.log("enter");
 }
 /*
 onMouseLeave: Function that is called when the mouse leaves the button's perimeter. 
@@ -61,12 +53,9 @@ Returns: None.
 NOTE: Not a self-sufficient function. As it is, it must be called from the canvas when it finds out that the mouse has left the button. 
 */
 function onMouseLeave() {
-    //If cursor is over 
-    //Set this.color to this.hoverColor.
     this.hovered = false;
     this.isPressed = false;
     this.image.src = this.onMouseUpImageSrc;
-    console.log("left");
 }
 /*
 onMouseMove: Function that is called when the mouse is moving over the button. Called every time the mouse moves. 
@@ -75,24 +64,11 @@ Params: None
 Returns: None
 */
 function onMouseMove() {
-    //If cursor is over 
     if (!this.hovered) {
         this.onMouseEnter();
     }
     //DEBUG: console.log(this.isPressed);
 }
-
-/*   DEPRECATED
-onMouseClick: Function that is called when the mouse is clicked on the button. When clicked, it will call whatever function it has been given in this.func. 
-Params: None.
-Returns: None.
-
-function onMouseClick() {
-    //this.color = "#ff0000"
-    this.func();
-    console.log("clicked");
-}
-*/
 
 /*
 onMouseDown: Function that is called when the mouse is pressed, but not released, on the button. 
@@ -117,12 +93,26 @@ Returns: None.
 */
 function onMouseUp() {
     this.image.src = this.onMouseUpImageSrc;
-    if (this.isPressed) {
+    //If mouse has been pressed down and has not left the button.
+    //And if the button is not a toggle button. 
+    //And if there is a function to be called. 
+        //THEN call the function. 
+    if (this.isPressed && !(this.isToggleButton) && (this.func !== undefined)) {
         this.callFunction();
-        this.isPressed = false;
     }
+    this.isPressed = false;
     
     //DEBUG: console.log("released");
+}
+
+/*toggle: changes the status of 'isToggled'. 
+Params: None.
+Returns: None.
+*/
+function toggle() {
+    if (this.isToggled) {this.isToggled = false;} 
+    else {this.isToggled = true;}
+    console.log("Toggled");
 }
 
 /**************UTILITIES*****************/
@@ -130,9 +120,11 @@ function onMouseUp() {
 /*
 callFunction: Executes the function that was passed to this.func. 
 Params: None. This will pull the parameters from this.params.
-Returns: None.
+Returns: None. Calls: this.func(this.params[0], this.params[1], this.params[2]);
 */
 function callFunction() {
+    //If there are parameters, call the function with the given parameters. 
+    //Else, just call the function. 
     if (this.params !== undefined) {
         if (this.params.length === 3) {
             this.func(this.params[0], this.params[1], this.params[2]);
@@ -170,17 +162,17 @@ function setSpriteAttributes(x, y, width, height, name) {
     }
 }
 
-
-/*
-* Button Class Functionality
-* 1. Must be drawable on a canvas. 
-    a. Needs a position on the canvas. DONE
-    b. Needs an image to be drawn on the canvas. DONE
-    c. Needs an "on hover" and "on pressed" animation. DONE
-* 2. Must have a parameter that is another function, and call that function. DONE. Accepts up to three parameters. 
-* 3. Button classifications? 
-    a. Toggle/Radio. DONE
+/*setSrc: Sets the image source of the button for the unpressed and pressed states. 
+Params: 
+- srcPrimary: The image source for the button when it is NOT pressed.
+- srcSecondary: Image source for the button when it is PRESSED. 
+Returns: None. Automatically sets image.src to the srcPrimary.
 */
+function setSrc(srcPrimary, srcSecondary) {
+    this.image.src = srcPrimary;
+    this.onMouseUpImageSrc = srcPrimary;
+    this.onMouseDownImageSrc = srcSecondary;
+}
 
 /* 
 Constructor function. 
@@ -191,8 +183,12 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);  
+    this.onMouseUpImageSrc;
+    this.onMouseDownImageSrc;
+    
     //Inherits all the Sprite prototype functions. 
     Button.prototype = Object.create(Button.prototype);
+    
     //Button attributes. 
     this.hovered = false;
     this.isPressed = false;
@@ -200,14 +196,17 @@ function Button(_function, _params) {
     this.params = _params;
     this.isToggleButton = false;
     
-    //ONLY USE THIS IS this.isToggleButton IS TRUE
+    //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
-    this.onMouseUpImageSrc;
-    this.onMouseDownImageSrc;
+}
+Button.prototype.changeFunc = function(_function, _params) {
+    this.func = _function;
+    this.params = _params;
 }
 Button.prototype.constructor = Button;
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
+    this.image = new Image();
     this.image.src = srcPrimary;
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
@@ -218,15 +217,10 @@ Button.prototype.update = function () {
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 }
-/*toggle: changes the status of 'isToggled'. 
-Params: None.
-Returns: None.
-*/
-Button.prototype.toggle = function() {
-    if (this.isToggled) {this.isToggled = false;} 
-    else {this.isToggled = true;}
-    console.log("Toggled");
-}
+
+Button.prototype.setSpriteAttributes = setSpriteAttributes;
+Button.prototype.setSrc = setSrc;
+Button.prototype.toggle = toggle;
 Button.prototype.mouseEventManager = mouseEventManager;
 Button.prototype.onMouseMove = onMouseMove;
 Button.prototype.onMouseEnter = onMouseEnter;
