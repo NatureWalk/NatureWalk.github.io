@@ -15,13 +15,14 @@ var dataTracker = new DataTracker();
 var background = new Sprite();
 background.setSrc("nwalk1.jpg");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
-background.width = 1280;
-background.height = 720;
+background.width = 1024;
+background.height = 576;
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
 //game.buttonArray = [];
-buttonsetup();
+var panes = backgroundSetup();
+buttonSetup();
 var mouseman = new MouseManager();
 
 console.log("game set up");
@@ -50,27 +51,58 @@ screenMan.push(game);
 
 game.init = function() {
     this.push(background);
+    panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
-        game.buttonArray.forEach(function(elem) {
-            game.push(elem);
-        });
+        game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
+    
     this.push(enemytest);
 }
 
-function buttonsetup() {
+function backgroundSetup() {
+    var panes = [];
+    var stepPane = new Sprite();
+    stepPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+    stepPane.setSpriteAttributes(76, 30, 350, 50, "stepPane");
+    panes.push(stepPane);
+    
+    
+    
+    var attributesPane = new Sprite();
+    attributesPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+    attributesPane.setSpriteAttributes(76, 200, 350, 350, "attributesPane");
+    panes.push(attributesPane);
+    
+    var subAttPane;
+    for(var i = 0; i < 4; i++) {
+        
+    }
+    
+    var mapPane = new Sprite();
+    mapPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+    mapPane.setSpriteAttributes(542, 30, 454, 514, "mapPane");
+    panes.push(mapPane);
+    
+    return panes;
+}
+
+function buttonSetup() {
     
     var start = new Button(function() {alert("Game has started")});
     start.setSrc("https://vienna-wv.com/images/tree.jpg", "https://i.ytimg.com/vi/_hyE2NO7HnU/maxresdefault.jpg")
-    start.setSpriteAttributes(500, 500, 100, 100, "test1");
+    start.setSpriteAttributes(500, 500, 100, 100, "Game Start");
     game.buttonArray.push(start); 
     /*EXAMPLE BUTTON SETUP */
     
-    var end = new Button(dataTracker.getTime);
+    var end = new Button(function() {alert(dataTracker.getTime())});
     end.setSrc("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Five-pointed_star.svg/1088px-Five-pointed_star.svg.png", "http://pngimg.com/upload/star_PNG1595.png")
-    end.setSpriteAttributes(500, 300, 100, 100, "test3");
+    end.setSpriteAttributes(500, 300, 100, 100, "Time Played");
     game.buttonArray.push(end); 
     
+    var devAttributes = new Button(dataTracker.openDevWindow);
+    devAttributes.setSrc("RAnimalsNW.jpg", "http://pngimg.com/upload/star_PNG1595.png");
+    devAttributes.setSpriteAttributes(700, 500, 50, 50, "devWindow");
+    game.buttonArray.push(devAttributes); 
 }
 
     

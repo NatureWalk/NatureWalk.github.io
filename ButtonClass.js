@@ -204,6 +204,12 @@ Button.prototype.constructor = Button;
 Button.prototype.update = function () {}
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    /*
+    ctx.font = '24px Indie Flower';
+    ctx.fillStyle = 'cyan';
+    ctx.textBaseline = 'top';
+    ctx.fillText(this.name, this.x, this.y - 24);
+    */
 }
 
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
