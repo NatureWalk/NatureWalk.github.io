@@ -199,9 +199,21 @@ function Button(_function, _params) {
     //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
 }
+Button.prototype.changeFunc = function(_function, _params) {
+    this.func = _function;
+    this.params = _params;
+}
 Button.prototype.constructor = Button;
-
-Button.prototype.update = function () {}
+Button.prototype.setSpriteAttributes = setSpriteAttributes;
+Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
+    this.image = new Image();
+    this.image.src = srcPrimary;
+    this.onMouseUpImageSrc = srcPrimary;
+    this.onMouseDownImageSrc = srcSecondary;
+}
+Button.prototype.update = function () {
+    
+}
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     /*

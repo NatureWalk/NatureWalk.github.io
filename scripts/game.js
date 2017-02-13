@@ -13,10 +13,17 @@ var h = canvas.height;
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
+<<<<<<< HEAD:game.js
 background.setSrc("nwalk1.jpg");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = 1024;
 background.height = 576;
+=======
+//background.setSrc("nwalk1.jpg");
+background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
+background.width = 1280;
+background.height = 720;
+>>>>>>> master:scripts/game.js
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
@@ -24,6 +31,8 @@ var game = new Screen(true, true);
 var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
+
+
 
 console.log("game set up");
 
@@ -51,12 +60,19 @@ screenMan.push(game);
 
 game.init = function() {
     this.push(background);
+<<<<<<< HEAD:game.js
     panes.forEach( function(elem) {game.push(elem);} );
+=======
+    var test_bird = new bird(800, 500);
+    setupAnimal(test_bird);
+    this.push(test_bird);
+>>>>>>> master:scripts/game.js
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
     
     this.push(enemytest);
+    this.push(new Spawner())
 }
 
 function backgroundSetup() {
