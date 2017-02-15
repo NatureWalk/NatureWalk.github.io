@@ -187,6 +187,7 @@ function setText(textString, offsetX, offsetY) {
     this.textOffsetX = offsetX;
     this.textOffsetY = offsetY;
 }
+
 /* 
 Constructor function. 
 Params: _function: Takes in a function that will be called when the button is released. 
@@ -196,9 +197,10 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
-    this.text; 
-    this.textOffsetX;
-    this.textOffsetY;
+    this.text = "1"; 
+    this.textSrc;
+    this.textOffsetX = 0;
+    this.textOffsetY = 0;
     this.onMouseUpImageSrc;
     this.onMouseDownImageSrc;
     
@@ -228,15 +230,32 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
 }
-Button.prototype.update = function () {}
+Button.prototype.update = function () {
+    /*
+    if (this.textSrc) {
+        var charNum = this.textSrc.toString().length;
+        this.setText(this.textSrc, (this.width/2) - (5*charNum), 0);
+    }
+    */
+    //console.log(this.textSrc);
+    
+}
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     if ((this.hovered && this.text !== undefined) || this.tooltip){
-        //drawText(this.text, this.x, this.y);
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
+        if (this.name === "attribute_value0") {
+            console.log(this.text);
+        }
     }
+    this.drawChildren();
 }
 
+Button.prototype.drawChildren = function() {
+    for (var i in this.children) {
+        this.children[i].draw();
+    }
+}
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = setSrc;
 Button.prototype.setText = setText;

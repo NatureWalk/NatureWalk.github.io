@@ -12,12 +12,6 @@ var ui_values = {
 function backgroundSetup() {
     var panes = [];
     
-    //Pane that holds the steps.
-    var stepPane = new Sprite();
-    stepPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
-    stepPane.setSpriteAttributes(76, 30, 400, 50, "stepPane");
-    panes.push(stepPane);
-    
     //Pane that holds all of the attribute data.
     var attributesPane = new Sprite();
     attributesPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
@@ -70,7 +64,12 @@ function buttonSetup() {
     devAttributes.setSpriteAttributes(20, 530, 30, 30, "devWindow");
     game.buttonArray.push(devAttributes); 
     
-    
+    //Pane that holds the steps.
+    var stepPane = new Button();
+    stepPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+    stepPane.setSpriteAttributes(76, 30, 400, 50, "stepPane");
+    stepPane.textSrc = stepCount;
+    game.buttonArray.push(stepPane);
     //Animal selection buttons. 
     //CHANGE TO BUTTONS
     var animalIcon;
@@ -86,10 +85,23 @@ function buttonSetup() {
     }
     
     
+    
     var attButton;
     //Attribute Buttons
     for (var i = 0; i < 4; i++) {
-        attButton = new Button(changeAttribute, [i, "pos"]);
+        //START attValue
+        //Value to be hooked up with the attButtons.
+        var attValue = new Button(function(){});
+        attValue.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+        
+        attValue.setSpriteAttributes(166, (220 + 50*i), 80, 40, "attribute_value" + i);
+        
+        attValue.tooltip = true;
+        attValue.setText = ("0", (this.width/2), 0)
+        
+        
+        //END attValue
+        attButton = new Button(changeAttribute, [i, "pos", attValue]);
         attButton.setSrc("image_resources/arrowUp.png");
         
         attButton.setSpriteAttributes(96, (240 + 50*i), 25, 25, "attribute" + i);
@@ -110,11 +122,13 @@ function buttonSetup() {
                 break;
         }
         attButton.setText(att, 7, -25);
+        attButton.children.push(attValue);
         game.buttonArray.push(attButton);
+        game.buttonArray.push(attButton.children[0]);
     }
     
     for (var i = 0; i < 4; i++) {
-        attButton = new Button(changeAttribute, [i, "neg"]);
+        attButton = new Button(changeAttribute, [i, "neg", attValue]);
         attButton.setSrc("image_resources/arrowDown.png");
         
         attButton.setSpriteAttributes(126, (240 + 50*i), 25, 25, "attribute" + i);
@@ -122,18 +136,39 @@ function buttonSetup() {
         game.buttonArray.push(attButton);
     }
     
-    var attValue;
+    //DO ADD CHILD FOR GOD'S SAKE PLEASE. STOP WITH THE TEXT SOURCE.
+    //var attValue;
     //Attribute Values
+    /*
     for (var i = 0; i < 4; i++) {
         attValue = new Button(function(){});
         attValue.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
-        attValue.setSpriteAttributes(166, (220 + 50*i), 80, 40, "attribute_value");
-        attButton.tooltip = true;
+        
+        attValue.setSpriteAttributes(166, (220 + 50*i), 80, 40, "attribute_value" + i);
+        
+        attValue.tooltip = true;
+        
+        var txt = ui_values["currentAnimal"] + "_" + ui_values["attributes"][i];
+        var charNum = animal_data[txt].toString().length;
+        attValue.setText(animal_data[txt], 40 - (5*charNum), 0);
+        
+        var attribute = ui_values["attributes"][i]
+        attValue.textSrc = [animal_data, setAttTextSrc(attribute)];
+        attValue.update = function() {
+            if (this.textSrc) {
+                var source = this.setText(this.textSrc[0][this.textSrc[1]]);
+                console.log(source);
+                //var charNum = source.toString().length;
+                //this.setText(source, (this.width/2) - (5*charNum), 0);
+            }
+        }
         game.buttonArray.push(attValue);
+        console.log(attValue.textSrc);
     }
+*/
 }
 
-function changeAttribute(index, sign) {
+function changeAttribute(index, sign, attValue) {
     var attributeString = ui_values.currentAnimal + "_"
     switch(index) {
         case 0:
@@ -149,11 +184,33 @@ function changeAttribute(index, sign) {
             attributeString += "lifespan";
             break;
     } 
+    if (sign === "neg") {
+        animal_data[attributeString]--;
+    } else {
+        animal_data[attributeString]++;
+    }
+    attValue.text = animal_data[attributeString];
+    //attValue.setText = (animal_data[attributeString], (this.width/2), 0);
+    console.log(attValue.tooltip);
+}
+/*
+function findAttVal(button) {
     
-    console.log(attributeString + ": " + animal_data[attributeString]);       
+    var index = 1;
+    var att = "attribute_value";
+    while (index < ui_values["attributes"].length) {
+        if (button.name === att+index) {
+            return button.name === att+index;
+        }
+        index++;
+    } 
+}
+*/
+function setAttTextSrc(attribute) {
+    return ui_values["currentAnimal"] + "_" + attribute;
 }
 
 function change_image(animal_index) {
-    panes[2].setSrc(ui_values.animalSrcAry[animal_index]);
+    panes[1].setSrc(ui_values.animalSrcAry[animal_index]);
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
 }
