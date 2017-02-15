@@ -76,7 +76,9 @@ Params: None.
 Returns: None.
 */
 function onMouseDown() {
-    this.image.src = this.onMouseDownImageSrc;
+    if (this.onMouseDownImageSrc) {
+        this.image.src = this.onMouseDownImageSrc;
+    }
     //For toggle functionality.
     if (this.isToggleButton === true) {
         this.toggle();
@@ -174,6 +176,17 @@ function setSrc(srcPrimary, srcSecondary) {
     this.onMouseDownImageSrc = srcSecondary;
 }
 
+/*setText: Sets text for the button that will appear when this.hovered is true.  
+Params: 
+- srcPrimary: The image source for the button when it is NOT pressed.
+- srcSecondary: Image source for the button when it is PRESSED. 
+Returns: None. Automatically sets image.src to the srcPrimary.
+*/
+function setText(textString, offsetX, offsetY) {
+    this.text = textString;
+    this.textOffsetX = offsetX;
+    this.textOffsetY = offsetY;
+}
 /* 
 Constructor function. 
 Params: _function: Takes in a function that will be called when the button is released. 
@@ -182,7 +195,10 @@ Returns: None.
 */
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
-    Sprite.call(this);  
+    Sprite.call(this);
+    this.text; 
+    this.textOffsetX;
+    this.textOffsetY;
     this.onMouseUpImageSrc;
     this.onMouseDownImageSrc;
     
@@ -195,6 +211,7 @@ function Button(_function, _params) {
     this.func = _function;
     this.params = _params;
     this.isToggleButton = false;
+    this.tooltip = false;
     
     //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
@@ -211,21 +228,18 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
 }
-Button.prototype.update = function () {
-    
-}
+Button.prototype.update = function () {}
 Button.prototype.draw = function () {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-    /*
-    ctx.font = '24px Indie Flower';
-    ctx.fillStyle = 'cyan';
-    ctx.textBaseline = 'top';
-    ctx.fillText(this.name, this.x, this.y - 24);
-    */
+    if ((this.hovered && this.text !== undefined) || this.tooltip){
+        //drawText(this.text, this.x, this.y);
+        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
+    }
 }
 
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = setSrc;
+Button.prototype.setText = setText;
 Button.prototype.toggle = toggle;
 Button.prototype.mouseEventManager = mouseEventManager;
 Button.prototype.onMouseMove = onMouseMove;
