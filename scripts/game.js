@@ -15,8 +15,8 @@ var dataTracker = new DataTracker();
 var background = new Sprite();
 //background.setSrc("nwalk1.jpg");
 background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
-background.width = 1280;
-background.height = 720;
+background.width = canvas.width;
+background.height = canvas.height;
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
