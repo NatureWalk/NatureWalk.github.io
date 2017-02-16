@@ -44,6 +44,7 @@ Returns: None.
 NOTE: Is only called the first time onMouseMove() is called. 
 */
 function onMouseEnter() {
+    console.log("MouseEnter");
     this.hovered = true;
 }
 /*
@@ -53,6 +54,7 @@ Returns: None.
 NOTE: Not a self-sufficient function. As it is, it must be called from the canvas when it finds out that the mouse has left the button. 
 */
 function onMouseLeave() {
+    console.log("MouseLeave");
     this.hovered = false;
     this.isPressed = false;
     this.image.src = this.onMouseUpImageSrc;
@@ -76,6 +78,7 @@ Params: None.
 Returns: None.
 */
 function onMouseDown() {
+    console.log("MouseDown");
     if (this.onMouseDownImageSrc) {
         this.image.src = this.onMouseDownImageSrc;
     }
@@ -94,6 +97,7 @@ Params: None.
 Returns: None.
 */
 function onMouseUp() {
+    console.log("MouseUp");
     this.image.src = this.onMouseUpImageSrc;
     //If mouse has been pressed down and has not left the button.
     //And if the button is not a toggle button. 
@@ -252,9 +256,9 @@ Button.prototype.draw = function () {
 }
 
 Button.prototype.drawChildren = function() {
-    for (var i in this.children) {
-        this.children[i].draw();
-    }
+    //for (var i in this.children) {
+        //this.children[i].draw();
+    //}
 }
 Button.prototype.addChild = function(child) {
     this.children.push(child);

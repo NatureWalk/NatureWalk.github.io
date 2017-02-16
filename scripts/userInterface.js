@@ -93,7 +93,7 @@ function buttonSetup() {
     }
     ////////////////////////////////////////////////////////////
     
-    var attButton, attValue, att, animalImage;
+    var attButton, attValue, animalImage;
     for (i = 0; i < 4; i++) {
         ////////////////////////////////////////////////////////////
         //ATTVALUE
@@ -105,8 +105,7 @@ function buttonSetup() {
         attValue.tooltip = true;
         
         var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        console.log(ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]);
-        charNum = attSelect.toString.length;
+        charNum = attSelect.toString().length;
         attValue.setText(attSelect, (attValue.width / 2) - (5 * charNum), 0);
         game.buttonArray.push(attValue);
         ////////////////////////////////////////////////////////////
@@ -119,6 +118,7 @@ function buttonSetup() {
         attButton.setSpriteAttributes(96, (240 + 50 * i), 25, 25, "attribute" + i);
         attButton.tooltip = true;
         
+        var att;
         switch (i) {
         case 0:
             att = "VITA";
@@ -158,7 +158,7 @@ function buttonSetup() {
 
 function change_attribute(index, sign, attValue) {
     
-    var attributeString = ui_values.currentAnimal + "_";
+    var attributeString = (ui_values.currentAnimal + "_").toLowerCase();
     switch (index) {
     case 0:
         attributeString += "armor";
@@ -173,15 +173,17 @@ function change_attribute(index, sign, attValue) {
         attributeString += "lifespan";
         break;
     }
+    
     if (sign === "neg") {
-        if (animal_data[attributeString] <= 0) {
+        if (animal_data[attributeString] < 1) {
             return;
         }
         animal_data[attributeString]--;
+        console.log(attributeString + "decremented");
         attValue.text = animal_data[attributeString];
         stepCount++;
     } else {
-        if (stepCount < 1) {
+        if (stepCount <= 0) {
             return;
         }
         animal_data[attributeString]++;
