@@ -197,7 +197,7 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
-    this.text = "1"; 
+    this.text; 
     this.textSrc;
     this.textOffsetX = 0;
     this.textOffsetY = 0;
@@ -255,6 +255,10 @@ Button.prototype.drawChildren = function() {
     for (var i in this.children) {
         this.children[i].draw();
     }
+}
+Button.prototype.addChild = function(child) {
+    this.children.push(child);
+    game.buttonArray.push(child);
 }
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = setSrc;
