@@ -47,7 +47,6 @@ canvas.addEventListener('mouseup', function(evt) {
 var enemytest = new Enemy();
 enemytest.setSrc("TestEnemy.png");
 enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
-console.log("Enemy Created");
 
 screenMan.push(game);
 

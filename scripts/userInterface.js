@@ -179,7 +179,6 @@ function change_attribute(index, sign, attValue) {
             return;
         }
         animal_data[attributeString]--;
-        console.log(attributeString + "decremented");
         attValue.text = animal_data[attributeString];
         stepCount++;
     } else {
@@ -213,14 +212,12 @@ function change_image(animal_index) {
 }
 
 function spawn_animal() {
-    console.log("Spawning animal");
     var animal, mapPane;
     panes.forEach(function (elem) {
         if (elem.name === "mapPane") {
             mapPane = elem;
         }
     });
-    console.log("Map found, Animal is: " + ui_values.currentAnimal);
     switch (ui_values.currentAnimal) {
     case "Bird":
         animal = new bird(600, 300);
