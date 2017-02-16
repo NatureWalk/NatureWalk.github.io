@@ -13,17 +13,10 @@ var h = canvas.height;
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
-//<<<< HEAD:game.js
 background.setSrc("images/nwalk1.jpg");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = 1024;
 background.height = 576;
-//=======
-//background.setSrc("nwalk1.jpg");
-//background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
-background.width = 1280;
-background.height = 720;
-//>>>>>>> master:scripts/game.js
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
@@ -71,7 +64,7 @@ game.init = function() {
     this.push(enemytest);
     this.push(new Spawner())
 }
-/*
+
 function backgroundSetup() {
     var panes = [];
     var animalAry = ["image_resources/Icon_Bird.png", 
@@ -133,9 +126,7 @@ function backgroundSetup() {
     
     return panes;
 }
-*/
 
-/*
 function buttonSetup() {
     
     var start = new Button(function() {alert("Game has started")});
@@ -172,7 +163,7 @@ function buttonSetup() {
 function change_image(animal_image) {
     panes[2].setSrc(animal_image);
 }   
-*/
+
 
 function overlap(a, b) {
     var aMaxX = a.x + a.width;
