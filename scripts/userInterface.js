@@ -154,6 +154,12 @@ function buttonSetup() {
     animalImage.setSpriteAttributes(266, 220, 190, 190, "animal_image");
     game.buttonArray.push(animalImage);
     ////////////////////////////////////////////////////////////
+
+    //Mute Button
+    muteButton = new Button(mute_music);
+    muteButton.setSrc("images/mute.jpg")
+    muteButton.setSpriteAttributes(10,10,50,50, "mute_music");
+    game.buttonArray.push(muteButton);
 }
 
 function change_attribute(index, sign, attValue) {
