@@ -46,13 +46,14 @@ canvas.addEventListener('mouseup', function(evt) {
 var enemytest = new Enemy();
 enemytest.setSrc("TestEnemy.png");
 enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
+collidableObjects.push(enemytest);
 console.log("Enemy Created");
 
 screenMan.push(game);
 
 game.init = function() {
     this.push(background);
-    var test_bird = new bird(800, 500);
+    var test_bird = new bunny(800, 500);
     setupAnimal(test_bird);
     this.push(test_bird);
     if (game.buttonArray !== undefined) {

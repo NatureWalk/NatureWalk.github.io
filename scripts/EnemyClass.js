@@ -10,7 +10,32 @@ var enemy_data = {
 function update() {
     //Move this.x and this.y in this.moveDir * this.speed. 
     this.x += (Math.cos(this.moveDir) * this.speedMedian);
-    this.y -= (Math.sin(this.moveDir) * this.speedMedian);    
+    this.y -= (Math.sin(this.moveDir) * this.speedMedian);  
+    if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.name, this.location)){
+		//what happens if collision comes back true
+		var checkx = false;
+		var checky = false;
+		this.moveDir = (this.moveDir + Math.PI);
+		if(this.x < canvas.width/2) {
+			this.x = canvas.width/2;
+			checkx = true;
+		} else if((this.x + this.width) > canvas.width){
+			this.x = canvas.width - this.width;
+			checkx = true;
+		} 
+		if(this.y < 0) {
+			this.y = 0;
+			checky = true;
+		} else if((this.y + this.height) > canvas.height){
+			this.y = canvas.height - this.height;
+			checky = true;
+		} 
+		if (checkx == false && checky == false){
+			
+		}
+			
+		
+	}
 }
 
 function draw() {
@@ -89,6 +114,8 @@ function Enemy() {
     this.speedVariance = enemy_data["speedVari"];
     this.damage = enemy_data["damage"];
     this.moveDir = startingDirection();
+    this.name = 'enemy'
+    this.collidablewith = ['frog', 'bird', 'deer', 'bunny']
 }
 inheritsFrom(Enemy, Sprite);
 Enemy.prototype.constructor = Enemy;
