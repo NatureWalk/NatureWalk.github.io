@@ -169,10 +169,11 @@ Params:
 - srcSecondary: Image source for the button when it is PRESSED. 
 Returns: None. Automatically sets image.src to the srcPrimary.
 */
-function setSrc(srcPrimary, srcSecondary) {
+function setSrc(srcPrimary, srcSecondary, anim) {
     this.image.src = srcPrimary;
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
+    if (anim !== undefined) {this.anim = anim;}
 }
 
 /*setText: Sets text for the button that will appear when this.hovered is true.  
@@ -230,17 +231,32 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.onMouseDownImageSrc = srcSecondary;
 }
 Button.prototype.update = function () {
-    /*
-    if (this.textSrc) {
-        var charNum = this.textSrc.toString().length;
-        this.setText(this.textSrc, (this.width/2) - (5*charNum), 0);
+    //Vertical frame advancement (wrapping)
+    //Stopping and repeating
+    if (this.anim) {
+        this.tickCount++; 
+        if (this.tickCount > this.ticksPerFrame) {
+            this.frameIndex++;
+            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+            this.tickCount = 0; 
+        }
     }
-    */
-    //console.log(this.textSrc);
-    
 }
 Button.prototype.draw = function () {
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    if (!this.anim) {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+    } else {
+        ctx.drawImage(
+            this.image, 
+            (this.frameIndex % 7) * this.width, 
+            Math.floor(this.frameIndex/7) * this.height, 
+            this.width, 
+            this.height, 
+            this.x,
+            this.y,
+            this.width,
+            this.height);
+    }
     if ((this.hovered && this.text !== undefined) || this.tooltip){
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
     }
@@ -258,6 +274,11 @@ Button.prototype.addChild = function(child) {
 }
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = setSrc;
+Button.prototype.setupAnim = function (frameCount, rows, cols) {
+    this.frameTotal = frameCount;
+    this.srcRows = rows;
+    this.srcCols = cols;
+}
 Button.prototype.setText = setText;
 Button.prototype.toggle = toggle;
 Button.prototype.mouseEventManager = mouseEventManager;

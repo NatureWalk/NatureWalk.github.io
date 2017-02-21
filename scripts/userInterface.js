@@ -23,7 +23,7 @@ var ui_values = {
     //For gif animations, though I didn't figure out how to make them do gif things. 
     animalGifAry: [("image_resources/Icon_Bird.png"),
                   ("image_resources/Icon_Deer.png"),
-                  ("image_resources/AnimFrog.gif"),
+                  ("image_resources/FrogSpriteSheet200_1400x1400.png"),
                   ("image_resources/AnimBunny.gif")],
 
     currentAnimal: "Bird",
@@ -44,8 +44,8 @@ function backgroundSetup() {
     //ATTRIBUTES PANE
     ////////////////////////////////////////////////////////////
     attributesPane = new Sprite();
-    attributesPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
-    attributesPane.setSpriteAttributes(76, 200, 400, 350, "attributesPane");
+    attributesPane.setSrc("image_resources/Worn-Paper-Texture.png");
+    attributesPane.setSpriteAttributes(76, 190, 400, 350, "attributesPane");
     panes.push(attributesPane);
     ////////////////////////////////////////////////////////////
     
@@ -67,8 +67,8 @@ function backgroundSetup() {
     //MAP PANE
     ////////////////////////////////////////////////////////////
     var mapPane = new Sprite();
-    mapPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
-    mapPane.setSpriteAttributes(542, 30, 452, 514, "mapPane");
+    mapPane.setSrc("image_resources/Worn-Paper-Texture.png");
+    mapPane.setSpriteAttributes(527, 30, 452, 514, "mapPane");
     panes.push(mapPane);
     ////////////////////////////////////////////////////////////
     
@@ -100,7 +100,7 @@ function buttonSetup() {
     //DEV ATTRIBUTES
     ////////////////////////////////////////////////////////////
     var devAttributes = new Button(dataTracker.openDevWindow);
-    devAttributes.setSrc("image_resources/Icon_Rabbit.jpeg", "http://pngimg.com/upload/star_PNG1595.png");
+    devAttributes.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
     devAttributes.setSpriteAttributes(20, 530, 30, 30, "devWindow");
     game.buttonArray.push(devAttributes);
     ////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ function buttonSetup() {
     //STEP PANE (but it's a button)
     ////////////////////////////////////////////////////////////
     var stepPane = new Button();
-    stepPane.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+    stepPane.setSrc("image_resources/Worn-Paper-Texture.png");
     stepPane.setSpriteAttributes(76, 30, 400, 50, "stepPane");
     stepPane.tooltip = true;
     
@@ -151,7 +151,7 @@ function buttonSetup() {
         This gives them access to the number they have to increment without needing a new update function. 
         */
         attValue = new Button(function () {});
-        attValue.setSrc("http://www.polyvore.com/cgi/img-thing?.out=jpg&size=l&tid=33784063");
+        attValue.setSrc("image_resources/Worn-Paper-Texture.png");
         
         attValue.setSpriteAttributes(166, (220 + 50 * i), 80, 40, "attribute_value" + i);
         
@@ -168,7 +168,7 @@ function buttonSetup() {
         //UP ARROW
         ////////////////////////////////////////////////////////////
         attButton = new Button(change_attribute, [i, "pos", attValue]);
-        attButton.setSrc("image_resources/arrowUp.png");
+        attButton.setSrc("image_resources/up25x25.png");
         
         attButton.setSpriteAttributes(96, (240 + 50 * i), 25, 25, "attribute" + i);
         attButton.tooltip = true;
@@ -196,7 +196,7 @@ function buttonSetup() {
         ////////////////////////////////////////////////////////////
         //DOWN ARROW
         attButton = new Button(change_attribute, [i, "neg", attValue]);
-        attButton.setSrc("image_resources/arrowDown.png");
+        attButton.setSrc("image_resources/down25x25.png");
         
         attButton.setSpriteAttributes(126, (240 + 50 * i), 25, 25, "attribute" + i);
         attValue.addChild(attButton);
@@ -207,8 +207,9 @@ function buttonSetup() {
     //ANIMAL IMAGE
     ////////////////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalGifAry[0]);
-    animalImage.setSpriteAttributes(266, 220, 190, 190, "animal_image");
+    animalImage.setSrc(ui_values.animalGifAry[0], "images/nwalk1.jpg");
+    console.log(animalImage.anim);
+    animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
     ////////////////////////////////////////////////////////////
 }
@@ -268,7 +269,14 @@ function change_image(animal_index) {
     aniSrc = ui_values.animalGifAry;
     game.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
-            elem.setSrc(aniSrc[animal_index], aniSrc[4]);
+            console.log(aniSrc[animal_index]);
+            if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
+                elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
+                elem.setupAnim(44, 7, 7);
+            } 
+            else {
+                elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+            }  
         }
     });
     
