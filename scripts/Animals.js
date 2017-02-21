@@ -56,7 +56,7 @@ inheritsFrom(animal, Sprite);
 
 
 
-var frog = new function(xpos, ypos){
+var frog = function(xpos, ypos){
 	this.armor = animal_data["frog_armor"];
 	this.speed = animal_data["frog_speed"];
 	this.capacity = animal_data["frog_capacity"];
