@@ -25,6 +25,6 @@ function mute_music() {
 }
 
 var click = new Howl({
-	src: ['sounds/cracked.mp3'],
+	src: ['sounds/click.wav'],
 	buffer: true
 })

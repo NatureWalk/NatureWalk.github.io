@@ -298,6 +298,7 @@ function change_image(animal_index) {
     
     //Setting current animal so we all know what we're referencing. 
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
+    click.play()
 }
 
 /* spawn_animal() - For spawning animals on the map. 
