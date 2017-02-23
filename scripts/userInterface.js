@@ -216,7 +216,7 @@ function buttonSetup() {
     //Mute Button
     muteButton = new Button(mute_music);
     muteButton.setSrc("images/mute.jpg")
-    muteButton.setSpriteAttributes(10,10,50,50, "mute_music");
+    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
     game.buttonArray.push(muteButton);
 }
 
@@ -262,6 +262,8 @@ function change_attribute(index, sign, attValue) {
         stepCount--;   
     }
     attValue.text = animal_data[attributeString];
+
+    click.play()
 }
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
@@ -336,6 +338,7 @@ function spawn_animal() {
         game.push(animal);
         break;
     }
+    click.play()
 }
 
 //Small utility function that converts a number to a string and returns the length. 

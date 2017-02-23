@@ -23,3 +23,8 @@ function mute_music() {
 		music.fade(0,1,10)
 	}
 }
+
+var click = new Howl({
+	src: ['sounds/cracked.mp3'],
+	buffer: true
+})
