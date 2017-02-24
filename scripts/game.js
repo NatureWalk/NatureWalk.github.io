@@ -1,6 +1,6 @@
 
 
-//fitbit_start(); //Make the fitbit work before anything else.
+fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -13,16 +13,19 @@ var h = canvas.height;
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
-//background.setSrc("nwalk1.jpg");
-background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
-background.width = 1280;
-background.height = 720;
+
+background.setSrc("image_resources/Book(open).png");
+//background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
+background.width = 1024;
+background.height = 576;
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
 //game.buttonArray = [];
-buttonsetup();
+var panes = backgroundSetup();
+buttonSetup();
 var mouseman = new MouseManager();
+
 
 
 
@@ -46,41 +49,18 @@ canvas.addEventListener('mouseup', function(evt) {
 var enemytest = new Enemy();
 enemytest.setSrc("TestEnemy.png");
 enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
-console.log("Enemy Created");
 
 screenMan.push(game);
 
 game.init = function() {
     this.push(background);
-    var test_bird = new bird(800, 500);
-    setupAnimal(test_bird);
-    this.push(test_bird);
+    panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
-        game.buttonArray.forEach(function(elem) {
-            game.push(elem);
-        });
+        game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
-    this.push(enemytest);
+    
     this.push(new Spawner())
-}
-
-function buttonsetup() {
-    
-    var start = new Button(function() {alert("Game has started")});
-    start.setSrc("https://vienna-wv.com/images/tree.jpg", "https://i.ytimg.com/vi/_hyE2NO7HnU/maxresdefault.jpg")
-    start.setSpriteAttributes(500, 500, 100, 100, "test1");
-    game.buttonArray.push(start); 
-    /*EXAMPLE BUTTON SETUP */
-    
-    var end = new Button(dataTracker.getTime);
-    end.setSrc("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Five-pointed_star.svg/1088px-Five-pointed_star.svg.png", "http://pngimg.com/upload/star_PNG1595.png")
-    end.setSpriteAttributes(500, 300, 100, 100, "test3");
-    game.buttonArray.push(end); 
-    
-}
-
-    
-    
+} 
 
 function overlap(a, b) {
     var aMaxX = a.x + a.width;

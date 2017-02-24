@@ -12,12 +12,27 @@ function Sprite() {
     this.height = 100;
     this.name = "Unnamed";
     this.children = [];
+    this.anim = false; 
+    this.frameIndex = 0;
+    this.frameTotal = 1;
+    this.srcCols = 1;
+    this.srcRows = 0;
+    this.ticksPerFrame = 2;
+    this.tickCount = 0;
 }
 
 //Shortcut to set an image
-Sprite.prototype.setSrc = function(src) {
+Sprite.prototype.setSrc = function(src, anim) {
     this.image = new Image();
     this.image.src = src;
+    if (anim !== undefined) {this.anim = anim;}
+    
+}
+
+Sprite.prototype.setupAnim = function (frameCount, rows, cols) {
+    this.frameTotal = frameCount;
+    this.srcRows = rows;
+    this.srcCols = cols;
 }
 
 Sprite.prototype.setSpriteAttributes = function(x, y, width, height, name) {
@@ -26,7 +41,7 @@ Sprite.prototype.setSpriteAttributes = function(x, y, width, height, name) {
     this.width = width;
     this.height = height;
     if (name === undefined) {
-        this.name = "button";
+        this.name = "sprite";
     } else {
         this.name = name;
     }

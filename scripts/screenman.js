@@ -90,6 +90,11 @@ ScreenManager.prototype.update = function(){
             screens[i].update();
         }
     }
+    /*quad.clear();
+    for(var i = 0; i < collidableObjects.length; i++){
+    	quad.insert(collidableObjects[i]); 
+    	
+    } */
 }
 
 ScreenManager.prototype.draw = function(){
