@@ -76,7 +76,9 @@ Params: None.
 Returns: None.
 */
 function onMouseDown() {
-    this.image.src = this.onMouseDownImageSrc;
+    if (this.onMouseDownImageSrc) {
+        this.image.src = this.onMouseDownImageSrc;
+    }
     //For toggle functionality.
     if (this.isToggleButton === true) {
         this.toggle();
@@ -112,7 +114,6 @@ Returns: None.
 function toggle() {
     if (this.isToggled) {this.isToggled = false;} 
     else {this.isToggled = true;}
-    console.log("Toggled");
 }
 
 /**************UTILITIES*****************/
@@ -168,10 +169,23 @@ Params:
 - srcSecondary: Image source for the button when it is PRESSED. 
 Returns: None. Automatically sets image.src to the srcPrimary.
 */
-function setSrc(srcPrimary, srcSecondary) {
+function setSrc(srcPrimary, srcSecondary, anim) {
     this.image.src = srcPrimary;
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
+    if (anim !== undefined) {this.anim = anim;}
+}
+
+/*setText: Sets text for the button that will appear when this.hovered is true.  
+Params: 
+- srcPrimary: The image source for the button when it is NOT pressed.
+- srcSecondary: Image source for the button when it is PRESSED. 
+Returns: None. Automatically sets image.src to the srcPrimary.
+*/
+function setText(textString, offsetX, offsetY) {
+    this.text = textString;
+    this.textOffsetX = offsetX;
+    this.textOffsetY = offsetY;
 }
 
 /* 
@@ -182,7 +196,11 @@ Returns: None.
 */
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
-    Sprite.call(this);  
+    Sprite.call(this);
+    this.text; 
+    this.textSrc;
+    this.textOffsetX = 0;
+    this.textOffsetY = 0;
     this.onMouseUpImageSrc;
     this.onMouseDownImageSrc;
     
@@ -195,6 +213,7 @@ function Button(_function, _params) {
     this.func = _function;
     this.params = _params;
     this.isToggleButton = false;
+    this.tooltip = false;
     
     //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
@@ -212,14 +231,55 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.onMouseDownImageSrc = srcSecondary;
 }
 Button.prototype.update = function () {
-    
+    //Vertical frame advancement (wrapping)
+    //Stopping and repeating
+    if (this.anim) {
+        this.tickCount++; 
+        if (this.tickCount > this.ticksPerFrame) {
+            this.frameIndex++;
+            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+            this.tickCount = 0; 
+        }
+    }
 }
 Button.prototype.draw = function () {
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    if (!this.anim) {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+    } else {
+        ctx.drawImage(
+            this.image, 
+            (this.frameIndex % 7) * this.width, 
+            Math.floor(this.frameIndex/7) * this.height, 
+            this.width, 
+            this.height, 
+            this.x,
+            this.y,
+            this.width,
+            this.height);
+    }
+    if ((this.hovered && this.text !== undefined) || this.tooltip){
+        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
+    }
+    this.drawChildren();
 }
 
+Button.prototype.drawChildren = function() {
+    //for (var i in this.children) {
+        //this.children[i].draw();
+    //}
+}
+Button.prototype.addChild = function(child) {
+    this.children.push(child);
+    game.buttonArray.push(child);
+}
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
 Button.prototype.setSrc = setSrc;
+Button.prototype.setupAnim = function (frameCount, rows, cols) {
+    this.frameTotal = frameCount;
+    this.srcRows = rows;
+    this.srcCols = cols;
+}
+Button.prototype.setText = setText;
 Button.prototype.toggle = toggle;
 Button.prototype.mouseEventManager = mouseEventManager;
 Button.prototype.onMouseMove = onMouseMove;
