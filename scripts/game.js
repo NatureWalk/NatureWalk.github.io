@@ -1,6 +1,6 @@
 
 
-//fitbit_start(); //Make the fitbit work before anything else.
+fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
