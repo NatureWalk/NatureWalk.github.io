@@ -1,6 +1,6 @@
 
 
-//fitbit_start(); //Make the fitbit work before anything else.
+fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -55,14 +55,10 @@ screenMan.push(game);
 game.init = function() {
     this.push(background);
     panes.forEach( function(elem) {game.push(elem);} );
-    var test_bird = new bird(800, 500);
-    setupAnimal(test_bird);
-    this.push(test_bird);
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
     
-    this.push(enemytest);
     this.push(new Spawner())
 } 
 
