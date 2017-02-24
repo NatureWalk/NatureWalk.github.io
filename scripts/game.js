@@ -26,6 +26,7 @@ var mouseman = new MouseManager();
 
 
 
+
 console.log("game set up");
 
 
