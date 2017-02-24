@@ -5,8 +5,8 @@
 function onLogin(playerID){
 	if(isFirstTimeUser(playerID)){
 		console.log("new user");
-		//sets multiplier to 1 and resource to 100
-		saveStats(playerID, stepCount, 1, 100);
+		//sets multiplier to 1 and resource to 8000
+		saveStats(playerID, stepCount, 1, 8000);
 	} else {
 		console.log("returning user");
 		var myResource = convertSteps(playerID);

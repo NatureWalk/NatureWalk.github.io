@@ -61,17 +61,27 @@ var frog = function(xpos, ypos){
 	this.speed = animal_data["frog_speed"];
 	this.capacity = animal_data["frog_capacity"];
 	this.lifespan = animal_data["frog_lifespan"];
-	this.width = 100;
-	this.height = 100;
+	this.width = 50;
+	this.height = 50;
 	this.name = 'frog';
 	this.x = xpos;
 	this.y = ypos;
+	this.collidablewith = ['enemy']
 }
 
 inheritsFrom(frog, animal);
 
 frog.prototype.update = function(){
 	this.y += this.speed;
+	if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.name, this.location)){
+		//what happens if collision comes back true
+		this.speed = (-this.speed);
+		if(this.y < 0) {
+			this.y = 0;
+		} else if((this.y + this.height) > canvas.height){
+			this.y = canvas.height - this.height;
+		}
+	}
 }
 frog.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -83,17 +93,29 @@ var bunny = function(xpos, ypos){
 	this.speed = animal_data["bunny_speed"];
 	this.capacity = animal_data["bunny_capacity"];
 	this.lifespan = animal_data["bunny_lifespan"];
-	this.width = 100;
-	this.height = 100;
+	this.width = 50;
+	this.height = 50;
 	this.name = 'bunny';
 	this.x = xpos;
 	this.y = ypos;
+	this.collidablewith = ['enemy']
 }
 
 inheritsFrom(bunny, animal);
 
 bunny.prototype.update = function(){
 	this.x += this.speed;
+	if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.name, this.location)){
+		//what happens if collision comes back true
+		this.speed = (-this.speed);
+		if(this.x < canvas.width/2) {
+			this.x = canvas.width/2;
+		} else if((this.x + this.width) > canvas.width){
+			this.x = canvas.width - this.width;
+		} else {
+			
+		}
+	}
 }
 bunny.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -106,11 +128,12 @@ var deer = function(xpos, ypos){
 	this.speed = animal_data["deer_speed"];
 	this.capacity = animal_data["deer_capacity"];
 	this.lifespan = animal_data["deer_lifespan"];
-	this.width = 100;
-	this.height = 100;
+	this.width = 50;
+	this.height = 50;
 	this.name = 'deer';
 	this.x = xpos;
 	this.y = ypos;
+	this.collidablewith = ['enemy']
 }
 inheritsFrom(deer, animal);	
 
@@ -132,11 +155,12 @@ var bird = function(xpos, ypos){
 	this.angle = Math.random()*2*Math.PI
 	this.xspeed = Math.sin(this.angle) * animal_data["bird_speed"];
 	this.yspeed = Math.cos(this.angle) * animal_data["bird_speed"];
-	this.width = 100;
-	this.height = 100;
+	this.width = 50;
+	this.height = 50;
 	this.name = 'bird';
 	this.x = xpos;
 	this.y = ypos;
+	this.collidablewith = ['enemy']
 }
 
 inheritsFrom(bird, animal);
@@ -160,12 +184,16 @@ var setupAnimal = function(ani){
 	ani.image = new Image();
 	if(ani.name == 'frog'){
     	ani.setSrc('https://img.clipartfest.com/d8753347c94b1e9a3409332726861e4a_free-frog-clipart-clip-art-frog-clipart_2400-2179.jpeg');
+    	collidableObjects.push(ani);
 	} else if(ani.name == 'bunny'){
-		ani.setSrc('http://clipart-library.com/data_images/293245.jpg');
+		ani.setSrc('http://clipart-library.com/data_images/293266.jpg');
+		collidableObjects.push(ani);
 	} else if(ani.name == 'deer'){
 		ani.setSrc('http://images.clipartpanda.com/deer-clip-art-deer05_Clipart_Free.png');
+		collidableObjects.push(ani);
 	} else if(ani.name == 'bird'){
 		ani.setSrc('https://s-media-cache-ak0.pinimg.com/736x/77/0a/3f/770a3fc30e148471019fe729b311d3f0.jpg');
+		collidableObjects.push(ani);
 	}
 	
 }

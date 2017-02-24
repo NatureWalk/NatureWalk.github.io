@@ -1,30 +1,36 @@
-//Howler object holds music, may use one Howl for all sound,
-//need to figure out full structure
-var music = new Howl({
-  src: ['sounds/ambisynth_livedraft.mp3'],
-  buffer: true,
-  loop: true
-});
+//Object for manipulating sounds
 
-//This should move elsewhere maybe.
-music.play();
+var volume = 1
 
+var soundManager = function() {
+	this.muted = false
+	this.music = new Howl({
+	  src: ['sounds/ambisynth_livedraft.mp3'],
+	  buffer: true,
+	  loop: true,
+	  onend: function() {volume = 0.1}
+	})
 
-//mute_music makes a nicer fade than the native mute
-var muted = false
-
-function mute_music() {
-	if (!muted) {
-		music.fade(1,0,10)
-		muted = true;
-	}
-	else {
-		muted = false;
-		music.fade(0,1,10)
-	}
+	this.click = new Howl({
+		src: ['sounds/click.wav'],
+		buffer: true
+	})
 }
 
-var click = new Howl({
-	src: ['sounds/click.wav'],
-	buffer: true
-})
+soundManager.prototype.update = function() {}
+
+soundManager.prototype.draw = function() {}
+
+soundManager.prototype.mute_music = function() {
+	if (!this.muted) {
+		this.music.fade(volume,0,10)
+		console.log(this.music.volume())
+		this.muted = true;
+	}
+	else {
+		this.muted = false;
+		this.music.fade(0,volume,10)
+		console.log(this.music.volume())
+		
+	}
+}
