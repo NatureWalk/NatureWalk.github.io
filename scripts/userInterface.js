@@ -116,11 +116,12 @@ function buttonSetup() {
     //Arbitrary step setup if the player does not have any steps yet. 
     if (stepCount === undefined) { stepCount = 10; }
     
-    stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
+    stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
         this.text = stepCount + " Steps";
+        this.textOffsetX = (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps")
     };
     game.buttonArray.push(stepPane);
     ////////////////////////////////////////////////////////////
