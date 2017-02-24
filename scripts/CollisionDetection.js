@@ -1,3 +1,11 @@
+
+/*var quad = new QuadTree({
+	x: 0,
+	y: 0,
+    width: 1024,
+	height: 576
+}); */
+
 collidableObjects = [];
 
 function collisionChecker(x , y, width, height, collidablewith, name){

@@ -11,6 +11,7 @@ function update() {
     //Move this.x and this.y in this.moveDir * this.speed. 
     this.x += (Math.cos(this.moveDir) * this.speedMedian);
     this.y -= (Math.sin(this.moveDir) * this.speedMedian);  
+    //var usable_obj = quad.getObjects(this);
     if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.name, this.location)){
 		//what happens if collision comes back true
 		var checkx = false;

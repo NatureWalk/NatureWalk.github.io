@@ -73,6 +73,7 @@ inheritsFrom(frog, animal);
 
 frog.prototype.update = function(){
 	this.y += this.speed;
+	//var usable_obj = quad.getObjects(this);
 	if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.name, this.location)){
 		//what happens if collision comes back true
 		this.speed = (-this.speed);
@@ -105,6 +106,7 @@ inheritsFrom(bunny, animal);
 
 bunny.prototype.update = function(){
 	this.x += this.speed;
+	//var usable_obj = quad.getObjects(this);
 	if(collisionChecker(this.x, this.y, this.width, this.height, this.collidablewith, this.name, this.location)){
 		//what happens if collision comes back true
 		this.speed = (-this.speed);

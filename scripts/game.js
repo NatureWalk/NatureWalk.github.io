@@ -30,6 +30,7 @@ var mouseman = new MouseManager();
 
 
 
+
 console.log("game set up");
 
 
@@ -50,8 +51,6 @@ canvas.addEventListener('mouseup', function(evt) {
 var enemytest = new Enemy();
 enemytest.setSrc("TestEnemy.png");
 enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
-collidableObjects.push(enemytest);
-console.log("Enemy Created");
 
 screenMan.push(game);
 
@@ -59,14 +58,10 @@ screenMan.push(game);
 game.init = function() {
     this.push(background);
     panes.forEach( function(elem) {game.push(elem);} );
-    var test_bird = new bird(800, 500);
-    setupAnimal(test_bird);
-    this.push(test_bird);
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
     
-    this.push(enemytest);
     this.push(new Spawner())
 } 
 
