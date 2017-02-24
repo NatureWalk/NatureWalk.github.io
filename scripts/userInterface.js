@@ -212,6 +212,14 @@ function buttonSetup() {
     animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
     ////////////////////////////////////////////////////////////
+
+    //Mute Button
+    function mB() {soundMan.mute_music()}
+
+    muteButton = new Button(mB);
+    muteButton.setSrc("images/mute.jpg")
+    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
+    game.buttonArray.push(muteButton);
 }
 
 /* change_attribute() - For changing attributes up or down. 
@@ -256,6 +264,8 @@ function change_attribute(index, sign, attValue) {
         stepCount--;   
     }
     attValue.text = animal_data[attributeString];
+
+    soundMan.click.play()
 }
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
@@ -290,6 +300,7 @@ function change_image(animal_index) {
     
     //Setting current animal so we all know what we're referencing. 
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
+    soundMan.click.play()
 }
 
 /* spawn_animal() - For spawning animals on the map. 
@@ -330,6 +341,7 @@ function spawn_animal() {
         game.push(animal);
         break;
     }
+    soundMan.click.play()
 }
 
 //Small utility function that converts a number to a string and returns the length. 
