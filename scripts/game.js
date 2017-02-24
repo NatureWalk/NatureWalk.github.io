@@ -1,6 +1,6 @@
 
 
-//fitbit_start(); //Make the fitbit work before anything else.
+fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -13,6 +13,7 @@ var h = canvas.height;
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
+
 background.setSrc("image_resources/Book(open).png");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = 1024;
@@ -25,6 +26,12 @@ var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> master
 console.log("game set up");
 
 canvas.addEventListener('mousemove', function(evt) {
@@ -46,14 +53,10 @@ screenMan.push(game);
 game.init = function() {
     this.push(background);
     panes.forEach( function(elem) {game.push(elem);} );
-    var test_bird = new bird(800, 500);
-    setupAnimal(test_bird);
-    this.push(test_bird);
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
     
-    this.push(enemytest);
     this.push(new Spawner())
 } 
 
