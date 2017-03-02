@@ -26,12 +26,6 @@ var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> master
 console.log("game set up");
 
 canvas.addEventListener('mousemove', function(evt) {

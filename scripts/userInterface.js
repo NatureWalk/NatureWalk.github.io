@@ -27,7 +27,8 @@ var ui_values = {
                   ("image_resources/AnimBunny.gif")],
 
     currentAnimal: "Bird",
-    attributes: ["armor", "speed", "capacity", "lifespan"]
+    attributes: ["armor", "speed", "capacity", "lifespan"],
+    animalCounter: [0, 0, 0, 0],
 };
 
 /* backgroundSetup() - For setting up, non-button elements of the canvas, like the map and the pane that holds all of the attributes. 
@@ -114,7 +115,7 @@ function buttonSetup() {
     stepPane.tooltip = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 10; }
+    if (stepCount === undefined) { stepCount = 100; }
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
@@ -247,14 +248,14 @@ function change_attribute(index, sign, attValue) {
         }
         animal_data[attributeString]--;
         attValue.text = animal_data[attributeString];
-        stepCount++;
+        stepCount+=(10*animal_data[attributeString]);
     } else {
-        if (stepCount <= 0) {
+        if (stepCount - (10*(animal_data[attributeString]+1)) <= 0) {
             return;
         }
         animal_data[attributeString]++;
         attValue.text = animal_data[attributeString];
-        stepCount--;   
+        stepCount-=(10*animal_data[attributeString]);   
     }
     attValue.text = animal_data[attributeString];
 }
@@ -299,7 +300,7 @@ function change_image(animal_index) {
  * Notes: Spawn location determination should be done here, unless there's another function that can specify it. 
 */
 function spawn_animal() {
-    var animal, mapPane;
+    var animal, mapPane, spawnX, spawnY;
     //Find the map pane from the panes array. 
     panes.forEach(function (elem) {
         if (elem.name === "mapPane") {
@@ -307,30 +308,47 @@ function spawn_animal() {
         }
     });
     
+    if (stepCount - 100 < 0) {
+        return;
+    }
+    spawnX = randomNum(550, 950);
+    spawnY = randomNum(50, 500);
+
+    
     //Spawn the proper animal. 
     switch (ui_values.currentAnimal) {
     case "Bird":
-        animal = new bird(600, 300);
+        ui_values.animalCounter[0]++;
+        //stepCount -= (50*ui_values.animalCounter[0]);
+        animal = new bird(spawnX, spawnY);
         setupAnimal(animal);
         game.push(animal);
         break;
     case "Deer":
-        animal = new deer(600, 300);
+        ui_values.animalCounter[1]++;
+        //stepCount -= (100*ui_values.animalCounter[1]);
+        animal = new deer(spawnX, spawnY);
         setupAnimal(animal);
         game.push(animal);
         break;
     case "Frog":
-        console.log("frog");
-        animal = new frog(600, 300);
+        //console.log("frog");
+        ui_values.animalCounter[2]++;
+        //stepCount += (50*ui_values.animalCounter[2]);
+            //console.log(ui_values.animalCounter[2]);
+        animal = new frog(spawnX, spawnY);
         setupAnimal(animal);
         game.push(animal);
         break;
     case "Bunny":
-        animal = new bunny(600, 300);
+        ui_values.animalCounter[3]++;
+        //stepCount -= (50*ui_values.animalCounter[3]);
+        animal = new bunny(spawnX, spawnY);
         setupAnimal(animal);
         game.push(animal);
         break;
     }
+    stepCount -= 100;
 }
 
 //Small utility function that converts a number to a string and returns the length. 
