@@ -8,16 +8,18 @@ var ctx = canvas.getContext("2d");
 var w = canvas.width;
 var h = canvas.height;
 
+soundMan = new soundManager()
+soundMan.music.play()
+
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
-
 background.setSrc("image_resources/Book(open).png");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
-background.width = 1024;
-background.height = 576;
+background.width = w;
+background.height = h;
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
@@ -44,6 +46,7 @@ enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
 
 screenMan.push(game);
 
+//Runs when the game screen is loaded.
 game.init = function() {
     this.push(background);
     panes.forEach( function(elem) {game.push(elem);} );
@@ -54,6 +57,7 @@ game.init = function() {
     this.push(new Spawner())
 } 
 
+//Who doesn't like a random collision function
 function overlap(a, b) {
     var aMaxX = a.x + a.width;
     var aMaxY = a.y + a.height;
