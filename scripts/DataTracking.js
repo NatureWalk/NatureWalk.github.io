@@ -1,16 +1,18 @@
+
+//Object that can hold all of the session and player data.
 var dataObj = {
+    animalTracks: 0,
     numberOfSessions: 0,
     timePlayed: 0,
+    everySecondTrig: 0,
     sessionStartTime: 0,
-    deerSpawnCount: 0,
-    rabbitSpawnCount: 0,
-    frogSpawnCount: 0,
-    birdSpawnCount: 0,
+    animalCounter: [0, 0, 0, 0],
     timeAccelFactor: 1,
     devSignIn: false,
-    //DEV Cheats
+    computationReady: true,
 }
 
+//Constructor function for the DataTracker Object.
 var DataTracker = function() {
     //this.timePlayed = 0;
     //this.sessionStartTime = 0;
@@ -30,20 +32,33 @@ DataTracker.prototype.getTime = getTime;
 DataTracker.prototype.sessionEnd = sessionEnd;
 DataTracker.prototype.openDevWindow = openDevWindow;
 
-
+/* sessionStart() - Function to get all of the player data upon start up. Would also be used to call the function that calculates what the player earned while they were gone.
+ * Params - None. 
+ * Returns - None. 
+*/
 function sessionStart() {
-    //dataObj["sessionStartTime"] = performance.now();
+    dataObj["sessionStartTime"] = Date.now();
     //dataObj["numberOfSessions"] = getData(playerID, "numberOfSessions");
-    console.log("Time Played: " + dataObj["timePlayed"]);
+    //console.log("Time Played: " + dataObj["timePlayed"]);
 }
 
+/* getTime() - Function that calculates any time that passes. 
+ * Params - None. 
+ * Returns - None. 
+*/
 function getTime() {
-    var currentTime = performance.now() * dataObj["timeAccelFactor"];
+    var currentTime = Date.now() * dataObj["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
-    console.log(timeAry[1] + " Seconds\n" + timeAry[2] + " Minutes\n" + timeAry[3] + " Hours\n" + timeAry[4] + " Days");
+    //DEBUG: console.log(timeAry[1] + " Seconds\n" + timeAry[2] + " Minutes\n" + timeAry[3] + " Hours\n" + timeAry[4] + " Days");
+    eventHandler(timeAry);
+    
     return (currentTime - dataObj["sessionStartTime"]);
 }
 
+/* readableTime() - Converts milliseconds to various higher times (seconds, minutes, hours and days).
+ * Params: - milliseconds: number of milliseconds that are given via Date.now(). 
+ * Returns - timeArray: An array of various time measurements. 
+*/
 function readableTime(milliseconds) {
     var timeArray = [0, 0, 0, 0, 0];
     var timeRemainder = milliseconds;
@@ -65,6 +80,68 @@ function readableTime(milliseconds) {
     return timeArray;
 }
 
+/* eventHandler() - Uses the array from readableTime() to calculate the timings of events. Currently divided into:
+ * - Events that happen every second (everySecond(seconds)).
+ * - Events that happen every 30 seconds (everyThirty(seconds)).
+ * - Events that happen every minute (everyMinute(minutes)).
+ * - Events that happen every hour (everyHour(hours)).
+ * Params: - timeAry: Array of various time measurements from readableTime(). 
+ * Returns - None. 
+*/
+function eventHandler(timeAry) {
+    
+    if (timeAry[1] === dataObj.everySecondTrig) {
+        everySecond(timeAry[1]);
+        if (timeAry[1] === 59) {
+            dataObj.everySecondTrig = 0;
+        } else {
+            dataObj.everySecondTrig++; 
+        }   
+    }
+    
+    //everyMinute(timeAry[2]);
+    
+    if (timeAry[1] % 30 === 0 ) {
+        if (dataObj.computationReady) {
+            //console.log("Computation Event!! " + tracks);
+            everyThirty(timeAry[1]);
+            dataObj.computationReady = false;
+        } else {
+            //console.log("Already computered.");
+        }
+    } else {
+        if (dataObj.computationReady === false) {
+            dataObj.computationReady = true;
+        }
+    }
+}
+
+function everySecond(seconds) {
+    console.log(seconds);
+    //console.log(dataObj.animalCounter[2])
+}
+
+function everyThirty(seconds) {
+    var tracks = 0;
+    for (var i = 0; i < dataObj.animalCounter.length; i++){
+        tracks += (dataObj.animalCounter[i] * 30);
+    } 
+    //DEBUG: console.log("tracks = " + tracks);
+    dataObj.animalTracks += tracks;
+}
+
+function everyMinute(minutes) {
+    
+}
+
+function everyHour(hours) {
+    
+}
+
+/* sessonEnd() - Called when the window is closed (unfinished). Used to take data from dataObj{} and store it on server/local storage.
+ * Params: None. 
+ * Returns: None.
+*/
 function sessionEnd() {
     this.timePlayed += getTime();
     console.log("Time Played: " + dataObj["timePlayed"]);
@@ -73,6 +150,12 @@ function sessionEnd() {
     //return "Are you sure?";
 }
 
+
+/* OpenDevWindow() - Developers window to use cheat codes, for testing purposes of course. ;)
+ * Sign in with your name in the Slack. 
+ * Params: None. 
+ * Returns: None.
+*/
 function openDevWindow() {
     //updateData(playerID, "timePlayed", dataObj["timePlayed"]);
     //var devWindow = new Screen(true, true); 
@@ -99,17 +182,31 @@ function openDevWindow() {
     }
 }
 
+/* devAuthentication() - Validates developers to use cheats.  
+ * Params - name: Value entered into the prompt. Will be a name from our Slack group. 
+ * Returns - a boolean that validates if the given name is in the array of registered devs. 
+*/
 function devAuthentication(name){
     var AuthorizedDevelopers = ["anhouzi", "dan", "duunko", "eshi", "memuir", "theoren"];
     return AuthorizedDevelopers.includes(name);
 }
 
+/* commandManager() - Function to handle all of the cheat commands.  
+ * Params: None. 
+ * Returns: None. 
+*/
 function commandManager() {
     var cmd = prompt("Enter command or type 'list' to see the commands.");
     
     switch (cmd.toLowerCase()) {
         case "list":
-            console.log(cmd);
+            console.log("'stepoff' - adds steps");
+            console.log("'trackerdown(Not Implemented)' - adds tracks");
+            console.log("'gottagofast(Not Implemented)' - increases rate at which game time flows.");
+            console.log("'justaminutedeer(Not Implemented)' - time warps.");
+            console.log("'pidgeyohno' - removes all animals");
+            console.log("'toadallyfit(Not Implemented)' - makes animals invulnerable, not immortal");
+            console.log("'badhareday(Not Implemented)' - hardreset of player data");
             break;
         //Give steps to the player.
         case "stepoff":

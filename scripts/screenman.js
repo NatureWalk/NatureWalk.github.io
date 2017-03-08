@@ -45,6 +45,8 @@ Screen.prototype.update = function() {
     for (var i in this.objects) {
         this.objects[i].update();
     }
+    
+    getTime();
 }
 
 //Object holding Screens

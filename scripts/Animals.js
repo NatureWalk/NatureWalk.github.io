@@ -156,7 +156,7 @@ var deer = function(xpos, ypos){
 inheritsFrom(deer, animal);	
 
 deer.prototype.update = function(){
-	console.log(this);
+	//console.log(this);
 }
 deer.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
