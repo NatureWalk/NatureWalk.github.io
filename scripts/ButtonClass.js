@@ -197,7 +197,8 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
-    this.text; 
+    this.text;
+    this.fontSize;
     this.textSrc;
     this.textOffsetX = 0;
     this.textOffsetY = 0;
@@ -258,7 +259,7 @@ Button.prototype.draw = function () {
             this.height);
     }
     if ((this.hovered && this.text !== undefined) || this.hasTextValue){
-        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
+        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
     }
     this.drawChildren();
 }
