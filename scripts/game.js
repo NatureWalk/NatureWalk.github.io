@@ -1,6 +1,6 @@
 
 
-fitbit_start(); //Make the fitbit work before anything else.
+//fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -28,16 +28,8 @@ var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
 
-
-
-
 console.log("game set up");
 
-
-/* POTENTIAL PROBLEM: With the canvas listening to mouse inputs, 
- * it's possible that if we have menus overlaying each other, 
- * a player may be able to click on things behind the active menu. 
-*/
 canvas.addEventListener('mousemove', function(evt) {
     mouseman.findTarget(evt);   
 });
@@ -79,3 +71,9 @@ function overlap(a, b) {
 }
 
 game_loop(screenMan);
+window.onbeforeunload = function () {
+    console.log("Closing");
+    dataTracker.sessionEnd();
+    console.log("Sesson End");
+    return "Are you sure?";
+}
