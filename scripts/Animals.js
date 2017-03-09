@@ -83,6 +83,14 @@ frog.prototype.update = function(){
 			this.y = canvas.height - this.height;
 		}
 	}
+    if (this.lifespan >= 0 && this.armor >= 0) {
+        stepCount+=Math.abs(Math.round(this.speed/4));
+        this.lifespan--;
+    }
+    if (this.lifespan <= 0) {
+        this.setSrc("image_resources/ClearSquare.png");
+        //ui_values.animalCounter[2]-=1;
+    }
 }
 frog.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -118,6 +126,14 @@ bunny.prototype.update = function(){
 			
 		}
 	}
+    if (this.lifespan >= 0 && this.armor >= 0) {
+        stepCount+=Math.abs(Math.round(this.speed/4));
+        this.lifespan--;
+    }
+    if (this.lifespan <= 0) {
+        this.setSrc("image_resources/ClearSquare.png");
+        ui_values.animalCounter[3]--;
+    }
 }
 bunny.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -140,7 +156,7 @@ var deer = function(xpos, ypos){
 inheritsFrom(deer, animal);	
 
 deer.prototype.update = function(){
-	console.log(this);
+	//console.log(this);
 }
 deer.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -177,6 +193,14 @@ bird.prototype.update = function(){
 	}
 	this.x += this.xspeed;
 	this.y += this.yspeed;
+    if (this.lifespan >= 0 && this.armor >= 0) {
+        stepCount+=Math.abs(Math.round(this.speed/4));
+        this.lifespan--;
+    }
+    if (this.lifespan <= 0) {
+        this.setSrc("image_resources/ClearSquare.png");
+        ui_values.animalCounter[0]--;
+    }
 }
 bird.prototype.draw = function(){
 	ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
