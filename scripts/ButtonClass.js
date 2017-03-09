@@ -213,7 +213,7 @@ function Button(_function, _params) {
     this.func = _function;
     this.params = _params;
     this.isToggleButton = false;
-    this.tooltip = false;
+    this.hasTextValue = false;
     
     //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
@@ -257,7 +257,7 @@ Button.prototype.draw = function () {
             this.width,
             this.height);
     }
-    if ((this.hovered && this.text !== undefined) || this.tooltip){
+    if ((this.hovered && this.text !== undefined) || this.hasTextValue){
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
     }
     this.drawChildren();

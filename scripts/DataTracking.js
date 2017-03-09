@@ -5,12 +5,25 @@ var dataObj = {
     numberOfSessions: 0,
     timePlayed: 0,
     everySecondTrig: 0,
+    eventTrigger: 10,
     sessionStartTime: 0,
     animalCounter: [0, 0, 0, 0],
     timeAccelFactor: 1,
     devSignIn: false,
     computationReady: true,
 }
+
+var badEvents = [
+    "predator", "river", "ravine", "winter", "treefall",
+    "mudslide", "lightning", "tornado", "sinkhole",
+    "forestfire", "drought", "heatwave", "flashflood", "meteor", 
+    "eruption", "hunter", "pollution"
+]
+
+var goodEvents = [
+    "stepmulti", "extratracks", "clickable", "fountain", 
+    "meadow", "mating", "preservation"
+]
 
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
