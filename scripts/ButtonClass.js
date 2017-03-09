@@ -249,8 +249,10 @@ Button.prototype.draw = function () {
     } else {
         ctx.drawImage(
             this.image, 
-            (this.frameIndex % 7) * this.width, 
-            Math.floor(this.frameIndex/7) * this.height, 
+            //(this.frameIndex % 7) * this.width, 
+            //Math.floor(this.frameIndex/7) * this.height, 
+            (this.frameIndex % this.srcCols) * this.width, 
+            Math.floor(this.frameIndex/this.srcCols) * this.height,
             this.width, 
             this.height, 
             this.x,

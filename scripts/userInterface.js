@@ -21,11 +21,15 @@ var ui_values = {
                   ("images/nwalk1.jpg")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
-    animalGifAry: [("image_resources/Icon_Bird.png"),
-                  ("image_resources/Icon_Deer.png"),
-                  ("image_resources/FrogSpriteSheet200_1400x1400.png"),
-                  ("image_resources/AnimBunny.gif")],
+    animalStaticAry: [("image_resources/Icon_Bird.png"),
+                      ("image_resources/Icon_Deer.png"),
+                      ("image_resources/FrogSpriteSheet200_1400x1400.png"),
+                      ("image_resources/AnimBunny.gif")],
 
+    animalWalkAry: [("image_resources/Icon_Bird.png"),
+                    ("image_resources/DeerWalk100_500x400.png"),
+                    ("image_resources/FrogSpriteSheet200_1400x1400.png"),
+                    ("image_resources/AnimBunny.gif")],
     currentAnimal: "Bird",
     attributes: ["armor", "speed", "capacity", "lifespan"],
 };
@@ -215,78 +219,11 @@ function buttonSetup() {
         game.buttonArray.push(attNum);
     }
     
-    /*
-    var attButton, attValue, animalImage;
-    for (i = 0; i < 4; i++) {
-    */
-        /////////////////////////////////////////////////
-        //ATTVALUE
-        /////////////////////////////////////////////////
-        /* The increment and decrement buttons are each children of the 
-        attValue they are incrementing/decrementing. 
-        This gives them access to the number they have to increment without needing a new update function. 
-        */
-        /*
-        attValue = new Button(function () {});
-        attValue.setSrc("image_resources/Worn-Paper-Texture.png");
-        
-        attValue.setSpriteAttributes(166, (220 + 50 * i), 80, 40, "attribute_value" + i);
-        
-        attValue.hasTextValue = true;
-        
-        //Using an animal from ui_values, therefore must use toLowerCase().
-        var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = attSelect.toString().length;
-        attValue.setText(attSelect, (attValue.width / 2) - (5 * charNum), 0);
-        game.buttonArray.push(attValue);
-        */ /////////////////////////////////////////////////
-        
-        /////////////////////////////////////////////////
-        //UP ARROW
-        /////////////////////////////////////////////////
-        /*
-        attButton = new Button(change_attribute, [i, "pos", attValue]);
-        attButton.setSrc("image_resources/up25x25.png");
-        
-        attButton.setSpriteAttributes(96, (240 + 50 * i), 25, 25, "attribute" + i);
-        attButton.hasTextValue = true;
-        
-        //Visable stats are connected to the up arrow and not the down. 
-        var att;
-        switch (i) {
-        case 0:
-            att = "VITA"; //Changed armor to (VITA-lity)
-            break;
-        case 1:
-            att = "SPD";
-            break;
-        case 2:
-            att = "CAP";
-            break;
-        case 3:
-            att = "LIFE";
-            break;
-        }
-        attButton.setText(att, 7, -25);
-        attValue.addChild(attButton);
-        */ /////////////////////////////////////////////////
-        
-        /////////////////////////////////////////////////
-        //DOWN ARROW
-        /*
-        attButton = new Button(change_attribute, [i, "neg", attValue]);
-        attButton.setSrc("image_resources/down25x25.png");
-        
-        attButton.setSpriteAttributes(126, (240 + 50 * i), 25, 25, "attribute" + i);
-        attValue.addChild(attButton);
-        */ /////////////////////////////////////////////////
-    //}
-    
     /////////////////////////////////////////////////
     //ANIMAL IMAGE
     /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalGifAry[0], "images/nwalk1.jpg");
+    animalImage.setSrc(ui_values.animalStaticAry[0], "images/nwalk1.jpg");
     //console.log(animalImage.anim);
     animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
@@ -329,7 +266,20 @@ function buttonSetup() {
             }
         })(i);
     }
-  /////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //ANIMAL ANIMATIONS
+    /////////////////////////////////////////////////
+    for (i = 0; i < 4; i++) {
+        var animalAnimation = new Button();
+        animalAnimation.setSrc(ui_values.animalWalkAry[1],                              ui_values.animalWalkAry[1],                              true);
+        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
+        game.buttonArray.push(animalAnimation);
+
+        animalAnimation.setupAnim(16, 4, 5);
+    }
+    /////////////////////////////////////////////////
 }
 
 /* change_attribute() - For changing attributes up or down. 
@@ -340,6 +290,7 @@ function buttonSetup() {
                - Could possibly change it to just passing in the parent's 'text' value. 
  * Returns - None. 
 */
+/*
 function change_attribute(index, sign, attValue) {
     
     var attributeString = (ui_values.currentAnimal + "_").toLowerCase();
@@ -377,6 +328,7 @@ function change_attribute(index, sign, attValue) {
 
     soundMan.click.play()
 }
+*/
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
@@ -385,11 +337,10 @@ function change_attribute(index, sign, attValue) {
 */
 function change_image(animal_index) {
     var ani_imgRef;
-    //Making the source gifs for the spawn button image. 
-    aniSrc = ui_values.animalGifAry;
+    aniSrc = ui_values.animalStaticAry;
     game.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
-            console.log(aniSrc[animal_index]);
+            //DEBUG: console.log(aniSrc[animal_index]);
             if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
                 elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
                 elem.setupAnim(44, 7, 7);
@@ -418,6 +369,9 @@ function change_image(animal_index) {
  * Returns: None. 
  * Notes: Spawn location determination should be done here, unless there's another function that can specify it. 
 */
+function spawn_animal() {
+}
+/*
 function spawn_animal() {
     var animal, mapPane, spawnX, spawnY;
     //Find the map pane from the panes array. 
@@ -471,6 +425,7 @@ function spawn_animal() {
     soundMan.click.play()
     stepCount -= 100;
 }
+*/
 
 //Small utility function that converts a number to a string and returns the length. 
 //Good for text alignment, but not perfect. 
