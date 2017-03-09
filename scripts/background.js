@@ -15,6 +15,10 @@ var landscape = function() {
 	this.layer3.y = 200
 
 	this.draw = function() {
+		ctx.save()
+		ctx.rect(512, 0, 495,578);
+		ctx.clip()
+
 		var tempx = this.layer1.x
 		this.layer1.draw()
 		this.layer1.x = tempx - 1280
@@ -38,6 +42,8 @@ var landscape = function() {
 		this.layer3.x = tempx + 1280
 		this.layer3.draw()
 		this.layer3.x = tempx
+
+		ctx.restore()
 	}
 
 	this.update = function() {
