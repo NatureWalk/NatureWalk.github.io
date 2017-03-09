@@ -467,8 +467,9 @@ function spawn_animal() {
         game.push(animal);
         break;
     }
-    stepCount -= 100;
+
     soundMan.click.play()
+    stepCount -= 100;
 }
 
 //Small utility function that converts a number to a string and returns the length. 
