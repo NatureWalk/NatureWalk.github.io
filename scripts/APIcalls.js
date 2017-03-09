@@ -4,9 +4,12 @@ var userID;
 var stepCount;
 
 
-authorize();
-getUserInfo();
-getNewSteps();
+function fitbit_start(){
+    authorize();
+    getUserInfo();
+    getNewSteps();
+
+}
 
 
 //logs the user out of fitbit and redirects to fitbit login

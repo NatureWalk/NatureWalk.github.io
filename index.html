@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js">
 </script>
 
 </head>
 <body>
-
 <!-- Logs user in to fitbit and sets the following:
 	variables:
 	  userName - the user's fitbit display name
@@ -18,7 +18,31 @@
 	  getNewSteps() - set stepCount
 	  logout() - logs user out and redirects to fitbit login
 -->
-<script src="APIcalls.js"></script>
+<canvas id= "canvas" width= "1024" height="576"  ></canvas>
+    <script src= "lib/howler.min.js"></script>
+    <script src= "scripts/utilities.js"></script>
+    <script src= "scripts/APIcalls.js"></script>
+    <script src= "scripts/engine.js"></script>
+    <script src= "scripts/sprite.js"></script>
+    <script src= "scripts/sound.js"></script>
+    <script src= "scripts/ButtonClass.js"></script>
+    <script src= "scripts/userInterface.js"></script>
+    <script src= "scripts/mousetracker.js"></script>
+    <script src= "scripts/screenman.js"></script>
+    <script src= "scripts/Animals.js"></script>
+    <script src= "scripts/powerup.js"></script>
+    <script src= "scripts/localStorageFunctions.js"></script>
+    <script src= "scripts/loginFunctions.js"></script>
+    <script src='scripts/spawner.js'></script>
+    <script src='scripts/EnemyClass.js'></script>
+    <script src='scripts/DataTracking.js'></script>
+    <script src='scripts/CollisionDetection.js'></script>
+    <script src= "scripts/DataTracking.js"></script>
+    <script src= 'scripts/quadtree.js'></script>
+    <script src= "scripts/game.js"></script>
+
+
+
 	
 <!-- prints variables set by APIcalls.js to console -->
 <script>
@@ -26,6 +50,5 @@
 	console.log("user ID: " + userID);
 	console.log("steps: " + stepCount);
 </script>
-	
 </body>
 </html>
