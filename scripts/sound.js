@@ -8,7 +8,7 @@ var soundManager = function() {
 	  src: ['sounds/ambisynth_livedraft.mp3'],
 	  buffer: true,
 	  loop: true,
-	  onend: function() {volume = 0.1}
+	  //onend: function() {volume = 0.1}
 	})
 
 	this.click = new Howl({

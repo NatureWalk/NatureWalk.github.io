@@ -9,7 +9,7 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-soundMan.music.play()
+//soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
@@ -20,6 +20,9 @@ background.setSrc("image_resources/Book(open).png");
 //background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = w;
 background.height = h;
+
+land = new landscape() 
+
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
@@ -49,13 +52,13 @@ screenMan.push(game);
 //Runs when the game screen is loaded.
 game.init = function() {
     this.push(background);
-    this.push(landscape);
+    this.push(land);
     panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
     
-    this.push(new Spawner())
+    //this.push(new Spawner())
 } 
 
 //Who doesn't like a random collision function

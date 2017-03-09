@@ -45,7 +45,7 @@ function backgroundSetup() {
     ////////////////////////////////////////////////////////////
     attributesPane = new Sprite();
     attributesPane.setSrc("image_resources/AttPane.png");
-    attributesPane.setSpriteAttributes(46, 160, 440, 380, "attributesPane");
+    attributesPane.setSpriteAttributes(46, 170, 440, 380, "attributesPane");
     panes.push(attributesPane);
     ////////////////////////////////////////////////////////////
     
@@ -66,12 +66,14 @@ function backgroundSetup() {
     ////////////////////////////////////////////////////////////
     
     ////////////////////////////////////////////////////////////
-    //MAP PANE
+    //MAP PANE (No Longer in Use)
     ////////////////////////////////////////////////////////////
+    /*
     var mapPane = new Sprite();
     mapPane.setSrc("image_resources/Worn-Paper-Texture.png");
     mapPane.setSpriteAttributes(527, 30, 452, 514, "mapPane");
     panes.push(mapPane);
+    */
     ////////////////////////////////////////////////////////////
     
     ////////////////////////////////////////////////////////////
@@ -131,7 +133,7 @@ function buttonSetup() {
     var stepPane = new Button();
     stepPane.setSrc("image_resources/StepPaper.png");
     stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
-    stepPane.tooltip = true;
+    stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
     if (stepCount === undefined) { stepCount = 100; }
@@ -151,8 +153,8 @@ function buttonSetup() {
     ////////////////////////////////////////////////////////////
     var trackPane = new Button();
     trackPane.setSrc("image_resources/TracksPaper.png");
-    trackPane.setSpriteAttributes(226, 30, 250, 50, "trackPane");
-    trackPane.tooltip = true;
+    trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
+    trackPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
     if (trackPane === undefined) { dataObj.animalTracks = 100; }
@@ -163,6 +165,7 @@ function buttonSetup() {
     trackPane.update = function() {
         this.text = dataObj.animalTracks + " Tracks";
         this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Tracks")
+        this.textOffsetY = 10;
     };
     game.buttonArray.push(trackPane);
     ////////////////////////////////////////////////////////////
@@ -188,15 +191,28 @@ function buttonSetup() {
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
-        attValue.setSpriteAttributes(166, (220 + 50 * i), 80, 40, "attribute_value" + i);
+        attValue.setSpriteAttributes(91, (215 + 33 * i), 80, 40, "attribute_value" + i);
         
-        attValue.tooltip = true;
+        attValue.hasTextValue = true;
         
         //Using an animal from ui_values, therefore must use toLowerCase().
-        var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = attSelect.toString().length;
-        attValue.setText(attSelect, (attValue.width / 2) - (5 * charNum), 0);
+       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
+        charNum = "Att".length;
+        attValue.setText("Att", (attValue.width / 2) - (5 * charNum), 0);
         game.buttonArray.push(attValue);
+        
+        attNum = new Button(function () {});
+        attNum.setSrc("image_resources/ClearSquare.png");
+        
+        attNum.setSpriteAttributes(178, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        
+        attNum.hasTextValue = true;
+        
+        //Using an animal from ui_values, therefore must use toLowerCase().
+       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
+        charNum = "Attr".length;
+        attNum.setText("1507", (attNum.width / 2) - (5 * charNum), 0);
+        game.buttonArray.push(attNum);
     }
     
     /*
@@ -216,7 +232,7 @@ function buttonSetup() {
         
         attValue.setSpriteAttributes(166, (220 + 50 * i), 80, 40, "attribute_value" + i);
         
-        attValue.tooltip = true;
+        attValue.hasTextValue = true;
         
         //Using an animal from ui_values, therefore must use toLowerCase().
         var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
@@ -233,7 +249,7 @@ function buttonSetup() {
         attButton.setSrc("image_resources/up25x25.png");
         
         attButton.setSpriteAttributes(96, (240 + 50 * i), 25, 25, "attribute" + i);
-        attButton.tooltip = true;
+        attButton.hasTextValue = true;
         
         //Visable stats are connected to the up arrow and not the down. 
         var att;
@@ -271,7 +287,7 @@ function buttonSetup() {
     ////////////////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
     animalImage.setSrc(ui_values.animalGifAry[0], "images/nwalk1.jpg");
-    console.log(animalImage.anim);
+    //console.log(animalImage.anim);
     animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
     ////////////////////////////////////////////////////////////
@@ -283,6 +299,19 @@ function buttonSetup() {
     muteButton.setSrc("images/mute.jpg")
     muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
     game.buttonArray.push(muteButton);
+    
+    ////////////////////////////////////////////////////////////
+    //EVENT LOG
+    ////////////////////////////////////////////////////////////
+    var eventLogPane = new Button();
+    eventLogPane.setSrc("image_resources/ClearSquare.png");
+    eventLogPane.setSpriteAttributes(527, 30, 452, 214, "eventLog");
+    game.buttonArray.push(eventLogPane);
+    
+    eventLogPane.hasTextValue = true;
+    charNum = "Attr".length;
+    eventLogPane.setText("1507", (attNum.width / 2) - (5 * charNum), 0);
+    ////////////////////////////////////////////////////////////
 }
 
 /* change_attribute() - For changing attributes up or down. 
@@ -420,9 +449,9 @@ function spawn_animal() {
         game.push(animal);
         break;
     }
+
     soundMan.click.play()
     stepCount -= 100;
-
 }
 
 //Small utility function that converts a number to a string and returns the length. 
