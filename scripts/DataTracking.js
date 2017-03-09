@@ -10,20 +10,23 @@ var dataObj = {
     animalCounter: [0, 0, 0, 0],
     timeAccelFactor: 1,
     devSignIn: false,
-    computationReady: true,
-}
+    computationReady: false,
+};
 
 var badEvents = [
     "predator", "river", "ravine", "winter", "treefall",
     "mudslide", "lightning", "tornado", "sinkhole",
-    "forestfire", "drought", "heatwave", "flashflood", "meteor", 
-    "eruption", "hunter", "pollution"
-]
+    "forestfire", "drought", "heatwave", "flashflood", "meteor", "eruption", "hunter", "pollution"
+];
 
 var goodEvents = [
     "stepmulti", "extratracks", "clickable", "fountain", 
     "meadow", "mating", "preservation"
-]
+];
+
+var eventLogAry = [
+    "Hello", "World", "!!!!!", "Blah"
+];
 
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
@@ -63,7 +66,7 @@ function getTime() {
     var currentTime = Date.now() * dataObj["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
     //DEBUG: console.log(timeAry[1] + " Seconds\n" + timeAry[2] + " Minutes\n" + timeAry[3] + " Hours\n" + timeAry[4] + " Days");
-    eventHandler(timeAry);
+    timeHandler(timeAry);
     
     return (currentTime - dataObj["sessionStartTime"]);
 }
@@ -101,7 +104,7 @@ function readableTime(milliseconds) {
  * Params: - timeAry: Array of various time measurements from readableTime(). 
  * Returns - None. 
 */
-function eventHandler(timeAry) {
+function timeHandler(timeAry) {
     
     if (timeAry[1] === dataObj.everySecondTrig) {
         everySecond(timeAry[1]);
@@ -114,7 +117,7 @@ function eventHandler(timeAry) {
     
     //everyMinute(timeAry[2]);
     
-    if (timeAry[1] % 30 === 0 ) {
+    if (timeAry[1] % 30 === 0) {
         if (dataObj.computationReady) {
             //console.log("Computation Event!! " + tracks);
             everyThirty(timeAry[1]);
@@ -130,8 +133,16 @@ function eventHandler(timeAry) {
 }
 
 function everySecond(seconds) {
-    console.log(seconds);
-    //console.log(dataObj.animalCounter[2])
+    //console.log(seconds);
+    
+    if (dataObj.eventTrigger > 0) {
+        dataObj.eventTrigger--;
+    } else {
+        var evtRoll = roll(100);
+        //console.log(evtRoll);
+        eventChooser(evtRoll);
+        dataObj.eventTrigger = roll(5) + 8;
+    }
 }
 
 function everyThirty(seconds) {
@@ -140,6 +151,7 @@ function everyThirty(seconds) {
         tracks += (dataObj.animalCounter[i] * 30);
     } 
     //DEBUG: console.log("tracks = " + tracks);
+    eventLogAry.shift();
     dataObj.animalTracks += tracks;
 }
 
@@ -151,6 +163,141 @@ function everyHour(hours) {
     
 }
 
+function eventChooser(evtRoll) {
+    //Good Event
+    if (evtRoll > 70) {
+        goodEventHandler(roll(100));
+    } 
+    //Bad Event
+    else if (evtRoll < 40) {
+        badEventHandler(roll(100));
+    }
+    //No Event
+    else {
+        noEventHandler(roll(100));
+    }
+}
+
+function goodEventHandler(evtRoll) {
+    switch (true) {
+        //Multiplier
+        case evtRoll < 30:
+            console.log(goodEvents[0]);
+            break;
+        //Extra Steps
+        case evtRoll >= 30 && evtRoll < 55:
+            console.log(goodEvents[1]);
+            break;
+        //Fountain of Youth
+        case evtRoll >= 55 && evtRoll < 60:
+            console.log(goodEvents[2]);
+            break;
+        //Restful Meadow
+        case evtRoll >= 60 && evtRoll < 75:
+            console.log(goodEvents[3]);
+            break;
+        //Mating Season
+        case evtRoll >= 75 && evtRoll < 85:
+            console.log(goodEvents[4]);
+            break;
+        //Wildlife Preservation Attempts
+        case evtRoll >= 85 && evtRoll <= 100:
+            console.log(goodEvents[5]);
+            break;
+    }
+}
+
+function badEventHandler(evtRoll) {
+    switch (true) {
+        //Predator
+        case evtRoll < 35:
+            console.log(badEvents[0]);
+            break;
+        //River
+        case evtRoll >=35 && evtRoll < 43:
+            console.log(badEvents[1]);
+            break;
+        //Ravine
+        case evtRoll >=43 && evtRoll < 51:
+            console.log(badEvents[2]);
+            break;
+        //Winter
+        case evtRoll >=51 && evtRoll < 57:
+            console.log(badEvents[3]);
+            break;
+        //Tree
+        case evtRoll >=57 && evtRoll < 63:
+            console.log(badEvents[4]);
+            break;
+        //Mudslide
+        case evtRoll >=63 && evtRoll < 66:
+            console.log(badEvents[5]);
+            break;
+        //Lightning
+        case evtRoll >=66 && evtRoll < 67:
+            console.log(badEvents[6]);
+            break;
+        //Tornado
+        case evtRoll >=67 && evtRoll < 68:
+            console.log(badEvents[7]);
+            break;
+        //Sinkhole
+        case evtRoll >=68 && evtRoll < 71:
+            console.log(badEvents[8]);
+            break;
+        //Forest Fire
+        case evtRoll >=71 && evtRoll < 73:
+            console.log(badEvents[9]);
+            break;
+        //Drought
+        case evtRoll >=73 && evtRoll < 75:
+            console.log(badEvents[10]);
+            break;
+        //Heat wave
+        case evtRoll >=75 && evtRoll < 77:
+            console.log(badEvents[11]);
+            break;
+        //Flash flood
+        case evtRoll >=77 && evtRoll < 80:
+            console.log(badEvents[12]);
+            break;
+        //Meteor
+        case evtRoll >=80 && evtRoll < 81:
+            console.log(badEvents[13]);
+            break;
+        //Volcano
+        case evtRoll >=81 && evtRoll < 82:
+            console.log(badEvents[14]);
+            break;
+        //Hunters
+        case evtRoll >=82 && evtRoll < 97:
+            console.log(badEvents[15]);
+            break;
+        //Pollution
+        case evtRoll >=97 && evtRoll <= 100:
+            console.log(badEvents[16]);
+            break;
+    }
+}
+
+function noEventHandler(evtRoll) {
+    switch (true) {
+        //Predator
+        case evtRoll < 35:
+            eventLogAry.push("It's a wonderful day!");
+            break;
+        case evtRoll >= 35 && evtRoll < 45:
+            eventLogAry.push("Sunny and warm, perfect for nature walking.");
+            break;
+        case evtRoll >= 45:
+            eventLogAry.push("You pass by another animal.");
+            break;
+    }
+}
+
+function roll(num) {
+    return Math.round(Math.random()*num);
+}
 /* sessonEnd() - Called when the window is closed (unfinished). Used to take data from dataObj{} and store it on server/local storage.
  * Params: None. 
  * Returns: None.

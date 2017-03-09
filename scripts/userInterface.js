@@ -40,18 +40,18 @@ function backgroundSetup() {
     "use strict";
     var panes = [], i, j, attributesPane, subAttPane;
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //ATTRIBUTES PANE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     attributesPane = new Sprite();
     attributesPane.setSrc("image_resources/AttPane.png");
     attributesPane.setSpriteAttributes(46, 170, 440, 380, "attributesPane");
     panes.push(attributesPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //UNLOCKABLES (change to buttons when we have the functionality)
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     /*
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {
@@ -63,36 +63,36 @@ function backgroundSetup() {
         }
     }
     */
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //MAP PANE (No Longer in Use)
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     /*
     var mapPane = new Sprite();
     mapPane.setSrc("image_resources/Worn-Paper-Texture.png");
     mapPane.setSpriteAttributes(527, 30, 452, 514, "mapPane");
     panes.push(mapPane);
     */
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //STATS PANE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
     statPane.setSpriteAttributes(75, 215, 110, 200, "statPane");
     panes.push(statPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //STAT VALUE PANE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
     statPane.setSpriteAttributes(195, 215, 50, 200, "statPane");
     panes.push(statPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
     return panes;
 }
@@ -118,18 +118,18 @@ function buttonSetup() {
     game.buttonArray.push(end); 
     */
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //DEV ATTRIBUTES
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var devAttributes = new Button(dataTracker.openDevWindow);
     devAttributes.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
     devAttributes.setSpriteAttributes(20, 530, 30, 30, "devWindow");
     game.buttonArray.push(devAttributes);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //STEP PANE (but it's a button)
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var stepPane = new Button();
     stepPane.setSrc("image_resources/StepPaper.png");
     stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
@@ -146,11 +146,11 @@ function buttonSetup() {
         this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
     };
     game.buttonArray.push(stepPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //TRACKS PANE (but it's a button)
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var trackPane = new Button();
     trackPane.setSrc("image_resources/TracksPaper.png");
     trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
@@ -168,11 +168,11 @@ function buttonSetup() {
         this.textOffsetY = 10;
     };
     game.buttonArray.push(trackPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //ANIMAL ICONS
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var animalIcon, i;
     for (i = 0; i < 4; i++) {
         animalIcon = new Button(change_image, [i]);
@@ -184,7 +184,7 @@ function buttonSetup() {
         animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
         game.buttonArray.push(animalIcon);
     }
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
     var attButton, attValue, animalImage;
     for (i = 0; i < 6; i++) {
@@ -219,9 +219,9 @@ function buttonSetup() {
     var attButton, attValue, animalImage;
     for (i = 0; i < 4; i++) {
     */
-        ////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////
         //ATTVALUE
-        ////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////
         /* The increment and decrement buttons are each children of the 
         attValue they are incrementing/decrementing. 
         This gives them access to the number they have to increment without needing a new update function. 
@@ -239,11 +239,11 @@ function buttonSetup() {
         charNum = attSelect.toString().length;
         attValue.setText(attSelect, (attValue.width / 2) - (5 * charNum), 0);
         game.buttonArray.push(attValue);
-        */ ////////////////////////////////////////////////////////////
+        */ /////////////////////////////////////////////////
         
-        ////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////
         //UP ARROW
-        ////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////
         /*
         attButton = new Button(change_attribute, [i, "pos", attValue]);
         attButton.setSrc("image_resources/up25x25.png");
@@ -269,9 +269,9 @@ function buttonSetup() {
         }
         attButton.setText(att, 7, -25);
         attValue.addChild(attButton);
-        */ ////////////////////////////////////////////////////////////
+        */ /////////////////////////////////////////////////
         
-        ////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////
         //DOWN ARROW
         /*
         attButton = new Button(change_attribute, [i, "neg", attValue]);
@@ -279,18 +279,18 @@ function buttonSetup() {
         
         attButton.setSpriteAttributes(126, (240 + 50 * i), 25, 25, "attribute" + i);
         attValue.addChild(attButton);
-        */ ////////////////////////////////////////////////////////////
+        */ /////////////////////////////////////////////////
     //}
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //ANIMAL IMAGE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
     animalImage.setSrc(ui_values.animalGifAry[0], "images/nwalk1.jpg");
     //console.log(animalImage.anim);
     animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
 
     //Mute Button
     function mB() {soundMan.mute_music()}
@@ -300,18 +300,36 @@ function buttonSetup() {
     muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
     game.buttonArray.push(muteButton);
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //EVENT LOG
-    ////////////////////////////////////////////////////////////
-    var eventLogPane = new Button();
-    eventLogPane.setSrc("image_resources/ClearSquare.png");
-    eventLogPane.setSpriteAttributes(527, 30, 452, 214, "eventLog");
-    game.buttonArray.push(eventLogPane);
-    
-    eventLogPane.hasTextValue = true;
-    charNum = "Attr".length;
-    eventLogPane.setText("1507", (attNum.width / 2) - (5 * charNum), 0);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    for (i = 0; i < 5; i++) {
+        var eventLogPane = new Button();
+        eventLogPane.setSrc("image_resources/ClearSquare.png");
+        eventLogPane.setSpriteAttributes(527, (40*i)+30, 452, 54, "eventLog");
+        game.buttonArray.push(eventLogPane);
+
+        eventLogPane.hasTextValue = true;
+        eventLogPane.fontSize = '18px';
+        /*
+        evtStr = "Hello world, this is an event. Now this is a very long event" + "\n" + "that will likely go off the page.";
+        //;
+        //evtStr = dataTracker.getEventString();
+        console.log(charNum = evtStr.length);
+        eventLogPane.setText(evtStr, 0, 0);
+        */
+        //var testRef = {foo: eventLogAry[i]}
+        (function(i) {
+            var testRef = eventLogAry[i];
+            console.log(testRef);
+            eventLogPane.update = function() {
+                if (eventLogAry[i]) {
+                    this.text = eventLogAry[i];
+                } else {this.text = "";}
+            }
+        })(i);
+    }
+  /////////////////////////////////////////////////
 }
 
 /* change_attribute() - For changing attributes up or down. 
@@ -449,8 +467,9 @@ function spawn_animal() {
         game.push(animal);
         break;
     }
-    stepCount -= 100;
+
     soundMan.click.play()
+    stepCount -= 100;
 }
 
 //Small utility function that converts a number to a string and returns the length. 
