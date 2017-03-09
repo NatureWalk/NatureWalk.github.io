@@ -21,7 +21,7 @@ background.setSrc("image_resources/Book(open).png");
 background.width = w;
 background.height = h;
 
-land = new landscape() 
+land = new landscape(); 
 
 var screenMan = new ScreenManager();
 

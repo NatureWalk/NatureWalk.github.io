@@ -10,13 +10,13 @@ var landscape = function() {
 	this.layer1.width = this.layer2.width = this.layer3.width = 1280
 	this.layer1.height = this.layer2.height = this.layer3.height =  200
 
-	this.layer1.y = 100
-	this.layer2.y = 150
-	this.layer3.y = 200
+	this.layer1.y = 200
+	this.layer2.y = 230
+	this.layer3.y = 260
 
 	this.draw = function() {
 		ctx.save()
-		ctx.rect(512, 0, 495,578);
+		ctx.rect(517, 0, 475, 578);
 		ctx.clip()
 
 		var tempx = this.layer1.x
