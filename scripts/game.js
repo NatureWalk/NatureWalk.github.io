@@ -1,6 +1,6 @@
 
 
-//fitbit_start(); //Make the fitbit work before anything else.
+fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -9,7 +9,7 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-//soundMan.music.play()
+soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
