@@ -197,7 +197,8 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
-    this.text; 
+    this.text;
+    this.fontSize;
     this.textSrc;
     this.textOffsetX = 0;
     this.textOffsetY = 0;
@@ -213,7 +214,7 @@ function Button(_function, _params) {
     this.func = _function;
     this.params = _params;
     this.isToggleButton = false;
-    this.tooltip = false;
+    this.hasTextValue = false;
     
     //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
@@ -248,8 +249,10 @@ Button.prototype.draw = function () {
     } else {
         ctx.drawImage(
             this.image, 
-            (this.frameIndex % 7) * this.width, 
-            Math.floor(this.frameIndex/7) * this.height, 
+            //(this.frameIndex % 7) * this.width, 
+            //Math.floor(this.frameIndex/7) * this.height, 
+            (this.frameIndex % this.srcCols) * this.width, 
+            Math.floor(this.frameIndex/this.srcCols) * this.height,
             this.width, 
             this.height, 
             this.x,
@@ -257,8 +260,8 @@ Button.prototype.draw = function () {
             this.width,
             this.height);
     }
-    if ((this.hovered && this.text !== undefined) || this.tooltip){
-        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY);
+    if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
     }
     this.drawChildren();
 }

@@ -16,18 +16,22 @@ var ui_values = {
     animalAry: ["Bird", "Deer", "Frog", "Bunny"],
     animalSrcAry: [("image_resources/Icon_Bird.png"),
                   ("image_resources/Icon_Deer.png"),
-                  ("image_resources/frogpng_1024_noAlpha.png"),
-                  ("image_resources/Icon_Rabbit.jpeg"),
+                  ("image_resources/Icon_Frog.png"),
+                  ("image_resources/Icon_Bunny.png"),
                   ("images/nwalk1.jpg")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
-    animalGifAry: [("image_resources/Icon_Bird.png"),
-                  ("image_resources/Icon_Deer.png"),
-                  ("image_resources/FrogSpriteSheet200_1400x1400.png"),
-                  ("image_resources/AnimBunny.gif")],
+    animalStaticAry: [("image_resources/Icon_Bird.png"),
+                      ("image_resources/Icon_Deer.png"),
+                      ("image_resources/FrogSpriteSheet200_1400x1400.png"),
+                      ("image_resources/AnimBunny.gif")],
 
+    animalWalkAry: [("image_resources/Icon_Bird.png"),
+                    ("image_resources/DeerWalk100_500x400.png"),
+                    ("image_resources/FrogSpriteSheet200_1400x1400.png"),
+                    ("image_resources/AnimBunny.gif")],
     currentAnimal: "Bird",
-    attributes: ["armor", "speed", "capacity", "lifespan"]
+    attributes: ["armor", "speed", "capacity", "lifespan"],
 };
 
 /* backgroundSetup() - For setting up, non-button elements of the canvas, like the map and the pane that holds all of the attributes. 
@@ -40,18 +44,19 @@ function backgroundSetup() {
     "use strict";
     var panes = [], i, j, attributesPane, subAttPane;
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //ATTRIBUTES PANE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     attributesPane = new Sprite();
-    attributesPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    attributesPane.setSpriteAttributes(76, 190, 400, 350, "attributesPane");
+    attributesPane.setSrc("image_resources/AttPane.png");
+    attributesPane.setSpriteAttributes(46, 170, 440, 380, "attributesPane");
     panes.push(attributesPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //UNLOCKABLES (change to buttons when we have the functionality)
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    /*
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {
             subAttPane = new Sprite();
@@ -61,16 +66,37 @@ function backgroundSetup() {
             panes.push(subAttPane);
         }
     }
-    ////////////////////////////////////////////////////////////
+    */
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
-    //MAP PANE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    //MAP PANE (No Longer in Use)
+    /////////////////////////////////////////////////
+    /*
     var mapPane = new Sprite();
     mapPane.setSrc("image_resources/Worn-Paper-Texture.png");
     mapPane.setSpriteAttributes(527, 30, 452, 514, "mapPane");
     panes.push(mapPane);
-    ////////////////////////////////////////////////////////////
+    */
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //STATS PANE
+    /////////////////////////////////////////////////
+    var statPane = new Sprite();
+    statPane.setSrc("image_resources/Worn-Paper-Texture.png");
+    statPane.setSpriteAttributes(75, 215, 110, 200, "statPane");
+    panes.push(statPane);
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //STAT VALUE PANE
+    /////////////////////////////////////////////////
+    var statPane = new Sprite();
+    statPane.setSrc("image_resources/Worn-Paper-Texture.png");
+    statPane.setSpriteAttributes(195, 215, 50, 200, "statPane");
+    panes.push(statPane);
+    /////////////////////////////////////////////////
     
     return panes;
 }
@@ -96,38 +122,61 @@ function buttonSetup() {
     game.buttonArray.push(end); 
     */
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //DEV ATTRIBUTES
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var devAttributes = new Button(dataTracker.openDevWindow);
     devAttributes.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
     devAttributes.setSpriteAttributes(20, 530, 30, 30, "devWindow");
     game.buttonArray.push(devAttributes);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //STEP PANE (but it's a button)
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var stepPane = new Button();
-    stepPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    stepPane.setSpriteAttributes(76, 30, 400, 50, "stepPane");
-    stepPane.tooltip = true;
+    stepPane.setSrc("image_resources/StepPaper.png");
+    stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
+    stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 10; }
+    if (stepCount === undefined) { stepCount = 100; }
     
-    stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
+    stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
         this.text = stepCount + " Steps";
+        this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
     };
     game.buttonArray.push(stepPane);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    //TRACKS PANE (but it's a button)
+    /////////////////////////////////////////////////
+    var trackPane = new Button();
+    trackPane.setSrc("image_resources/TracksPaper.png");
+    trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
+    trackPane.hasTextValue = true;
+    
+    //Arbitrary step setup if the player does not have any steps yet. 
+    if (trackPane === undefined) { dataObj.animalTracks = 100; }
+    
+    trackPane.setText(dataObj.animalTracks + " Tracks", (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Steps"), trackPane.height / 4);
+    
+    //Changeing the button's update function to get the step count every frame. 
+    trackPane.update = function() {
+        this.text = dataObj.animalTracks + " Tracks";
+        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Tracks")
+        this.textOffsetY = 10;
+    };
+    game.buttonArray.push(trackPane);
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
     //ANIMAL ICONS
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     var animalIcon, i;
     for (i = 0; i < 4; i++) {
         animalIcon = new Button(change_image, [i]);
@@ -139,18 +188,147 @@ function buttonSetup() {
         animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
         game.buttonArray.push(animalIcon);
     }
+    /////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////
+    var attButton, attValue, animalImage;
+    for (i = 0; i < 6; i++) {
+        attValue = new Button(function () {});
+        attValue.setSrc("image_resources/ClearSquare.png");
+        
+        attValue.setSpriteAttributes(91, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        
+        attValue.hasTextValue = true;
+        
+        //Using an animal from ui_values, therefore must use toLowerCase().
+       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
+        charNum = "Att".length;
+        attValue.setText("Att", (attValue.width / 2) - (5 * charNum), 0);
+        game.buttonArray.push(attValue);
+        
+        attNum = new Button(function () {});
+        attNum.setSrc("image_resources/ClearSquare.png");
+        
+        attNum.setSpriteAttributes(178, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        
+        attNum.hasTextValue = true;
+        
+        //Using an animal from ui_values, therefore must use toLowerCase().
+       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
+        charNum = "Attr".length;
+        attNum.setText("1507", (attNum.width / 2) - (5 * charNum), 0);
+        game.buttonArray.push(attNum);
+    }
+    
+    /////////////////////////////////////////////////
     //ANIMAL IMAGE
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalGifAry[0], "images/nwalk1.jpg");
-    console.log(animalImage.anim);
+    animalImage.setSrc(ui_values.animalStaticAry[0], "images/nwalk1.jpg");
+    //console.log(animalImage.anim);
     animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+
+    //Mute Button
+    function mB() {soundMan.mute_music()}
+
+    muteButton = new Button(mB);
+    muteButton.setSrc("images/mute.jpg")
+    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
+    game.buttonArray.push(muteButton);
+    
+    /////////////////////////////////////////////////
+    //EVENT LOG
+    /////////////////////////////////////////////////
+    for (i = 0; i < 5; i++) {
+        var eventLogPane = new Button();
+        eventLogPane.setSrc("image_resources/ClearSquare.png");
+        eventLogPane.setSpriteAttributes(527, (40*i)+30, 452, 54, "eventLog");
+        game.buttonArray.push(eventLogPane);
+
+        eventLogPane.hasTextValue = true;
+        eventLogPane.fontSize = '18px';
+        /*
+        evtStr = "Hello world, this is an event. Now this is a very long event" + "\n" + "that will likely go off the page.";
+        //;
+        //evtStr = dataTracker.getEventString();
+        console.log(charNum = evtStr.length);
+        eventLogPane.setText(evtStr, 0, 0);
+        */
+        //var testRef = {foo: eventLogAry[i]}
+        (function(i) {
+            var testRef = eventLogAry[i];
+            console.log(testRef);
+            eventLogPane.update = function() {
+                if (eventLogAry[i]) {
+                    this.text = eventLogAry[i];
+                } else {this.text = "";}
+            }
+        })(i);
+    }
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //ANIMAL ANIMATIONS
+    /////////////////////////////////////////////////
+    for (i = 0; i < 4; i++) {
+        var animalAnimation = new Button();
+        animalAnimation.setSrc(ui_values.animalWalkAry[1],                              ui_values.animalWalkAry[1],                              true);
+        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
+        game.buttonArray.push(animalAnimation);
+
+        animalAnimation.setupAnim(16, 4, 5);
+    }
+    /////////////////////////////////////////////////
 }
 
+/* change_attribute() - For changing attributes up or down. 
+ * Params:
+ *    index - index of the attribute being changed.
+ *    sign  - "pos" or "neg" determine if the attribute goes up or down.
+ *    attValue - A reference the the attribute that is being modified. 
+               - Could possibly change it to just passing in the parent's 'text' value. 
+ * Returns - None. 
+*/
+/*
+function change_attribute(index, sign, attValue) {
+    
+    var attributeString = (ui_values.currentAnimal + "_").toLowerCase();
+    switch (index) {
+    case 0:
+        attributeString += "armor";
+        break;
+    case 1:
+        attributeString += "speed";
+        break;
+    case 2:
+        attributeString += "capacity";
+        break;
+    case 3:
+        attributeString += "lifespan";
+        break;
+    }
+    
+    if (sign === "neg") {
+        if (animal_data[attributeString] < 1) {
+            return;
+        }
+        animal_data[attributeString]--;
+        attValue.text = animal_data[attributeString];
+        stepCount+=(10*animal_data[attributeString]);
+    } else {
+        if (stepCount - (10*(animal_data[attributeString]+1)) <= 0) {
+            return;
+        }
+        animal_data[attributeString]++;
+        attValue.text = animal_data[attributeString];
+        stepCount-=(10*animal_data[attributeString]);   
+    }
+    attValue.text = animal_data[attributeString];
+
+    soundMan.click.play()
+}
+*/
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
@@ -159,11 +337,10 @@ function buttonSetup() {
 */
 function change_image(animal_index) {
     var ani_imgRef;
-    //Making the source gifs for the spawn button image. 
-    aniSrc = ui_values.animalGifAry;
+    aniSrc = ui_values.animalStaticAry;
     game.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
-            console.log(aniSrc[animal_index]);
+            //DEBUG: console.log(aniSrc[animal_index]);
             if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
                 elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
                 elem.setupAnim(44, 7, 7);
@@ -184,6 +361,7 @@ function change_image(animal_index) {
     
     //Setting current animal so we all know what we're referencing. 
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
+    soundMan.click.play()
 }
 
 /* spawn_animal() - For spawning animals on the map. 
@@ -192,7 +370,10 @@ function change_image(animal_index) {
  * Notes: Spawn location determination should be done here, unless there's another function that can specify it. 
 */
 function spawn_animal() {
-    
+   
+    if (stepCount - 100 < 0) {
+        return;
+    }    
     //Spawn the proper animal. 
     switch (ui_values.currentAnimal) {
     case "Bird":
@@ -208,6 +389,9 @@ function spawn_animal() {
         controller.addAnimal('bunny');
         break;
     }
+
+    soundMan.click.play()
+    stepCount -= 100;
 }
 
 //Small utility function that converts a number to a string and returns the length. 

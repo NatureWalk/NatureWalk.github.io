@@ -19,8 +19,8 @@ Spawner.prototype.spawnRandomObject = function() {
     // create the new object
     var object = new powerup();
     object.multiplier = randomNum(2,10);
-    object.setSrc("images/Coin.png");
-    object.button.setSrc("images/Coin.png","images/Coin.png")
+    object.setSrc("images_resources/Coin.png");
+    object.button.setSrc("images_resources/Coin.png","images_resources/Coin.png")
     object.x = object.button.x = Math.random() * (canvas.width/2) + (canvas.width/2)
     object.y = object.button.y = Math.random() * (canvas.height - 30) + 15
     object.width = object.button.width = 20;
