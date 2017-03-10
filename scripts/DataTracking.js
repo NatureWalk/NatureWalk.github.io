@@ -11,6 +11,7 @@ var dataObj = {
     timeAccelFactor: 1,
     devSignIn: false,
     computationReady: false,
+    eventCounter: 0,
 };
 
 var badEvents = [
@@ -24,9 +25,7 @@ var goodEvents = [
     "meadow", "mating", "preservation"
 ];
 
-var eventLogAry = [
-    "Hello", "World", "!!!!!", "Blah"
-];
+var eventLogAry = [];
 
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
@@ -139,7 +138,7 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        //console.log(evtRoll);
+        console.log(++dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 8;
     }
@@ -164,6 +163,9 @@ function everyHour(hours) {
 }
 
 function eventChooser(evtRoll) {
+    if (eventLogAry.length === 5) {
+        eventLogAry.shift();
+    }
     //Good Event
     if (evtRoll > 70) {
         goodEventHandler(roll(100));
@@ -182,27 +184,33 @@ function goodEventHandler(evtRoll) {
     switch (true) {
         //Multiplier
         case evtRoll < 30:
-            console.log(goodEvents[0]);
+            //console.log(goodEvents[0]);
+            eventLogAry.push("You picked up a step multiplier.");
             break;
-        //Extra Steps
+        //Extra Tracks
         case evtRoll >= 30 && evtRoll < 55:
-            console.log(goodEvents[1]);
+            //console.log(goodEvents[1]);
+            eventLogAry.push("You find some animal tracks!");
             break;
         //Fountain of Youth
         case evtRoll >= 55 && evtRoll < 60:
-            console.log(goodEvents[2]);
+            //console.log(goodEvents[2]);
+            eventLogAry.push("Your animals drink from the fountain of youth!");
             break;
         //Restful Meadow
         case evtRoll >= 60 && evtRoll < 75:
-            console.log(goodEvents[3]);
+            //console.log(goodEvents[3]);
+            eventLogAry.push("This meadow looks like a good place to rest.");
             break;
         //Mating Season
         case evtRoll >= 75 && evtRoll < 85:
-            console.log(goodEvents[4]);
+            //console.log(goodEvents[4]);
+            eventLogAry.push("It's mating season for your animals!");
             break;
         //Wildlife Preservation Attempts
         case evtRoll >= 85 && evtRoll <= 100:
-            console.log(goodEvents[5]);
+            //console.log(goodEvents[5]);
+            eventLogAry.push("Wildlife preservationists are nearby.");
             break;
     }
 }
@@ -211,71 +219,88 @@ function badEventHandler(evtRoll) {
     switch (true) {
         //Predator
         case evtRoll < 35:
-            console.log(badEvents[0]);
+            //console.log(badEvents[0]);
+            eventLogAry.push("A predator attacked your animals!");
             break;
         //River
         case evtRoll >=35 && evtRoll < 43:
-            console.log(badEvents[1]);
+            //console.log(badEvents[1]);
+            eventLogAry.push("Your animals try to cross a river.");
             break;
         //Ravine
         case evtRoll >=43 && evtRoll < 51:
-            console.log(badEvents[2]);
+            //console.log(badEvents[2]);
+            eventLogAry.push("There's a ravine ahead of you.");
             break;
         //Winter
         case evtRoll >=51 && evtRoll < 57:
-            console.log(badEvents[3]);
+            //console.log(badEvents[3]);
+            eventLogAry.push("It's a cold winter night.");
             break;
         //Tree
         case evtRoll >=57 && evtRoll < 63:
-            console.log(badEvents[4]);
+            //console.log(badEvents[4]);
+            eventLogAry.push("You come across a fallen tree.");
             break;
         //Mudslide
         case evtRoll >=63 && evtRoll < 66:
-            console.log(badEvents[5]);
+            //console.log(badEvents[5]);
+            eventLogAry.push("Look out! A mudslide!");
             break;
         //Lightning
         case evtRoll >=66 && evtRoll < 67:
-            console.log(badEvents[6]);
+            //console.log(badEvents[6]);
+            eventLogAry.push("A storm is coming.");
             break;
         //Tornado
         case evtRoll >=67 && evtRoll < 68:
-            console.log(badEvents[7]);
+            //console.log(badEvents[7]);
+            eventLogAry.push("A tornado approaches!");
             break;
         //Sinkhole
         case evtRoll >=68 && evtRoll < 71:
-            console.log(badEvents[8]);
+            //console.log(badEvents[8]);
+            eventLogAry.push("There's a sinkhole to avoid.");
             break;
         //Forest Fire
         case evtRoll >=71 && evtRoll < 73:
-            console.log(badEvents[9]);
+            //console.log(badEvents[9]);
+            eventLogAry.push("An enormous fire is burning the forest!");
             break;
         //Drought
         case evtRoll >=73 && evtRoll < 75:
-            console.log(badEvents[10]);
+            //console.log(badEvents[10]);
+            eventLogAry.push("It's too dry, water is hard to find.");
             break;
         //Heat wave
         case evtRoll >=75 && evtRoll < 77:
-            console.log(badEvents[11]);
+            //console.log(badEvents[11]);
+            eventLogAry.push("A brutal heat wave washes over you.");
             break;
         //Flash flood
         case evtRoll >=77 && evtRoll < 80:
-            console.log(badEvents[12]);
+            //console.log(badEvents[12]);
+            eventLogAry.push("A sudden rain storm causes a flood!");
             break;
         //Meteor
         case evtRoll >=80 && evtRoll < 81:
-            console.log(badEvents[13]);
+            //console.log(badEvents[13]);
+            eventLogAry.push("There's a meteor falling from the sky!");
             break;
         //Volcano
         case evtRoll >=81 && evtRoll < 82:
-            console.log(badEvents[14]);
+            //console.log(badEvents[14]);
+            eventLogAry.push("A nearby volcano erupts!");
             break;
         //Hunters
         case evtRoll >=82 && evtRoll < 97:
-            console.log(badEvents[15]);
+            //console.log(badEvents[15]);
+            eventLogAry.push("There are some hunters nearby.");
             break;
         //Pollution
         case evtRoll >=97 && evtRoll <= 100:
-            console.log(badEvents[16]);
+            //console.log(badEvents[16]);
+            eventLogAry.push("This water looks especially dirty...");
             break;
     }
 }

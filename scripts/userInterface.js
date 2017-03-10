@@ -258,7 +258,7 @@ function buttonSetup() {
         //var testRef = {foo: eventLogAry[i]}
         (function(i) {
             var testRef = eventLogAry[i];
-            console.log(testRef);
+            //console.log(testRef);
             eventLogPane.update = function() {
                 if (eventLogAry[i]) {
                     this.text = eventLogAry[i];

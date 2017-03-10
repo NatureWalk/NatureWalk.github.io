@@ -21,11 +21,12 @@ background.setSrc("image_resources/Book(open).png");
 background.width = w;
 background.height = h;
 
-land = new landscape(); 
+//land = new landscape(); 
 
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
+//layerFix();
 //game.buttonArray = [];
 var panes = backgroundSetup();
 buttonSetup();
@@ -52,7 +53,8 @@ screenMan.push(game);
 //Runs when the game screen is loaded.
 game.init = function() {
     this.push(background);
-    this.push(land);
+    //this.push(land);
+    
     panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );

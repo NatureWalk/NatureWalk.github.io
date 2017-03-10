@@ -263,7 +263,7 @@ Button.prototype.draw = function () {
     if ((this.hovered && this.text !== undefined) || this.hasTextValue){
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
     }
-    this.drawChildren();
+    //this.drawChildren();
 }
 
 Button.prototype.drawChildren = function() {
