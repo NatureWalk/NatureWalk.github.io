@@ -139,69 +139,6 @@ function buttonSetup() {
         animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
         game.buttonArray.push(animalIcon);
     }
-    ////////////////////////////////////////////////////////////
-    
-    var attButton, attValue, animalImage;
-    for (i = 0; i < 4; i++) {
-        ////////////////////////////////////////////////////////////
-        //ATTVALUE
-        ////////////////////////////////////////////////////////////
-        /* The increment and decrement buttons are each children of the 
-        attValue they are incrementing/decrementing. 
-        This gives them access to the number they have to increment without needing a new update function. 
-        */
-        attValue = new Button(function () {});
-        attValue.setSrc("image_resources/Worn-Paper-Texture.png");
-        
-        attValue.setSpriteAttributes(166, (220 + 50 * i), 80, 40, "attribute_value" + i);
-        
-        attValue.tooltip = true;
-        
-        //Using an animal from ui_values, therefore must use toLowerCase().
-        var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = attSelect.toString().length;
-        attValue.setText(attSelect, (attValue.width / 2) - (5 * charNum), 0);
-        game.buttonArray.push(attValue);
-        ////////////////////////////////////////////////////////////
-        
-        ////////////////////////////////////////////////////////////
-        //UP ARROW
-        ////////////////////////////////////////////////////////////
-        attButton = new Button(change_attribute, [i, "pos", attValue]);
-        attButton.setSrc("image_resources/up25x25.png");
-        
-        attButton.setSpriteAttributes(96, (240 + 50 * i), 25, 25, "attribute" + i);
-        attButton.tooltip = true;
-        
-        //Visable stats are connected to the up arrow and not the down. 
-        var att;
-        switch (i) {
-        case 0:
-            att = "VITA"; //Changed armor to (VITA-lity)
-            break;
-        case 1:
-            att = "SPD";
-            break;
-        case 2:
-            att = "CAP";
-            break;
-        case 3:
-            att = "LIFE";
-            break;
-        }
-        attButton.setText(att, 7, -25);
-        attValue.addChild(attButton);
-        ////////////////////////////////////////////////////////////
-        
-        ////////////////////////////////////////////////////////////
-        //DOWN ARROW
-        attButton = new Button(change_attribute, [i, "neg", attValue]);
-        attButton.setSrc("image_resources/down25x25.png");
-        
-        attButton.setSpriteAttributes(126, (240 + 50 * i), 25, 25, "attribute" + i);
-        attValue.addChild(attButton);
-        ////////////////////////////////////////////////////////////
-    }
     
     ////////////////////////////////////////////////////////////
     //ANIMAL IMAGE
@@ -214,49 +151,6 @@ function buttonSetup() {
     ////////////////////////////////////////////////////////////
 }
 
-/* change_attribute() - For changing attributes up or down. 
- * Params:
- *    index - index of the attribute being changed.
- *    sign  - "pos" or "neg" determine if the attribute goes up or down.
- *    attValue - A reference the the attribute that is being modified. 
-               - Could possibly change it to just passing in the parent's 'text' value. 
- * Returns - None. 
-*/
-function change_attribute(index, sign, attValue) {
-    
-    var attributeString = (ui_values.currentAnimal + "_").toLowerCase();
-    switch (index) {
-    case 0:
-        attributeString += "armor";
-        break;
-    case 1:
-        attributeString += "speed";
-        break;
-    case 2:
-        attributeString += "capacity";
-        break;
-    case 3:
-        attributeString += "lifespan";
-        break;
-    }
-    
-    if (sign === "neg") {
-        if (animal_data[attributeString] < 1) {
-            return;
-        }
-        animal_data[attributeString]--;
-        attValue.text = animal_data[attributeString];
-        stepCount++;
-    } else {
-        if (stepCount <= 0) {
-            return;
-        }
-        animal_data[attributeString]++;
-        attValue.text = animal_data[attributeString];
-        stepCount--;   
-    }
-    attValue.text = animal_data[attributeString];
-}
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
@@ -298,36 +192,20 @@ function change_image(animal_index) {
  * Notes: Spawn location determination should be done here, unless there's another function that can specify it. 
 */
 function spawn_animal() {
-    var animal, mapPane;
-    //Find the map pane from the panes array. 
-    panes.forEach(function (elem) {
-        if (elem.name === "mapPane") {
-            mapPane = elem;
-        }
-    });
     
     //Spawn the proper animal. 
     switch (ui_values.currentAnimal) {
     case "Bird":
-        animal = new bird(600, 300);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('bird');
         break;
     case "Deer":
-        animal = new deer(600, 300);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('deer');
         break;
     case "Frog":
-        console.log("frog");
-        animal = new frog(600, 300);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('frog');
         break;
     case "Bunny":
-        animal = new bunny(600, 300);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('bunny');
         break;
     }
 }

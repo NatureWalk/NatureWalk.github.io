@@ -1,6 +1,6 @@
 
 
-fitbit_start(); //Make the fitbit work before anything else.
+//fitbit_start(); //Make the fitbit work before anything else.
 
 
 var canvas = document.getElementById("canvas");
@@ -26,6 +26,8 @@ var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
 
+controller = new master_controller();
+
 
 
 
@@ -46,20 +48,17 @@ canvas.addEventListener('mouseup', function(evt) {
     mouseman.findTarget(evt);   
 });
 
-var enemytest = new Enemy();
-enemytest.setSrc("TestEnemy.png");
-enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
 
 screenMan.push(game);
 
 game.init = function() {
     this.push(background);
+    this.push(controller);
     panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
     
-    this.push(new Spawner())
 } 
 
 function overlap(a, b) {
