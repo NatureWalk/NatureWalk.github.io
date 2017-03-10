@@ -29,31 +29,31 @@ for(var i = 0; i < animal_types.length; i++){
 
 animal_data = [];
 animal_data['frog'] = [];
-animal_data['frog']['lv_1'] = [1,1,1,1,1,1500];
-animal_data['frog']['lv_2'] = [2,2,2,2,2,1500];
-animal_data['frog']['lv_3'] = [3,3,3,3,3,1500];
-animal_data['frog']['lv_4'] = [4,4,4,4,4,1500];
-animal_data['frog']['lv_5'] = [5,5,5,5,5,1500];
+animal_data['frog'][1] = [1,1,1,1,1,1500];
+animal_data['frog'][2] = [2,2,2,2,2,1500];
+animal_data['frog'][3] = [3,3,3,3,3,1500];
+animal_data['frog'][4] = [4,4,4,4,4,1500];
+animal_data['frog'][5] = [5,5,5,5,5,1500];
 animal_data['bunny'] = [];
-animal_data['bunny']['lv_1'] = [1,1,1,1,1,1500];
-animal_data['bunny']['lv_2'] = [2,2,2,2,2,1500];
-animal_data['bunny']['lv_3'] = [3,3,3,3,3,1500];
-animal_data['bunny']['lv_4'] = [4,4,4,4,4,1500];
-animal_data['bunny']['lv_5'] = [5,5,5,5,5,1500];
+animal_data['bunny'][1] = [1,1,1,1,1,1500];
+animal_data['bunny'][2] = [2,2,2,2,2,1500];
+animal_data['bunny'][3] = [3,3,3,3,3,1500];
+animal_data['bunny'][4] = [4,4,4,4,4,1500];
+animal_data['bunny'][5] = [5,5,5,5,5,1500];
 animal_data['deer'] = [];
-animal_data['deer']['lv_1'] = [1,1,1,1,1,1500];
-animal_data['deer']['lv_2'] = [2,2,2,2,2,1500];
-animal_data['deer']['lv_3'] = [3,3,3,3,3,1500];
-animal_data['deer']['lv_4'] = [4,4,4,4,4,1500];
-animal_data['deer']['lv_5'] = [5,5,5,5,5,1500];
+animal_data['deer'][1] = [1,1,1,1,1,1500];
+animal_data['deer'][2] = [2,2,2,2,2,1500];
+animal_data['deer'][3] = [3,3,3,3,3,1500];
+animal_data['deer'][4] = [4,4,4,4,4,1500];
+animal_data['deer'][5] = [5,5,5,5,5,1500];
 animal_data['bird'] = [];
-animal_data['bird']['lv_1'] = [1,1,1,1,1,1500];
-animal_data['bird']['lv_2'] = [2,2,2,2,2,1500];
-animal_data['bird']['lv_3'] = [3,3,3,3,3,1500];
-animal_data['bird']['lv_4'] = [4,4,4,4,4,1500];
-animal_data['bird']['lv_5'] = [5,5,5,5,5,1500];
+animal_data['bird'][1] = [1,1,1,1,1,1500];
+animal_data['bird'][2] = [2,2,2,2,2,1500];
+animal_data['bird'][3] = [3,3,3,3,3,1500];
+animal_data['bird'][4] = [4,4,4,4,4,1500];
+animal_data['bird'][5] = [5,5,5,5,5,1500];
 
-console.log(animal_data);
+console.log(animal_data['bunny']);
 
 /* MASTER CONTROLLER OBJECT
  *
@@ -110,12 +110,11 @@ function master_controller() {
 			}
 		}
 		for(var i = 0; i < animal_types.length; i++){
-			if(this.pending_animals[animal_types[i]] != 0){
-				console.log(animal_types[i]);
+			if(this.pending_animals[animal_types[i]] != 0 || this.pending_loss[animal_types[i]] != 0){
 				console.log(this.pending_loss[animal_types[i]]);
 				this.animal_count[animal_types[i]] += this.pending_animals[animal_types[i]] + this.pending_loss[animal_types[i]];
 				for(var j = 0; j < this.pending_animals[animal_types[i]]; j++){
-					this.lifespans.push(this.levels[animal_types[i]][5], animal_types[i]);
+					this.lifespans.push(animal_data[animal_types[i]][this.levels[animal_types[i]]][5], animal_types[i]);
 				}
 			}
 		
@@ -153,7 +152,7 @@ function master_controller() {
 		if(this.timer == 15){
 			this.query();
 			this.timer = 0;	
-			console.log(this.animal_count);
+			console.log(this.lifespans);
 		}	
 		
 	}
