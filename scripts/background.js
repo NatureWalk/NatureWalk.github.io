@@ -12,7 +12,7 @@ var landscape = function() {
 
 	this.layer1.y = 200
 	this.layer2.y = 230
-	this.layer3.y = 260
+	this.layer3.y = 250
 
 	this.draw = function() {
 		ctx.save()
