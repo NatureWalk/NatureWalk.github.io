@@ -1,5 +1,5 @@
 
-/*var landscape = function() {
+var landscape = function() {
 	this.layer1 = new Sprite()
 	this.layer2 = new Sprite()
 	this.layer3 = new Sprite()
@@ -66,8 +66,9 @@
 		else if (this.layer3.x >= 512+this.layer3.width)
 			this.layer3.x = 512;
 	}
-}*/
+}
 
+/*
 layer1 = new Sprite();
 layer2 = new Sprite();
 layer3 = new Sprite();
@@ -121,3 +122,4 @@ function updateLayerFunction(layer, speed) {
     else if (layer.x >= 512+layer.width)
         layer.x = 512;
 }
+*/

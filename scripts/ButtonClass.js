@@ -261,7 +261,11 @@ Button.prototype.draw = function () {
             this.height);
     }
     if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+        if (this.text === undefined) {
+            //console.log(this.name);
+        } else {
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
+        }
     }
     //this.drawChildren();
 }

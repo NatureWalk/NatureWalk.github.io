@@ -8,6 +8,12 @@ var dataObj = {
     eventTrigger: 10,
     sessionStartTime: 0,
     animalCounter: [0, 0, 0, 0],
+    animalStats: ["Level", "Vitality", "Evasion", "Strength", "Dexterity", "Instinct", "Lifespan"],
+    BirdStats: [1, 1, 1, 1, 1, 1, 30],
+    DeerStats: [1, 1, 1, 1, 1, 1, 30],
+    FrogStats: [1, 1, 1, 1, 1, 1, 30],
+    BunnyStats: [1, 1, 1, 1, 1, 1, 30],
+    //animalLevels: [1,1,1,1],
     timeAccelFactor: 1,
     devSignIn: false,
     computationReady: false,
@@ -133,12 +139,17 @@ function timeHandler(timeAry) {
 
 function everySecond(seconds) {
     //console.log(seconds);
-    
+    var trackGen = 0;
+    dataObj.animalCounter.forEach(function(elem) {
+        trackGen += elem; 
+    })
+    dataObj.animalTracks += (10*trackGen);
+    console.log(seconds);
     if (dataObj.eventTrigger > 0) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        console.log(++dataObj.eventCounter);
+        //DEBUG: console.log(++dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 8;
     }
@@ -405,7 +416,11 @@ function commandManager() {
             break;
         //Give tracks to the player.
         case "trackerdown":
-            console.log(cmd);
+            var trackCheat = Number(prompt("Enter number of steps to add."));
+            if (typeof trackCheat === "number") {
+                dataObj.animalTracks += trackCheat;
+            } else { alert("Not a number."); }
+            
             break;
         //Increase the speed at which the game sees time passing.
         //Can go up to 3 times faster in frames speed. Cannot slow down even after speeding up. 

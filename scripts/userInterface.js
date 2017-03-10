@@ -14,11 +14,12 @@ var ui_values = {
     //when using these to acquire data from animal.js, 
     //make sure to use "toLowerCase()".
     animalAry: ["Bird", "Deer", "Frog", "Bunny"],
+    animalStatsAry: [dataObj.BirdStats, dataObj.DeerStats, dataObj.FrogStats, dataObj.BunnyStats],
     animalSrcAry: [("image_resources/Icon_Bird.png"),
                   ("image_resources/Icon_Deer.png"),
                   ("image_resources/Icon_Frog.png"),
                   ("image_resources/Icon_Bunny.png"),
-                  ("images/nwalk1.jpg")],
+                  ("image_resources/StepPaper.png")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
     animalStaticAry: [("image_resources/Icon_Bird.png"),
@@ -31,7 +32,8 @@ var ui_values = {
                     ("image_resources/FrogSpriteSheet200_1400x1400.png"),
                     ("image_resources/AnimBunny.gif")],
     currentAnimal: "Bird",
-    attributes: ["armor", "speed", "capacity", "lifespan"],
+    currentAnimalStats: dataObj.BirdStats,
+    //attributes: ["armor", "speed", "capacity", "lifespan"],
 };
 
 /* backgroundSetup() - For setting up, non-button elements of the canvas, like the map and the pane that holds all of the attributes. 
@@ -85,7 +87,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(75, 215, 110, 200, "statPane");
+    statPane.setSpriteAttributes(75, 215, 110, 163, "statPane");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -94,7 +96,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(195, 215, 50, 200, "statPane");
+    statPane.setSpriteAttributes(195, 215, 50, 163, "statVals");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -140,7 +142,7 @@ function buttonSetup() {
     stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 100; }
+    if (stepCount === undefined) { stepCount = 33421; }
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
@@ -177,53 +179,109 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //ANIMAL ICONS
     /////////////////////////////////////////////////
-    var animalIcon, i;
+    var animalIcon, i, animalCount;
     for (i = 0; i < 4; i++) {
         animalIcon = new Button(change_image, [i]);
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
-        animalIcon.setSpriteAttributes((96 +(100*i)), 110, 60, 60, "animal_icon" + i);
+        animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
         
         animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
         game.buttonArray.push(animalIcon);
+        
+        animalCount = new Button(function() {})
+        animalCount.setSrc("image_resources/ClearSquare.png");
+        animalCount.setSpriteAttributes((111 +(100*i)), 125, 60, 60, "animal_count" + i);
+        animalCount.hasTextValue = true;
+        
+        (function(i) {
+            
+            //var val = testRef[0];
+            //var charNum = numberLen(testRef);
+            //console.log(testRef);
+            //console.log(val);
+            animalCount.update = function() {
+                //console.log(ui_values.currentAnimalStats[i])
+             var testRef = dataObj.animalCounter[i];
+             var charNum = numberLen(testRef);  this.setText(dataObj.animalCounter[i], (animalCount.width / 2) - (5 * charNum), 0);
+                //console.log(attNum.text);                 
+            }
+        })(i);
+        //animalCount.hasTextValue = true;
+        //animalCount.setText(dataObj.animalCounter[i], (5-dataObj.animalCounter[i].length)*5, -24)
+        game.buttonArray.push(animalCount);
+        
     }
     /////////////////////////////////////////////////
-    
+    //ATTRIBUTES AND ATTRIBUTE VALUES
+    /////////////////////////////////////////////////
     var attButton, attValue, animalImage;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 7; i++) {
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
-        attValue.setSpriteAttributes(91, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        attValue.setSpriteAttributes(86, (215 + 23 * i), 80, 40, "attribute_value" + i);
         
         attValue.hasTextValue = true;
+        attValue.fontSize = '18px';
         
         //Using an animal from ui_values, therefore must use toLowerCase().
        // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = "Att".length;
-        attValue.setText("Att", (attValue.width / 2) - (5 * charNum), 0);
+        charNum = dataObj.animalStats[i].length;
+        attValue.setText(dataObj.animalStats[i], 0, 0);
         game.buttonArray.push(attValue);
         
+        //ATTRIBUTE NUMBER
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
-        attNum.setSpriteAttributes(178, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        attNum.setSpriteAttributes(183, (215 + 23 * i), 80, 40, "attribute_value" + i);
         
         attNum.hasTextValue = true;
+        attNum.fontSize = '18px';
         
-        //Using an animal from ui_values, therefore must use toLowerCase().
-       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = "Attr".length;
-        attNum.setText("1507", (attNum.width / 2) - (5 * charNum), 0);
+        
+        (function(i) {
+            
+            //var val = testRef[0];
+            //var charNum = numberLen(testRef);
+            //console.log(testRef);
+            //console.log(val);
+            attNum.update = function() {
+                //console.log(ui_values.currentAnimalStats[i])
+             var testRef = ui_values.currentAnimalStats[i];
+             var charNum = numberLen(testRef);  this.setText(ui_values.currentAnimalStats[i], (attNum.width / 2) - (5 * charNum), 0);
+                //console.log(attNum.text);                 
+            }
+        })(i);
         game.buttonArray.push(attNum);
     }
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //UPGRADE BUTTON
+    /////////////////////////////////////////////////
+    var upgradeBtn;
+    upgradeBtn = new Button(function() {
+        upgrade_animal();
+    });
+    upgradeBtn.setSrc("image_resources/Worn-Paper-Texture.png", "image_resources/StepPaper.png");
+
+    upgradeBtn.setSpriteAttributes(76, 385, 170, 30, "attribute_value" + i);
+
+    upgradeBtn.hasTextValue = true;
+    upgradeBtn.fontSize = '28px';
+    charnum = "upgrade".length;
+    upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (7 * charNum), -2);
+    game.buttonArray.push(upgradeBtn);    
+    /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //ANIMAL IMAGE
     /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalStaticAry[0], "images/nwalk1.jpg");
+    animalImage.setSrc(ui_values.animalStaticAry[0], "image_resources/StepPaper.png");
     //console.log(animalImage.anim);
     animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
@@ -273,7 +331,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     for (i = 0; i < 4; i++) {
         var animalAnimation = new Button();
-        animalAnimation.setSrc(ui_values.animalWalkAry[1],                              ui_values.animalWalkAry[1],                              true);
+        animalAnimation.setSrc(ui_values.animalWalkAry[1],                              ui_values.animalWalkAry[1], true);
         animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
         game.buttonArray.push(animalAnimation);
 
@@ -361,6 +419,7 @@ function change_image(animal_index) {
     
     //Setting current animal so we all know what we're referencing. 
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
+    ui_values.currentAnimalStats = ui_values.animalStatsAry[animal_index];
     soundMan.click.play()
 }
 
@@ -369,8 +428,184 @@ function change_image(animal_index) {
  * Returns: None. 
  * Notes: Spawn location determination should be done here, unless there's another function that can specify it. 
 */
-function spawn_animal() {
+function upgrade_animal() {
+    if (dataObj.animalTracks - (ui_values.currentAnimalStats[0] * 100) < 0) {
+        return;
+    } else {
+        dataObj.animalTracks -= (ui_values.currentAnimalStats[0] * 100);
+    }
+    switch (ui_values.currentAnimal) {
+        case 'Bird':
+            dataObj.BirdStats[0]+=1;
+            //dataObj.BirdStats[6]+=20;
+            break;
+        case 'Deer':
+            dataObj.DeerStats[0]+=1;
+            //dataObj.DeerStats[6]+=40;
+            break;
+        case 'Frog':
+            dataObj.FrogStats[0]+=1;
+            //dataObj.FrogStats[6]+=15;
+            break;
+        case 'Bunny':
+            dataObj.BunnyStats[0]+=1;
+            //dataObj.BunnyStats[6]+=30;
+            break;
+    }
+    updateStats();
 }
+
+function spawn_animal() {
+    if (stepCount - 100 < 0) {
+        return;
+    } else {
+        stepCount -= 100;
+    }
+    switch (ui_values.currentAnimal) {
+        case 'Bird':
+            dataObj.animalCounter[0]++;
+            break;
+        case 'Deer':
+            dataObj.animalCounter[1]++;
+            break;
+        case 'Frog':
+            dataObj.animalCounter[2]++;
+            break;
+        case 'Bunny':
+            dataObj.animalCounter[3]++;
+            break;
+    }
+}
+
+function updateStats() {
+    switch (ui_values.currentAnimal) {
+        case 'Bird':
+            for (var i = 1; i < 7; i++) {
+                var stat = dataObj.animalStats[i]
+                switch (stat) {
+                    //Vitality
+                    case dataObj.animalStats[1]:
+                    dataObj.BirdStats[i] = Math.floor(Math.pow(dataObj.BirdStats[0], 1.75));
+                    break;
+                    //Evasion
+                    case dataObj.animalStats[2]:
+                    dataObj.BirdStats[i] = Math.floor(Math.pow(dataObj.BirdStats[0], 1.9));
+                    break;
+                    //Strength
+                    case dataObj.animalStats[3]:
+                    dataObj.BirdStats[i] = Math.floor(Math.pow(dataObj.BirdStats[0], 1.5));
+                    break;
+                    //Dexterity
+                    case dataObj.animalStats[4]:
+                    dataObj.BirdStats[i] = Math.floor(Math.pow(dataObj.BirdStats[0], 1.66));
+                    break;
+                    //Instinct
+                    case dataObj.animalStats[5]:
+                    dataObj.BirdStats[i] = Math.floor(Math.pow(dataObj.BirdStats[0], 1.8));
+                    break;
+                    //Lifespan
+                    case dataObj.animalStats[6]:
+                    dataObj.BirdStats[i] = Math.floor(dataObj.BirdStats[0] * 30);
+                    break;
+                }
+            }
+            break;
+        case 'Deer':
+            for (var i = 1; i < 7; i++) {
+                var stat = dataObj.animalStats[i]
+                switch (stat) {
+                    //Vitality
+                    case dataObj.animalStats[1]:
+                    dataObj.DeerStats[i] = Math.floor(Math.pow(dataObj.DeerStats[0], 1.85));
+                    break;
+                    //Evasion
+                    case dataObj.animalStats[2]:
+                    dataObj.DeerStats[i] = Math.floor(Math.pow(dataObj.DeerStats[0], 1.5));
+                    break;
+                    //Strength
+                    case dataObj.animalStats[3]:
+                    dataObj.DeerStats[i] = Math.floor(Math.pow(dataObj.DeerStats[0], 2.2));
+                    break;
+                    //Dexterity
+                    case dataObj.animalStats[4]:
+                    dataObj.DeerStats[i] = Math.floor(Math.pow(dataObj.DeerStats[0], 1.25));
+                    break;
+                    //Instinct
+                    case dataObj.animalStats[5]:
+                    dataObj.DeerStats[i] = Math.floor(Math.pow(dataObj.DeerStats[0], 1.66));
+                    break;
+                    //Lifespan
+                    case dataObj.animalStats[6]:
+                    dataObj.DeerStats[i] = Math.floor(dataObj.DeerStats[0] * 30);
+                    break;
+                }
+            }
+            break;
+        case 'Frog':
+            for (var i = 1; i < 7; i++) {
+                var stat = dataObj.animalStats[i]
+                switch (stat) {
+                    //Vitality
+                    case dataObj.animalStats[1]:
+                    dataObj.FrogStats[i] = Math.floor(Math.pow(dataObj.FrogStats[0], 1.66));
+                    break;
+                    //Evasion
+                    case dataObj.animalStats[2]:
+                    dataObj.FrogStats[i] = Math.floor(Math.pow(dataObj.FrogStats[0], 1.9));
+                    break;
+                    //Strength
+                    case dataObj.animalStats[3]:
+                    dataObj.FrogStats[i] = Math.floor(Math.pow(dataObj.FrogStats[0], 1.25));
+                    break;
+                    //Dexterity
+                    case dataObj.animalStats[4]:
+                    dataObj.FrogStats[i] = Math.floor(Math.pow(dataObj.FrogStats[0], 1.8));
+                    break;
+                    //Instinct
+                    case dataObj.animalStats[5]:
+                    dataObj.FrogStats[i] = Math.floor(Math.pow(dataObj.FrogStats[0], 1.8));
+                    break;
+                    //Lifespan
+                    case dataObj.animalStats[6]:
+                    dataObj.FrogStats[i] = Math.floor(dataObj.FrogStats[0] * 30);
+                    break;
+                }
+            }
+            break;
+        case 'Bunny':
+            for (var i = 1; i < 7; i++) {
+                var stat = dataObj.animalStats[i]
+                switch (stat) {
+                    //Vitality
+                    case dataObj.animalStats[1]:
+                    dataObj.BunnyStats[i] = Math.floor(Math.pow(dataObj.BunnyStats[0], 1.75));
+                    break;
+                    //Evasion
+                    case dataObj.animalStats[2]:
+                    dataObj.BunnyStats[i] = Math.floor(Math.pow(dataObj.BunnyStats[0], 1.75));
+                    break;
+                    //Strength
+                    case dataObj.animalStats[3]:
+                    dataObj.BunnyStats[i] = Math.floor(Math.pow(dataObj.BunnyStats[0], 1.75));
+                    break;
+                    //Dexterity
+                    case dataObj.animalStats[4]:
+                    dataObj.BunnyStats[i] = Math.floor(Math.pow(dataObj.BunnyStats[0], 1.5));
+                    break;
+                    //Instinct
+                    case dataObj.animalStats[5]:
+                    dataObj.BunnyStats[i] = Math.floor(Math.pow(dataObj.BunnyStats[0], 1.33));
+                    break;
+                    //Lifespan
+                    case dataObj.animalStats[6]:
+                    dataObj.BunnyStats[i] = Math.floor(dataObj.BunnyStats[0] * 30);
+                    break;
+                }
+            }
+            break;
+    }
+}
+
 /*
 function spawn_animal() {
     var animal, mapPane, spawnX, spawnY;
