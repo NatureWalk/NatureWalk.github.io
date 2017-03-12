@@ -11,7 +11,7 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-//soundMan.music.play()
+soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
@@ -33,7 +33,7 @@ var game = new Screen(true, true);
 var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
-
+controller = new master_controller();
 console.log("game set up");
 
 canvas.addEventListener('mousemove', function(evt) {
@@ -46,23 +46,19 @@ canvas.addEventListener('mouseup', function(evt) {
     mouseman.findTarget(evt);   
 });
 
-var enemytest = new Enemy();
-enemytest.setSrc("TestEnemy.png");
-enemytest.setSpriteAttributes(100, 100, 50, 50, "enemy1");
 
 screenMan.push(game);
 
 //Runs when the game screen is loaded.
 game.init = function() {
     this.push(background);
+    this.push(controller);
     this.push(land);
     
     panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
     }
-    
-    //this.push(new Spawner())
 } 
 
 //Who doesn't like a random collision function

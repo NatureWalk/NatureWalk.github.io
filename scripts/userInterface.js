@@ -456,6 +456,7 @@ function upgrade_animal() {
 }
 
 function spawn_animal() {
+<<<<<<< HEAD
     if (stepCount - 100 < 0) {
         return;
     } else {
@@ -616,51 +617,31 @@ function spawn_animal() {
         }
     });
     
+=======
+   
+>>>>>>> origin/duncan
     if (stepCount - 100 < 0) {
         return;
-    }
-    spawnX = randomNum(550, 950);
-    spawnY = randomNum(50, 500);
-
-    
+    }    
     //Spawn the proper animal. 
     switch (ui_values.currentAnimal) {
     case "Bird":
-        dataObj.animalCounter[0]++;
-        //stepCount -= (50*ui_values.animalCounter[0]);
-        animal = new bird(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('bird');
         break;
     case "Deer":
-        dataObj.animalCounter[1]++;
-        //stepCount -= (100*ui_values.animalCounter[1]);
-        animal = new deer(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('deer');
         break;
     case "Frog":
-        //console.log("frog");
-        dataObj.animalCounter[2]++;
-        //stepCount += (50*ui_values.animalCounter[2]);
-            //console.log(ui_values.animalCounter[2]);
-        animal = new frog(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('frog');
         break;
     case "Bunny":
-        dataObj.animalCounter[3]++;
-        //stepCount -= (50*ui_values.animalCounter[3]);
-        animal = new bunny(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
+        controller.addAnimal('bunny');
         break;
     }
 
     soundMan.click.play()
     stepCount -= 100;
 }
-*/
 
 //Small utility function that converts a number to a string and returns the length. 
 //Good for text alignment, but not perfect. 
