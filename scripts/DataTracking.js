@@ -8,11 +8,11 @@ var dataObj = {
     eventTrigger: 10,
     sessionStartTime: 0,
     animalCounter: [0, 0, 0, 0],
-    animalStats: ["Level", "Vitality", "Evasion", "Strength", "Dexterity", "Instinct", "Lifespan"],
-    BirdStats: [1, 1, 1, 1, 1, 1, 30],
-    DeerStats: [1, 1, 1, 1, 1, 1, 30],
-    FrogStats: [1, 1, 1, 1, 1, 1, 30],
-    BunnyStats: [1, 1, 1, 1, 1, 1, 30],
+    animalStats: ["Vitality", "Evasion", "Strength", "Athletics", "Instinct", "Lifespan"],
+    //BirdStats: [1, 1, 1, 1, 1, 1, 30],
+    //DeerStats: [1, 1, 1, 1, 1, 1, 30],
+    //FrogStats: [1, 1, 1, 1, 1, 1, 30],
+    //BunnyStats: [1, 1, 1, 1, 1, 1, 30],
     //animalLevels: [1,1,1,1],
     timeAccelFactor: 1,
     devSignIn: false,
@@ -151,7 +151,7 @@ function everySecond(seconds) {
         var evtRoll = roll(100);
         //DEBUG: console.log(++dataObj.eventCounter);
         eventChooser(evtRoll);
-        dataObj.eventTrigger = roll(5) + 8;
+        dataObj.eventTrigger = roll(5);
     }
 }
 
