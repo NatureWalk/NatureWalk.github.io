@@ -471,6 +471,7 @@ function upgrade_animal() {
         dataObj.animalTracks -= (level * 100);
         controller.levelUp(ui_values.currentAnimal.toLowerCase());
     }
+    soundMan.click.play()
 }
 
 //Small utility function that converts a number to a string and returns the length. 
