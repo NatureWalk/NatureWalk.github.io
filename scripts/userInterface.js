@@ -72,17 +72,6 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //MAP PANE (No Longer in Use)
-    /////////////////////////////////////////////////
-    /*
-    var mapPane = new Sprite();
-    mapPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    mapPane.setSpriteAttributes(527, 30, 452, 514, "mapPane");
-    panes.push(mapPane);
-    */
-    /////////////////////////////////////////////////
-    
-    /////////////////////////////////////////////////
     //STATS PANE
     /////////////////////////////////////////////////
     var statPane = new Sprite();
@@ -247,19 +236,11 @@ function buttonSetup() {
         attNum.fontSize = '22px';
         
         (function(i) {
-            
-            //var val = testRef[0];
-            //var charNum = numberLen(testRef);
-            //console.log(testRef);
-            //console.log(val);
             attNum.update = function() {
-                //console.log(ui_values.currentAnimalStats[i])
                 var stats = (ui_values.currentAnimal).toLowerCase();
                 var testRef = controller.getAnimalData(stats);
-                //console.log(testRef);
                 var charNum = numberLen(testRef[i]);  
                 this.setText(testRef[i], (attNum.width / 2) - (5 * charNum), 0);
-                //console.log(attNum.text);                 
             }
         })(i);
         game.buttonArray.push(attNum);
@@ -488,7 +469,7 @@ function upgrade_animal() {
         return;
     } else {
         dataObj.animalTracks -= (level * 100);
-        controller.levelUp(ui_values.currentAnimal);
+        controller.levelUp(ui_values.currentAnimal.toLowerCase());
     }
 }
 

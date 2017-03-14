@@ -9,28 +9,25 @@ var dataObj = {
     sessionStartTime: 0,
     animalCounter: [0, 0, 0, 0],
     animalStats: ["Vitality", "Evasion", "Strength", "Athletics", "Instinct", "Lifespan"],
-    //BirdStats: [1, 1, 1, 1, 1, 1, 30],
-    //DeerStats: [1, 1, 1, 1, 1, 1, 30],
-    //FrogStats: [1, 1, 1, 1, 1, 1, 30],
-    //BunnyStats: [1, 1, 1, 1, 1, 1, 30],
-    //animalLevels: [1,1,1,1],
-    timeAccelFactor: 1,
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
 };
 
+//List of bad events. 
 var badEvents = [
     "predator", "river", "ravine", "winter", "treefall",
     "mudslide", "lightning", "tornado", "sinkhole",
     "forestfire", "drought", "heatwave", "flashflood", "meteor", "eruption", "hunter", "pollution"
 ];
 
+//List of good events. 
 var goodEvents = [
     "stepmulti", "extratracks", "clickable", "fountain", 
     "meadow", "mating", "preservation"
 ];
 
+//Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
 
 //Constructor function for the DataTracker Object.
@@ -137,14 +134,19 @@ function timeHandler(timeAry) {
     }
 }
 
+//Function that will be called every second. 
 function everySecond(seconds) {
-    //console.log(seconds);
+    //Track generation code. 
     var trackGen = 0;
     dataObj.animalCounter.forEach(function(elem) {
         trackGen += elem; 
     })
+    //Ten tracks per animal.
     dataObj.animalTracks += (10*trackGen);
-    console.log(seconds);
+    
+    //DEBUG: console.log(seconds);
+    //Decrement the event trigger timer. 
+    //When it hits 0, roll an event. 
     if (dataObj.eventTrigger > 0) {
         dataObj.eventTrigger--;
     } else {
@@ -155,6 +157,7 @@ function everySecond(seconds) {
     }
 }
 
+//Function that is called every thirty seconds. 
 function everyThirty(seconds) {
     var tracks = 0;
     for (var i = 0; i < dataObj.animalCounter.length; i++){
@@ -173,6 +176,7 @@ function everyHour(hours) {
     
 }
 
+//Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     if (eventLogAry.length === 5) {
         eventLogAry.shift();
@@ -191,6 +195,7 @@ function eventChooser(evtRoll) {
     }
 }
 
+//Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
     switch (true) {
         //Multiplier
@@ -226,6 +231,7 @@ function goodEventHandler(evtRoll) {
     }
 }
 
+//Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
     switch (true) {
         //Predator
@@ -316,6 +322,7 @@ function badEventHandler(evtRoll) {
     }
 }
 
+//Handles neutral events, takes in a new roll from the eventChooser.
 function noEventHandler(evtRoll) {
     switch (true) {
         //Predator
@@ -331,6 +338,7 @@ function noEventHandler(evtRoll) {
     }
 }
 
+//Rolls an integer between 1 and a number parameter. . 
 function roll(num) {
     return Math.round(Math.random()*num);
 }
