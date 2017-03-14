@@ -2,6 +2,7 @@
 //Object that can hold all of the session and player data.
 var dataObj = {
     animalTracks: 0,
+    timeAccelFactor: 1,
     numberOfSessions: 0,
     timePlayed: 0,
     everySecondTrig: 0,
@@ -56,6 +57,7 @@ DataTracker.prototype.openDevWindow = openDevWindow;
 */
 function sessionStart() {
     dataObj["sessionStartTime"] = Date.now();
+    //console.log(dataObj["sessionStartTime"]);
     //dataObj["numberOfSessions"] = getData(playerID, "numberOfSessions");
     //console.log("Time Played: " + dataObj["timePlayed"]);
 }
@@ -67,6 +69,7 @@ function sessionStart() {
 function getTime() {
     var currentTime = Date.now() * dataObj["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
+    //console.log("hello");
     //DEBUG: console.log(timeAry[1] + " Seconds\n" + timeAry[2] + " Minutes\n" + timeAry[3] + " Hours\n" + timeAry[4] + " Days");
     timeHandler(timeAry);
     
@@ -94,7 +97,6 @@ function readableTime(milliseconds) {
     timeRemainder = Math.floor(timeRemainder/24);
     //Days
     timeArray[4] = timeRemainder;
-    
     return timeArray;
 }
 
@@ -107,8 +109,8 @@ function readableTime(milliseconds) {
  * Returns - None. 
 */
 function timeHandler(timeAry) {
-    
     if (timeAry[1] === dataObj.everySecondTrig) {
+        console.log(dataObj.everySecondTrig);
         everySecond(timeAry[1]);
         if (timeAry[1] === 59) {
             dataObj.everySecondTrig = 0;
@@ -137,6 +139,7 @@ function timeHandler(timeAry) {
 //Function that will be called every second. 
 function everySecond(seconds) {
     //Track generation code. 
+    
     var trackGen = 0;
     dataObj.animalCounter.forEach(function(elem) {
         trackGen += elem; 
@@ -151,9 +154,9 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        //DEBUG: console.log(++dataObj.eventCounter);
+        console.log(++dataObj.eventCounter);
         eventChooser(evtRoll);
-        dataObj.eventTrigger = roll(5);
+        dataObj.eventTrigger = roll(5) + 8;
     }
 }
 
