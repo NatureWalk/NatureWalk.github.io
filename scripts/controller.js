@@ -122,10 +122,14 @@ function master_controller() {
 	
 	this.getAnimalData = function(animal){
 		stats = animal_data[animal];
-		for(var i = 0; i < stats.length; i++){
-			stats[i] = (Math.ceil(stats[i] * this.levels[animal]))
-		}
+		if(this.levels[animal] == 1){
+			return [1,1,1,1,1,1500];
+		} else {
+			for(var i = 0; i < stats.length; i++){
+				stats[i] = (Math.ceil(stats[i] * (this.levels[animal] - 1 )))
+			}
 		return stats;
+		}
 	}
 	
 	this.getAnimalCount = function(animal) {
