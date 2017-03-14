@@ -115,9 +115,11 @@ function master_controller() {
 		this.pending_animals[animal] += 1;
 	}
 	
-	this.removeAnimal = function(animal){
-		this.pending_loss[animal] -= 1;
-		this.lifespans.popNext(animal);
+	this.removeAnimal = function(animal, count){
+		this.pending_loss[animal] -= count;
+		for(var i = 0; i < count; i++){
+		    this.lifespans.popNext(animal);
+		}
 	}
 	
 	this.getAnimalData = function(animal){
@@ -134,6 +136,10 @@ function master_controller() {
 	
 	this.getAnimalCount = function(animal) {
 		return this.animal_count[animal];
+	}
+	
+	this.getAnimalLevel = function(animal){
+		return this.levels(animal);
 	}
 	
 	this.update = function() {
