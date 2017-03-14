@@ -24,6 +24,18 @@ function p_queue(){
 		}
 	}
 	
+	this.popNext = function(item){
+		for(var i = 0; i < this.data.length; i++){
+			if(this.data[i][1] == item){
+				var anim = this.data.splice(i,1);
+				this.length--;
+				return anim;
+			}
+		}
+		return null;
+	}
+	
+	
 	this.head = function(){
 		if(this.data[0] != undefined){
 			return this.data[0][0];
