@@ -3,6 +3,15 @@
  they should be changed to fractions of the screen width and height. 
 */
 
+/*JIM MEETING NOTES
+ * Add Title for selected animal. (DONE)
+ * Show level below animal icons. (DONE)
+ * Game Title somewhere on the page. 
+ * Better communication of events and effects of them. 
+ * Multiple different animals on screen, only show animals that the player has. 
+ * Player's permanent animal. 
+ */
+
 
 /* ui_values
 * List of various source arrays for image resources and data objects like the attribute list. 
@@ -471,7 +480,6 @@ function upgrade_animal() {
         dataObj.animalTracks -= (level * 100);
         controller.levelUp(ui_values.currentAnimal.toLowerCase());
     }
-    soundMan.click.play()
 }
 
 //Small utility function that converts a number to a string and returns the length. 
