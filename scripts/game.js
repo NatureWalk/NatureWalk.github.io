@@ -5,6 +5,8 @@
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+//ctx.textBaseline = 'middle';
+//ctx.textAlign = "center";
 var w = canvas.width;
 var h = canvas.height;
 
@@ -26,6 +28,7 @@ land = new landscape();
 var screenMan = new ScreenManager();
 
 var game = new Screen(true, true);
+//layerFix();
 //game.buttonArray = [];
 var panes = backgroundSetup();
 buttonSetup();
@@ -51,6 +54,7 @@ game.init = function() {
     this.push(background);
     this.push(controller);
     this.push(land);
+    
     panes.forEach( function(elem) {game.push(elem);} );
     if (game.buttonArray !== undefined) {
         game.buttonArray.forEach( function(elem) {game.push(elem);} );
