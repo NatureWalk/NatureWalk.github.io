@@ -3,13 +3,6 @@
  */
 
 
-var assoc = {
-	'lv_1': 1,
-	'lv_2': 2,
-	'lv_3': 3,
-	'lv_4': 4,
-	'lv_5': 5,
-}
 
 temp_storage = [];
 temp_storage['frog'] = 1;
@@ -28,30 +21,11 @@ for(var i = 0; i < animal_types.length; i++){
 
 
 animal_data = [];
-animal_data['frog'] = [];
-animal_data['frog'][1] = [1,1,1,1,1,1500];
-animal_data['frog'][2] = [2,2,2,2,2,1500];
-animal_data['frog'][3] = [3,3,3,3,3,1500];
-animal_data['frog'][4] = [4,4,4,4,4,1500];
-animal_data['frog'][5] = [5,5,5,5,5,1500];
-animal_data['bunny'] = [];
-animal_data['bunny'][1] = [1,1,1,1,1,1500];
-animal_data['bunny'][2] = [2,2,2,2,2,1500];
-animal_data['bunny'][3] = [3,3,3,3,3,1500];
-animal_data['bunny'][4] = [4,4,4,4,4,1500];
-animal_data['bunny'][5] = [5,5,5,5,5,1500];
-animal_data['deer'] = [];
-animal_data['deer'][1] = [1,1,1,1,1,1500];
-animal_data['deer'][2] = [2,2,2,2,2,1500];
-animal_data['deer'][3] = [3,3,3,3,3,1500];
-animal_data['deer'][4] = [4,4,4,4,4,1500];
-animal_data['deer'][5] = [5,5,5,5,5,1500];
-animal_data['bird'] = [];
-animal_data['bird'][1] = [1,1,1,1,1,1500];
-animal_data['bird'][2] = [2,2,2,2,2,1500];
-animal_data['bird'][3] = [3,3,3,3,3,1500];
-animal_data['bird'][4] = [4,4,4,4,4,1500];
-animal_data['bird'][5] = [5,5,5,5,5,1500];
+animal_data['frog'] = [2, 1.2, 1.5, 1.5, 1.2, 1.5];
+animal_data['bunny'] = [1.2, 1.5, 1.2, 2, 1.5, 1.5];
+animal_data['deer'] = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
+animal_data['bird'] = [1.2, 2, 1.2, 1.2, 2, 1.3];
+
 
 console.log(animal_data['bunny']);
 
@@ -111,8 +85,10 @@ function master_controller() {
 		}
 		for(var i = 0; i < animal_types.length; i++){
 			if(this.pending_animals[animal_types[i]] != 0 || this.pending_loss[animal_types[i]] != 0){
-				console.log(this.pending_loss[animal_types[i]]);
 				this.animal_count[animal_types[i]] += this.pending_animals[animal_types[i]] + this.pending_loss[animal_types[i]];
+				if(this.animal_count[animal_types[i]] < 0){
+					this.animal_count[animal_types[i]] = 0;
+				}
 				for(var j = 0; j < this.pending_animals[animal_types[i]]; j++){
 					this.lifespans.push(animal_data[animal_types[i]][this.levels[animal_types[i]]][5], animal_types[i]);
 				}
@@ -141,10 +117,19 @@ function master_controller() {
 	
 	this.removeAnimal = function(animal){
 		this.pending_loss[animal] -= 1;
+		this.lifespans.popNext(animal);
 	}
 	
 	this.getAnimalData = function(animal){
-		return animal_data[animal][this.levels[animal]];
+		stats = animal_data[animal];
+		for(var i = 0; i < stats.length; i++){
+			stats[i] = (Math.ceil(stats[i] * this.levels[animal]))
+		}
+		return stats;
+	}
+	
+	this.getAnimalCount = function(animal) {
+		return this.animal_count[animal];
 	}
 	
 	this.update = function() {
