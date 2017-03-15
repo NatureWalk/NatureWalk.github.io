@@ -10,7 +10,7 @@ temp_storage['bunny'] =1;
 temp_storage['bird'] = 1;
 temp_storage['deer'] = 1;
 console.log(temp_storage);
-animal_types = ['frog', 'bunny', 'bird', 'deer'];
+animal_types = ['bird', 'deer', 'frog', 'bunny'];
 console.log(animal_types);
 
 template_storage = temp_storage;
@@ -18,13 +18,17 @@ for(var i = 0; i < animal_types.length; i++){
 	template_storage[animal_types[i]] = 0;
 }
 
-
+/* ANIMAL PROGRESSION MULTIPLIERS
+ * 
+ * Ordering: Vitality, Evasion, Strength, Athletics, Instinct, Lifespan
+ * 
+ */
 
 animal_data = [];
-animal_data['frog'] = [2, 1.2, 1.5, 1.5, 1.2, 1.5];
-animal_data['bunny'] = [1.2, 1.5, 1.2, 2, 1.5, 1.5];
+animal_data['frog'] = [1.7, 1.2, 1.5, 1.5, 1.2, 1.5];
+animal_data['bunny'] = [1.2, 1.5, 1.2, 1.7, 1.5, 1.5];
 animal_data['deer'] = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
-animal_data['bird'] = [1.2, 2, 1.2, 1.2, 2, 1.3];
+animal_data['bird'] = [1.2, 1.7, 1.2, 1.2, 1.7, 1.3];
 
 
 console.log(animal_data['bunny']);
@@ -90,7 +94,8 @@ function master_controller() {
 					this.animal_count[animal_types[i]] = 0;
 				}
 				for(var j = 0; j < this.pending_animals[animal_types[i]]; j++){
-					this.lifespans.push(animal_data[animal_types[i]][this.levels[animal_types[i]]][5], animal_types[i]);
+					var life = this.getAnimalData(animal_types[i]);
+					this.lifespans.push(life[5], animal_types[i]);
 				}
 			}
 		
@@ -109,6 +114,7 @@ function master_controller() {
 	
 	this.levelUp = function(animal){
 		this.levels[animal] += 1;
+		console.log(this.levels);
 	}
 	
 	this.addAnimal = function(animal){
@@ -123,13 +129,21 @@ function master_controller() {
 	}
 	
 	this.getAnimalData = function(animal){
-		stats = animal_data[animal];
+		stats = animal_data[animal].slice();
 		if(this.levels[animal] == 1){
 			return [1,1,1,1,1,1500];
 		} else {
 			for(var i = 0; i < stats.length; i++){
-				stats[i] = (Math.ceil(stats[i] * (this.levels[animal] - 1 )))
-			}
+				if(i == 5){
+					multi = 1500
+				} else {
+				    var multi = 1;
+				}
+				for(var j = 0; j < this.levels[animal] - 1; j++){
+					multi = Math.ceil(multi * stats[i]);
+				}
+				stats[i] = multi;
+			} 
 		return stats;
 		}
 	}
@@ -139,15 +153,23 @@ function master_controller() {
 	}
 	
 	this.getAnimalLevel = function(animal){
-		return this.levels(animal);
+		return this.levels[animal];
+	}
+	
+	this.getAnimalTotal = function(animal){
+		var val = 0;
+		for(var i = 0; i < 4; i++){
+			val += this.getAnimalCount(animal_types[i]);
+		}
+		return val;
 	}
 	
 	this.update = function() {
 		this.timer++;
+		console.log(this.lifespans)
 		if(this.timer == 15){
 			this.query();
 			this.timer = 0;	
-			console.log(this.lifespans);
 		}	
 		
 	}
@@ -155,4 +177,11 @@ function master_controller() {
 	this.draw = function() {
 
 	}
+}
+
+function fact(x) {
+   if(x==0) {
+      return 1;
+   }
+   return x * fact(x-1);
 }

@@ -186,9 +186,9 @@ function buttonSetup() {
         
         (function(i) {
             animalCount.update = function() {
-                var testRef = dataObj.animalCounter[i];
+                var testRef = controller.getAnimalCount(animal_types[i]);
                 var charNum = numberLen(testRef);  
-                this.setText(dataObj.animalCounter[i], (animalCount.width / 2) - (5 * charNum), 0);
+                this.setText(controller.getAnimalCount(animal_types[i]), (animalCount.width / 2) - (5 * charNum), 0);
             }
         })(i);
         game.buttonArray.push(animalCount);
@@ -204,7 +204,7 @@ function buttonSetup() {
         
         (function(i) {
             animalLevel.update = function() {
-                var temp = ui_values.currentAnimal.toLowerCase();
+                var temp = ui_values.animalAry[i].toLowerCase();
                 var level = controller.levels[temp];
                 var charNum = numberLen(temp);  
                 this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
@@ -446,19 +446,15 @@ function spawn_animal() {
     if (stepCount - 100 < 0) {
         return;
     }
-    controller.addAnimal(ui_values.currentAnimal);
+    controller.addAnimal(ui_values.currentAnimal.toLowerCase());
     switch (ui_values.currentAnimal) {
         case 'Bird':
-            dataObj.animalCounter[0]++;
             break;
         case 'Deer':
-            dataObj.animalCounter[1]++;
             break;
         case 'Frog':
-            dataObj.animalCounter[2]++;
             break;
         case 'Bunny':
-            dataObj.animalCounter[3]++;
             break;
     }
     soundMan.click.play()
@@ -470,9 +466,7 @@ function spawn_animal() {
  * Returns: None. 
 */
 function upgrade_animal() {
-    var level = controller.levels[
-        (ui_values.currentAnimal).toLowerCase()
-    ];
+    var level = controller.getAnimalLevel((ui_values.currentAnimal).toLowerCase());
     console.log("Level is: " + level);
     if (dataObj.animalTracks - (level * 100) < 0) {
         return;
