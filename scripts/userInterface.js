@@ -38,8 +38,8 @@ var ui_values = {
 
     animalWalkAry: [("image_resources/Icon_Bird.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
-                    ("image_resources/FrogSpriteSheet200_1400x1400.png"),
-                    ("image_resources/AnimBunny.gif")],
+                    ("image_resources/FrogWalk100.png"),
+                    ("image_resources/Icon_Bunny.png")],
     currentAnimal: "Bird",
     //currentAnimalStats: dataObj.BirdStats,
     //attributes: ["armor", "speed", "capacity", "lifespan"],
@@ -347,11 +347,36 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     for (i = 0; i < 4; i++) {
         var animalAnimation = new Button();
-        animalAnimation.setSrc(ui_values.animalWalkAry[1],                              ui_values.animalWalkAry[1], true);
+        animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
         animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
-        game.buttonArray.push(animalAnimation);
-
-        animalAnimation.setupAnim(16, 4, 5);
+        
+        if (i==0) {
+            animalAnimation.setupAnim(0, 1, 1);
+        } else if (i==1) {
+            animalAnimation.setupAnim(16, 4, 5);
+        } else if (i==2) {
+            animalAnimation.setupAnim(21, 5, 5);
+        } else if (i==3) {
+            animalAnimation.setupAnim(0, 1, 1);
+        }
+        
+        
+        /*switch (i) {
+            case i==0:
+                animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i]);
+                break;
+            case i==1:
+                animalAnimation.setupAnim(16, 4, 5);
+                break;
+            case i==2:
+                animalAnimation.setupAnim(22, 5, 5);
+                break;
+            case i==3:
+                animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i]);
+                break;
+        }
+        */
+        game.buttonArray.push(animalAnimation); 
     }
     /////////////////////////////////////////////////
 }

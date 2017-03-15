@@ -242,6 +242,7 @@ Button.prototype.update = function () {
             this.tickCount = 0; 
         }
     }
+    //console.log(this.name + " " + this.frameIndex);
 }
 Button.prototype.draw = function () {
     if (!this.anim) {

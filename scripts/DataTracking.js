@@ -139,14 +139,7 @@ function timeHandler(timeAry) {
 //Function that will be called every second. 
 function everySecond(seconds) {
     //Track generation code. 
-<<<<<<< HEAD
-    
-    var trackGen = 0;
-    dataObj.animalCounter.forEach(function(elem) {
-        trackGen += elem; 
-    })
-=======
->>>>>>> origin/duncan
+
     //Ten tracks per animal.
     dataObj.animalTracks += (10*controller.getAnimalTotal());
     
