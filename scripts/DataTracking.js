@@ -8,11 +8,11 @@ var dataObj = {
     everySecondTrig: 0,
     eventTrigger: 10,
     sessionStartTime: 0,
-    animalCounter: [0, 0, 0, 0],
     animalStats: ["Vitality", "Evasion", "Strength", "Athletics", "Instinct", "Lifespan"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
+    timeAccelFactor: 1
 };
 
 //List of bad events. 
@@ -139,13 +139,16 @@ function timeHandler(timeAry) {
 //Function that will be called every second. 
 function everySecond(seconds) {
     //Track generation code. 
+<<<<<<< HEAD
     
     var trackGen = 0;
     dataObj.animalCounter.forEach(function(elem) {
         trackGen += elem; 
     })
+=======
+>>>>>>> origin/duncan
     //Ten tracks per animal.
-    dataObj.animalTracks += (10*trackGen);
+    dataObj.animalTracks += (10*controller.getAnimalTotal());
     
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
@@ -163,8 +166,8 @@ function everySecond(seconds) {
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
     var tracks = 0;
-    for (var i = 0; i < dataObj.animalCounter.length; i++){
-        tracks += (dataObj.animalCounter[i] * 30);
+    for (var i = 0; i < 4; i++){
+        tracks += (controller.getAnimalTotal() * 30);
     } 
     //DEBUG: console.log("tracks = " + tracks);
     eventLogAry.shift();
