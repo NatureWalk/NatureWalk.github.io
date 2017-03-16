@@ -3,6 +3,15 @@
  they should be changed to fractions of the screen width and height. 
 */
 
+/*JIM MEETING NOTES
+ * Add Title for selected animal. (DONE)
+ * Show level below animal icons. (DONE)
+ * Game Title somewhere on the page. 
+ * Better communication of events and effects of them. 
+ * Multiple different animals on screen, only show animals that the player has. 
+ * Player's permanent animal. 
+ */
+
 
 /* ui_values
 * List of various source arrays for image resources and data objects like the attribute list. 
@@ -14,20 +23,26 @@ var ui_values = {
     //when using these to acquire data from animal.js, 
     //make sure to use "toLowerCase()".
     animalAry: ["Bird", "Deer", "Frog", "Bunny"],
+    //animalStatsAry: [dataObj.BirdStats, dataObj.DeerStats, dataObj.FrogStats, dataObj.BunnyStats],
     animalSrcAry: [("image_resources/Icon_Bird.png"),
                   ("image_resources/Icon_Deer.png"),
                   ("image_resources/Icon_Frog.png"),
                   ("image_resources/Icon_Bunny.png"),
-                  ("images/nwalk1.jpg")],
+                  ("image_resources/StepPaper.png")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
-    animalGifAry: [("image_resources/Icon_Bird.png"),
-                  ("image_resources/Icon_Deer.png"),
-                  ("image_resources/FrogSpriteSheet200_1400x1400.png"),
-                  ("image_resources/AnimBunny.gif")],
+    animalStaticAry: [("image_resources/Icon_Bird.png"),
+                      ("image_resources/Icon_Deer.png"),
+                      ("image_resources/FrogSpriteSheet200_1400x1400.png"),
+                      ("image_resources/AnimBunny.gif")],
 
+    animalWalkAry: [("image_resources/Icon_Bird.png"),
+                    ("image_resources/DeerWalk100_500x400.png"),
+                    ("image_resources/FrogWalk100.png"),
+                    ("image_resources/Icon_Bunny.png")],
     currentAnimal: "Bird",
-    attributes: ["armor", "speed", "capacity", "lifespan"],
+    //currentAnimalStats: dataObj.BirdStats,
+    //attributes: ["armor", "speed", "capacity", "lifespan"],
 };
 
 /* backgroundSetup() - For setting up, non-button elements of the canvas, like the map and the pane that holds all of the attributes. 
@@ -45,35 +60,24 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     attributesPane = new Sprite();
     attributesPane.setSrc("image_resources/AttPane.png");
-    attributesPane.setSpriteAttributes(46, 170, 440, 380, "attributesPane");
+    attributesPane.setSpriteAttributes(46, 195, 440, 370, "attributesPane");
     panes.push(attributesPane);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //UNLOCKABLES (change to buttons when we have the functionality)
     /////////////////////////////////////////////////
-    /*
+    
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {
             subAttPane = new Sprite();
             //Sets the source of each pane to be the same as the animal icon. 
             subAttPane.setSrc(ui_values.animalSrcAry[1]);
-            subAttPane.setSpriteAttributes((101 + 60 * j), (435 + 50 * i), 40, 40, "unlockable");
+            subAttPane.setSpriteAttributes((101 + 60 * j), (455 + 50 * i), 40, 40, "unlockable");
             panes.push(subAttPane);
         }
     }
-    */
-    /////////////////////////////////////////////////
     
-    /////////////////////////////////////////////////
-    //MAP PANE (No Longer in Use)
-    /////////////////////////////////////////////////
-    /*
-    var mapPane = new Sprite();
-    mapPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    mapPane.setSpriteAttributes(527, 30, 452, 514, "mapPane");
-    panes.push(mapPane);
-    */
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -81,7 +85,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(75, 215, 110, 200, "statPane");
+    statPane.setSpriteAttributes(75, 245, 110, 163, "statPane");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -90,7 +94,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(195, 215, 50, 200, "statPane");
+    statPane.setSpriteAttributes(195, 245, 50, 163, "statVals");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -105,19 +109,7 @@ function backgroundSetup() {
  * IMPORTANT: For tooltips to be updated regularly, you must manually change the button's update function to adapt the value. 
  That, or have a function elsewhere that changes 'btn.text' for the button's draw function. 
 */
-function buttonSetup() {
-    /*
-    var start = new Button(function() {alert("Game has started")});
-    start.setSrc("https://vienna-wv.com/images/tree.jpg", "https://i.ytimg.com/vi/_hyE2NO7HnU/maxresdefault.jpg")
-    start.setSpriteAttributes(500, 500, 100, 100, "Game Start");
-    game.buttonArray.push(start); 
-    
-    var end = new Button(function() {alert(dataTracker.getTime())});
-    end.setSrc("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Five-pointed_star.svg/1088px-Five-pointed_star.svg.png", "http://pngimg.com/upload/star_PNG1595.png")
-    end.setSpriteAttributes(500, 300, 100, 100, "Time Played");
-    game.buttonArray.push(end); 
-    */
-    
+function buttonSetup() { 
     /////////////////////////////////////////////////
     //DEV ATTRIBUTES
     /////////////////////////////////////////////////
@@ -136,7 +128,7 @@ function buttonSetup() {
     stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 100; }
+    if (stepCount === undefined) { stepCount = 33421; }
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
@@ -161,7 +153,7 @@ function buttonSetup() {
     
     trackPane.setText(dataObj.animalTracks + " Tracks", (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Steps"), trackPane.height / 4);
     
-    //Changeing the button's update function to get the step count every frame. 
+    //Changing the button's update function to get the step count every frame. 
     trackPane.update = function() {
         this.text = dataObj.animalTracks + " Tracks";
         this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Tracks")
@@ -173,123 +165,135 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //ANIMAL ICONS
     /////////////////////////////////////////////////
-    var animalIcon, i;
+    var animalIcon, i, animalCount;
     for (i = 0; i < 4; i++) {
         animalIcon = new Button(change_image, [i]);
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
-        animalIcon.setSpriteAttributes((96 +(100*i)), 110, 60, 60, "animal_icon" + i);
-        
+        animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
+        animalIcon.hasTextValue = true;
         animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
         game.buttonArray.push(animalIcon);
+        
+        /////////////////////////////////////////////////
+        //ANIMAL COUNT
+        /////////////////////////////////////////////////
+        animalCount = new Button(function() {})
+        animalCount.setSrc("image_resources/ClearSquare.png");
+        animalCount.setSpriteAttributes((111 +(100*i)), 125, 60, 60, "animal_count" + i);
+        animalCount.hasTextValue = true;
+        
+        (function(i) {
+            animalCount.update = function() {
+                var testRef = controller.getAnimalCount(animal_types[i]);
+                var charNum = numberLen(testRef);  
+                this.setText(controller.getAnimalCount(animal_types[i]), (animalCount.width / 2) - (5 * charNum), 0);
+            }
+        })(i);
+        game.buttonArray.push(animalCount);
+        /////////////////////////////////////////////////
+        
+        /////////////////////////////////////////////////
+        //ANIMAL LEVEL
+        /////////////////////////////////////////////////
+        animalLevel = new Button(function() {})
+        animalLevel.setSrc("image_resources/ClearSquare.png");
+        animalLevel.setSpriteAttributes((71 +(100*i)), 165, 60, 60, "animal_level" + i);
+        animalLevel.hasTextValue = true;
+        
+        (function(i) {
+            animalLevel.update = function() {
+                var temp = ui_values.animalAry[i].toLowerCase();
+                var level = controller.levels[temp];
+                var charNum = numberLen(temp);  
+                this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
+            }
+        })(i);
+        game.buttonArray.push(animalLevel);
+        /////////////////////////////////////////////////
+        
     }
     /////////////////////////////////////////////////
-    
+    //ATTRIBUTE NAMES
+    /////////////////////////////////////////////////
     var attButton, attValue, animalImage;
     for (i = 0; i < 6; i++) {
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
-        attValue.setSpriteAttributes(91, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        attValue.setSpriteAttributes(86, (245 + 27 * i), 80, 40, "attribute_value" + i);
         
         attValue.hasTextValue = true;
+        attValue.fontSize = '22px';
         
         //Using an animal from ui_values, therefore must use toLowerCase().
        // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = "Att".length;
-        attValue.setText("Att", (attValue.width / 2) - (5 * charNum), 0);
+        charNum = dataObj.animalStats[i].length;
+        attValue.setText(dataObj.animalStats[i], 0, 0);
         game.buttonArray.push(attValue);
         
+        /////////////////////////////////////////////////
+        //ATTRIBUTE VALUES
+        /////////////////////////////////////////////////
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
-        attNum.setSpriteAttributes(178, (215 + 33 * i), 80, 40, "attribute_value" + i);
+        attNum.setSpriteAttributes(183, (245 + 27 * i), 80, 40, "attribute_value" + i);
         
         attNum.hasTextValue = true;
+        attNum.fontSize = '22px';
         
-        //Using an animal from ui_values, therefore must use toLowerCase().
-       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = "Attr".length;
-        attNum.setText("1507", (attNum.width / 2) - (5 * charNum), 0);
+        (function(i) {
+            attNum.update = function() {
+                var stats = (ui_values.currentAnimal).toLowerCase();
+                var testRef = controller.getAnimalData(stats);
+                var charNum = numberLen(testRef[i]);  
+                this.setText(testRef[i], (attNum.width / 2) - (5 * charNum), 0);
+            }
+        })(i);
         game.buttonArray.push(attNum);
+        /////////////////////////////////////////////////
     }
+    /////////////////////////////////////////////////
     
-    /*
-    var attButton, attValue, animalImage;
-    for (i = 0; i < 4; i++) {
-    */
-        /////////////////////////////////////////////////
-        //ATTVALUE
-        /////////////////////////////////////////////////
-        /* The increment and decrement buttons are each children of the 
-        attValue they are incrementing/decrementing. 
-        This gives them access to the number they have to increment without needing a new update function. 
-        */
-        /*
-        attValue = new Button(function () {});
-        attValue.setSrc("image_resources/Worn-Paper-Texture.png");
-        
-        attValue.setSpriteAttributes(166, (220 + 50 * i), 80, 40, "attribute_value" + i);
-        
-        attValue.hasTextValue = true;
-        
-        //Using an animal from ui_values, therefore must use toLowerCase().
-        var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
-        charNum = attSelect.toString().length;
-        attValue.setText(attSelect, (attValue.width / 2) - (5 * charNum), 0);
-        game.buttonArray.push(attValue);
-        */ /////////////////////////////////////////////////
-        
-        /////////////////////////////////////////////////
-        //UP ARROW
-        /////////////////////////////////////////////////
-        /*
-        attButton = new Button(change_attribute, [i, "pos", attValue]);
-        attButton.setSrc("image_resources/up25x25.png");
-        
-        attButton.setSpriteAttributes(96, (240 + 50 * i), 25, 25, "attribute" + i);
-        attButton.hasTextValue = true;
-        
-        //Visable stats are connected to the up arrow and not the down. 
-        var att;
-        switch (i) {
-        case 0:
-            att = "VITA"; //Changed armor to (VITA-lity)
-            break;
-        case 1:
-            att = "SPD";
-            break;
-        case 2:
-            att = "CAP";
-            break;
-        case 3:
-            att = "LIFE";
-            break;
-        }
-        attButton.setText(att, 7, -25);
-        attValue.addChild(attButton);
-        */ /////////////////////////////////////////////////
-        
-        /////////////////////////////////////////////////
-        //DOWN ARROW
-        /*
-        attButton = new Button(change_attribute, [i, "neg", attValue]);
-        attButton.setSrc("image_resources/down25x25.png");
-        
-        attButton.setSpriteAttributes(126, (240 + 50 * i), 25, 25, "attribute" + i);
-        attValue.addChild(attButton);
-        */ /////////////////////////////////////////////////
-    //}
+    /////////////////////////////////////////////////
+    //UPGRADE BUTTON
+    /////////////////////////////////////////////////
+    var upgradeBtn;
+    upgradeBtn = new Button(function() {
+        upgrade_animal();
+    });
+    upgradeBtn.setSrc("image_resources/Worn-Paper-Texture.png", "image_resources/StepPaper.png");
+
+    upgradeBtn.setSpriteAttributes(76, 415, 170, 30, "attribute_value" + i);
+
+    upgradeBtn.hasTextValue = true;
+    upgradeBtn.fontSize = '28px';
+    charnum = "upgrade".length;
+    upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (7 * charNum), -2);
+    game.buttonArray.push(upgradeBtn);    
+    /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //ANIMAL IMAGE
     /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalGifAry[0], "images/nwalk1.jpg");
+    animalImage.setSrc(ui_values.animalStaticAry[0], "image_resources/StepPaper.png");
     //console.log(animalImage.anim);
-    animalImage.setSpriteAttributes(261, 215, 200, 200, "animal_image");
+    animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
+    
+    animalImage.hasTextValue = true;
+    animalImage.fontSize = '38px';
+    animalImage.update = function() {
+                //var stats = (ui_values.currentAnimal).toLowerCase();
+                var temp = ui_values.currentAnimal;
+                //console.log(testRef);
+                var charNum = numberLen(temp);  
+                this.setText(temp, -15 - (9 * charNum), -40);
+                //console.log(attNum.text);                 
+            }
     /////////////////////////////////////////////////
 
     //Mute Button
@@ -303,14 +307,21 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //EVENT LOG
     /////////////////////////////////////////////////
-    for (i = 0; i < 5; i++) {
-        var eventLogPane = new Button();
-        eventLogPane.setSrc("image_resources/ClearSquare.png");
-        eventLogPane.setSpriteAttributes(527, (40*i)+30, 452, 54, "eventLog");
-        game.buttonArray.push(eventLogPane);
 
-        eventLogPane.hasTextValue = true;
-        eventLogPane.fontSize = '18px';
+    var eventLogPane = new Button();
+    eventLogPane.setSrc("image_resources/AttPane.png");
+    eventLogPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
+    game.buttonArray.push(eventLogPane);
+        
+        
+    for (i = 0; i < 5; i++) {
+        var eventLogEntry = new Button();
+        eventLogEntry.setSrc("image_resources/ClearSquare.png");
+        eventLogEntry.setSpriteAttributes(567, (30*i)+40, 452, 54, "eventLog");
+        game.buttonArray.push(eventLogEntry);
+
+        eventLogEntry.hasTextValue = true;
+        eventLogEntry.fontSize = '18px';
         /*
         evtStr = "Hello world, this is an event. Now this is a very long event" + "\n" + "that will likely go off the page.";
         //;
@@ -321,15 +332,53 @@ function buttonSetup() {
         //var testRef = {foo: eventLogAry[i]}
         (function(i) {
             var testRef = eventLogAry[i];
-            console.log(testRef);
-            eventLogPane.update = function() {
+            //console.log(testRef);
+            eventLogEntry.update = function() {
                 if (eventLogAry[i]) {
                     this.text = eventLogAry[i];
                 } else {this.text = "";}
             }
         })(i);
     }
-  /////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //ANIMAL ANIMATIONS
+    /////////////////////////////////////////////////
+    for (i = 0; i < 4; i++) {
+        var animalAnimation = new Button();
+        animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
+        
+        if (i==0) {
+            animalAnimation.setupAnim(0, 1, 1);
+        } else if (i==1) {
+            animalAnimation.setupAnim(16, 4, 5);
+        } else if (i==2) {
+            animalAnimation.setupAnim(21, 5, 5);
+        } else if (i==3) {
+            animalAnimation.setupAnim(0, 1, 1);
+        }
+        
+        
+        /*switch (i) {
+            case i==0:
+                animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i]);
+                break;
+            case i==1:
+                animalAnimation.setupAnim(16, 4, 5);
+                break;
+            case i==2:
+                animalAnimation.setupAnim(22, 5, 5);
+                break;
+            case i==3:
+                animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i]);
+                break;
+        }
+        */
+        game.buttonArray.push(animalAnimation); 
+    }
+    /////////////////////////////////////////////////
 }
 
 /* change_attribute() - For changing attributes up or down. 
@@ -340,6 +389,7 @@ function buttonSetup() {
                - Could possibly change it to just passing in the parent's 'text' value. 
  * Returns - None. 
 */
+/*
 function change_attribute(index, sign, attValue) {
     
     var attributeString = (ui_values.currentAnimal + "_").toLowerCase();
@@ -377,6 +427,7 @@ function change_attribute(index, sign, attValue) {
 
     soundMan.click.play()
 }
+*/
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
@@ -385,11 +436,10 @@ function change_attribute(index, sign, attValue) {
 */
 function change_image(animal_index) {
     var ani_imgRef;
-    //Making the source gifs for the spawn button image. 
-    aniSrc = ui_values.animalGifAry;
+    aniSrc = ui_values.animalStaticAry;
     game.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
-            console.log(aniSrc[animal_index]);
+            //DEBUG: console.log(aniSrc[animal_index]);
             if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
                 elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
                 elem.setupAnim(44, 7, 7);
@@ -413,63 +463,42 @@ function change_image(animal_index) {
     soundMan.click.play()
 }
 
-/* spawn_animal() - For spawning animals on the map. 
+/* spawn_animal() - For spawning animals. 
  * Params: None
  * Returns: None. 
- * Notes: Spawn location determination should be done here, unless there's another function that can specify it. 
 */
 function spawn_animal() {
-    var animal, mapPane, spawnX, spawnY;
-    //Find the map pane from the panes array. 
-    panes.forEach(function (elem) {
-        if (elem.name === "mapPane") {
-            mapPane = elem;
-        }
-    });
-    
     if (stepCount - 100 < 0) {
         return;
     }
-    spawnX = randomNum(550, 950);
-    spawnY = randomNum(50, 500);
-
-    
-    //Spawn the proper animal. 
+    controller.addAnimal(ui_values.currentAnimal.toLowerCase());
     switch (ui_values.currentAnimal) {
-    case "Bird":
-        dataObj.animalCounter[0]++;
-        //stepCount -= (50*ui_values.animalCounter[0]);
-        animal = new bird(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
-        break;
-    case "Deer":
-        dataObj.animalCounter[1]++;
-        //stepCount -= (100*ui_values.animalCounter[1]);
-        animal = new deer(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
-        break;
-    case "Frog":
-        //console.log("frog");
-        dataObj.animalCounter[2]++;
-        //stepCount += (50*ui_values.animalCounter[2]);
-            //console.log(ui_values.animalCounter[2]);
-        animal = new frog(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
-        break;
-    case "Bunny":
-        dataObj.animalCounter[3]++;
-        //stepCount -= (50*ui_values.animalCounter[3]);
-        animal = new bunny(spawnX, spawnY);
-        setupAnimal(animal);
-        game.push(animal);
-        break;
+        case 'Bird':
+            break;
+        case 'Deer':
+            break;
+        case 'Frog':
+            break;
+        case 'Bunny':
+            break;
     }
-
     soundMan.click.play()
     stepCount -= 100;
+}
+
+/* upgrade_animal() - For increasing the level of animals. 
+ * Params: None
+ * Returns: None. 
+*/
+function upgrade_animal() {
+    var level = controller.getAnimalLevel((ui_values.currentAnimal).toLowerCase());
+    console.log("Level is: " + level);
+    if (dataObj.animalTracks - (level * 100) < 0) {
+        return;
+    } else {
+        dataObj.animalTracks -= (level * 100);
+        controller.levelUp(ui_values.currentAnimal.toLowerCase());
+    }
 }
 
 //Small utility function that converts a number to a string and returns the length. 

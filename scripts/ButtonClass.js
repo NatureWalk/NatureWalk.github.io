@@ -242,6 +242,7 @@ Button.prototype.update = function () {
             this.tickCount = 0; 
         }
     }
+    //console.log(this.name + " " + this.frameIndex);
 }
 Button.prototype.draw = function () {
     if (!this.anim) {
@@ -249,8 +250,10 @@ Button.prototype.draw = function () {
     } else {
         ctx.drawImage(
             this.image, 
-            (this.frameIndex % 7) * this.width, 
-            Math.floor(this.frameIndex/7) * this.height, 
+            //(this.frameIndex % 7) * this.width, 
+            //Math.floor(this.frameIndex/7) * this.height, 
+            (this.frameIndex % this.srcCols) * this.width, 
+            Math.floor(this.frameIndex/this.srcCols) * this.height,
             this.width, 
             this.height, 
             this.x,
@@ -259,9 +262,13 @@ Button.prototype.draw = function () {
             this.height);
     }
     if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+        if (this.text === undefined) {
+            //console.log(this.name);
+        } else {
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
+        }
     }
-    this.drawChildren();
+    //this.drawChildren();
 }
 
 Button.prototype.drawChildren = function() {
