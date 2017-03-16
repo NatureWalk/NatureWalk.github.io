@@ -94,7 +94,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(195, 245, 50, 163, "statVals");
+    statPane.setSpriteAttributes(185, 245, 65, 163, "statVals");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -239,7 +239,7 @@ function buttonSetup() {
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
-        attNum.setSpriteAttributes(183, (245 + 27 * i), 80, 40, "attribute_value" + i);
+        attNum.setSpriteAttributes(178, (245 + 27 * i), 90, 40, "attribute_value" + i);
         
         attNum.hasTextValue = true;
         attNum.fontSize = '22px';
@@ -248,8 +248,8 @@ function buttonSetup() {
             attNum.update = function() {
                 var stats = (ui_values.currentAnimal).toLowerCase();
                 var testRef = controller.getAnimalData(stats);
-                var charNum = numberLen(testRef[i]);  
-                this.setText(testRef[i], (attNum.width / 2) - (5 * charNum), 0);
+                var charNum = numberConversion(testRef[i]).length  
+                this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
             }
         })(i);
         game.buttonArray.push(attNum);
@@ -492,17 +492,35 @@ function spawn_animal() {
 */
 function upgrade_animal() {
     var level = controller.getAnimalLevel((ui_values.currentAnimal).toLowerCase());
-    console.log("Level is: " + level);
     if (dataObj.animalTracks - (level * 100) < 0) {
         return;
     } else {
         dataObj.animalTracks -= (level * 100);
         controller.levelUp(ui_values.currentAnimal.toLowerCase());
     }
+    
 }
 
 //Small utility function that converts a number to a string and returns the length. 
 //Good for text alignment, but not perfect. 
 function numberLen(num) {
     return num.toString().length;
+}
+
+function numberConversion(num) {
+    var suffixes = ['', 'k', 'M', 'B', 'T']
+    var conNum = num.toString();
+    var len = conNum.length;
+    var i = Math.floor(len/3);
+    var j = len%3;
+    if (j === 0) {
+        return conNum.slice(0, 3) + " " + suffixes[i-1];
+    } else if (j === 1 && i > 0) {
+        return conNum.slice(0, 1) + "." + conNum.slice(1, 3) + " " +  suffixes[i];
+    } else if (j === 2 && i > 0) {
+        return conNum.slice(0, 2) + "." + conNum.slice(2, 3) + " " + suffixes[i];
+    }
+    else {
+        return conNum.slice(0, j) + " " + suffixes[i];
+    }
 }
