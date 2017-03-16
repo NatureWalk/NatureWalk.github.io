@@ -1,1 +1,0 @@
-# NatureWalk.github.io
