@@ -25,10 +25,10 @@ for(var i = 0; i < animal_types.length; i++){
  */
 
 animal_data = [];
-animal_data['frog'] = [1.7, 1.2, 1.5, 1.5, 1.2, 1.5];
-animal_data['bunny'] = [1.2, 1.5, 1.2, 1.7, 1.5, 1.5];
-animal_data['deer'] = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
-animal_data['bird'] = [1.2, 1.7, 1.2, 1.2, 1.7, 1.3];
+animal_data['frog'] = [1.7, 1.2, 1.5, 1.5, 1.2, 30];
+animal_data['bunny'] = [1.2, 1.5, 1.2, 1.7, 1.5, 30];
+animal_data['deer'] = [1.5, 1.5, 1.5, 1.5, 1.5, 30];
+animal_data['bird'] = [1.2, 1.7, 1.2, 1.2, 1.7, 30];
 
 
 console.log(animal_data['bunny']);
@@ -78,7 +78,7 @@ function master_controller() {
 		}
 		while(true){
 			if(this.lifespans.length == 0){
-				break
+				break;
 			}
 			if(this.lifespans.head() <= 0){
 				var temp = this.lifespans.pop();
@@ -114,7 +114,7 @@ function master_controller() {
 	
 	this.levelUp = function(animal){
 		this.levels[animal] += 1;
-		console.log(this.levels);
+		//console.log(this.levels);
 	}
 	
 	this.addAnimal = function(animal){
@@ -140,7 +140,7 @@ function master_controller() {
 				    var multi = 1;
 				}
 				for(var j = 0; j < this.levels[animal] - 1; j++){
-					multi = Math.ceil(multi * stats[i]);
+					multi = Math.ceil(multi + (this.levels[animal] * stats[i]));
 				}
 				stats[i] = multi;
 			} 
@@ -166,7 +166,7 @@ function master_controller() {
 	
 	this.update = function() {
 		this.timer++;
-		console.log(this.lifespans)
+		//console.log(this.lifespans)
 		if(this.timer == 15){
 			this.query();
 			this.timer = 0;	

@@ -8,7 +8,7 @@ var dataObj = {
     everySecondTrig: 0,
     eventTrigger: 10,
     sessionStartTime: 0,
-    animalStats: ["Vitality", "Evasion", "Strength", "Athletics", "Instinct", "Lifespan"],
+    animalStats: ["Vitality", "Evasion", "Strength", "Athletics", "Instinct", " Lifespan"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
@@ -110,7 +110,7 @@ function readableTime(milliseconds) {
 */
 function timeHandler(timeAry) {
     if (timeAry[1] === dataObj.everySecondTrig) {
-        console.log(dataObj.everySecondTrig);
+        //console.log(dataObj.everySecondTrig);
         everySecond(timeAry[1]);
         if (timeAry[1] === 59) {
             dataObj.everySecondTrig = 0;
