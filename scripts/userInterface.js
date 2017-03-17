@@ -350,9 +350,8 @@ function buttonSetup() {
             animalAnimation.setupAnim(0, 1, 1);
         }
         (function(i) {
-            var testRef = controller.getAnimalCount(ui_values.animalAry[i]);
             eventLogEntry.update = function() { 
-                console.log(testRef);
+               var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
                 if (testRef === 0) {
                     this.setSrc("image_resources/ClearSquare.png");
                 } else {
