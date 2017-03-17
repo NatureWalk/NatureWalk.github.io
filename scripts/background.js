@@ -54,19 +54,19 @@ var landscape = function() {
 
 	//Moves layers by hardcoded speed
 	this.update = function() {
-		this.layer1.x = this.layer1.x-1;
+		this.layer1.x = this.layer1.x-.1;
 		if (this.layer1.x <= 512-this.layer1.width)
 			this.layer1.x = 512;
 		else if (this.layer1.x >= 512+this.layer1.width)
 			this.layer1.x = 512;
 
-		this.layer2.x = this.layer2.x-2;
+		this.layer2.x = this.layer2.x-.35;
 		if (this.layer2.x <= 512-this.layer2.width)
 			this.layer2.x = 512;
 		else if (this.layer2.x >= 512+this.layer2.width)
 			this.layer2.x = 512;
 		
-		this.layer3.x = this.layer3.x-2.75;
+		this.layer3.x = this.layer3.x-.7;
 		if (this.layer3.x <= 512-this.layer3.width)
 			this.layer3.x = 512;
 		else if (this.layer3.x >= 512+this.layer3.width)

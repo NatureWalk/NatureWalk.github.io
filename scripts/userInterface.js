@@ -8,7 +8,7 @@
  * Show level below animal icons. (DONE)
  * Game Title somewhere on the page. 
  * Better communication of events and effects of them. 
- * Multiple different animals on screen, only show animals that the player has. 
+ * Multiple different animals on screen, only show animals that the player has. (DONE)
  * Player's permanent animal. 
  */
 
@@ -34,7 +34,8 @@ var ui_values = {
     animalStaticAry: [("image_resources/Icon_Bird.png"),
                       ("image_resources/Icon_Deer.png"),
                       ("image_resources/Icon_Frog.png"),
-                      ("image_resources/Icon_Bunny.png")],
+                      ("image_resources/Icon_Bunny.png"),
+                      ("image_resources/EventLog.png")],
 
     animalWalkAry: [("image_resources/Icon_Bird.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
@@ -181,7 +182,7 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         animalCount = new Button(function() {})
         animalCount.setSrc("image_resources/ClearSquare.png");
-        animalCount.setSpriteAttributes((111 +(100*i)), 125, 60, 60, "animal_count" + i);
+        animalCount.setSpriteAttributes((140 +(100*i)), 125, 0, 0, "animal_count" + i);
         animalCount.hasTextValue = true;
         
         //This is a closure that declares a function with a parameter 'i' then immediately calls it with i.
@@ -196,12 +197,14 @@ function buttonSetup() {
         game.buttonArray.push(animalCount);
         /////////////////////////////////////////////////
         
+        
+        
         /////////////////////////////////////////////////
         //ANIMAL LEVEL
         /////////////////////////////////////////////////
         animalLevel = new Button(function() {})
         animalLevel.setSrc("image_resources/ClearSquare.png");
-        animalLevel.setSpriteAttributes((71 +(100*i)), 165, 60, 60, "animal_level" + i);
+        animalLevel.setSpriteAttributes((91 +(100*i)), 165, 0, 0, "animal_level" + i);
         animalLevel.hasTextValue = true;
         
         (function(i) {
@@ -213,9 +216,55 @@ function buttonSetup() {
             }
         })(i);
         game.buttonArray.push(animalLevel);
-        /////////////////////////////////////////////////
-        
+        /////////////////////////////////////////////////  
     }
+    
+    /////////////////////////////////////////////////
+    //COMING SOON WORDS
+    /////////////////////////////////////////////////
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((71), 130, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
+    game.buttonArray.push(animalIcon);
+    
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((71), 150, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
+    game.buttonArray.push(animalIcon);
+    
+    
+    
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((371), 130, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
+    game.buttonArray.push(animalIcon);
+    
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((371), 150, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
+    game.buttonArray.push(animalIcon);
+    /////////////////////////////////////////////////
+    
     /////////////////////////////////////////////////
     //ATTRIBUTE NAMES
     /////////////////////////////////////////////////
@@ -224,7 +273,7 @@ function buttonSetup() {
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
-        attValue.setSpriteAttributes(86, (245 + 27 * i), 80, 40, "attribute_value" + i);
+        attValue.setSpriteAttributes(96, (245 + 27 * i), 0, 40, "attribute_value" + i);
         
         attValue.hasTextValue = true;
         attValue.fontSize = '22px';
@@ -239,7 +288,7 @@ function buttonSetup() {
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
-        attNum.setSpriteAttributes(178, (245 + 27 * i), 90, 40, "attribute_value" + i);
+        attNum.setSpriteAttributes(218, (245 + 27 * i), 0, 40, "attribute_value" + i);
         
         attNum.hasTextValue = true;
         attNum.fontSize = '22px';
@@ -264,7 +313,7 @@ function buttonSetup() {
     upgradeBtn = new Button(function() {
         upgrade_animal();
     });
-    upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/StepPaper.png");
+    upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
     upgradeBtn.setSpriteAttributes(76, 415, 170, 30, "attribute_value" + i);
 
@@ -279,8 +328,7 @@ function buttonSetup() {
     //ANIMAL IMAGE
     /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/StepPaper.png");
-    //console.log(animalImage.anim);
+    animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
     animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
     
@@ -299,6 +347,7 @@ function buttonSetup() {
     muteButton = new Button(mB);
     muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
     muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
+    muteButton.isToggleButton = true;
     game.buttonArray.push(muteButton);
     
     /////////////////////////////////////////////////
@@ -352,15 +401,11 @@ function buttonSetup() {
         (function(i) {
             animalAnimation.update = function() { 
                var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
-                //console.log(testRef);
                 if (testRef === 0) {
                     this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
-                    //console.log(this.onMouseUpImageSrc);
                 } else {
                     this.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
-                    console.log(this.onMouseUpImageSrc);
                 }
-                //console.log(this.onMouseUpImageSrc);
                 if (this.anim) {
                     this.tickCount++; 
                     if (this.tickCount > this.ticksPerFrame) {

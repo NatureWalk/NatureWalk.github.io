@@ -49,8 +49,8 @@ function master_controller() {
 	this.levels['deer'] = 1;
 	this.animal_count = [];
 	this.animal_count['frog'] = 1;
-	this.animal_count['bunny'] =1;
-	this.animal_count['bird'] = 1;
+	this.animal_count['bunny'] =0;
+	this.animal_count['bird'] = 0;
 	this.animal_count['deer'] = 1;
 	this.pending_animals = [];
 	this.pending_animals['frog'] = 0;
