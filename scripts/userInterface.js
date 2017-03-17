@@ -352,11 +352,15 @@ function buttonSetup() {
         (function(i) {
             eventLogEntry.update = function() { 
                var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
+                //console.log(testRef);
                 if (testRef === 0) {
-                    this.setSrc("image_resources/ClearSquare.png");
+                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
+                    //console.log(this.onMouseUpImageSrc);
                 } else {
                     animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+                    //console.log(this.onMouseUpImageSrc);
                 }
+                console.log(this.onMouseUpImageSrc);
                 if (this.anim) {
                     this.tickCount++; 
                     if (this.tickCount > this.ticksPerFrame) {
