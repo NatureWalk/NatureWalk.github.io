@@ -150,7 +150,7 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        console.log(++dataObj.eventCounter);
+        //console.log(++dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 8;
     }

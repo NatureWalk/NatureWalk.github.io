@@ -40,7 +40,7 @@ var ui_values = {
                     ("image_resources/DeerWalk100_500x400.png"),
                     ("image_resources/FrogWalk100.png"),
                     ("image_resources/Icon_Bunny.png")],
-    currentAnimal: "Bird",
+    currentAnimal: "Deer",
     //currentAnimalStats: dataObj.BirdStats,
     //attributes: ["armor", "speed", "capacity", "lifespan"],
 };
@@ -279,7 +279,7 @@ function buttonSetup() {
     //ANIMAL IMAGE
     /////////////////////////////////////////////////
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc(ui_values.animalStaticAry[0], "image_resources/StepPaper.png");
+    animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/StepPaper.png");
     //console.log(animalImage.anim);
     animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
@@ -350,17 +350,17 @@ function buttonSetup() {
             animalAnimation.setupAnim(0, 1, 1);
         }
         (function(i) {
-            eventLogEntry.update = function() { 
+            animalAnimation.update = function() { 
                var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
                 //console.log(testRef);
                 if (testRef === 0) {
                     this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
                     //console.log(this.onMouseUpImageSrc);
                 } else {
-                    animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
-                    //console.log(this.onMouseUpImageSrc);
+                    this.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+                    console.log(this.onMouseUpImageSrc);
                 }
-                console.log(this.onMouseUpImageSrc);
+                //console.log(this.onMouseUpImageSrc);
                 if (this.anim) {
                     this.tickCount++; 
                     if (this.tickCount > this.ticksPerFrame) {
