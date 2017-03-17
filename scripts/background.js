@@ -66,7 +66,7 @@ var landscape = function() {
 		else if (this.layer2.x >= 512+this.layer2.width)
 			this.layer2.x = 512;
 		
-		this.layer3.x = this.layer3.x-4;
+		this.layer3.x = this.layer3.x-2.75;
 		if (this.layer3.x <= 512-this.layer3.width)
 			this.layer3.x = 512;
 		else if (this.layer3.x >= 512+this.layer3.width)

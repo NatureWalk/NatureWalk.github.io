@@ -349,6 +349,25 @@ function buttonSetup() {
         } else if (i==3) {
             animalAnimation.setupAnim(0, 1, 1);
         }
+        (function(i) {
+            var testRef = controller.getAnimalCount(ui_values.animalAry[i]);
+            eventLogEntry.update = function() { 
+                console.log(testRef);
+                if (testRef === 0) {
+                    this.setSrc("image_resources/ClearSquare.png");
+                } else {
+                    animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+                }
+                if (this.anim) {
+                    this.tickCount++; 
+                    if (this.tickCount > this.ticksPerFrame) {
+                        this.frameIndex++;
+                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                        this.tickCount = 0; 
+                    }
+                }
+            }
+        })(i);
         game.buttonArray.push(animalAnimation); 
     }
     /////////////////////////////////////////////////
@@ -361,6 +380,9 @@ function buttonSetup() {
 */
 function change_image(animal_index) {
     var ani_imgRef;
+    if (animal_index === 0 || animal_index === 3) {
+        return;
+    }
     aniSrc = ui_values.animalStaticAry;
     game.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
