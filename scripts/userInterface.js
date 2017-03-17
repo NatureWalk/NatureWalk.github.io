@@ -28,13 +28,13 @@ var ui_values = {
                   ("image_resources/Icon_Deer.png"),
                   ("image_resources/Icon_Frog.png"),
                   ("image_resources/Icon_Bunny.png"),
-                  ("image_resources/StepPaper.png")],
+                  ("image_resources/EventLog.png")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
     animalStaticAry: [("image_resources/Icon_Bird.png"),
                       ("image_resources/Icon_Deer.png"),
-                      ("image_resources/FrogSpriteSheet200_1400x1400.png"),
-                      ("image_resources/AnimBunny.gif")],
+                      ("image_resources/Icon_Frog.png"),
+                      ("image_resources/Icon_Bunny.png")],
 
     animalWalkAry: [("image_resources/Icon_Bird.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
@@ -84,8 +84,8 @@ function backgroundSetup() {
     //STATS PANE
     /////////////////////////////////////////////////
     var statPane = new Sprite();
-    statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(75, 245, 110, 163, "statPane");
+    statPane.setSrc("image_resources/EventLog.png");
+    statPane.setSpriteAttributes(75, 235, 115, 183, "statPane");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -93,8 +93,8 @@ function backgroundSetup() {
     //STAT VALUE PANE
     /////////////////////////////////////////////////
     var statPane = new Sprite();
-    statPane.setSrc("image_resources/Worn-Paper-Texture.png");
-    statPane.setSpriteAttributes(185, 245, 65, 163, "statVals");
+    statPane.setSrc("image_resources/EventLog.png");
+    statPane.setSpriteAttributes(180, 235, 70, 183, "statVals");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -184,6 +184,8 @@ function buttonSetup() {
         animalCount.setSpriteAttributes((111 +(100*i)), 125, 60, 60, "animal_count" + i);
         animalCount.hasTextValue = true;
         
+        //This is a closure that declares a function with a parameter 'i' then immediately calls it with i.
+        //Changing the update 
         (function(i) {
             animalCount.update = function() {
                 var testRef = controller.getAnimalCount(animal_types[i]);
@@ -227,8 +229,6 @@ function buttonSetup() {
         attValue.hasTextValue = true;
         attValue.fontSize = '22px';
         
-        //Using an animal from ui_values, therefore must use toLowerCase().
-       // var attSelect = animal_data[ui_values.currentAnimal.toLowerCase() + "_" + ui_values.attributes[i]];
         charNum = dataObj.animalStats[i].length;
         attValue.setText(dataObj.animalStats[i], 0, 0);
         game.buttonArray.push(attValue);
@@ -264,7 +264,7 @@ function buttonSetup() {
     upgradeBtn = new Button(function() {
         upgrade_animal();
     });
-    upgradeBtn.setSrc("image_resources/Worn-Paper-Texture.png", "image_resources/StepPaper.png");
+    upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/StepPaper.png");
 
     upgradeBtn.setSpriteAttributes(76, 415, 170, 30, "attribute_value" + i);
 
@@ -287,12 +287,9 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '38px';
     animalImage.update = function() {
-                //var stats = (ui_values.currentAnimal).toLowerCase();
                 var temp = ui_values.currentAnimal;
-                //console.log(testRef);
                 var charNum = numberLen(temp);  
                 this.setText(temp, -15 - (9 * charNum), -40);
-                //console.log(attNum.text);                 
             }
     /////////////////////////////////////////////////
 
@@ -300,7 +297,7 @@ function buttonSetup() {
     function mB() {soundMan.mute_music()}
 
     muteButton = new Button(mB);
-    muteButton.setSrc("images/mute.jpg")
+    muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
     muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
     game.buttonArray.push(muteButton);
     
@@ -309,7 +306,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 
     var eventLogPane = new Button();
-    eventLogPane.setSrc("image_resources/AttPane.png");
+    eventLogPane.setSrc("image_resources/EventLog.png");
     eventLogPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
     game.buttonArray.push(eventLogPane);
         
@@ -322,14 +319,7 @@ function buttonSetup() {
 
         eventLogEntry.hasTextValue = true;
         eventLogEntry.fontSize = '18px';
-        /*
-        evtStr = "Hello world, this is an event. Now this is a very long event" + "\n" + "that will likely go off the page.";
-        //;
-        //evtStr = dataTracker.getEventString();
-        console.log(charNum = evtStr.length);
-        eventLogPane.setText(evtStr, 0, 0);
-        */
-        //var testRef = {foo: eventLogAry[i]}
+
         (function(i) {
             var testRef = eventLogAry[i];
             //console.log(testRef);
@@ -359,75 +349,10 @@ function buttonSetup() {
         } else if (i==3) {
             animalAnimation.setupAnim(0, 1, 1);
         }
-        
-        
-        /*switch (i) {
-            case i==0:
-                animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i]);
-                break;
-            case i==1:
-                animalAnimation.setupAnim(16, 4, 5);
-                break;
-            case i==2:
-                animalAnimation.setupAnim(22, 5, 5);
-                break;
-            case i==3:
-                animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i]);
-                break;
-        }
-        */
         game.buttonArray.push(animalAnimation); 
     }
     /////////////////////////////////////////////////
 }
-
-/* change_attribute() - For changing attributes up or down. 
- * Params:
- *    index - index of the attribute being changed.
- *    sign  - "pos" or "neg" determine if the attribute goes up or down.
- *    attValue - A reference the the attribute that is being modified. 
-               - Could possibly change it to just passing in the parent's 'text' value. 
- * Returns - None. 
-*/
-/*
-function change_attribute(index, sign, attValue) {
-    
-    var attributeString = (ui_values.currentAnimal + "_").toLowerCase();
-    switch (index) {
-    case 0:
-        attributeString += "armor";
-        break;
-    case 1:
-        attributeString += "speed";
-        break;
-    case 2:
-        attributeString += "capacity";
-        break;
-    case 3:
-        attributeString += "lifespan";
-        break;
-    }
-    
-    if (sign === "neg") {
-        if (animal_data[attributeString] < 1) {
-            return;
-        }
-        animal_data[attributeString]--;
-        attValue.text = animal_data[attributeString];
-        stepCount+=(10*animal_data[attributeString]);
-    } else {
-        if (stepCount - (10*(animal_data[attributeString]+1)) <= 0) {
-            return;
-        }
-        animal_data[attributeString]++;
-        attValue.text = animal_data[attributeString];
-        stepCount-=(10*animal_data[attributeString]);   
-    }
-    attValue.text = animal_data[attributeString];
-
-    soundMan.click.play()
-}
-*/
 
 /* change_image() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
