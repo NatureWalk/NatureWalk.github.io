@@ -149,14 +149,11 @@ function buttonSetup() {
     trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
     trackPane.hasTextValue = true;
     
-    //Arbitrary step setup if the player does not have any steps yet. 
-    if (trackPane === undefined) { dataObj.animalTracks = 100; }
-    
     trackPane.setText(dataObj.animalTracks + " Tracks", (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Steps"), trackPane.height / 4);
     
     //Changing the button's update function to get the step count every frame. 
     trackPane.update = function() {
-        this.text = dataObj.animalTracks + " Tracks";
+        this.text = numberConversion(dataObj.animalTracks) + " Tracks";
         this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Tracks")
         this.textOffsetY = 10;
     };
@@ -315,13 +312,37 @@ function buttonSetup() {
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
-    upgradeBtn.setSpriteAttributes(76, 415, 170, 30, "attribute_value" + i);
+    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "attribute_value" + i);
 
     upgradeBtn.hasTextValue = true;
-    upgradeBtn.fontSize = '28px';
+    upgradeBtn.fontSize = '20px';
     charnum = "upgrade".length;
-    upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (7 * charNum), -2);
+    upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     game.buttonArray.push(upgradeBtn);    
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //UPGRADE COST
+    /////////////////////////////////////////////////
+    var upgradeCost;
+    upgradeCost = new Button(function() {});
+    upgradeCost.setSrc("image_resources/StepPaper.png", "image_resources/StepPaper.png");
+
+    upgradeCost.setSpriteAttributes(186, 405, 65, 40, "attribute_value" + i);
+
+    upgradeCost.hasTextValue = true;
+    upgradeCost.fontSize = '20px';
+    
+    upgradeCost.update = function() {
+        var level = controller.getAnimalLevel((ui_values.currentAnimal).toLowerCase());
+                
+        charnum = numberConversion(level*100).length;
+                
+        upgradeCost.setText(numberConversion(level*100), (upgradeCost.width / 2) - (4 * charnum), 5);
+    }
+   
+    //upgradeCost.setText(level*100, 0,0);
+    game.buttonArray.push(upgradeCost);    
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -363,7 +384,7 @@ function buttonSetup() {
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
         eventLogEntry.setSrc("image_resources/ClearSquare.png");
-        eventLogEntry.setSpriteAttributes(567, (30*i)+40, 452, 54, "eventLog");
+        eventLogEntry.setSpriteAttributes(567, (45*i)+50, 452, 54, "eventLog");
         game.buttonArray.push(eventLogEntry);
 
         eventLogEntry.hasTextValue = true;
@@ -376,6 +397,18 @@ function buttonSetup() {
                 if (eventLogAry[i]) {
                     this.text = eventLogAry[i];
                 } else {this.text = "";}
+            }
+        })(i);
+        
+        (function(i) {
+            eventLogEntry.draw = function() {
+                if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+                    if (this.text === undefined) {
+            //console.log(this.name);
+                    } else {
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 400, 20);
+        }
+    }
             }
         })(i);
     }
