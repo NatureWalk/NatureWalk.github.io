@@ -55,7 +55,11 @@ NOTE: Not a self-sufficient function. As it is, it must be called from the canva
 function onMouseLeave() {
     this.hovered = false;
     this.isPressed = false;
-    this.image.src = this.onMouseUpImageSrc;
+    //console.log("left");
+    if (!this.isToggleButton) {
+        this.image.src = this.onMouseUpImageSrc;
+    }
+    
 }
 /*
 onMouseMove: Function that is called when the mouse is moving over the button. Called every time the mouse moves. 
@@ -76,15 +80,25 @@ Params: None.
 Returns: None.
 */
 function onMouseDown() {
-    if (this.onMouseDownImageSrc) {
-        this.image.src = this.onMouseDownImageSrc;
-    }
+    if (this.isToggleButton) {
+        if (this.isToggled) {
+            this.image.src = this.onMouseUpImageSrc;
+        } else if (!this.isToggled) {
+            this.image.src = this.onMouseDownImageSrc;
+        }
     //For toggle functionality.
-    if (this.isToggleButton === true) {
         this.toggle();
         this.callFunction();
+    } 
+    else {
+        this.isPressed = true;
+        if (this.onMouseDownImageSrc) {
+            this.image.src = this.onMouseDownImageSrc;
+        }
+        
     }
-    this.isPressed = true;
+   
+    
     //DEBUG: console.log("pressed");
 }
 
@@ -94,13 +108,14 @@ Params: None.
 Returns: None.
 */
 function onMouseUp() {
-    this.image.src = this.onMouseUpImageSrc;
+    
     //If mouse has been pressed down and has not left the button.
     //And if the button is not a toggle button. 
     //And if there is a function to be called. 
         //THEN call the function. 
     if (this.isPressed && !(this.isToggleButton) && (this.func !== undefined)) {
         this.callFunction();
+        this.image.src = this.onMouseUpImageSrc;
     }
     this.isPressed = false;
     

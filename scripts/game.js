@@ -30,10 +30,10 @@ var screenMan = new ScreenManager();
 var game = new Screen(true, true);
 //layerFix();
 //game.buttonArray = [];
+controller = new master_controller();
 var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
-controller = new master_controller();
 console.log("game set up");
 
 canvas.addEventListener('mousemove', function(evt) {
