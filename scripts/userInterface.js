@@ -360,6 +360,15 @@ function buttonSetup() {
                 var charNum = numberLen(temp);  
                 this.setText(temp, -15 - (9 * charNum), -40);
             }
+    
+    animalImage = new Button(spawn_animal);
+    animalImage.setSrc("image_resources/ClearSquare.png");
+    animalImage.setSpriteAttributes(261, 245, 0, 0, "animal_image");
+    game.buttonArray.push(animalImage);
+    
+    animalImage.hasTextValue = true;
+    animalImage.fontSize = '28px';
+    animalImage.setText("Call Animal", 0 + (5.5 * charNum), 160);
     /////////////////////////////////////////////////
 
     //Mute Button

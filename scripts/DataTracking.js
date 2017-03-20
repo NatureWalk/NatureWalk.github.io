@@ -232,8 +232,8 @@ function goodEventHandler(evtRoll) {
             eventLogAry.push("It's mating season for your animals!");
 			matingSeason('frog');
 			matingSeason('deer');
-			matingSeason('bird');
-			matingSeason('bunny');
+			//matingSeason('bird');
+			//matingSeason('bunny');
             break;
         //Wildlife Preservation Attempts
         case evtRoll >= 85 && evtRoll <= 100:
