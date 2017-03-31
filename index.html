@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Spawner</title>
-        <link rel='style' type='text/css' href='style.css'/>
-    </head>
-    <body>
-		<!--<img id="coin" width="10" height="10" src="coin.png" alt="coin">-->
-        <canvas id="canvas" width="200" height="200">
-            This text is displayed if your browser does not support HTML5 Canvas.
-        </canvas>
-        <script type='text/javascript' src='scripts/spawner.js'></script>
-    </body>
+<head>
+ <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.1.1.min.js">
+</script>
+
+</head>
+<body>
+<!-- Logs user in to fitbit and sets the following:
+	variables:
+	  userName - the user's fitbit display name
+	  userID - unique code for each user set by fitbit
+	  stepCount - total lifetime steps for the user
+	functions:
+	  authorize() - redirects to fitbit authentication if required
+	  getUserInfo() - set userName and userID
+	  getNewSteps() - set stepCount
+	  logout() - logs user out and redirects to fitbit login
+-->
+<canvas id= "canvas" width= "1024" height="576"  ></canvas>
+    <script src= "lib/howler.min.js"></script>
+    <script src= "scripts/utilities.js"></script>
+    <script src= "scripts/APIcalls.js"></script>
+    <script src= "scripts/engine.js"></script>
+    <script src= "scripts/sprite.js"></script>
+    <script src= "scripts/sound.js"></script>
+    <script src= "scripts/background.js"></script>
+    <script src= "scripts/ButtonClass.js"></script>
+    <script src= "scripts/userInterface.js"></script>
+    <script src= "scripts/mousetracker.js"></script>
+    <script src= "scripts/screenman.js"></script>
+    <script src= "scripts/Animals.js"></script>
+    <script src= "scripts/powerup.js"></script>
+    <script src= "scripts/localStorageFunctions.js"></script>
+    <script src= "scripts/loginFunctions.js"></script>
+    <script src='scripts/spawner.js'></script>
+    <script src='scripts/EnemyClass.js'></script>
+    <script src='scripts/DataTracking.js'></script>
+    <script src='scripts/CollisionDetection.js'></script>
+    <script src= "scripts/DataTracking.js"></script>
+    <script src= 'scripts/quadtree.js'></script>
+    <script src= "scripts/game.js"></script>
+
+
+
+	
+<!-- prints variables set by APIcalls.js to console -->
+<script>
+	console.log("user: " + userName);
+	console.log("user ID: " + userID);
+	console.log("steps: " + stepCount);
+</script>
+</body>
 </html>
