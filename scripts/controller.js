@@ -22,10 +22,10 @@ for(var i = 0; i < animal_types.length; i++){
  * 
  * CURRENT VERSION: Only three stats, but each animal type has hard coded bonuses
  * 
- * BONUSES: Frogs have advantage on all events that require Speed, and get double steps on MARSH
- *          Deer have advantage on all events that require Strength, get double steps on Forest
- *          Birds have advantage on all events that require Evasion, get double steps on Plains
- *          Bunnies get double steps always but they have no other bonus
+ * BONUS IDEAS: Frogs have advantage on all events that require Speed, and get double steps on MARSH
+ *              Deer have advantage on all events that require Strength, get double steps on Forest
+ *              Birds have advantage on all events that require Evasion, get double steps on Plains
+ *              Bunnies get double steps always but they have no other bonus
  * 
  */
 
@@ -57,6 +57,24 @@ function animalClass(type){
  * queries the server to ensure that the data is processed correctly.
  * 
  * FUNCTIONS:
+ *           query: DO NOT USE, DESIGNED FOR QUERYING THE SERVER
+ *           baseLevelUp: Increases the base level of an animal type by one
+ *           levelUpAnimal: Levels up the animal at a particular location in the animal array
+ *           addAnimal: adds a new animal of a type specified to the animal array. Returns true
+ *                      on success and false if adding an animal would exceed the max party size.
+ *           partySizeUp: increases the max party size by one
+ *           removeAnimal: removes the animal at a particular position in the array from the array
+ *           getAnimalBaseLevel: returns the base level of a particular animal type
+ *           getNumAnimals: returns the total number of animals
+ *           getAnimalData: returns a 2D array of animal data. Organized thusly
+ *                          [
+ *                           [animal type, animal level, Speed, Evasion, Strength]
+ *                           ...
+ *                          ]
+ * 
+ * 
+ * 
+ * 
  * 
  */
 function master_controller() {
@@ -90,6 +108,10 @@ function master_controller() {
 		this.animals[num].levelUp();
 	}
 	
+	this.partySizeUp = function(){
+		this.party_limit += 1;
+	}
+	
 	this.addAnimal = function(animal){
 		if(this.animals.length <= this.party_size) {
 			var ani = new animalClass(animal);
@@ -100,6 +122,7 @@ function master_controller() {
 			return false;
 		}
 	}
+	
 	
 	this.removeAnimal = function(num){
 		if(num < this.animals.length){
@@ -115,6 +138,7 @@ function master_controller() {
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
 			dat.push(animals[i].type)
+			dat.push(animals[i].level)
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
 				for(var k = 0; k < animals[i].level){
@@ -129,6 +153,11 @@ function master_controller() {
 	
 	this.getAnimalBaseLevel = function(animal){
 		return this.base_levels[animal];
+	}
+	
+	this.getNumAnimals = function(){
+		return this.animals.length;
+		
 	}
 	
 	
