@@ -11,7 +11,7 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-soundMan.music.play()
+//soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------

@@ -309,6 +309,7 @@ function buttonSetup() {
     var upgradeBtn;
     upgradeBtn = new Button(function() {
         upgrade_animal();
+
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
@@ -535,7 +536,7 @@ function upgrade_animal() {
         dataObj.animalTracks -= (level * 100);
         controller.levelUp(ui_values.currentAnimal.toLowerCase());
     }
-    
+    soundMan.up1.play()
 }
 
 //Small utility function that converts a number to a string and returns the length. 

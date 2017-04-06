@@ -13,7 +13,12 @@ var soundManager = function() {
 
 	this.click = new Howl({
 		src: ['sounds/click.wav'],
+		volume: 0.5,
 		buffer: true
+	})
+	this.up1 = new Howl({
+		src: ['sounds/up1.wav'],
+		buffer:true
 	})
 }
 
