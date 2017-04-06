@@ -1,4 +1,8 @@
-
+/* Things to work on:  
+ * 1. Event future sight.
+ * 2. Events based on environment.
+ * 3. Events appearing on screen. 
+*/
 //Object that can hold all of the session and player data.
 var dataObj = {
     animalTracks: 0,
@@ -228,8 +232,8 @@ function goodEventHandler(evtRoll) {
             eventLogAry.push("It's mating season for your animals!");
 			matingSeason('frog');
 			matingSeason('deer');
-			matingSeason('bird');
-			matingSeason('bunny');
+			//matingSeason('bird');
+			//matingSeason('bunny');
             break;
         //Wildlife Preservation Attempts
         case evtRoll >= 85 && evtRoll <= 100:
@@ -457,9 +461,11 @@ function badEventChecker(animal, stat){
 		}
 
 	}
-    if (animal === 'frog' || animal === 'deer') {
-        eventLogAry.push(count + " " + animal + "'s were lost.");
+    if (animal === 'frog') {
+        eventLogAry.push(count + " " + animal + "s were lost.");
         controller.removeAnimal(animal, count);
+    } else if (animal === 'deer') {
+        eventLogAry.push(count + " " + animal + " were lost.");
     }
 	console.log( animal +"s removed by event: " + count);
 	
@@ -467,7 +473,7 @@ function badEventChecker(animal, stat){
 
 // takes, in animal string argument, adds 20% of animals
 function matingSeason(animal){
-	var a = Math.floor(getAnimalCount(animal) * 0.2);
+	var a = Math.floor(controller.getAnimalCount(animal) * 0.2);
 	
 	controller.addAnimal(animal, a);
 	
