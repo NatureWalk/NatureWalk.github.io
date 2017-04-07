@@ -68,7 +68,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     //UNLOCKABLES (change to buttons when we have the functionality)
     /////////////////////////////////////////////////
-    
+    /*
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {
             subAttPane = new Sprite();
@@ -78,7 +78,7 @@ function backgroundSetup() {
             panes.push(subAttPane);
         }
     }
-    
+    */
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -129,7 +129,7 @@ function buttonSetup() {
     stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 33421; }
+    if (stepCount === undefined) { stepCount = 8500; }
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
@@ -312,7 +312,7 @@ function buttonSetup() {
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
-    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "attribute_value" + i);
+    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '20px';
@@ -362,13 +362,13 @@ function buttonSetup() {
             }
     
     animalImage = new Button(spawn_animal);
-    animalImage.setSrc("image_resources/ClearSquare.png");
-    animalImage.setSpriteAttributes(261, 245, 0, 0, "animal_image");
+    animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
+    animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
     game.buttonArray.push(animalImage);
     
     animalImage.hasTextValue = true;
-    animalImage.fontSize = '28px';
-    animalImage.setText("Call Animal", 0 + (5.5 * charNum), 160);
+    animalImage.fontSize = '38px';
+    animalImage.setText("Call Animal", 0 + (3 * charNum), 160);
     /////////////////////////////////////////////////
 
     //Mute Button
@@ -388,7 +388,7 @@ function buttonSetup() {
     eventLogPane.setSrc("image_resources/EventLog.png");
     eventLogPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
     game.buttonArray.push(eventLogPane);
-        
+    
         
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
