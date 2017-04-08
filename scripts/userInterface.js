@@ -319,6 +319,7 @@ function buttonSetup() {
     upgradeBtn.fontSize = '20px';
     charnum = "upgrade".length;
     upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (6.3 * charnum), 5);
+    upgradeBtn.setTooltip("This upgrades the animal to the next level.")
     game.buttonArray.push(upgradeBtn);    
     /////////////////////////////////////////////////
     
@@ -352,6 +353,7 @@ function buttonSetup() {
     animalImage = new Button(spawn_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
     animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
+    animalImage.setTooltip("Pressing this calls the selected animal.")
     game.buttonArray.push(animalImage);
     
     animalImage.hasTextValue = true;
@@ -370,6 +372,8 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
     animalImage.setText("Call Animal", 0 + (5.5 * charNum), 160);
+
+    
     /////////////////////////////////////////////////
 
     //Mute Button

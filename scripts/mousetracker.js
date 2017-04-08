@@ -3,6 +3,7 @@ function MouseManager() {
     //The constructor.
 }
 
+
 /*
 getMousePos: Function to get the mouse position.
 Params: 
