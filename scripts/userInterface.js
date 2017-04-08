@@ -177,7 +177,7 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         //ANIMAL COUNT
         /////////////////////////////////////////////////
-        animalCount = new Button(function() {})
+        /*animalCount = new Button(function() {})
         animalCount.setSrc("image_resources/ClearSquare.png");
         animalCount.setSpriteAttributes((140 +(100*i)), 125, 0, 0, "animal_count" + i);
         animalCount.hasTextValue = true;
@@ -191,7 +191,7 @@ function buttonSetup() {
                 this.setText(controller.getAnimalCount(animal_types[i]), (animalCount.width / 2) - (5 * charNum), 0);
             }
         })(i);
-        game.buttonArray.push(animalCount);
+        game.buttonArray.push(animalCount);*/
         /////////////////////////////////////////////////
         
         

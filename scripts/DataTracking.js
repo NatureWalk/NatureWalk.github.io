@@ -204,7 +204,7 @@ function eventChooser(evtRoll) {
 
 //Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
-    switch (true) {
+    /*switch (true) {
         //Multiplier
         case evtRoll < 30:
             //console.log(goodEvents[0]);
@@ -240,12 +240,12 @@ function goodEventHandler(evtRoll) {
             //console.log(goodEvents[5]);
             eventLogAry.push("Wildlife preservationists are nearby.");
             break;
-    }
+    }*/
 }
 
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
-    switch (true) {
+   /* switch (true) {
         //Predator
         case evtRoll < 35:
             //console.log(badEvents[0]);
@@ -320,6 +320,7 @@ function badEventHandler(evtRoll) {
             eventLogAry.push("A tornado approaches!");
             break;
             */
+          /*
         //Sinkhole
         case evtRoll >=67 && evtRoll < 71:
             //console.log(badEvents[8]);
@@ -378,6 +379,7 @@ function badEventHandler(evtRoll) {
             break;
             */
         //Volcano
+        /*
         case evtRoll >=81 && evtRoll < 82:
             //console.log(badEvents[14]);
             eventLogAry.push("A nearby volcano erupts!");
@@ -407,7 +409,7 @@ function badEventHandler(evtRoll) {
 			badEventChecker('bird', 'instincts');
 			badEventChecker('bunny', 'instincts');
             break;
-    }
+   } */
 }
 
 //Handles neutral events, takes in a new roll from the eventChooser.
@@ -430,6 +432,7 @@ function noEventHandler(evtRoll) {
 // rolls for all animal count of the specific animal against their specified stat
 // removes the number of animals that fail the roll
 function badEventChecker(animal, stat){
+	/*
 	var count= 0; 
 	var playerRoll, gameRoll;
 	
@@ -468,6 +471,7 @@ function badEventChecker(animal, stat){
         eventLogAry.push(count + " " + animal + " were lost.");
     }
 	console.log( animal +"s removed by event: " + count);
+	*/
 	
 }
 
