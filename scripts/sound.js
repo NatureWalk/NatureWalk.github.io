@@ -2,6 +2,7 @@
 
 var volume = 1
 
+//Object which holds all the sound objects for the game
 var soundManager = function() {
 	this.muted = false
 	this.music = new Howl({

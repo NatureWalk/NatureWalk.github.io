@@ -6,7 +6,7 @@
 /*JIM MEETING NOTES
  * Add Title for selected animal. (DONE)
  * Show level below animal icons. (DONE)
- * Game Title somewhere on the page. 
+ * Game Title somewhere on the page. (DONE in text, need logo)
  * Better communication of events and effects of them. 
  * Multiple different animals on screen, only show animals that the player has. (DONE)
  * Player's permanent animal. 
