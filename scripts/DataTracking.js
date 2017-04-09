@@ -155,7 +155,8 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        console.log(++dataObj.eventCounter);
+        ++dataObj.eventCounter
+        console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 12;
     }
@@ -165,7 +166,7 @@ function everySecond(seconds) {
 function everyThirty(seconds) {
     var tracks = 0;
     for (var i = 0; i < 4; i++){
-        tracks += (controller.getNumAnimals * 30);
+        tracks += (controller.getNumAnimals() * 30);
     } 
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();

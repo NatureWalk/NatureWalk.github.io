@@ -115,6 +115,7 @@ function master_controller() {
 	this.addAnimal = function(animal){
 		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
+			console.log(animal)
 			ani.setLevel(this.base_levels[animal]);
 			this.animals.push(ani);
 			return true;
@@ -175,8 +176,8 @@ function master_controller() {
 	//get the amount of a certain animal
 	this.getAnimalCount = function(animal) {
 		var count = 0;
-		for (var a in this.animals) {
-			if (a.type == animal) count++;
+		for (var a=0; a < this.getNumAnimals();a++ ) {
+			if (this.animals[a].type == animal) count++;
 		}
 		return count;
 	}

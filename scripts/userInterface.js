@@ -317,7 +317,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var upgradeBtn;
     upgradeBtn = new Button(function() {
-        upgrade_animal();
+        upgrade_baseAnimal();
 
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
@@ -522,9 +522,14 @@ function add_animal() {
     if (stepCount - 100 < 0) {
         return;
     }
-    status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
+    var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
     console.log(status)
     console.log("party: "+controller.getNumAnimals())
+
+    if (status === true){
+        soundMan.click.play()
+        stepCount -= 100;
+    }
 
     switch (ui_values.currentAnimal) {
         case 'Bird':
@@ -536,21 +541,20 @@ function add_animal() {
         case 'Bunny':
             break;
     }
-    soundMan.click.play()
-    stepCount -= 100;
+    
 }
 
-/* upgrade_animal() - For increasing the level of animals. 
+/* upgrade_baseAnimal() - For increasing the level of animals. 
  * Params: None
  * Returns: None. 
 */
-function upgrade_animal() {
+function upgrade_baseAnimal() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
     if (dataObj.animalTracks - (level * 100) < 0) {
         return;
     } else {
         dataObj.animalTracks -= (level * 100);
-        controller.levelUp(ui_values.currentAnimal.toLowerCase());
+        controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
     soundMan.up1.play()
 }
