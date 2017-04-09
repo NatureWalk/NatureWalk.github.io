@@ -30,7 +30,7 @@ var badEvents = [
 //List of good events. 
 var goodEvents = [
     "stepmulti", "extratracks", "clickable", "fountain", 
-    "meadow", "mating", "preservation"
+    "meadow", "preservation"
 ];
 
 //Array that is referenced by the journal above the game map. 
@@ -204,7 +204,7 @@ function eventChooser(evtRoll) {
 
 //Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
-    /*switch (true) {
+    switch (true) {
         //Multiplier
         case evtRoll < 30:
             //console.log(goodEvents[0]);
@@ -229,81 +229,71 @@ function goodEventHandler(evtRoll) {
         //Mating Season
         case evtRoll >= 75 && evtRoll < 85:
             //console.log(goodEvents[4]);
-            eventLogAry.push("It's mating season for your animals!");
-			matingSeason('frog');
-			matingSeason('deer');
-			//matingSeason('bird');
-			//matingSeason('bunny');
+            
             break;
         //Wildlife Preservation Attempts
         case evtRoll >= 85 && evtRoll <= 100:
             //console.log(goodEvents[5]);
             eventLogAry.push("Wildlife preservationists are nearby.");
             break;
-    }*/
+    }
 }
 
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
-   /* switch (true) {
+   switch (true) {
         //Predator
         case evtRoll < 35:
             //console.log(badEvents[0]);
             eventLogAry.push("A predator attacked your animals!");
             eventLogAry.push("To escape, the animals' evasion will be tested.");
-			badEventChecker('frog', 'evasion');
-			badEventChecker('deer', 'evasion');
-			badEventChecker('bird', 'evasion');
-			badEventChecker('bunny', 'evasion');
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'evasion');
+			}
             break;
         //River
         case evtRoll >=35 && evtRoll < 43:
             //console.log(badEvents[1]);
             eventLogAry.push("Your animals try to cross a river.");
             eventLogAry.push("To swim across, the animals' strength will be tested.");
-			badEventChecker('frog', 'strength');
-			badEventChecker('deer', 'strength');
-			badEventChecker('bird', 'strength');
-			badEventChecker('bunny', 'strength');
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'strength');
+			}
             break;
         //Ravine
         case evtRoll >=43 && evtRoll < 51:
             eventLogAry.push("There's a ravine ahead of you.");
-            eventLogAry.push("To cross it, the animals' athletics will be tested.");
-			badEventChecker('frog', 'athletics');
-			badEventChecker('deer', 'athletics');
-			badEventChecker('bird', 'athletics');
-			badEventChecker('bunny', 'athletics');
+            eventLogAry.push("To cross it, the animals' strength will be tested.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'strength');
+			}
             break;
         //Winter
         case evtRoll >=51 && evtRoll < 57:
             //console.log(badEvents[3]);
             eventLogAry.push("It's a cold winter night.");
-            eventLogAry.push("Finding shelter will test the animals' instincts.");
-			badEventChecker('frog', 'instincts');
-			badEventChecker('deer', 'instincts');
-			badEventChecker('bird', 'instincts');
-			badEventChecker('bunny', 'instincts');
+            eventLogAry.push("Finding shelter will test the animals' speed.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'speed');
+			}
             break;
         //Tree
         case evtRoll >=57 && evtRoll < 63:
             //console.log(badEvents[4]);
             eventLogAry.push("You come across a fallen tree.");
             eventLogAry.push("In order to climb over, the animals' strength will be tested.");
-			badEventChecker('frog', 'strength');
-			badEventChecker('deer', 'strength');
-			badEventChecker('bird', 'strength');
-			badEventChecker('bunny', 'strength');
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'strength');
+			}
             break;
         //Mudslide
         case evtRoll >=63 && evtRoll < 67:
             //console.log(badEvents[5]);
             eventLogAry.push("Look out! A mudslide!");
-            eventLogAry.push("The animals' athletics will be tested to get out of the way.");
-			badEventChecker('frog', 'athletics');
-			badEventChecker('deer', 'athletics');
-			badEventChecker('bird', 'athletics');
-			badEventChecker('bunny', 'athletics');
+            eventLogAry.push("The animals' evasion will be tested to get out of the way.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'evasion');
+			}
             break;
             
         //Lightning
@@ -320,96 +310,73 @@ function badEventHandler(evtRoll) {
             eventLogAry.push("A tornado approaches!");
             break;
             */
-          /*
+          
         //Sinkhole
         case evtRoll >=67 && evtRoll < 71:
             //console.log(badEvents[8]);
             eventLogAry.push("There's a sinkhole to avoid.");
-            eventLogAry.push("Getting around it will test the animals' athletics.");
-			badEventChecker('frog', 'athletics');
-			badEventChecker('deer', 'athletics');
-			badEventChecker('bird', 'athletics');
-			badEventChecker('bunny', 'athletics');
+            eventLogAry.push("Getting around it will test the animals' speed.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'speed');
+			}
             break;
         //Forest Fire
         case evtRoll >=71 && evtRoll < 73:
             //console.log(badEvents[9]);
             eventLogAry.push("An enormous fire is burning the forest!");
-            eventLogAry.push("To avoid it, the animals' instincts will be tested.");
-			badEventChecker('frog', 'instincts');
-			badEventChecker('deer', 'instincts');
-			badEventChecker('bird', 'instincts');
-			badEventChecker('bunny', 'instincts');
+            eventLogAry.push("To avoid it, the animals' speed will be tested.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'speed');
+			}
             break;
-        //Drought
-        case evtRoll >=73 && evtRoll < 75:
-            //console.log(badEvents[10]);
-            eventLogAry.push("It's too dry, water is hard to find.");
-            eventLogAry.push("Finding water will test the animals' instincts.");
-			badEventChecker('frog', 'instincts');
-			badEventChecker('deer', 'instincts');
-			badEventChecker('bird', 'instincts');
-			badEventChecker('bunny', 'instincts');
-            break;
-        //Heat wave
         case evtRoll >=75 && evtRoll < 77:
             //console.log(badEvents[11]);
             eventLogAry.push("A brutal heat wave washes over you.");
             eventLogAry.push("To endure it, the animals' strength will be tested.");
-			badEventChecker('frog', 'strength');
-			badEventChecker('deer', 'strength');
-			badEventChecker('bird', 'strength');
-			badEventChecker('bunny', 'strength');
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'strength');
+			}
             break;
         //Flash flood
         case evtRoll >=77 && evtRoll < 81:
             //console.log(badEvents[12]);
             eventLogAry.push("A sudden rain storm causes a flood!");
-            eventLogAry.push("Trudging through it will be a test of the animals' athletics.");
-			badEventChecker('frog', 'athletics');
-			badEventChecker('deer', 'athletics');
-			badEventChecker('bird', 'athletics');
-			badEventChecker('bunny', 'athletics');
+            eventLogAry.push("Trudging through it will be a test of the animals' strength.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'strength');
+			}
             break;
         //Meteor
-            /*
+            
         case evtRoll >=80 && evtRoll < 81:
             //console.log(badEvents[13]);
             eventLogAry.push("There's a meteor falling from the sky!");
             break;
-            */
+            
         //Volcano
-        /*
+        
         case evtRoll >=81 && evtRoll < 82:
             //console.log(badEvents[14]);
             eventLogAry.push("A nearby volcano erupts!");
-            eventLogAry.push("In order to escape it, the animals' athletics will be tested.");
-			badEventChecker('frog', 'athletics');
-			badEventChecker('deer', 'athletics');
-			badEventChecker('bird', 'athletics');
-			badEventChecker('bunny', 'athletics');
+            eventLogAry.push("In order to escape it, the animals' speed will be tested.");
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'speed');
+			}
             break;
         //Hunters
         case evtRoll >=82 && evtRoll < 97:
             //console.log(badEvents[15]);
             eventLogAry.push("There are some hunters nearby.");
             eventLogAry.push("Escaping will be force the animals' evasion to be tested.");
-			badEventChecker('frog', 'evasion');
-			badEventChecker('deer', 'evasion');
-			badEventChecker('bird', 'evasion');
-			badEventChecker('bunny', 'evasion');
+			for(var i = 0; i < controller.getNumAnimals(); i++){
+				badEventChecker(i,'evasion');
+			}
             break;
         //Pollution
         case evtRoll >=97 && evtRoll <= 100:
-            //console.log(badEvents[16]);
-            eventLogAry.push("This water looks especially dirty...");
-            eventLogAry.push("Finding clean water will be a test of the animals' instincts.");
-			badEventChecker('frog', 'instincts');
-			badEventChecker('deer', 'instincts');
-			badEventChecker('bird', 'instincts');
-			badEventChecker('bunny', 'instincts');
+            
             break;
-   } */
+   } 
 }
 
 //Handles neutral events, takes in a new roll from the eventChooser.
@@ -432,7 +399,7 @@ function noEventHandler(evtRoll) {
 // rolls for all animal count of the specific animal against their specified stat
 // removes the number of animals that fail the roll
 function badEventChecker(animal, stat){
-	/*
+	
 	var count= 0; 
 	var playerRoll, gameRoll;
 	
@@ -471,7 +438,7 @@ function badEventChecker(animal, stat){
         eventLogAry.push(count + " " + animal + " were lost.");
     }
 	console.log( animal +"s removed by event: " + count);
-	*/
+	
 	
 }
 

@@ -35,11 +35,16 @@ animal_data['bunny'] = [1.4, 1.4, 1.2];
 animal_data['deer'] = [1.4, 1.2, 1.6];
 animal_data['bird'] = [1.4, 1.6, 1.2];
 
+lifetime = 8;
+
 
 
 function animalClass(type){
 	this.type = type;
 	this.level = 0;
+	this.canDie = true;
+	this.deathTime = Date.now() + (lifetime*60*60*1000);
+	this.name = type;
 	
 	this.setLevel = function(lv){
 		this.level = lv;
@@ -97,6 +102,17 @@ function master_controller() {
 	this.animations = [];
 	
 	this.query = function(){
+		for(var i = 0; i < animals.length; i++){
+			if(animals[i].canDie == true){
+				if(Date.now() >= animals[i].deathTime){
+					var arr = animals[i].name.concat(" died peacefully of old age.")
+					eventLogAry.push(arr);
+					this.removeAnimal[i];
+					i--;
+				}
+			}
+		}
+		
 		
 	}
 	
@@ -142,11 +158,23 @@ function master_controller() {
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
 				for(var k = 0; k < animals[i].level){
-					stat = math.ciel(stat * animal_data[j]);
+					stat = math.ciel(stat * animal_data[animals[i].type][j]);
 				}
 				dat.push(stat);
 			}
 			data.push(dat);
+		}
+		return data;
+	}
+	
+	this.getBaseData = function(animal) {
+		var data = [];
+		for(var i = 0; i < 3; i++){
+			var stat = 1;
+			for(var k = 0; k < animals[i].level){
+				stat = math.ciel(stat * animal_data[amimal][j]);
+			}
+			data.push(stat);
 		}
 		return data;
 	}
