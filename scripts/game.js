@@ -36,7 +36,9 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
-var cursor;
+var cursor = {};
+cursor.x=0;
+cursor.y=0;
 
 canvas.addEventListener('mousemove', function(evt) {
     mouseman.findTarget(evt);

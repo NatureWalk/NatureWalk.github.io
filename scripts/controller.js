@@ -60,7 +60,7 @@ function animalClass(type){
  *           query: DO NOT USE, DESIGNED FOR QUERYING THE SERVER
  *           baseLevelUp: Increases the base level of an animal type by one
  *           levelUpAnimal: Levels up the animal at a particular location in the animal array
- *           addAnimal: adds a new animal of a type specified to the animal array. Returns true
+ *           addAnimal: adds a new animal of a type (string) specified to the animal array. Returns true
  *                      on success and false if adding an animal would exceed the max party size.
  *           partySizeUp: increases the max party size by one
  *           removeAnimal: removes the animal at a particular position in the array from the array
@@ -113,7 +113,7 @@ function master_controller() {
 	}
 	
 	this.addAnimal = function(animal){
-		if(this.animals.length <= this.party_size) {
+		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
 			ani.setLevel(this.base_levels[animal]);
 			this.animals.push(ani);
@@ -137,12 +137,12 @@ function master_controller() {
 		var data = [];
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
-			dat.push(animals[i].type)
-			dat.push(animals[i].level)
+			dat.push(this.animals[i].type)
+			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
-				for(var k = 0; k < animals[i].level){
-					stat = math.ciel(stat * animal_data[j]);
+				for(var k = 0; k < animals[i].level; k++){
+					stat = Math.ceil(stat * animal_data[j]);
 				}
 				dat.push(stat);
 			}
@@ -150,6 +150,18 @@ function master_controller() {
 		}
 		return data;
 	}
+
+	this.getBaseData = function(animal) {
+        var data = [];
+        for(var i = 0; i < 3; i++){
+            var stat = 1;
+            for(var k = 0; k < this.base_levels[animal]; k++){
+                stat = Math.ceil(stat * animal_data[animal][i]);
+            }
+            data.push(stat);
+        }
+        return data;
+    }
 	
 	this.getAnimalBaseLevel = function(animal){
 		return this.base_levels[animal];
@@ -160,7 +172,15 @@ function master_controller() {
 		
 	}
 	
-	
+	//get the amount of a certain animal
+	this.getAnimalCount = function(animal) {
+		var count = 0;
+		for (var a in this.animals) {
+			if (a.type == animal) count++;
+		}
+		return count;
+	}
+
 	this.update = function() {
 		this.timer++;
 		//console.log(this.lifespans)

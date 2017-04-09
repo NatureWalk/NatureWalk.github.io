@@ -45,7 +45,7 @@ NOTE: Is only called the first time onMouseMove() is called.
 */
 function onMouseEnter() {
     this.hovered = true;
-    console.log("hovering "+this.name)
+    //console.log("hovering "+this.name)
 }
 /*
 onMouseLeave: Function that is called when the mouse leaves the button's perimeter. 
@@ -55,7 +55,7 @@ NOTE: Not a self-sufficient function. As it is, it must be called from the canva
 */
 function onMouseLeave() {
     this.hovered = false;
-    console.log("not hovering "+this.name)
+    //console.log("not hovering "+this.name)
     this.isPressed = false;
     //console.log("left");
     if (!this.isToggleButton) {
