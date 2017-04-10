@@ -12,7 +12,7 @@ var dataObj = {
     everySecondTrig: 0,
     eventTrigger: 10,
     sessionStartTime: 0,
-    animalStats: ["Vitality", "Evasion", "Strength", "Athletics", "Instinct", "Lifespan"],
+    animalStats: ["Evasion", "Strength", "Speed"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
@@ -398,39 +398,48 @@ function noEventHandler(evtRoll) {
 //Two String arguments animal is either: 'frog','deer','bird','bunny', and stat is either: 'vitality', 'evasion', 'strength', 'athletics', 'instincts', 'lifespan'
 // rolls for all animal count of the specific animal against their specified stat
 // removes the number of animals that fail the roll
-function badEventChecker(animal, stat){
+function badEventChecker(index, stat){
 	
-	var count= 0; 
+	var count = 0; 
 	var playerRoll, gameRoll;
 	
-	var a = controller.getAnimalData(animal);
+	var a = controller.getAnimalData();
 	
-	var e = controller.getAnimalCount(animal);
+	var e = a[index];
 	
-	for( var i = 0; i < e; ++i){
-		playerRoll = roll(10000);
-		gameRoll = roll(10000);
+	var diff = controller.getAreaLevel() * 75;
+	var diffmin = (controller.getAreaLevel() - 1) * 75;
+	
+	for(var i = 0; i < controller.getAreaLevel(); i++){
+		diff = Math.ciel(diff * 1.33)
+	}
+	
+	if(controller.getAreaLevel == 1){
+		diffmin = 1;
+	} else {
+		for(var i = 0; i < controller.getAreaLevel() - 1; i++){
+			diffmin = Math.ciel(diffmin * 1.33)
+		}
+		diffmin = (diffmin * .85);
+	}
+	
+    playerRoll = 0;
+	gameRoll = roll(diff);
 		
-		switch(stat){
-        case 'vitality': playerRoll = a[0] + playerRoll;
+	switch(stat){
+       	case 'speed': playerRoll = roll(diff + e[2], e[2]);
             break;
         case 'evasion': playerRoll = a[1] + playerRoll;
             break;
         case 'strength': playerRoll = a[2] + playerRoll;
             break;
-        case 'athletics': playerRoll = a[3] + playerRoll;
-            break;
-		case 'instincts': playerRoll = a[4] + playerRoll;
-            break;
-        case 'lifespan': playerRoll = a[5] + playerRoll;
-            break;
-		}
-	
-		if(playerRoll < gameRoll){
-			count++;
-		}
-
 	}
+	
+	if(playerRoll < gameRoll){
+			count++;
+	}
+
+	
     if (animal === 'frog') {
         eventLogAry.push(count + " " + animal + "s were lost.");
         controller.removeAnimal(animal, count);
@@ -452,8 +461,12 @@ function matingSeason(animal){
 	
 }
 //Rolls an integer between 1 and a number parameter. . 
-function roll(num) {
-    return Math.round(Math.random()*num);
+function roll(num, basenum) {
+	if(basenum != null){
+		return Math.round(Math.random()*num) + basenum;
+	}else {
+    	return Math.round(Math.random()*num);
+	}
 }
 /* sessonEnd() - Called when the window is closed (unfinished). Used to take data from dataObj{} and store it on server/local storage.
  * Params: None. 

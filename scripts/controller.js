@@ -96,10 +96,15 @@ function master_controller() {
 	
 	this.timer = 0;
 	
+	this.area_level = 1;
 	
 	//this.lifespans = new p_queue();
 	
 	this.animations = [];
+	
+	this.getAreaLevel = function(){
+		return this.area_level;
+	}
 	
 	this.query = function(){
 		for(var i = 0; i < animals.length; i++){
