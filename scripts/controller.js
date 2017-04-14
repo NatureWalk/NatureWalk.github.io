@@ -56,6 +56,28 @@ function animalClass(type){
 }
 
 
+badEvents = [
+    ["predator", 'evasion'], ["river", 'strength'], ["ravine", 'strength'],['Snow storm', 'speed'],
+    ["treefall", 'evasion'], ["mudslide", 'speed'], ["lightning", 'speed'], 
+    ["tornado", 'speed'], ["sinkhole", 'strength'], ["forestfire", 'speed'], ["drought", 'strength'], 
+    ["heatwave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
+    ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
+];
+
+badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
+badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["ice storm", "speed"]];
+badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
+badEventsSpringNight = [["river", "strength"], ["sinkhole", "strength"], ["predator", "evasion"]];
+badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
+badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
+badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 'strength']];
+badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
+
+
+
+
+
 /* MASTER CONTROLLER OBJECT
  *
  * The master controller handles all visual aspects of the background math and
@@ -73,7 +95,7 @@ function animalClass(type){
  *           getNumAnimals: returns the total number of animals
  *           getAnimalData: returns a 2D array of animal data. Organized thusly
  *                          [
- *                           [animal type, animal level, Speed, Evasion, Strength]
+ *                           [animal type, animal level, Speed, Evasion, Strength, name]
  *                           ...
  *                          ]
  * 
@@ -97,6 +119,15 @@ function master_controller() {
 	this.timer = 0;
 	
 	this.area_level = 1;
+	this.areaSeason = 'spring';
+	
+	this.usableEvents = badEventsSpringDay.slice();
+	var evR = roll(2,0);
+	this.usableEvents.push(badEventsCatastrophe[evR]);
+	
+	
+	
+	this.removalQ = [];
 	
 	//this.lifespans = new p_queue();
 	
@@ -104,6 +135,62 @@ function master_controller() {
 	
 	this.getAreaLevel = function(){
 		return this.area_level;
+	}
+	
+	this.areaLevelUp = function(){
+		this.area_level+=1;
+		if(this.area_level % 10 == 1){
+			switch(this.areaSeason){
+				case 'spring':
+				    this.areaSeason = 'summer';
+				    break;
+				case 'summer':
+				    this.areaSeason = 'fall';
+				    break;
+				case 'fall':
+				    this.areaSeason = 'winter'
+				    break;
+				case 'winter': 
+				    this.areaSeason = 'spring';
+				    break;
+			}
+		}
+		switch(this.areaSeason){
+				case 'spring':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSpringNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSpringDay.slice();
+				    }
+				    break;
+				case 'summer':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSummerNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSummerDay.slice();
+				    }
+				    break;
+				case 'fall':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsFallNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsFallDay.slice();
+				    }
+				    break;
+				case 'winter': 
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsWinterNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsWinterDay.slice();
+				    }
+				    break;
+		}
+	var cata = roll(2,0);
+	this.usableEvents.push(badEventsCatastrophe[cata]);
+	}
+	
+	this.getBadEvents = function(){
+		return this.usableEvents;
 	}
 	
 	this.query = function(){
@@ -144,6 +231,18 @@ function master_controller() {
 		}
 	}
 	
+	this.queueRemove = function(index){
+		this.removalQ.push(index);
+	}
+	
+	this.removeAllQueue = function(){
+		var numInd = 0;
+		for(var i = 0; i < this.removalQ.length; i++){
+			this.removeAnimal(this.removalQ[i] - numInd);
+			numInd++;
+		}
+		this.removalQ = [];
+	}
 	
 	this.removeAnimal = function(num){
 		if(num < this.animals.length){
@@ -167,6 +266,7 @@ function master_controller() {
 				}
 				dat.push(stat);
 			}
+			dat.push(animals[i].name)
 			data.push(dat);
 		}
 		return data;
