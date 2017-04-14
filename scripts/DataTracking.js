@@ -241,28 +241,33 @@ function badEventHandler(evtRoll) {
    var b = controller.getBadEvents();
    switch (true) {
     	case evtRoll <= 31:
+    		console.log(b[0][0] + " " + b[0][1])
     		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[0]);
+				badEventChecker(i,b[0][1]);
 			}
     		break;
     	case evtRoll > 31 < 63:
+    		console.log(b[1][0] + " " + b[1][1])
     	    for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[1]);
+				badEventChecker(i,b[1][1]);
 			}
     		break;
     	case evtRoll >= 63 < 94:
+    		console.log(b[2][0] + " " + b[2][1])
     		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[2]);
+				badEventChecker(i,b[2][1]);
 			}
     		break;
     	case evtRoll >= 94:
+    		console.log(b[3][0] + " " + b[3][1])
     		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[3],true);
+				badEventChecker(i,b[3][1],true);
 			}
     		break;
     	    
    }
    controller.removeAllQueue();
+   console.log(controller.getNumAnimals());
 }
 
 //Handles neutral events, takes in a new roll from the eventChooser.
@@ -296,7 +301,7 @@ function badEventChecker(index, stat,flag){
 	var diffmin = (controller.getAreaLevel() - 1) * 75;
 	
 	for(var i = 0; i < controller.getAreaLevel(); i++){
-		diff = Math.ciel(diff * 1.33)
+		diff = Math.ceil(diff * 1.33)
 	}
 	
 	if(controller.getAreaLevel() == 1){
@@ -320,14 +325,14 @@ function badEventChecker(index, stat,flag){
 	
 		
 	switch(stat){
-       	case 'speed': playerRoll = roll(Math.round(controller.getAreaLevel() * (controller.getAreaLevel()*1.1)) +e[2], e[2]);
+       	case 'speed': playerRoll = roll(e[2] + (25 * controller.getAreaLevel()), e[2]);
             break;
-        case 'evasion': playerRoll = roll(Math.round(controller.getAreaLevel() * (controller.getAreaLevel()*1.1)) +e[3], e[3]);
+        case 'evasion': playerRoll = roll(e[2] + (25 * controller.getAreaLevel()), e[3]);
             break;
-        case 'strength': roll(Math.round(controller.getAreaLevel() * (controller.getAreaLevel()*1.1)) +e[4], e[4]);
+        case 'strength': roll(Math.round(e[2] + (25 * controller.getAreaLevel()), e[4]));
             break;
 	}
-	
+	console.log(playerRoll + " " + gameRoll);
 	if(playerRoll < gameRoll){
 		var die = roll(100);
 		if (die < 5){

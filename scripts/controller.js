@@ -194,10 +194,10 @@ function master_controller() {
 	}
 	
 	this.query = function(){
-		for(var i = 0; i < animals.length; i++){
-			if(animals[i].canDie == true){
-				if(Date.now() >= animals[i].deathTime){
-					var arr = animals[i].name.concat(" died peacefully of old age.")
+		for(var i = 0; i < this.animals.length; i++){
+			if(this.animals[i].canDie == true){
+				if(Date.now() >= this.animals[i].deathTime){
+					var arr = this.animals[i].name.concat(" died peacefully of old age.")
 					eventLogAry.push(arr);
 					this.removeAnimal[i];
 					i--;
@@ -221,9 +221,9 @@ function master_controller() {
 	}
 	
 	this.addAnimal = function(animal){
-		if(this.animals.length <= this.party_limit) {
+		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
-			console.log(animal)
+			console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
 			this.animals.push(ani);
 			return true;
@@ -262,12 +262,12 @@ function master_controller() {
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
-				for(var k = 0; k < animals[i].level){
-					stat = math.ciel(stat * animal_data[animals[i].type][j]);
+				for(var k = 0; k < this.animals[i].level; k++){
+					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
 				}
 				dat.push(stat);
 			}
-			dat.push(animals[i].name)
+			dat.push(this.animals[i].name)
 			data.push(dat);
 		}
 		return data;
@@ -284,18 +284,7 @@ function master_controller() {
         }
         return data;
     }
-	
-	this.getBaseData = function(animal) {
-		var data = [];
-		for(var i = 0; i < 3; i++){
-			var stat = 1;
-			for(var k = 0; k < animals[i].level){
-				stat = math.ciel(stat * animal_data[amimal][j]);
-			}
-			data.push(stat);
-		}
-		return data;
-	}
+
 	
 	this.getAnimalBaseLevel = function(animal){
 		return this.base_levels[animal];
