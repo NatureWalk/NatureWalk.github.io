@@ -11,7 +11,7 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-soundMan.music.play()
+//soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
@@ -36,8 +36,13 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
+var cursor = {};
+cursor.x=0;
+cursor.y=0;
+
 canvas.addEventListener('mousemove', function(evt) {
-    mouseman.findTarget(evt);   
+    mouseman.findTarget(evt);
+    cursor= mouseman.getMousePos(canvas,evt);
 });
 canvas.addEventListener('mousedown', function(evt) {
     mouseman.findTarget(evt);   

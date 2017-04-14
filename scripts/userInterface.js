@@ -6,7 +6,7 @@
 /*JIM MEETING NOTES
  * Add Title for selected animal. (DONE)
  * Show level below animal icons. (DONE)
- * Game Title somewhere on the page. 
+ * Game Title somewhere on the page. (DONE in text, need logo)
  * Better communication of events and effects of them. 
  * Multiple different animals on screen, only show animals that the player has. (DONE)
  * Player's permanent animal. 
@@ -69,15 +69,8 @@ function backgroundSetup() {
     //UNLOCKABLES (change to buttons when we have the functionality)
     /////////////////////////////////////////////////
     
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 6; j++) {
-            subAttPane = new Sprite();
-            //Sets the source of each pane to be the same as the animal icon. 
-            subAttPane.setSrc(ui_values.animalSrcAry[1]);
-            subAttPane.setSpriteAttributes((101 + 60 * j), (455 + 50 * i), 40, 40, "unlockable");
-            panes.push(subAttPane);
-        }
-    }
+
+
     
     /////////////////////////////////////////////////
     
@@ -165,7 +158,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var animalIcon, i, animalCount;
     for (i = 0; i < 4; i++) {
-        animalIcon = new Button(change_image, [i]);
+        animalIcon = new Button(select_animal, [i]);
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
@@ -207,7 +200,7 @@ function buttonSetup() {
         (function(i) {
             animalLevel.update = function() {
                 var temp = ui_values.animalAry[i].toLowerCase();
-                var level = controller.levels[temp];
+                var level = controller.getAnimalBaseLevel(temp);
                 var charNum = numberLen(temp);  
                 this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
             }
@@ -215,6 +208,22 @@ function buttonSetup() {
         game.buttonArray.push(animalLevel);
         /////////////////////////////////////////////////  
     }
+
+    /////////////////////////////////////////////////
+    //PARTY ICONS
+    /////////////////////////////////////////////////
+    
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 6; j++) {
+            subAttPane = new Sprite();
+            //Sets the source of each pane to be the same as the animal icon. 
+            subAttPane.setSrc(ui_values.animalSrcAry[1]);
+            subAttPane.setSpriteAttributes((101 + 60 * j), (455 + 50 * i), 40, 40, "unlockable");
+            panes.push(subAttPane);
+        }
+    }   
+    
+
     
     /////////////////////////////////////////////////
     //COMING SOON WORDS
@@ -266,7 +275,7 @@ function buttonSetup() {
     //ATTRIBUTE NAMES
     /////////////////////////////////////////////////
     var attButton, attValue, animalImage;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 3; i++) {
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
@@ -293,7 +302,7 @@ function buttonSetup() {
         (function(i) {
             attNum.update = function() {
                 var stats = (ui_values.currentAnimal).toLowerCase();
-                var testRef = controller.getAnimalData(stats);
+                var testRef = controller.getBaseData(stats);
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
             }
@@ -308,7 +317,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var upgradeBtn;
     upgradeBtn = new Button(function() {
-        upgrade_animal();
+        upgrade_baseAnimal();
+
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
@@ -318,6 +328,7 @@ function buttonSetup() {
     upgradeBtn.fontSize = '20px';
     charnum = "upgrade".length;
     upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (6.3 * charnum), 5);
+    upgradeBtn.setTooltip("This upgrades the animal to the next level.")
     game.buttonArray.push(upgradeBtn);    
     /////////////////////////////////////////////////
     
@@ -334,7 +345,7 @@ function buttonSetup() {
     upgradeCost.fontSize = '20px';
     
     upgradeCost.update = function() {
-        var level = controller.getAnimalLevel((ui_values.currentAnimal).toLowerCase());
+        var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];
                 
         charnum = numberConversion(level*100).length;
                 
@@ -348,9 +359,10 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //ANIMAL IMAGE
     /////////////////////////////////////////////////
-    animalImage = new Button(spawn_animal);
+    animalImage = new Button(add_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
     animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
+    animalImage.setTooltip("Pressing this calls the selected animal.")
     game.buttonArray.push(animalImage);
     
     animalImage.hasTextValue = true;
@@ -361,7 +373,7 @@ function buttonSetup() {
                 this.setText(temp, -15 - (9 * charNum), -40);
             }
     
-    animalImage = new Button(spawn_animal);
+    animalImage = new Button(add_animal);
     animalImage.setSrc("image_resources/ClearSquare.png");
     animalImage.setSpriteAttributes(261, 245, 0, 0, "animal_image");
     game.buttonArray.push(animalImage);
@@ -369,6 +381,8 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
     animalImage.setText("Call Animal", 0 + (5.5 * charNum), 160);
+
+    
     /////////////////////////////////////////////////
 
     //Mute Button
@@ -463,12 +477,12 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 }
 
-/* change_image() - For changing the spawn button image and the unlockables connected to it. . 
+/* select_animal() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
  *    animal_index - index of the animal being selected.
  * Returns - None. 
 */
-function change_image(animal_index) {
+function select_animal(animal_index) {
     var ani_imgRef;
     if (animal_index === 0 || animal_index === 3) {
         return;
@@ -500,15 +514,23 @@ function change_image(animal_index) {
     soundMan.click.play()
 }
 
-/* spawn_animal() - For spawning animals. 
+/* add_animal() - For adding animals to the party. 
  * Params: None
  * Returns: None. 
 */
-function spawn_animal() {
+function add_animal() {
     if (stepCount - 100 < 0) {
         return;
     }
-    controller.addAnimal(ui_values.currentAnimal.toLowerCase());
+    var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
+    console.log(status)
+    console.log("party: "+controller.getNumAnimals())
+
+    if (status === true){
+        soundMan.click.play()
+        stepCount -= 100;
+    }
+
     switch (ui_values.currentAnimal) {
         case 'Bird':
             break;
@@ -519,23 +541,22 @@ function spawn_animal() {
         case 'Bunny':
             break;
     }
-    soundMan.click.play()
-    stepCount -= 100;
+    
 }
 
-/* upgrade_animal() - For increasing the level of animals. 
+/* upgrade_baseAnimal() - For increasing the level of animals. 
  * Params: None
  * Returns: None. 
 */
-function upgrade_animal() {
-    var level = controller.getAnimalLevel((ui_values.currentAnimal).toLowerCase());
+function upgrade_baseAnimal() {
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
     if (dataObj.animalTracks - (level * 100) < 0) {
         return;
     } else {
         dataObj.animalTracks -= (level * 100);
-        controller.levelUp(ui_values.currentAnimal.toLowerCase());
+        controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
-    
+    soundMan.up1.play()
 }
 
 //Small utility function that converts a number to a string and returns the length. 

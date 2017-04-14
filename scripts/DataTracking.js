@@ -12,7 +12,7 @@ var dataObj = {
     everySecondTrig: 0,
     eventTrigger: 10,
     sessionStartTime: 0,
-    animalStats: ["Evasion", "Strength", "Speed"],
+    animalStats: ["Speed", "Evasion", "Strength"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
@@ -142,7 +142,7 @@ function everySecond(seconds) {
     //Track generation code. 
 
     //Ten tracks per animal.
-    dataObj.animalTracks += (10*controller.getAnimalTotal());
+    dataObj.animalTracks += (10*controller.getNumAnimals());
     
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
@@ -151,7 +151,8 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        console.log(++dataObj.eventCounter);
+        ++dataObj.eventCounter
+        console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 12;
     }
@@ -161,7 +162,7 @@ function everySecond(seconds) {
 function everyThirty(seconds) {
     var tracks = 0;
     for (var i = 0; i < 4; i++){
-        tracks += (controller.getAnimalTotal() * 30);
+        tracks += (controller.getNumAnimals() * 30);
     } 
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
