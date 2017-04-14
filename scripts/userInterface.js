@@ -46,6 +46,7 @@ var ui_values = {
     //attributes: ["armor", "speed", "capacity", "lifespan"],
 };
 
+
 /* backgroundSetup() - For setting up, non-button elements of the canvas, like the map and the pane that holds all of the attributes. 
  * Params - None. 
  * Returns - An array of panes that the interface.init will push into the screen array. 
@@ -225,22 +226,6 @@ function buttonSetup() {
         interface.buttonArray.push(animalLevel);
         /////////////////////////////////////////////////  
     }
-
-    /////////////////////////////////////////////////
-    //PARTY ICONS
-    /////////////////////////////////////////////////
-    
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 6; j++) {
-            subAttPane = new Sprite();
-            //Sets the source of each pane to be the same as the animal icon. 
-            subAttPane.setSrc(ui_values.animalSrcAry[1]);
-            subAttPane.setSpriteAttributes((101 + 60 * j), (455 + 50 * i), 40, 40, "unlockable");
-            panes.push(subAttPane);
-        }
-    }   
-    
-
     
     /////////////////////////////////////////////////
     //COMING SOON WORDS
@@ -546,8 +531,8 @@ function add_animal() {
     if (status === true){
         soundMan.click.play()
         stepCount -= 100;
+        updateParty()
     }
-
     switch (ui_values.currentAnimal) {
         case 'Bird':
             break;
@@ -559,6 +544,50 @@ function add_animal() {
             break;
     }
     
+}
+
+/////////////////////////////////////////////////
+//PARTY ICONS
+/////////////////////////////////////////////////
+/*    
+for (i = 0; i < 2; i++) {
+    for (j = 0; j < 6; j++) {
+        subAttPane = new Sprite();
+        //Sets the source of each pane to be the same as the animal icon. 
+        subAttPane.setSrc(ui_values.animalSrcAry[1]);
+        subAttPane.setSpriteAttributes((101 + 60 * j), (455 + 50 * i), 40, 40, "unlockable");
+        panes.push(subAttPane);
+    }
+}*/
+
+var partyButtons = []
+
+/* updateParty() - Updates the party buttons. 
+ * Params: None
+ * Returns: None. 
+*/
+function updateParty() {
+	for (var b=0; b<partyButtons.length; b++) {
+		interface.remove(partyButtons[b]);
+	}
+
+	partyButtons = []
+
+	var animals = controller.animals;
+	var partyIcon = new Button();
+	for (var i = 0; i < animals.length;i++) {
+		var num = aniToNum(animals[i].type);
+		console.log("animal number: "+num)
+		partyIcon = new Button(select_animal,[i]);
+		partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcAry[4]);
+		//@fix: Only does one row
+		partyIcon.setSpriteAttributes((101 + 60*i), (455), 40, 40, "party animal "+i);
+		partyButtons.push(partyIcon);
+    }
+
+    for (var b=0; b<partyButtons.length; b++) {
+    	interface.push(partyButtons[b]);
+    }
 }
 
 /* upgrade_baseAnimal() - For increasing the level of animals. 
@@ -574,6 +603,14 @@ function upgrade_baseAnimal() {
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
     soundMan.up1.play()
+}
+
+//Get the animal number from the animal type
+function aniToNum(animal) {
+	for(i=0;i<4;i++){
+		if (animal == ui_values.animalAry[i].toLowerCase()) return i;
+	}
+	return "Not a valid animal";
 }
 
 //Small utility function that converts a number to a string and returns the length. 
