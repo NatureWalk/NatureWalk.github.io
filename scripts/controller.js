@@ -35,11 +35,16 @@ animal_data['bunny'] = [1.4, 1.4, 1.2];
 animal_data['deer'] = [1.4, 1.2, 1.6];
 animal_data['bird'] = [1.4, 1.6, 1.2];
 
+lifetime = 8;
+
 
 
 function animalClass(type){
 	this.type = type;
 	this.level = 0;
+	this.canDie = true;
+	this.deathTime = Date.now() + (lifetime*60*60*1000);
+	this.name = type;
 	
 	this.setLevel = function(lv){
 		this.level = lv;
@@ -49,6 +54,28 @@ function animalClass(type){
 		this.level += 1;
 	}
 }
+
+
+badEvents = [
+    ["predator", 'evasion'], ["river", 'strength'], ["ravine", 'strength'],['Snow storm', 'speed'],
+    ["treefall", 'evasion'], ["mudslide", 'speed'], ["lightning", 'speed'], 
+    ["tornado", 'speed'], ["sinkhole", 'strength'], ["forestfire", 'speed'], ["drought", 'strength'], 
+    ["heatwave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
+    ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
+];
+
+badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
+badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["ice storm", "speed"]];
+badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
+badEventsSpringNight = [["river", "strength"], ["sinkhole", "strength"], ["predator", "evasion"]];
+badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
+badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
+badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 'strength']];
+badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
+
+
+
 
 
 /* MASTER CONTROLLER OBJECT
@@ -68,7 +95,7 @@ function animalClass(type){
  *           getNumAnimals: returns the total number of animals
  *           getAnimalData: returns a 2D array of animal data. Organized thusly
  *                          [
- *                           [animal type, animal level, Speed, Evasion, Strength]
+ *                           [animal type, animal level, Speed, Evasion, Strength, name]
  *                           ...
  *                          ]
  *			 getBaseData: returns a 1D Array of base animal stats.
@@ -93,12 +120,93 @@ function master_controller() {
 	
 	this.timer = 0;
 	
+	this.area_level = 1;
+	this.areaSeason = 'spring';
+	
+	this.usableEvents = badEventsSpringDay.slice();
+	var evR = roll(2,0);
+	this.usableEvents.push(badEventsCatastrophe[evR]);
+	
+	
+	
+	this.removalQ = [];
 	
 	//this.lifespans = new p_queue();
 	
 	this.animations = [];
 	
+	this.getAreaLevel = function(){
+		return this.area_level;
+	}
+	
+	this.areaLevelUp = function(){
+		this.area_level+=1;
+		if(this.area_level % 10 == 1){
+			switch(this.areaSeason){
+				case 'spring':
+				    this.areaSeason = 'summer';
+				    break;
+				case 'summer':
+				    this.areaSeason = 'fall';
+				    break;
+				case 'fall':
+				    this.areaSeason = 'winter'
+				    break;
+				case 'winter': 
+				    this.areaSeason = 'spring';
+				    break;
+			}
+		}
+		switch(this.areaSeason){
+				case 'spring':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSpringNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSpringDay.slice();
+				    }
+				    break;
+				case 'summer':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSummerNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSummerDay.slice();
+				    }
+				    break;
+				case 'fall':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsFallNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsFallDay.slice();
+				    }
+				    break;
+				case 'winter': 
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsWinterNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsWinterDay.slice();
+				    }
+				    break;
+		}
+	var cata = roll(2,0);
+	this.usableEvents.push(badEventsCatastrophe[cata]);
+	}
+	
+	this.getBadEvents = function(){
+		return this.usableEvents;
+	}
+	
 	this.query = function(){
+		for(var i = 0; i < this.animals.length; i++){
+			if(this.animals[i].canDie == true){
+				if(Date.now() >= this.animals[i].deathTime){
+					var arr = this.animals[i].name.concat(" died peacefully of old age.")
+					eventLogAry.push(arr);
+					this.removeAnimal[i];
+					i--;
+				}
+			}
+		}
+		
 		
 	}
 	
@@ -117,7 +225,7 @@ function master_controller() {
 	this.addAnimal = function(animal){
 		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
-			console.log(animal)
+			console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
 			this.animals.push(ani);
 			return true;
@@ -126,6 +234,18 @@ function master_controller() {
 		}
 	}
 	
+	this.queueRemove = function(index){
+		this.removalQ.push(index);
+	}
+	
+	this.removeAllQueue = function(){
+		var numInd = 0;
+		for(var i = 0; i < this.removalQ.length; i++){
+			this.removeAnimal(this.removalQ[i] - numInd);
+			numInd++;
+		}
+		this.removalQ = [];
+	}
 	
 	this.removeAnimal = function(num){
 		if(num < this.animals.length){
@@ -145,10 +265,11 @@ function master_controller() {
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
 				for(var k = 0; k < this.animals[i].level; k++){
-					stat = Math.ceil(stat * animal_data[j]);
+					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
 				}
 				dat.push(stat);
 			}
+			dat.push(this.animals[i].name)
 			data.push(dat);
 		}
 		return data;
@@ -165,6 +286,7 @@ function master_controller() {
         }
         return data;
     }
+
 	
 	this.getAnimalBaseLevel = function(animal){
 		return this.base_levels[animal];
