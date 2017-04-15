@@ -311,7 +311,7 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    console.log(testRef)
+                    //console.log(testRef)
                     testRef.splice(0,2)
                 }
                 var charNum = numberConversion(testRef[i]).length  
@@ -534,6 +534,7 @@ function select_base(animal_index) {
 
 function select_animal(animal_index) {
     ui_values.selected = "party";
+    ui_values.partyIndex = animal_index;
     var aniSrc = ui_values.animalStaticAry;
 
     console.log("Animal "+controller.animals[animal_index].type)
@@ -654,7 +655,7 @@ function upgrade_baseAnimal() {
 }
 
 function upgrade_animal() {
-    var level = controller.animals[ui_values.partyIndex];
+    var level = controller.animals[ui_values.partyIndex].level;
     if (dataObj.animalTracks - (level * 100) < 0) {
         return;
     } else {
