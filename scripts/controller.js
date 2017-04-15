@@ -71,6 +71,8 @@ function animalClass(type){
  *                           [animal type, animal level, Speed, Evasion, Strength]
  *                           ...
  *                          ]
+ *			 getBaseData: returns a 1D Array of base animal stats.
+ 							[Speed, Evasion, Strength]
  * 
  * 
  * 
@@ -142,7 +144,7 @@ function master_controller() {
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
-				for(var k = 0; k < animals[i].level; k++){
+				for(var k = 0; k < this.animals[i].level; k++){
 					stat = Math.ceil(stat * animal_data[j]);
 				}
 				dat.push(stat);

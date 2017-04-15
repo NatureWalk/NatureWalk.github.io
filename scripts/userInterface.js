@@ -41,6 +41,9 @@ var ui_values = {
                     ("image_resources/DeerWalk100_500x400.png"),
                     ("image_resources/FrogWalk100.png"),
                     ("image_resources/Icon_Bunny.png")],
+    //For selecting base animal or party animal
+    selected: "base",
+    partyIndex: 0,
     currentAnimal: "Deer",
     //currentAnimalStats: dataObj.BirdStats,
     //attributes: ["armor", "speed", "capacity", "lifespan"],
@@ -176,7 +179,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var animalIcon, i, animalCount;
     for (i = 0; i < 4; i++) {
-        animalIcon = new Button(select_animal, [i]);
+        animalIcon = new Button(select_base, [i]);
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
@@ -303,10 +306,17 @@ function buttonSetup() {
         
         (function(i) {
             attNum.update = function() {
-                var stats = (ui_values.currentAnimal).toLowerCase();
-                var testRef = controller.getBaseData(stats);
+                if (ui_values.selected == "base") {
+                    var stats = (ui_values.currentAnimal).toLowerCase();
+                    var testRef = controller.getBaseData(stats);
+                } else {
+                    var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    console.log(testRef)
+                    testRef.splice(0,2)
+                }
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
+                
             }
         })(i);
         interface.buttonArray.push(attNum);
@@ -319,8 +329,11 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var upgradeBtn;
     upgradeBtn = new Button(function() {
-        upgrade_baseAnimal();
-
+        if (ui_values.selected == "base") {
+            upgrade_baseAnimal();
+        } else {
+            upgrade_animal();
+        }
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
@@ -330,7 +343,7 @@ function buttonSetup() {
     upgradeBtn.fontSize = '20px';
     charnum = "upgrade".length;
     upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (6.3 * charnum), 5);
-    upgradeBtn.setTooltip("This upgrades the animal to the next level.")
+    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
     interface.buttonArray.push(upgradeBtn);    
     /////////////////////////////////////////////////
     
@@ -347,10 +360,13 @@ function buttonSetup() {
     upgradeCost.fontSize = '20px';
     
     upgradeCost.update = function() {
-        var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];
-                
+        if (ui_values.selected == "base") {
+            var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
+        } else {
+            var level = controller.animals[ui_values.partyIndex].level;
+        }
+
         charnum = numberConversion(level*100).length;
-                
         upgradeCost.setText(numberConversion(level*100), (upgradeCost.width / 2) - (4 * charnum), 5);
     }
    
@@ -359,7 +375,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //ANIMAL IMAGE
+    //ADD ANIMAL BUTTON
     /////////////////////////////////////////////////
     animalImage = new Button(add_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
@@ -370,9 +386,16 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '38px';
     animalImage.update = function() {
-                var temp = ui_values.currentAnimal;
-                var charNum = numberLen(temp);  
-                this.setText(temp, -15 - (9 * charNum), -40);
+                if (ui_values.selected == "base") {
+                    var name = ui_values.currentAnimal;
+                    var charNum = numberLen(name);  
+                    this.setText(name, -15 - (9 * charNum), -40);
+                } else {
+                    //This line gave me cancer
+                    var name = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+                    var charNum = numberLen(name);  
+                    this.setText(name+" "+ui_values.partyIndex, -15 - (9 * charNum), -40);
+                }
             }
     
     animalImage = new Button(add_animal);
@@ -479,17 +502,18 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 }
 
-/* select_animal() - For changing the spawn button image and the unlockables connected to it. . 
+/* select_base() - For changing the spawn button image and the unlockables connected to it. . 
  * Params:
  *    animal_index - index of the animal being selected.
  * Returns - None. 
 */
-function select_animal(animal_index) {
+function select_base(animal_index) {
+    ui_values.selected = "base";
     var ani_imgRef;
     if (animal_index === 0 || animal_index === 3) {
         return;
     }
-    aniSrc = ui_values.animalStaticAry;
+    var aniSrc = ui_values.animalStaticAry;
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
             //DEBUG: console.log(aniSrc[animal_index]);
@@ -503,17 +527,33 @@ function select_animal(animal_index) {
         }
     });
     
-    //Making the source the png files for the unlockables. 
-    aniSrc = ui_values.animalSrcAry;
-    panes.forEach(function (elem) {
-        if (elem.name === "unlockable") {
-            elem.setSrc(aniSrc[animal_index], aniSrc[4]);
-        }
-    });
-    
     //Setting current animal so we all know what we're referencing. 
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
-    soundMan.click.play()
+    soundMan.click.play();
+}
+
+function select_animal(animal_index) {
+    ui_values.selected = "party";
+    var aniSrc = ui_values.animalStaticAry;
+
+    console.log("Animal "+controller.animals[animal_index].type)
+    var ani_imgRef = aniToNum(controller.animals[animal_index].type);
+    console.log("ani_imgRef "+ani_imgRef)
+    interface.buttonArray.forEach(function (elem) {
+        if (elem.name === "animal_image") {
+            //DEBUG: console.log(aniSrc[animal_index]);
+            if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
+                elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
+                elem.setupAnim(44, 7, 7);
+            } 
+            else {
+                elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+            }  
+        }
+    })
+
+    ui_values.partyIndex = animal_index;
+    soundMan.click.play();
 }
 
 /* add_animal() - For adding animals to the party. 
@@ -567,8 +607,14 @@ var partyButtons = []
  * Returns: None. 
 */
 function updateParty() {
-	for (var b=0; b<partyButtons.length; b++) {
-		interface.remove(partyButtons[b]);
+	console.log("updating party")
+    for (var b=0; b<partyButtons.length; b++) {
+		for (var i in interface.buttonArray) {
+            if (interface.buttonArray[i] == partyButtons[b]) {
+                interface.buttonArray.splice(i,1);
+            }
+        }
+        interface.remove(partyButtons[b]);
 	}
 
 	partyButtons = []
@@ -585,8 +631,10 @@ function updateParty() {
 		partyButtons.push(partyIcon);
     }
 
+    console.log(partyButtons);
     for (var b=0; b<partyButtons.length; b++) {
-    	interface.push(partyButtons[b]);
+    	interface.buttonArray.push(partyButtons[b]);
+        interface.push(partyButtons[b]);
     }
 }
 
@@ -602,7 +650,18 @@ function upgrade_baseAnimal() {
         dataObj.animalTracks -= (level * 100);
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
-    soundMan.up1.play()
+    soundMan.up1.play();
+}
+
+function upgrade_animal() {
+    var level = controller.animals[ui_values.partyIndex];
+    if (dataObj.animalTracks - (level * 100) < 0) {
+        return;
+    } else {
+        dataObj.animalTracks -= (level * 100);
+        controller.levelUpAnimal(ui_values.partyIndex);
+    }
+    soundMan.up1.play();
 }
 
 //Get the animal number from the animal type
