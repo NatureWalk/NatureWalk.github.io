@@ -261,21 +261,13 @@ function master_controller() {
 		var data = [];
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
-<<<<<<< HEAD
-			dat.push(this.animals[i].type);
-			dat.push(this.animals[i].level);
-			for(var j = 0; j < 3; j++){
-				var stat = 1;
-				for(var k = 0; k < this.animals[i].level; k++){
-					stat = Math.ceil(stat * animal_data[j]);
-=======
+
 			dat.push(this.animals[i].type)
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
 				for(var k = 0; k < this.animals[i].level; k++){
 					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
->>>>>>> dan
 				}
 				dat.push(stat);
 			}
