@@ -40,7 +40,7 @@ var ui_values = {
     animalWalkAry: [("image_resources/Icon_Bird.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
                     ("image_resources/FrogWalk100.png"),
-                    ("image_resources/Icon_Bunny.png")],
+                    ("image_resources/BunnyWalk.png")],
     currentAnimal: "Deer",
     //currentAnimalStats: dataObj.BirdStats,
     //attributes: ["armor", "speed", "capacity", "lifespan"],
@@ -207,9 +207,9 @@ function buttonSetup() {
         (function(i) {
             animalLevel.update = function() {
                 var temp = ui_values.animalAry[i].toLowerCase();
-                var level = controller.levels[temp];
+                //var level = controller.levels[temp];
                 var charNum = numberLen(temp);  
-                this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
+                //this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
             }
         })(i);
         game.buttonArray.push(animalLevel);
@@ -265,8 +265,10 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //ATTRIBUTE NAMES
     /////////////////////////////////////////////////
+    
     var attButton, attValue, animalImage;
     for (i = 0; i < 6; i++) {
+        
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
@@ -300,6 +302,7 @@ function buttonSetup() {
         })(i);
         game.buttonArray.push(attNum);
         /////////////////////////////////////////////////
+        */
     }
     /////////////////////////////////////////////////
     

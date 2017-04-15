@@ -6,7 +6,7 @@
 
 temp_storage = [];
 temp_storage['frog'] = 1;
-temp_storage['bunny'] =1;
+temp_storage['bunny'] = 1;
 temp_storage['bird'] = 1;
 temp_storage['deer'] = 1;
 animal_types = ['bird', 'deer', 'frog', 'bunny'];
@@ -113,7 +113,7 @@ function master_controller() {
 	}
 	
 	this.addAnimal = function(animal){
-		if(this.animals.length <= this.party_size) {
+		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
 			ani.setLevel(this.base_levels[animal]);
 			this.animals.push(ani);
@@ -121,6 +121,7 @@ function master_controller() {
 		} else {
 			return false;
 		}
+        
 	}
 	
 	
@@ -137,12 +138,12 @@ function master_controller() {
 		var data = [];
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
-			dat.push(animals[i].type)
-			dat.push(animals[i].level)
+			dat.push(this.animals[i].type);
+			dat.push(this.animals[i].level);
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
-				for(var k = 0; k < animals[i].level){
-					stat = math.ciel(stat * animal_data[j]);
+				for(var k = 0; k < this.animals[i].level; k++){
+					stat = Math.ceil(stat * animal_data[j]);
 				}
 				dat.push(stat);
 			}

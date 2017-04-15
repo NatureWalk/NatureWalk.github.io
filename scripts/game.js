@@ -30,7 +30,7 @@ var screenMan = new ScreenManager();
 var game = new Screen(true, true);
 //layerFix();
 //game.buttonArray = [];
-controller = new master_controller();
+var controller = new master_controller();
 var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();
