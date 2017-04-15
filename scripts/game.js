@@ -11,7 +11,7 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-soundMan.music.play()
+//soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
@@ -19,7 +19,6 @@ var dataTracker = new DataTracker();
 
 var background = new Sprite();
 background.setSrc("image_resources/Book(open).png");
-//background.setSrc("http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/20061003200039");
 background.width = w;
 background.height = h;
 
@@ -27,7 +26,12 @@ land = new landscape();
 
 var screenMan = new ScreenManager();
 
-var game = new Screen(true, true);
+var title = new Screen(false, false);
+
+//Button screen above game object
+//Must be pushed after "game"
+var interface = new Screen(false, true);
+
 //layerFix();
 //game.buttonArray = [];
 var controller = new master_controller();
@@ -36,8 +40,15 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
+var cursor = {};
+cursor.x=0;
+cursor.y=0;
+
+var game = new Screen(true, true);
+
 canvas.addEventListener('mousemove', function(evt) {
-    mouseman.findTarget(evt);   
+    mouseman.findTarget(evt);
+    cursor= mouseman.getMousePos(canvas,evt);
 });
 canvas.addEventListener('mousedown', function(evt) {
     mouseman.findTarget(evt);   
@@ -47,18 +58,30 @@ canvas.addEventListener('mouseup', function(evt) {
 });
 
 
-screenMan.push(game);
+screenMan.push(title);
+/*screenMan.push(game);
+screenMan.push(interface);*/
 
 //Runs when the game screen is loaded.
-game.init = function() {
+
+title.init = function() {
+	this.push(background);
+	if (title.buttonArray !== undefined) {
+        title.buttonArray.forEach( function(elem) {title.push(elem);} );
+    }
+}
+
+interface.init = function() {	
+    if (interface.buttonArray !== undefined) {
+        interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
+    }
+}
+
+game.init = function() {	
     this.push(background);
     this.push(controller);
     this.push(land);
-    
     panes.forEach( function(elem) {game.push(elem);} );
-    if (game.buttonArray !== undefined) {
-        game.buttonArray.forEach( function(elem) {game.push(elem);} );
-    }
 } 
 
 //Who doesn't like a random collision function
