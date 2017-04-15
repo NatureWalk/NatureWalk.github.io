@@ -6,7 +6,7 @@
 
 temp_storage = [];
 temp_storage['frog'] = 1;
-temp_storage['bunny'] =1;
+temp_storage['bunny'] = 1;
 temp_storage['bird'] = 1;
 temp_storage['deer'] = 1;
 animal_types = ['bird', 'deer', 'frog', 'bunny'];
@@ -232,6 +232,7 @@ function master_controller() {
 		} else {
 			return false;
 		}
+        
 	}
 	
 	this.queueRemove = function(index){
@@ -260,6 +261,7 @@ function master_controller() {
 		var data = [];
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
+
 			dat.push(this.animals[i].type)
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){

@@ -40,7 +40,7 @@ var ui_values = {
     animalWalkAry: [("image_resources/Icon_Bird.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
                     ("image_resources/FrogWalk100.png"),
-                    ("image_resources/Icon_Bunny.png")],
+                    ("image_resources/BunnyWalk.png")],
     //For selecting base animal or party animal
     selected: "base",
     partyIndex: 0,
@@ -67,15 +67,6 @@ function backgroundSetup() {
     attributesPane.setSrc("image_resources/AttPane.png");
     attributesPane.setSpriteAttributes(46, 195, 440, 370, "attributesPane");
     panes.push(attributesPane);
-    /////////////////////////////////////////////////
-    
-    /////////////////////////////////////////////////
-    //UNLOCKABLES (change to buttons when we have the functionality)
-    /////////////////////////////////////////////////
-    
-
-
-    
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -143,7 +134,7 @@ function buttonSetup() {
     stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 33421; }
+    if (stepCount === undefined) { stepCount = 8500; }
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
@@ -223,7 +214,7 @@ function buttonSetup() {
                 var temp = ui_values.animalAry[i].toLowerCase();
                 var level = controller.getAnimalBaseLevel(temp);
                 var charNum = numberLen(temp);  
-                this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
+                //this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -233,6 +224,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //COMING SOON WORDS
     /////////////////////////////////////////////////
+    /*
     animalIcon = new Button(function() {});
         
     animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
@@ -274,13 +266,17 @@ function buttonSetup() {
     animalIcon.fonstSize = '14px';
     animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
     interface.buttonArray.push(animalIcon);
+    */
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //ATTRIBUTE NAMES
     /////////////////////////////////////////////////
+    
     var attButton, attValue, animalImage;
+
     for (i = 0; i < 3; i++) {
+
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
         
@@ -337,7 +333,7 @@ function buttonSetup() {
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
 
-    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "attribute_value" + i);
+    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '20px';
@@ -407,7 +403,6 @@ function buttonSetup() {
     animalImage.fontSize = '28px';
     animalImage.setText("Call Animal", 0 + (5.5 * charNum), 160);
 
-    
     /////////////////////////////////////////////////
 
     //Mute Button
@@ -427,7 +422,7 @@ function buttonSetup() {
     eventLogPane.setSrc("image_resources/EventLog.png");
     eventLogPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
     interface.buttonArray.push(eventLogPane);
-        
+
         
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
@@ -477,7 +472,7 @@ function buttonSetup() {
         } else if (i==2) {
             animalAnimation.setupAnim(21, 5, 5);
         } else if (i==3) {
-            animalAnimation.setupAnim(0, 1, 1);
+            animalAnimation.setupAnim(6, 3, 3);
         }
         (function(i) {
             animalAnimation.update = function() { 
@@ -510,7 +505,7 @@ function buttonSetup() {
 function select_base(animal_index) {
     ui_values.selected = "base";
     var ani_imgRef;
-    if (animal_index === 0 || animal_index === 3) {
+    if (animal_index === 0) {
         return;
     }
     var aniSrc = ui_values.animalStaticAry;
