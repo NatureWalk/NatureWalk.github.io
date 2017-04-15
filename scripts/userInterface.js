@@ -312,7 +312,7 @@ function buttonSetup() {
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
                     //console.log(testRef)
-                    testRef.splice(0,2)
+                    if (testRef != undefined) testRef.splice(0,2)
                 }
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
@@ -573,6 +573,7 @@ function add_animal() {
         soundMan.click.play()
         stepCount -= 100;
         updateParty()
+        dataObj.partySize = controller.getNumAnimals()
     }
     switch (ui_values.currentAnimal) {
         case 'Bird':

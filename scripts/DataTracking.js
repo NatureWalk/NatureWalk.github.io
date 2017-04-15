@@ -16,7 +16,8 @@ var dataObj = {
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
-    timeAccelFactor: 1
+    timeAccelFactor: 1,
+    partySize: 0
 };
 
 
@@ -156,6 +157,10 @@ function everySecond(seconds) {
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 12;
     }
+    if (controller.animals.length != dataObj.partySize) {
+        updateParty()
+        dataObj.partySize = controller.animals.length;
+    } 
 }
 
 //Function that is called every thirty seconds. 
