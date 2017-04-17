@@ -413,7 +413,32 @@ function buttonSetup() {
     muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
     muteButton.isToggleButton = true;
     interface.buttonArray.push(muteButton);
-    
+
+    /////////////////////////////////////////////////
+    //AREA CONTROLS
+    /////////////////////////////////////////////////
+    areaText = new Button(function () {});
+    areaText.setSrc("image_resources/StepPaper.png");
+    areaText.setSpriteAttributes(768, 250, 0, 40, "areaText");
+    areaText.hasTextValue = true;
+    areaText.fontSize = '22px';
+    areaText.update = function() {
+        var text = "Area "+controller.getAreaLevel()+" "+controller.areaSeason;
+        this.setText(text, (areaText.width / 2) - (5 * text.length), 0);
+    }
+    interface.buttonArray.push(areaText);
+
+    areaPrev = new Button(function() {});
+    areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+    areaPrev.setSpriteAttributes(650, 250, 25, 25, "areaPrev");
+    interface.buttonArray.push(areaPrev);
+
+    areaNext = new Button(controller.areaLevelUp());
+    areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+    areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
+    interface.buttonArray.push(areaNext);
+
+
     /////////////////////////////////////////////////
     //EVENT LOG
     /////////////////////////////////////////////////
