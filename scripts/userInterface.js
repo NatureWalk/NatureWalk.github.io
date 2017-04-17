@@ -427,7 +427,7 @@ function buttonSetup() {
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
         eventLogEntry.setSrc("image_resources/ClearSquare.png");
-        eventLogEntry.setSpriteAttributes(567, (45*i)+50, 452, 54, "eventLog");
+        eventLogEntry.setSpriteAttributes(567, (35*i)+50, 452, 54, "eventLog");
         interface.buttonArray.push(eventLogEntry);
 
         eventLogEntry.hasTextValue = true;

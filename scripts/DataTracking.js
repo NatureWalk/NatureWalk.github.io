@@ -58,7 +58,17 @@ DataTracker.prototype.openDevWindow = openDevWindow;
  * Returns - None. 
 */
 function sessionStart() {
+    //var _tempData = queryServer(); 
+    
     dataObj["sessionStartTime"] = Date.now();
+    
+    //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
+    
+    //setupPlayer(serverPlayerData);
+    
+    //setupParty(serverPartyComp);
+    
+    
     //console.log(dataObj["sessionStartTime"]);
     //dataObj["numberOfSessions"] = getData(playerID, "numberOfSessions");
     //console.log("Time Played: " + dataObj["timePlayed"]);
@@ -142,8 +152,10 @@ function timeHandler(timeAry) {
 function everySecond(seconds) {
     //Track generation code. 
 
-    //Ten tracks per animal.
-    dataObj.animalTracks += (10*controller.getNumAnimals());
+    var areaMult = 2.16;
+    var areaTracks = controller.area_level*areaMult;
+    var animTracks = 2*controller.getNumAnimals();
+    dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
@@ -152,13 +164,13 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        ++dataObj.eventCounter
-        console.log("Event "+dataObj.eventCounter);
+        ++dataObj.eventCounter;
+        //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 12;
     }
     if (controller.animals.length != dataObj.partySize) {
-        updateParty()
+        updateParty();
         dataObj.partySize = controller.animals.length;
     } 
 }
@@ -376,11 +388,8 @@ function badEventChecker(index, stat,flag){
 		diffmin = (diffmin*1.5);
 	}
 	
-	
     playerRoll = 0;
 	gameRoll = roll(diff, diffmin);
-	
-	
 		
 	switch(stat){
        	case 'speed': playerRoll = roll(e[2] + (25 * controller.getAreaLevel()), e[2]);
@@ -390,16 +399,18 @@ function badEventChecker(index, stat,flag){
         case 'strength': roll(Math.round(e[2] + (25 * controller.getAreaLevel()), e[4]));
             break;
 	}
-	console.log(playerRoll + " " + gameRoll);
+	//console.log(playerRoll + " " + gameRoll);
 	if(playerRoll < gameRoll){
 		var die = roll(100);
+        var x = toCapitalize(e[5]);
+        //console.log(x);
 		if (die < 5){
-			eventLogAry.push(e[5]+" was tragically lost.");
+			eventLogAry.push(x +" was tragically lost.");
 			controller.queueRemove(index);
 		} else if(die < 50){
-			eventLogAry.push(e[5] +" tripped, you lost some steps.");
+			eventLogAry.push(x +" tripped, you lost some steps.");
 		} else {
-			eventLogAry.push(e[5] +" didn't succeed, but they were luckily unhurt.");
+			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
 		}
 	}
 	
