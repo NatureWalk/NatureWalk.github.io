@@ -290,7 +290,7 @@ Button.prototype.draw = function () {
     }
     if ((this.hovered && this.text !== undefined) || this.hasTextValue || this.hasTooltip){
         if (this.text === undefined) {
-            console.log(this.name);
+            //console.log(this.name);
         } else {
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
         }

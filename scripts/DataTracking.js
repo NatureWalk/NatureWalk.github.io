@@ -167,6 +167,7 @@ function everyThirty(seconds) {
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
     dataObj.animalTracks += tracks;
+    createPackage();
 }
 
 function everyMinute(minutes) {
@@ -175,6 +176,58 @@ function everyMinute(minutes) {
 
 function everyHour(hours) {
     
+}
+
+function createPackage() {
+    /* Things this needs to do. 
+     * 1. Create a JSON file.
+     * 2. Fill the file with the following elements:
+        - Area You are On
+        - Base data of animals
+            - Party size.
+            - Party composition.
+                - Animal Type
+                - Animal Name
+                - Level
+        - Base player data
+            - Number of steps at time of save. 
+            - Number of tracks
+            - Player level?
+        - Time of save. 
+    */
+    var package, jsonFile; 
+    package = { 
+        area: controller.getAreaLevel(),
+        partySize: controller.party_limit,
+        partyComp: [],
+        playerSteps: stepCount,
+        playerTracks: dataObj.animalTracks,
+        time: Date.now(),
+    };
+    
+    for (var i = 0; i < controller.animals.length; i++) {
+        package.partyComp.push(controller.animals[i]);
+    }
+    
+    jsonFile = JSON.stringify(package);
+    console.log(jsonFile);
+    /*////////////JSON Tests/////////////
+    var myObj, obj2, myJSON, myParser;
+    myObj = {hello: "world", goodbye: ["sucka", "busta"]};
+    //obj2 = {hello: "sucka", goodbye: "world"};
+    //myObj += obj2;
+    myJSON = JSON.stringify(myObj);
+    
+    console.log("Object");
+    console.log(myObj.hello);
+    console.log("JSON");
+    console.log(myJSON);
+    
+    
+    
+    myParser = JSON.parse(myJSON);
+    console.log(myParser);
+    */
 }
 
 //Roll what kind of event is rolled. Good, Bad, Neutral.
@@ -308,7 +361,7 @@ function badEventChecker(index, stat,flag){
 		diffmin = 1;
 	} else {
 		for(var i = 0; i < controller.getAreaLevel() - 1; i++){
-			diffmin = Math.ciel(diffmin * 1.33)
+			diffmin = Math.ceil(diffmin * 1.33)
 		}
 		diffmin = (diffmin * .85);
 	}
