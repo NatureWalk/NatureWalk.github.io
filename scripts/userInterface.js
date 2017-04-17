@@ -307,8 +307,8 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    if (testRef != undefined) testRef.splice(0,2)
                     console.log(testRef)
-                    testRef.splice(0,2)
                 }
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
@@ -529,6 +529,7 @@ function select_base(animal_index) {
 
 function select_animal(animal_index) {
     ui_values.selected = "party";
+    ui_values.partyIndex = animal_index;
     var aniSrc = ui_values.animalStaticAry;
 
     console.log("Animal "+controller.animals[animal_index].type)
@@ -567,6 +568,7 @@ function add_animal() {
         soundMan.click.play()
         stepCount -= 100;
         updateParty()
+        dataObj.partySize = controller.getNumAnimals()
     }
     switch (ui_values.currentAnimal) {
         case 'Bird':
@@ -649,7 +651,7 @@ function upgrade_baseAnimal() {
 }
 
 function upgrade_animal() {
-    var level = controller.animals[ui_values.partyIndex];
+    var level = controller.animals[ui_values.partyIndex].level;
     if (dataObj.animalTracks - (level * 100) < 0) {
         return;
     } else {
