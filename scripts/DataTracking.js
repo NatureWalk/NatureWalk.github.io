@@ -5,6 +5,8 @@
 */
 //Object that can hold all of the session and player data.
 var dataObj = {
+    steps: 0,
+    totalSteps: 0,
     animalTracks: 0,
     timeAccelFactor: 1,
     numberOfSessions: 0,
@@ -58,8 +60,10 @@ DataTracker.prototype.openDevWindow = openDevWindow;
  * Returns - None. 
 */
 function sessionStart() {
-    //var _tempData = queryServer(); 
-    
+    //var _tempData = queryServer();
+    dataObj.steps = 8500;
+    dataObj["totalSteps"] += dataObj.steps;
+    //console.log(dataObj.totalSteps + " " + stepCount);
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -155,6 +159,10 @@ function everySecond(seconds) {
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
     var animTracks = 2*controller.getNumAnimals();
+    //console.log("Area: " + areaTracks);
+    //console.log("Anim: " + animTracks);
+    console.log("Tracks: " + dataObj.animalTracks);
+    console.log(Math.floor(areaTracks*animTracks));
     dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
     //DEBUG: console.log(seconds);
@@ -177,13 +185,15 @@ function everySecond(seconds) {
 
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
+    /*
     var tracks = 0;
     for (var i = 0; i < 4; i++){
         tracks += (controller.getNumAnimals() * 30);
     } 
+    */
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
-    dataObj.animalTracks += tracks;
+    //dataObj.animalTracks += tracks;
     createPackage();
 }
 
@@ -218,6 +228,7 @@ function createPackage() {
         partySize: controller.party_limit,
         partyComp: [],
         playerSteps: stepCount,
+        playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };
@@ -312,7 +323,7 @@ function badEventHandler(evtRoll) {
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
-            eventLogAry.push("")
+            //eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[0][1]);
 			}
@@ -417,6 +428,18 @@ function badEventChecker(index, stat,flag){
 	}
 	
 	
+}
+
+function areaEligible() {
+    //
+    var area = controller.getAreaLevel();
+    var areaReq = 5000;
+    for (var i = 1; i < area; i++) {
+       areaReq = (areaReq+5000) * 1.01; 
+    }
+    console.log(dataObj.totalSteps);
+    if (dataObj.totalSteps >= areaReq) {return true;}
+    else {return false}
 }
 
 // takes, in animal string argument, adds 20% of animals

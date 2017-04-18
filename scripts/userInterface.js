@@ -158,7 +158,7 @@ function buttonSetup() {
     
     //Changing the button's update function to get the step count every frame. 
     trackPane.update = function() {
-        this.text = numberConversion(dataObj.animalTracks) + " Tracks";
+        this.text = numberConversion(Math.floor(dataObj.animalTracks)) + " Tracks";
         this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Tracks")
         this.textOffsetY = 10;
     };
@@ -350,11 +350,10 @@ function buttonSetup() {
     upgradeCost = new Button(function() {});
     upgradeCost.setSrc("image_resources/StepPaper.png", "image_resources/StepPaper.png");
 
-    upgradeCost.setSpriteAttributes(186, 405, 65, 40, "attribute_value" + i);
+    upgradeCost.setSpriteAttributes(186, 405, 65, 40, "upgradeCost");
 
     upgradeCost.hasTextValue = true;
     upgradeCost.fontSize = '20px';
-    
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
@@ -364,7 +363,7 @@ function buttonSetup() {
 
         charnum = numberConversion(level*100).length;
         upgradeCost.setText(numberConversion(level*100), (upgradeCost.width / 2) - (4 * charnum), 5);
-    }
+    };
    
     //upgradeCost.setText(level*100, 0,0);
     interface.buttonArray.push(upgradeCost);    
@@ -376,7 +375,7 @@ function buttonSetup() {
     animalImage = new Button(add_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
     animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
-    animalImage.setTooltip("Pressing this calls the selected animal.")
+    animalImage.setTooltip("Pressing this calls the selected animal.");
     interface.buttonArray.push(animalImage);
     
     animalImage.hasTextValue = true;
@@ -437,10 +436,13 @@ function buttonSetup() {
     interface.buttonArray.push(areaPrev);
 
     //areaNext = new Button(controller.areaLevelUp);
-    areaNext = new Button(function() {controller.areaLevelUp()});
+    areaNext = new Button(function() {
+            if (areaEligible()) {controller.areaLevelUp()}
+        });
 
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
     areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
+    areaNext.setTooltip(5000);
     interface.buttonArray.push(areaNext);
 
     /////////////////////////////////////////////////
@@ -586,7 +588,7 @@ function select_animal(animal_index) {
  * Returns: None. 
 */
 function add_animal() {
-    if (stepCount - 2000 < 0) {
+    if (stepCount - (2000 + (500*controller.getNumAnimals())) < 0) {
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
@@ -595,7 +597,7 @@ function add_animal() {
 
     if (status === true){
         soundMan.click.play()
-        stepCount -= 2000;
+        stepCount -= (2000 + (500*(controller.getNumAnimals() - 1)));
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
     }
@@ -710,6 +712,7 @@ function numberConversion(num) {
     var len = conNum.length;
     var i = Math.floor(len/3);
     var j = len%3;
+    //console.log();
     if (j === 0) {
         return conNum.slice(0, 3) + " " + suffixes[i-1];
     } else if (j === 1 && i > 0) {
