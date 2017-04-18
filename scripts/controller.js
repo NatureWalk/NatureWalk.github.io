@@ -191,6 +191,58 @@ function master_controller() {
 	//this.usableEvents.push(badEventsCatastrophe[cata]);
 	}
 	
+	this.areaLevelDown = function(){
+		this.area_level-=1;
+		if(this.area_level % 10 == 1){
+			switch(this.areaSeason){
+				case 'spring':
+				    this.areaSeason = 'winter';
+				    break;
+				case 'summer':
+				    this.areaSeason = 'spring';
+				    break;
+				case 'fall':
+				    this.areaSeason = 'summer'
+				    break;
+				case 'winter': 
+				    this.areaSeason = 'fall';
+				    break;
+			}
+		}
+		switch(this.areaSeason){
+				case 'spring':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSpringNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSpringDay.slice();
+				    }
+				    break;
+				case 'summer':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSummerNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSummerDay.slice();
+				    }
+				    break;
+				case 'fall':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsFallNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsFallDay.slice();
+				    }
+				    break;
+				case 'winter': 
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsWinterNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsWinterDay.slice();
+				    }
+				    break;
+		}
+	var cata = roll(2,0);
+	this.usableEvents.push(badEventsCatastrophe[cata]);
+	}
+	
 	this.getBadEvents = function(){
 		return this.usableEvents;
 	}
