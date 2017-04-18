@@ -419,7 +419,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     areaText = new Button(function () {});
     areaText.setSrc("image_resources/StepPaper.png");
-    areaText.setSpriteAttributes(768, 250, 0, 40, "areaText");
+    areaText.setSpriteAttributes(630, 240, 300, 40, "areaText");
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
@@ -430,12 +430,12 @@ function buttonSetup() {
 
     areaPrev = new Button(function() {});
     areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
-    areaPrev.setSpriteAttributes(650, 250, 25, 25, "areaPrev");
+    areaPrev.setSpriteAttributes(650, 245, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
     areaNext = new Button(controller.areaLevelUp());
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
-    areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
+    areaNext.setSpriteAttributes(870, 245, 25, 25, "areaNext");
     interface.buttonArray.push(areaNext);
 
 
