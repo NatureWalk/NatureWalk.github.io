@@ -193,7 +193,7 @@ function master_controller() {
 	
 	this.areaLevelDown = function(){
 		this.area_level-=1;
-		if(this.area_level % 10 == 1){
+		if(this.area_level % 10 == 0){
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'winter';
