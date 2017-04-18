@@ -252,7 +252,7 @@ function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
         eventLogAry.pop();
     }
-    if (eventLogAry.length === 5) {
+    if (eventLogAry.length === 6) {
         eventLogAry.shift();
     }
     //Good Event
@@ -312,6 +312,7 @@ function badEventHandler(evtRoll) {
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
+            eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[0][1]);
 			}
@@ -399,7 +400,7 @@ function badEventChecker(index, stat,flag){
         case 'strength': roll(Math.round(e[2] + (25 * controller.getAreaLevel()), e[4]));
             break;
 	}
-	//console.log(playerRoll + " " + gameRoll);
+	console.log(playerRoll + " " + gameRoll);
 	if(playerRoll < gameRoll){
 		var die = roll(100);
         var x = toCapitalize(e[5]);
@@ -408,7 +409,8 @@ function badEventChecker(index, stat,flag){
 			eventLogAry.push(x +" was tragically lost.");
 			controller.queueRemove(index);
 		} else if(die < 50){
-			eventLogAry.push(x +" tripped, you lost some steps.");
+            dataObj.animalTracks -= (dataObj.animalTracks/200)
+			eventLogAry.push(x +" tripped, you lost some tracks.");
 		} else {
 			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
 		}
@@ -426,7 +428,7 @@ function matingSeason(animal){
 	console.log(animal + "s added by event : " + a);
 	
 }
-//Rolls an integer between 1 and a number parameter. . 
+//Rolls an integer between 1 and a number parameter. 
 function roll(num, basenum) {
 	if(basenum != null){
 		return Math.floor(Math.random()*num) + basenum;

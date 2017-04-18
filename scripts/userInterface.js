@@ -401,7 +401,10 @@ function buttonSetup() {
     
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
-    animalImage.setText("Call Animal", 0 + (5.5 * charNum), 160);
+    upgradeCost.update = function() {
+        animalImage.setText(2000 + 500*controller.animals.length + " Steps", 0 + (5.5 * charNum), 160);
+    }
+    
 
     /////////////////////////////////////////////////
 
@@ -423,7 +426,7 @@ function buttonSetup() {
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
-        var text = "Area "+controller.getAreaLevel()+" "+controller.areaSeason;
+        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
         this.setText(text, (areaText.width / 2) - (5 * text.length), 0);
     }
     interface.buttonArray.push(areaText);
@@ -433,11 +436,12 @@ function buttonSetup() {
     areaPrev.setSpriteAttributes(650, 250, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
-    areaNext = new Button(controller.areaLevelUp());
+    //areaNext = new Button(controller.areaLevelUp);
+    areaNext = new Button(function() {controller.areaLevelUp()});
+
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
     areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
     interface.buttonArray.push(areaNext);
-
 
     /////////////////////////////////////////////////
     //EVENT LOG
@@ -582,7 +586,7 @@ function select_animal(animal_index) {
  * Returns: None. 
 */
 function add_animal() {
-    if (stepCount - 100 < 0) {
+    if (stepCount - 2000 < 0) {
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
@@ -591,7 +595,7 @@ function add_animal() {
 
     if (status === true){
         soundMan.click.play()
-        stepCount -= 100;
+        stepCount -= 2000;
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
     }
