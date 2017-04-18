@@ -354,6 +354,7 @@ function buttonSetup() {
     upgradeCost.fontSize = '20px';
 
     upgradeCost.update = function() {
+        //console.log("Help MEEEEE");
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
         } else {
@@ -401,7 +402,7 @@ function buttonSetup() {
     
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
-    upgradeCost.update = function() {
+    animalImage.update = function() {
         animalImage.setText(2000 + 500*controller.animals.length + " Steps", 0 + (5.5 * charNum), 160);
     }
     
@@ -422,19 +423,19 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     areaText = new Button(function () {});
     areaText.setSrc("image_resources/StepPaper.png");
-    areaText.setSpriteAttributes(768, 250, 0, 40, "areaText");
+    areaText.setSpriteAttributes(600, 235, 300, 50, "areaText");
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
         var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
-        this.setText(text, (areaText.width / 2) - (5 * text.length), 0);
+        this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
 
     areaPrev = new Button(function() {controller.areaLevelDown()});
 
     areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
-    areaPrev.setSpriteAttributes(650, 250, 25, 25, "areaPrev");
+    areaPrev.setSpriteAttributes(625, 245, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
     //areaNext = new Button(controller.areaLevelUp);
@@ -443,8 +444,7 @@ function buttonSetup() {
         });
 
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
-    areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
-    areaNext.setTooltip(5000);
+    areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
     interface.buttonArray.push(areaNext);
 
     /////////////////////////////////////////////////
