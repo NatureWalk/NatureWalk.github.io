@@ -154,12 +154,10 @@ function buttonSetup() {
     trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
     trackPane.hasTextValue = true;
     
-    trackPane.setText(dataObj.animalTracks + " Tracks", (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Steps"), trackPane.height / 4);
-    
     //Changing the button's update function to get the step count every frame. 
     trackPane.update = function() {
         this.text = numberConversion(Math.floor(dataObj.animalTracks)) + " Tracks";
-        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(dataObj.animalTracks + " Tracks")
+        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks) + " Tracks")
         this.textOffsetY = 10;
     };
     interface.buttonArray.push(trackPane);
@@ -348,12 +346,13 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var upgradeCost;
     upgradeCost = new Button(function() {});
-    upgradeCost.setSrc("image_resources/StepPaper.png", "image_resources/StepPaper.png");
+    upgradeCost.setSrc("image_resources/StepPaper.png");
 
     upgradeCost.setSpriteAttributes(186, 405, 65, 40, "upgradeCost");
 
     upgradeCost.hasTextValue = true;
     upgradeCost.fontSize = '20px';
+
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
@@ -364,9 +363,11 @@ function buttonSetup() {
         charnum = numberConversion(level*100).length;
         upgradeCost.setText(numberConversion(level*100), (upgradeCost.width / 2) - (4 * charnum), 5);
     };
+
    
     //upgradeCost.setText(level*100, 0,0);
-    interface.buttonArray.push(upgradeCost);    
+    interface.buttonArray.push(upgradeCost); 
+    console.log(upgradeCost.update);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -430,7 +431,8 @@ function buttonSetup() {
     }
     interface.buttonArray.push(areaText);
 
-    areaPrev = new Button(function() {});
+    areaPrev = new Button(function() {controller.areaLevelDown()});
+
     areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
     areaPrev.setSpriteAttributes(650, 250, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
