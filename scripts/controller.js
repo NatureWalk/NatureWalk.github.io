@@ -6,7 +6,7 @@
 
 temp_storage = [];
 temp_storage['frog'] = 1;
-temp_storage['bunny'] =1;
+temp_storage['bunny'] = 1;
 temp_storage['bird'] = 1;
 temp_storage['deer'] = 1;
 animal_types = ['bird', 'deer', 'frog', 'bunny'];
@@ -188,6 +188,58 @@ function master_controller() {
 				    break;
 		}
 	var cata = roll(2,0);
+	//this.usableEvents.push(badEventsCatastrophe[cata]);
+	}
+	
+	this.areaLevelDown = function(){
+		this.area_level-=1;
+		if(this.area_level % 10 == 0){
+			switch(this.areaSeason){
+				case 'spring':
+				    this.areaSeason = 'winter';
+				    break;
+				case 'summer':
+				    this.areaSeason = 'spring';
+				    break;
+				case 'fall':
+				    this.areaSeason = 'summer'
+				    break;
+				case 'winter': 
+				    this.areaSeason = 'fall';
+				    break;
+			}
+		}
+		switch(this.areaSeason){
+				case 'spring':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSpringNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSpringDay.slice();
+				    }
+				    break;
+				case 'summer':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsSummerNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsSummerDay.slice();
+				    }
+				    break;
+				case 'fall':
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsFallNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsFallDay.slice();
+				    }
+				    break;
+				case 'winter': 
+				    if(this.areaLevel % 2 == 0){
+				    	this.usableEvents = badEventsWinterNight.slice();
+				    } else {
+				    	this.usableEvents = badEventsWinterDay.slice();
+				    }
+				    break;
+		}
+	var cata = roll(2,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
 	}
 	
@@ -232,6 +284,7 @@ function master_controller() {
 		} else {
 			return false;
 		}
+        
 	}
 	
 	this.queueRemove = function(index){
@@ -260,6 +313,7 @@ function master_controller() {
 		var data = [];
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
+
 			dat.push(this.animals[i].type)
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){

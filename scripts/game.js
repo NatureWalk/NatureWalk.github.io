@@ -34,7 +34,7 @@ var interface = new Screen(false, true);
 
 //layerFix();
 //game.buttonArray = [];
-controller = new master_controller();
+var controller = new master_controller();
 var panes = backgroundSetup();
 buttonSetup();
 var mouseman = new MouseManager();

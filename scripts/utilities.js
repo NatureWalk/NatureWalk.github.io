@@ -34,3 +34,10 @@ function drawWrappedText(text, x, y, fontSize, maxWidth, lineHeight) {
         }
         ctx.fillText(line, x, y);
       }
+
+function toCapitalize(string) {
+    var _string = string.slice(1,string.length);
+    var firstChar = string[0].toUpperCase();
+    firstChar = firstChar.concat(_string);
+    return firstChar;
+}

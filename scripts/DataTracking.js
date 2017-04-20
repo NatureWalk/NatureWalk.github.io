@@ -5,6 +5,8 @@
 */
 //Object that can hold all of the session and player data.
 var dataObj = {
+    steps: 0,
+    totalSteps: 0,
     animalTracks: 0,
     timeAccelFactor: 1,
     numberOfSessions: 0,
@@ -16,7 +18,8 @@ var dataObj = {
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
-    timeAccelFactor: 1
+    timeAccelFactor: 1,
+    partySize: 0
 };
 
 
@@ -57,7 +60,19 @@ DataTracker.prototype.openDevWindow = openDevWindow;
  * Returns - None. 
 */
 function sessionStart() {
+    //var _tempData = queryServer();
+    dataObj.steps = 8500;
+    dataObj["totalSteps"] += dataObj.steps;
+    //console.log(dataObj.totalSteps + " " + stepCount);
     dataObj["sessionStartTime"] = Date.now();
+    
+    //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
+    
+    //setupPlayer(serverPlayerData);
+    
+    //setupParty(serverPartyComp);
+    
+    
     //console.log(dataObj["sessionStartTime"]);
     //dataObj["numberOfSessions"] = getData(playerID, "numberOfSessions");
     //console.log("Time Played: " + dataObj["timePlayed"]);
@@ -141,8 +156,14 @@ function timeHandler(timeAry) {
 function everySecond(seconds) {
     //Track generation code. 
 
-    //Ten tracks per animal.
-    dataObj.animalTracks += (10*controller.getNumAnimals());
+    var areaMult = 2.16;
+    var areaTracks = controller.area_level*areaMult;
+    var animTracks = 2*controller.getNumAnimals();
+    //console.log("Area: " + areaTracks);
+    //console.log("Anim: " + animTracks);
+    console.log("Tracks: " + dataObj.animalTracks);
+    console.log(Math.floor(areaTracks*animTracks));
+    dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
@@ -151,22 +172,29 @@ function everySecond(seconds) {
         dataObj.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        ++dataObj.eventCounter
-        console.log("Event "+dataObj.eventCounter);
+        ++dataObj.eventCounter;
+        //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
         dataObj.eventTrigger = roll(5) + 12;
     }
+    if (controller.animals.length != dataObj.partySize) {
+        updateParty();
+        dataObj.partySize = controller.animals.length;
+    } 
 }
 
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
+    /*
     var tracks = 0;
     for (var i = 0; i < 4; i++){
         tracks += (controller.getNumAnimals() * 30);
     } 
+    */
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
-    dataObj.animalTracks += tracks;
+    //dataObj.animalTracks += tracks;
+    createPackage();
 }
 
 function everyMinute(minutes) {
@@ -177,12 +205,65 @@ function everyHour(hours) {
     
 }
 
+function createPackage() {
+    /* Things this needs to do. 
+     * 1. Create a JSON file.
+     * 2. Fill the file with the following elements:
+        - Area You are On
+        - Base data of animals
+            - Party size.
+            - Party composition.
+                - Animal Type
+                - Animal Name
+                - Level
+        - Base player data
+            - Number of steps at time of save. 
+            - Number of tracks
+            - Player level?
+        - Time of save. 
+    */
+    var package, jsonFile; 
+    package = { 
+        area: controller.getAreaLevel(),
+        partySize: controller.party_limit,
+        partyComp: [],
+        playerSteps: stepCount,
+        playerTSteps: dataObj.totalSteps,
+        playerTracks: dataObj.animalTracks,
+        time: Date.now(),
+    };
+    
+    for (var i = 0; i < controller.animals.length; i++) {
+        package.partyComp.push(controller.animals[i]);
+    }
+    
+    jsonFile = JSON.stringify(package);
+    console.log(jsonFile);
+    /*////////////JSON Tests/////////////
+    var myObj, obj2, myJSON, myParser;
+    myObj = {hello: "world", goodbye: ["sucka", "busta"]};
+    //obj2 = {hello: "sucka", goodbye: "world"};
+    //myObj += obj2;
+    myJSON = JSON.stringify(myObj);
+    
+    console.log("Object");
+    console.log(myObj.hello);
+    console.log("JSON");
+    console.log(myJSON);
+    
+    
+    
+    myParser = JSON.parse(myJSON);
+    console.log(myParser);
+    */
+}
+
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
         eventLogAry.pop();
     }
-    if (eventLogAry.length === 5) {
+    if (eventLogAry.length === 6) {
         eventLogAry.shift();
     }
     //Good Event
@@ -242,6 +323,7 @@ function badEventHandler(evtRoll) {
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
+            //eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[0][1]);
 			}
@@ -308,7 +390,7 @@ function badEventChecker(index, stat,flag){
 		diffmin = 1;
 	} else {
 		for(var i = 0; i < controller.getAreaLevel() - 1; i++){
-			diffmin = Math.ciel(diffmin * 1.33)
+			diffmin = Math.ceil(diffmin * 1.33)
 		}
 		diffmin = (diffmin * .85);
 	}
@@ -318,11 +400,8 @@ function badEventChecker(index, stat,flag){
 		diffmin = (diffmin*1.5);
 	}
 	
-	
     playerRoll = 0;
 	gameRoll = roll(diff, diffmin);
-	
-	
 		
 	switch(stat){
        	case 'speed': playerRoll = roll(e[2] + (25 * controller.getAreaLevel()), e[2]);
@@ -335,17 +414,32 @@ function badEventChecker(index, stat,flag){
 	console.log(playerRoll + " " + gameRoll);
 	if(playerRoll < gameRoll){
 		var die = roll(100);
+        var x = toCapitalize(e[5]);
+        //console.log(x);
 		if (die < 5){
-			eventLogAry.push(e[5]+" was tragically lost.");
+			eventLogAry.push(x +" was tragically lost.");
 			controller.queueRemove(index);
 		} else if(die < 50){
-			eventLogAry.push(e[5] +" tripped, you lost some steps.");
+            dataObj.animalTracks -= (dataObj.animalTracks/200)
+			eventLogAry.push(x +" tripped, you lost some tracks.");
 		} else {
-			eventLogAry.push(e[5] +" didn't succeed, but they were luckily unhurt.");
+			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
 		}
 	}
 	
 	
+}
+
+function areaEligible() {
+    //
+    var area = controller.getAreaLevel();
+    var areaReq = 5000;
+    for (var i = 1; i < area; i++) {
+       areaReq = (areaReq+5000) * 1.01; 
+    }
+    console.log(dataObj.totalSteps);
+    if (dataObj.totalSteps >= areaReq) {return true;}
+    else {return false}
 }
 
 // takes, in animal string argument, adds 20% of animals
@@ -357,7 +451,7 @@ function matingSeason(animal){
 	console.log(animal + "s added by event : " + a);
 	
 }
-//Rolls an integer between 1 and a number parameter. . 
+//Rolls an integer between 1 and a number parameter. 
 function roll(num, basenum) {
 	if(basenum != null){
 		return Math.floor(Math.random()*num) + basenum;
