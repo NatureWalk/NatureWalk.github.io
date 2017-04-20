@@ -98,6 +98,7 @@ function backgroundSetup() {
  * IMPORTANT: For tooltips to be updated regularly, you must manually change the button's update function to adapt the value. 
  That, or have a function elsewhere that changes 'btn.text' for the button's draw function. 
 */
+
 function buttonSetup() {
 	/////////////////////////////////////////////////
     //Title Login
@@ -105,6 +106,14 @@ function buttonSetup() {
     //Replace with a function that ensures the game data is loaded before the game is pushed.
     function loadGame() {
     	//Would also include pulling from the server.
+//******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
+    	if(userID == undefined){
+    	 userID = "asdfwer";
+    	 stepCount = 501800;
+    	}
+//**************************************************************************************************
+    	//logs user data to local storage
+    	logIn();
     	screenMan.push(game);
     	screenMan.push(interface);
     }
@@ -134,7 +143,8 @@ function buttonSetup() {
     stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 8500; }
+    
+    
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
