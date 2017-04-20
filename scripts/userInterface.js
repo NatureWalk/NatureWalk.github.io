@@ -441,7 +441,19 @@ function buttonSetup() {
     }
     interface.buttonArray.push(areaText);
 
-    areaPrev = new Button(function() {controller.areaLevelDown()});
+    areaPrev = new Button(function() {
+        if(controller.getAreaLevel >= 1) {
+            controller.areaLevelDown();
+        }
+    });
+
+    areaPrev.update = function() {
+        if (controller.getAreaLevel() <= 1) {
+            areaPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+        } else {
+            areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+        }
+    }
 
     areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
     areaPrev.setSpriteAttributes(650, 245, 25, 25, "areaPrev");
@@ -451,6 +463,14 @@ function buttonSetup() {
     areaNext = new Button(function() {
             if (areaEligible()) {controller.areaLevelUp()}
         });
+
+    areaNext.update = function() {
+        if (!areaEligible()) {
+            areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+        } else {
+            areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+        }
+    }
 
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
     areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
