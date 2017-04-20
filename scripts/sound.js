@@ -2,6 +2,7 @@
 
 var volume = 1
 
+//Object which holds all the sound objects for the game
 var soundManager = function() {
 	this.muted = false
 	this.music = new Howl({
@@ -13,7 +14,12 @@ var soundManager = function() {
 
 	this.click = new Howl({
 		src: ['sounds/click.wav'],
+		volume: 0.5,
 		buffer: true
+	})
+	this.up1 = new Howl({
+		src: ['sounds/up1.wav'],
+		buffer:true
 	})
 }
 

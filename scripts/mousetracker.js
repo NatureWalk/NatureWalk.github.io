@@ -3,6 +3,7 @@ function MouseManager() {
     //The constructor.
 }
 
+
 /*
 getMousePos: Function to get the mouse position.
 Params: 
@@ -22,24 +23,31 @@ MouseManager.prototype.getMousePos = function (canvas, event) {
 };
 
 /*
-findTarget: Function to check all of the buttons on the screen to see if the cursor is within the bounds of one of them.
+findTarget: Function to check all of the buttons on every updating screen
+            to see if the cursor is within the bounds of one of them.
 Params: 
 -evt: The event that called the function.  
 Returns: None. 
 */
 MouseManager.prototype.findTarget = function (evt) {
     var mousePos = this.getMousePos(canvas, evt);
-    for (var i=0; i<game.buttonArray.length; i++) {
-        //DEBUG: console.log("Scanning buttonArray");
-        if (this.isInside(game.buttonArray[i], mousePos)) {
-            //console.log(game.buttonArray[i].name);
-            game.buttonArray[i].mouseEventManager(evt.type);
-        } else {
-            if (game.buttonArray[i].hovered){
-                game.buttonArray[i].onMouseLeave();
+    screens = screenMan.screens;
+    for(var s = 0; s < screens.length; s++){
+        if(screens[s].alwaysUpdate || screens[s] == screens[screens.length-1]){
+            for (var i=0; i<screens[s].buttonArray.length; i++) {
+                //DEBUG: console.log("Scanning buttonArray");
+                if (this.isInside(screens[s].buttonArray[i], mousePos)) {
+                    //console.log(screens[s].buttonArray[i].name);
+                    screens[s].buttonArray[i].mouseEventManager(evt.type);
+                } else {
+                    if (screens[s].buttonArray[i].hovered){
+                        screens[s].buttonArray[i].onMouseLeave();
+                    }
+                }
             }
         }
     }
+
 };
 
 /*
