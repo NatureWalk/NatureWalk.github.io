@@ -2,19 +2,74 @@
 //All functions convert parameters to strings before storing and return floats when retrieving stored data
 //uses variable stepCount created in APIcalls.js
 
-//save a player's current stats for steps and multipliers in local storage
-function saveStats(id, steps, mult, ingame){
-	if(isFirstTimeUser(id)){
-		createData(id, steps, mult, ingame);
+//stepCount = 1500;
+
+
+/*function localSave(localJson){
+	if(isFirstTimeUser(userID)){
+		createData(localJson);
+		console.log("first");
 	} else {
-		updateMult(id, mult);
-		updateSteps(id, steps);
-		updateIngame(id, ingame);
+		createData(localJson);
+		console.log("return");
 	};
 }
+*/
+function firstTimePackage(){
+	var initSteps;
+	if(stepCount < 8500){
+		initSteps = 8500;
+	} else if(stepCount > 20000){
+		initSteps = 20000;
+	} else {
+		initSteps = stepCount;
+	};
+	console.log(initSteps);
+	
+	var package, jsonFile; 
+    package = { 
+        area: controller.getAreaLevel(),
+        partySize: controller.party_limit,
+        partyComp: [],
+        playerSteps: initSteps,
+        playerTSteps: dataObj.totalSteps,
+        playerTracks: dataObj.animalTracks,
+        time: Date.now(),
+    };
+    
+    for (var i = 0; i < controller.animals.length; i++) {
+        package.partyComp.push(controller.animals[i]);
+    }
+    
+    jsonFile = JSON.stringify(package);
+    //console.log(jsonFile);
+}
+
+//returns player data as a JSON object for currently logged in player
+function getLocalJson(){
+	var localString = localStorage.getItem(userID.toString());
+	return JSON.parse(localString);
+}
+
+function getLocalString(){
+	return localStorage.getItem(userID.toString());
+}
+
+function onLogin(){
+	var currentSteps = calcCurrentSteps();
+	
+}
+
+
+function calcCurrentSteps(){
+console.log("accurate steps === " (stepCount - getData(userID, playerSteps)));
+	return (stepCount - getData(userID, playerSteps));
+}
+//save a player's current stats for steps and multipliers in local storage
+
 
 //replaces current saved multiplier for a player with newMult
-function updateMult(playerID, newMult){
+function updateMult(newMult){
 	updateData(playerID, "mult", newMult.toString());
 }
 
@@ -39,11 +94,13 @@ function updateIngame(playerID, newIngame){
 
 
 //saves steps and multiplier for a player in local storage by creating a JSON object, converting it to a string and saving in local storage
-function createData(playerID, steps, mult, ingame){
-	var myObj = { "steps":steps.toString(), "mult":mult.toString(), "ingame":ingame.toString()};
-	var myJSON = JSON.stringify(myObj);
-	localStorage.setItem(playerID.toString(), myJSON);
+function createData(localJson){
+	localStorage.setItem(userID.toString(), localJson);
 }
+
+
+
+
 
 
 //returns the value(as a float) associated with the key for a player
@@ -57,29 +114,22 @@ function getData(playerID, key){
 
 
 //changes the current saved value associated with a key for a player
-function updateData(playerID, key, value){
-	var item = key.toString();
-	var text = localStorage.getItem(playerID.toString());
-	var obj = JSON.parse(text);
-	//console.log(obj);
-	obj[item] = value.toString();
-	var myJSON = JSON.stringify(obj);
-	localStorage.setItem(playerID.toString(), myJSON);
-	//console.log(obj);
+function updateData(localJson){
+	localStorage.setItem(userID.toString(), localJson);
 }
 
 
 //deletes the local storage for a user
-function deleteUser(playerID){
-	localStorage.removeItem(playerID.toString());
+function deleteUser(){
+	localStorage.removeItem(userID.toString());
 }
 
 
 //checks to see if local storage exists for a player.  
 //returns true for a first time user and false for a returning user.
-function isFirstTimeUser(playerID){
+function isFirstTimeUser(myID){
 	if(storageIsSupported()){
-		if(localStorage.getItem(playerID.toString()) == null){
+		if(localStorage.getItem(myID.toString()) == null){
 			return true;
 		} else {
 			return false;

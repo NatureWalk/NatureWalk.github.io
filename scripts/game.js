@@ -1,5 +1,3 @@
-
-
 //fitbit_start(); //Make the fitbit work before anything else.
 
 
@@ -83,7 +81,11 @@ game.init = function() {
     this.push(land);
     panes.forEach( function(elem) {game.push(elem);} );
 } 
+///////////////////////////////local storage junk//////////////////////////
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
 //Who doesn't like a random collision function
 function overlap(a, b) {
     var aMaxX = a.x + a.width;
