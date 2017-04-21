@@ -317,13 +317,14 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    
                     if (testRef != undefined) {
                         testRef.splice(0,1);
-                        testRef.splice(3,1);
+                        testRef.splice(4,1);
                     }
-                    testref.push(controller.get)
                     console.log(testRef)
                 }
+
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
                 

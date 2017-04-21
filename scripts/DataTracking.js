@@ -448,7 +448,7 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    console.log(dataObj.totalSteps);
+    //console.log(dataObj.totalSteps);
     if (dataObj.totalSteps >= areaReq) {return true;}
     else {return false}
 }
