@@ -432,7 +432,68 @@ function buttonSetup() {
     muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
     muteButton.isToggleButton = true;
     interface.buttonArray.push(muteButton);
+    
+    /////////////////////////////////////////////////
+    //ANIMAL ANIMATIONS
+    /////////////////////////////////////////////////
+    for (i = 0; i < 4; i++) {
+        var animalAnimation = new Button();
+        animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
+        
+        if (i==0) {
+            animalAnimation.setupAnim(0, 1, 1);
+        } else if (i==1) {
+            animalAnimation.setupAnim(16, 4, 5);
+        } else if (i==2) {
+            animalAnimation.setupAnim(21, 5, 5);
+        } else if (i==3) {
+            animalAnimation.setupAnim(6, 3, 3);
+        }
+        (function(i) {
+            animalAnimation.update = function() { 
+               var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
+                if (testRef === 0) {
+                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
+                } else {
+                    this.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+                }
+                if (this.anim) {
+                    this.tickCount++; 
+                    if (this.tickCount > this.ticksPerFrame) {
+                        this.frameIndex++;
+                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                        this.tickCount = 0; 
+                    }
+                }
+            }
+        })(i);
+        interface.buttonArray.push(animalAnimation); 
+    }
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //EVENT ANIMATIONS
+    /////////////////////////////////////////////////
+    var eventAnimation = new Button();
+    eventAnimation.setSrc("image_resources/PredatorEvent1.png", "image_resources/PredatorEvent1.png", true);
+    eventAnimation.setSpriteAttributes(115, 180, 900, 600, "weatherAnimation");
+    
+    eventAnimation.setupAnim(12, 4, 4);
+    //interface.buttonArray.push(eventAnimation); 
+    /////////////////////////////////////////////////
 
+    /////////////////////////////////////////////////
+    //WEATHER EVENT ANIMATIONS
+    /////////////////////////////////////////////////
+    var weatherAnimation = new Button();
+    weatherAnimation.setSrc("image_resources/Rain480x376.png", "image_resources/Rain480x376.png", true);
+    weatherAnimation.setSpriteAttributes(515, 180, 480, 376, "weatherAnimation");
+    
+    weatherAnimation.setupAnim(114, 11, 11);
+    interface.buttonArray.push(weatherAnimation); 
+    /////////////////////////////////////////////////
+    
     /////////////////////////////////////////////////
     //AREA CONTROLS
     /////////////////////////////////////////////////
@@ -527,44 +588,9 @@ function buttonSetup() {
     }
     /////////////////////////////////////////////////
     
-    /////////////////////////////////////////////////
-    //ANIMAL ANIMATIONS
-    /////////////////////////////////////////////////
-    for (i = 0; i < 4; i++) {
-        var animalAnimation = new Button();
-        animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
-        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
-        
-        if (i==0) {
-            animalAnimation.setupAnim(0, 1, 1);
-        } else if (i==1) {
-            animalAnimation.setupAnim(16, 4, 5);
-        } else if (i==2) {
-            animalAnimation.setupAnim(21, 5, 5);
-        } else if (i==3) {
-            animalAnimation.setupAnim(6, 3, 3);
-        }
-        (function(i) {
-            animalAnimation.update = function() { 
-               var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
-                if (testRef === 0) {
-                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
-                } else {
-                    this.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
-                }
-                if (this.anim) {
-                    this.tickCount++; 
-                    if (this.tickCount > this.ticksPerFrame) {
-                        this.frameIndex++;
-                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
-                        this.tickCount = 0; 
-                    }
-                }
-            }
-        })(i);
-        interface.buttonArray.push(animalAnimation); 
-    }
-    /////////////////////////////////////////////////
+    
+    
+    
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 

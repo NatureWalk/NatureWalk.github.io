@@ -275,6 +275,7 @@ Button.prototype.draw = function () {
     if (!this.anim) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
     } else {
+        //console.log("Animating " + this.name);
         ctx.drawImage(
             this.image, 
             //(this.frameIndex % 7) * this.width, 
@@ -287,6 +288,7 @@ Button.prototype.draw = function () {
             this.y,
             this.width,
             this.height);
+        
     }
     if ((this.hovered && this.text !== undefined) || this.hasTextValue || this.hasTooltip){
         if (this.text === undefined) {
