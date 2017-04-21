@@ -6,7 +6,7 @@
 //Object that can hold all of the session and player data.
 var dataObj = {
     steps: 0,
-    totalSteps: 0,
+    totalSteps: fitbitSteps,
     animalTracks: 0,
     timeAccelFactor: 1,
     numberOfSessions: 0,
@@ -14,7 +14,7 @@ var dataObj = {
     everySecondTrig: 0,
     eventTrigger: 10,
     sessionStartTime: 0,
-    animalStats: ["Speed", "Evasion", "Strength"],
+    animalStats: ["Level", "Speed", "Evasion", "Strength"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
@@ -61,7 +61,7 @@ DataTracker.prototype.openDevWindow = openDevWindow;
 */
 function sessionStart() {
     //var _tempData = queryServer();
-    dataObj.steps = 8500;
+    dataObj.steps = stepCount;
     dataObj["totalSteps"] += dataObj.steps;
     //console.log(dataObj.totalSteps + " " + stepCount);
     dataObj["sessionStartTime"] = Date.now();
@@ -195,6 +195,7 @@ function everyThirty(seconds) {
     //eventLogAry.shift();
     //dataObj.animalTracks += tracks;
     createPackage();
+    createData(lJson);
 }
 
 function everyMinute(minutes) {
@@ -204,7 +205,7 @@ function everyMinute(minutes) {
 function everyHour(hours) {
     
 }
-
+var lJson;
 function createPackage() {
     /* Things this needs to do. 
      * 1. Create a JSON file.
@@ -228,7 +229,7 @@ function createPackage() {
         partySize: controller.party_limit,
         partyComp: [],
         playerSteps: stepCount,
-        playerTSteps: dataObj.totalSteps,
+        playerTSteps: fitbitSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };
@@ -239,6 +240,7 @@ function createPackage() {
     
     jsonFile = JSON.stringify(package);
     console.log(jsonFile);
+    lJson = jsonFile;
     /*////////////JSON Tests/////////////
     var myObj, obj2, myJSON, myParser;
     myObj = {hello: "world", goodbye: ["sucka", "busta"]};
@@ -257,6 +259,8 @@ function createPackage() {
     console.log(myParser);
     */
 }
+
+
 
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {

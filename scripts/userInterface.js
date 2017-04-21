@@ -98,15 +98,26 @@ function backgroundSetup() {
  * IMPORTANT: For tooltips to be updated regularly, you must manually change the button's update function to adapt the value. 
  That, or have a function elsewhere that changes 'btn.text' for the button's draw function. 
 */
+
 function buttonSetup() {
 	/////////////////////////////////////////////////
     //Title Login
     /////////////////////////////////////////////////
     //Replace with a function that ensures the game data is loaded before the game is pushed.
     function loadGame() {
-    	//Would also include pulling from the server.
-    	screenMan.push(game);
-    	screenMan.push(interface);
+        //Would also include pulling from the server.
+//******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
+        console.log("my user id is : " + userID);
+        if(userID == undefined){
+         userID = "asdfwer";
+         stepCount = 501800;
+        }
+//**************************************************************************************************
+        //logs user data to local storage
+        console.log(userID);
+        logIn();
+        screenMan.push(game);
+        screenMan.push(interface);
     }
 
     var login = new Button(loadGame)
@@ -134,7 +145,8 @@ function buttonSetup() {
     stepPane.hasTextValue = true;
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount === undefined) { stepCount = 8500; }
+    
+    
     
     stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
@@ -273,7 +285,7 @@ function buttonSetup() {
     
     var attButton, attValue, animalImage;
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 4; i++) {
 
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
@@ -305,7 +317,11 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    if (testRef != undefined) testRef.splice(0,2)
+                    if (testRef != undefined) {
+                        testRef.splice(0,1);
+                        testRef.splice(3,1);
+                    }
+                    testref.push(controller.get)
                     console.log(testRef)
                 }
                 var charNum = numberConversion(testRef[i]).length  
@@ -431,7 +447,19 @@ function buttonSetup() {
     }
     interface.buttonArray.push(areaText);
 
-    areaPrev = new Button(function() {controller.areaLevelDown()});
+    areaPrev = new Button(function() {
+        if(controller.getAreaLevel >= 1) {
+            controller.areaLevelDown();
+        }
+    });
+
+    areaPrev.update = function() {
+        if (controller.getAreaLevel() <= 1) {
+            areaPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+        } else {
+            areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+        }
+    }
 
     areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
     areaPrev.setSpriteAttributes(625, 245, 25, 25, "areaPrev");
@@ -442,8 +470,21 @@ function buttonSetup() {
             if (areaEligible()) {controller.areaLevelUp()}
         });
 
+    areaNext.update = function() {
+        if (!areaEligible()) {
+            areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+        } else {
+            areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+        }
+    }
+
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+<<<<<<< HEAD
     areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
+=======
+    areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
+    areaNext.setTooltip(5000);
+>>>>>>> dan
     interface.buttonArray.push(areaNext);
 
     /////////////////////////////////////////////////
