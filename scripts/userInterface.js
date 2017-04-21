@@ -354,7 +354,6 @@ function buttonSetup() {
     upgradeCost.fontSize = '20px';
 
     upgradeCost.update = function() {
-        //console.log("Help MEEEEE");
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
         } else {

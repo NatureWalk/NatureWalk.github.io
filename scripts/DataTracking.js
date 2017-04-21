@@ -320,12 +320,14 @@ function goodEventHandler(evtRoll) {
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
    var b = controller.getBadEvents();
+   //badStuff = [# of Unharmed, # Of Trips, # of Deaths]
+   var x, badStuff = [0, 0, 0];
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
             //eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[0][1]);
+				badStuffSort(badEventChecker(i,b[0][1]), badStuff);
 			}
     		break;
     	case evtRoll > 31 < 63:
@@ -419,15 +421,20 @@ function badEventChecker(index, stat,flag){
 		if (die < 5){
 			eventLogAry.push(x +" was tragically lost.");
 			controller.queueRemove(index);
+            return 2;
 		} else if(die < 50){
             dataObj.animalTracks -= (dataObj.animalTracks/200)
 			eventLogAry.push(x +" tripped, you lost some tracks.");
+            return 1;
 		} else {
 			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
+            return 0;
 		}
 	}
-	
-	
+}
+
+function badStuffSort(badThing, badStuff) {
+    badStuff[badThing]++;
 }
 
 function areaEligible() {
