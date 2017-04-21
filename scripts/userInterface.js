@@ -105,17 +105,19 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //Replace with a function that ensures the game data is loaded before the game is pushed.
     function loadGame() {
-    	//Would also include pulling from the server.
+        //Would also include pulling from the server.
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
-    	if(userID == undefined){
-    	 userID = "asdfwer";
-    	 stepCount = 501800;
-    	}
+        console.log("my user id is : " + userID);
+        if(userID == undefined){
+         userID = "asdfwer";
+         stepCount = 501800;
+        }
 //**************************************************************************************************
-    	//logs user data to local storage
-    	logIn();
-    	screenMan.push(game);
-    	screenMan.push(interface);
+        //logs user data to local storage
+        console.log(userID);
+        logIn();
+        screenMan.push(game);
+        screenMan.push(interface);
     }
 
     var login = new Button(loadGame)
@@ -283,7 +285,7 @@ function buttonSetup() {
     
     var attButton, attValue, animalImage;
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 4; i++) {
 
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
@@ -315,7 +317,11 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    if (testRef != undefined) testRef.splice(0,2)
+                    if (testRef != undefined) {
+                        testRef.splice(0,1);
+                        testRef.splice(3,1);
+                    }
+                    testref.push(controller.get)
                     console.log(testRef)
                 }
                 var charNum = numberConversion(testRef[i]).length  

@@ -331,6 +331,7 @@ function master_controller() {
 
 	this.getBaseData = function(animal) {
         var data = [];
+        data.push(this.base_levels[animal]);
         for(var i = 0; i < 3; i++){
             var stat = 1;
             for(var k = 0; k < this.base_levels[animal]; k++){
