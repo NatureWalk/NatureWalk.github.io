@@ -479,12 +479,9 @@ function buttonSetup() {
     }
 
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
-<<<<<<< HEAD
+
     areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
-=======
-    areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
-    areaNext.setTooltip(5000);
->>>>>>> dan
+
     interface.buttonArray.push(areaNext);
 
     /////////////////////////////////////////////////
