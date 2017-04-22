@@ -221,7 +221,7 @@ Params:
 Returns: None.
 */
 function setTooltip(textString) {
-    this.tooltip = textString;
+    this.tooltip = [textString];
 }
 
 /* 
@@ -234,7 +234,7 @@ function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
     this.text = [];
-    this.tooltip;
+    this.tooltip = [];
     this.fontSize;
     this.color = [];
     this.textSrc;

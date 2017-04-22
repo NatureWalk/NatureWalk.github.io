@@ -335,6 +335,7 @@ function buttonSetup() {
                     }
                     //console.log(testRef)
                 }
+                //Workaround, some event may be more broken
                 if (testRef == undefined) return;
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText([numberConversion(testRef[i])], (attNum.width / 2) - (5 * charNum), 0);
@@ -352,9 +353,9 @@ function buttonSetup() {
     var upgradeBtn;
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
-            upgrade_baseAnimal();
+            upgrade_baseAnimalMax();
         } else {
-            upgrade_animal();
+            upgrade_animalMax();
         }
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
@@ -743,6 +744,31 @@ function upgrade_animal() {
         controller.levelUpAnimal(ui_values.partyIndex);
     }
     soundMan.up1.play();
+}
+
+/* upgrade_baseAnimalMax() - For increasing the level of animals will all tracks. 
+ * Params: None
+ * Returns: None. 
+*/
+function upgrade_baseAnimalMax() {
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    while (dataObj.animalTracks - (level * 100) > 0) {
+        dataObj.animalTracks -= (level * 100);
+        controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
+        controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+        level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+        soundMan.up1.play();
+    }
+}
+
+function upgrade_animalMax() {
+    var level = controller.animals[ui_values.partyIndex].level;
+    while (dataObj.animalTracks - (level * 100) > 0) {
+        dataObj.animalTracks -= (level * 100);
+        controller.levelUpAnimal(ui_values.partyIndex);
+        level = controller.animals[ui_values.partyIndex].level;
+        soundMan.up1.play();
+    }
 }
 
 //Get the animal number from the animal type
