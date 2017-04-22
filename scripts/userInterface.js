@@ -328,7 +328,10 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    
+                    if (testRef == undefined) {
+                        ui_values.selected = "base"
+                        return;
+                    }
                     if (testRef != undefined) {
                         testRef.splice(0,1);
                         testRef.splice(4,1);
@@ -388,6 +391,10 @@ function buttonSetup() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
         } else {
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
             var level = controller.animals[ui_values.partyIndex].level;
         }
 
@@ -419,6 +426,10 @@ function buttonSetup() {
                     this.setText([name], -15 - (9 * charNum), -40);
                 } else {
                     //This line gave me cancer
+                    if (controller.animals[ui_values.partyIndex] == undefined) {
+                        ui_values.selected = "base";
+                        return;
+                    }
                     var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
                     var name = controller.animals[ui_values.partyIndex].name;
                     var charNum = numberLen(name);  
@@ -599,8 +610,10 @@ function buttonSetup() {
         ctx.rect(517, 0, 475, 578);
     }
     selectedAnimal.update = function() {
-        //console.log(partyButtons[ui_values.partyIndex])
-        if (partyButtons[ui_values.partyIndex] == undefined) return;
+        if (controller.animals[ui_values.partyIndex] == undefined) {
+            ui_values.selected = "base";
+            return;
+        }
         this.x = partyButtons[ui_values.partyIndex].x;
         this.y = partyButtons[ui_values.partyIndex].y;
     }
