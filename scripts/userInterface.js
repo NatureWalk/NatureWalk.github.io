@@ -12,6 +12,9 @@
  * Player's permanent animal. 
  */
 
+/*
+ *BUTTON TEXT IS AN ARRAY NOW
+ */
 
 /* ui_values
 * List of various source arrays for image resources and data objects like the attribute list. 
@@ -124,7 +127,8 @@ function buttonSetup() {
     login.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
     login.setSpriteAttributes(392,248,240,80, "login button")
     login.hasTextValue = true;
-    login.setText("Login With Fitbit",40,20)
+    login.setText(["Login With Fitbit"],40,20)
+    console.log(login.text);
     title.buttonArray.push(login);
 
     /////////////////////////////////////////////////
@@ -148,11 +152,11 @@ function buttonSetup() {
     
     
     
-    stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
+    stepPane.setText([stepCount + " Steps"], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
-        this.text = stepCount + " Steps";
+        this.updateText([stepCount + " Steps"]);
         this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
     };
     interface.buttonArray.push(stepPane);
@@ -165,10 +169,17 @@ function buttonSetup() {
     trackPane.setSrc("image_resources/TracksPaper.png");
     trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
     trackPane.hasTextValue = true;
+    trackPane.color = 'blue';
     
     //Changing the button's update function to get the step count every frame. 
     trackPane.update = function() {
-        this.text = numberConversion(Math.floor(dataObj.animalTracks)) + " Tracks";
+        var text = [];
+        var color = [];
+        text.push(numberConversion(Math.floor(dataObj.animalTracks)))
+        color.push('blue');
+        text.push(" Tracks");
+        color.push('black');
+        this.updateText(text,color);
         this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks) + " Tracks")
         this.textOffsetY = 10;
     };
@@ -186,7 +197,7 @@ function buttonSetup() {
         
         animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
-        animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
+        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24)
         interface.buttonArray.push(animalIcon);
         
         /////////////////////////////////////////////////
@@ -296,7 +307,7 @@ function buttonSetup() {
         attValue.fontSize = '22px';
         
         charNum = dataObj.animalStats[i].length;
-        attValue.setText(dataObj.animalStats[i], 0, 0);
+        attValue.setText([dataObj.animalStats[i]], 0, 0);
         interface.buttonArray.push(attValue);
         
         /////////////////////////////////////////////////
@@ -322,11 +333,11 @@ function buttonSetup() {
                         testRef.splice(0,1);
                         testRef.splice(4,1);
                     }
-                    console.log(testRef)
+                    //console.log(testRef)
                 }
-
+                if (testRef == undefined) return;
                 var charNum = numberConversion(testRef[i]).length  
-                this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
+                this.setText([numberConversion(testRef[i])], (attNum.width / 2) - (5 * charNum), 0);
                 
             }
         })(i);
@@ -353,7 +364,7 @@ function buttonSetup() {
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '20px';
     charnum = "upgrade".length;
-    upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (6.3 * charnum), 5);
+    upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
     interface.buttonArray.push(upgradeBtn);    
     /////////////////////////////////////////////////
@@ -369,6 +380,8 @@ function buttonSetup() {
 
     upgradeCost.hasTextValue = true;
     upgradeCost.fontSize = '20px';
+    upgradeCost.color = ['blue'];
+
 
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
@@ -378,7 +391,7 @@ function buttonSetup() {
         }
 
         charnum = numberConversion(level*100).length;
-        upgradeCost.setText(numberConversion(level*100), (upgradeCost.width / 2) - (4 * charnum), 5);
+        upgradeCost.setText([numberConversion(level*100)], (upgradeCost.width / 2) - (4 * charnum), 5);
     };
 
    
@@ -402,12 +415,12 @@ function buttonSetup() {
                 if (ui_values.selected == "base") {
                     var name = ui_values.currentAnimal;
                     var charNum = numberLen(name);  
-                    this.setText(name, -15 - (9 * charNum), -40);
+                    this.setText([name], -15 - (9 * charNum), -40);
                 } else {
                     //This line gave me cancer
                     var name = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
                     var charNum = numberLen(name);  
-                    this.setText(name+" "+ui_values.partyIndex, -15 - (9 * charNum), -40);
+                    this.setText([name+" "+ui_values.partyIndex], -15 - (9 * charNum), -40);
                 }
             }
     
@@ -419,7 +432,7 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
     animalImage.update = function() {
-        animalImage.setText(2000 + 500*controller.animals.length + " Steps", 0 + (5.5 * charNum), 160);
+        animalImage.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
     }
     
 
@@ -444,7 +457,7 @@ function buttonSetup() {
     areaText.fontSize = '22px';
     areaText.update = function() {
         var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
-        this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
+        this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
 
@@ -509,8 +522,8 @@ function buttonSetup() {
             //console.log(testRef);
             eventLogEntry.update = function() {
                 if (eventLogAry[i]) {
-                    this.text = eventLogAry[i];
-                } else {this.text = "";}
+                    this.updateText([eventLogAry[i]]);
+                } else {this.updateText([""]);}
             }
         })(i);
         
