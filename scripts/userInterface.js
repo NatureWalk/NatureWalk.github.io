@@ -235,7 +235,7 @@ function buttonSetup() {
                 var temp = ui_values.animalAry[i].toLowerCase();
                 var level = controller.getAnimalBaseLevel(temp);
                 var charNum = numberLen(temp);  
-                //this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
+                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5 * charNum), 0);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -245,7 +245,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //COMING SOON WORDS
     /////////////////////////////////////////////////
-    /*
+    
     animalIcon = new Button(function() {});
         
     animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
@@ -253,7 +253,7 @@ function buttonSetup() {
     animalIcon.setSpriteAttributes((71), 130, 60, 60, "animal_iconCS" + i);
     animalIcon.hasTextValue = true;
     animalIcon.fonstSize = '14px';
-    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
+    animalIcon.setText(["Coming"], ("Coming Soon".length) - 15, -19)
     interface.buttonArray.push(animalIcon);
     
     animalIcon = new Button(function() {});
@@ -263,9 +263,9 @@ function buttonSetup() {
     animalIcon.setSpriteAttributes((71), 150, 60, 60, "animal_iconCS" + i);
     animalIcon.hasTextValue = true;
     animalIcon.fonstSize = '14px';
-    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
+    animalIcon.setText(["Soon"], ("Coming Soon".length) - 10, -14)
     interface.buttonArray.push(animalIcon);
-    
+    /*
     
     
     animalIcon = new Button(function() {});
@@ -419,9 +419,10 @@ function buttonSetup() {
                     this.setText([name], -15 - (9 * charNum), -40);
                 } else {
                     //This line gave me cancer
-                    var name = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+                    var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+                    var name = controller.animals[ui_values.partyIndex].name;
                     var charNum = numberLen(name);  
-                    this.setText([name+" "+ui_values.partyIndex], -15 - (9 * charNum), -40);
+                    this.setText([type+" "+name], -50 - (9 * charNum), -40);
                 }
             }
     
@@ -547,7 +548,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     for (i = 0; i < 4; i++) {
         var animalAnimation = new Button();
-        animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+        animalAnimation.setSrc(ui_values.animalWalkAry[i],ui_values.animalWalkAry[i], true);
         animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
         
         if (i==0) {
@@ -565,7 +566,7 @@ function buttonSetup() {
                 if (testRef === 0) {
                     this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
                 } else {
-                    this.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
+                    this.setSrc(ui_values.animalWalkAry[i],ui_values.animalWalkAry[i], true);
                 }
                 if (this.anim) {
                     this.tickCount++; 
@@ -580,6 +581,30 @@ function buttonSetup() {
         interface.buttonArray.push(animalAnimation); 
     }
     /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    //Selected Party Animal Indicator
+    /////////////////////////////////////////////////
+    var selectedAnimal = new Button();
+    selectedAnimal.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+    selectedAnimal.setSpriteAttributes(101,455,40,40, "selected animal")
+    selectedAnimal.draw = function () {
+        if (partyButtons == undefined || partyButtons.length < 1 || ui_values.selected != "party") return;
+        ctx.save();
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x+this.width/2,this.y+this.width/2,this.width/2,0,2*Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        ctx.rect(517, 0, 475, 578);
+    }
+    selectedAnimal.update = function() {
+        //console.log(partyButtons[ui_values.partyIndex])
+        if (partyButtons[ui_values.partyIndex] == undefined) return;
+        this.x = partyButtons[ui_values.partyIndex].x;
+        this.y = partyButtons[ui_values.partyIndex].y;
+    }
+    interface.buttonArray.push(selectedAnimal);
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
@@ -690,6 +715,7 @@ var partyButtons = []
 */
 function updateParty() {
 	console.log("updating party")
+    //Remove all of the partyButtons from the engine
     for (var b=0; b<partyButtons.length; b++) {
 		for (var i in interface.buttonArray) {
             if (interface.buttonArray[i] == partyButtons[b]) {
@@ -699,6 +725,7 @@ function updateParty() {
         interface.remove(partyButtons[b]);
 	}
 
+    //Reset partyButtons and add update
 	partyButtons = []
 
 	var animals = controller.animals;
@@ -719,6 +746,7 @@ function updateParty() {
         interface.push(partyButtons[b]);
     }
 }
+
 
 /* upgrade_baseAnimal() - For increasing the level of animals. 
  * Params: None

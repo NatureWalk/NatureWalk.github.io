@@ -279,6 +279,12 @@ function master_controller() {
 			var ani = new animalClass(animal);
 			console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
+			//taken from http://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+			var text = "";
+		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		    for( var i=0; i < 5; i++ )
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+		    ani.name= text;
 			this.animals.push(ani);
 			return true;
 		} else {
