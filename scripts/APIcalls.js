@@ -8,7 +8,7 @@ function fitbit_start(){
     authorize();
     getUserInfo();
     getNewSteps();
-
+	
 }
 
 

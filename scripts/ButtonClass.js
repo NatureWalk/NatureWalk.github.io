@@ -55,7 +55,11 @@ NOTE: Not a self-sufficient function. As it is, it must be called from the canva
 function onMouseLeave() {
     this.hovered = false;
     this.isPressed = false;
-    this.image.src = this.onMouseUpImageSrc;
+    //console.log("left");
+    if (!this.isToggleButton) {
+        this.image.src = this.onMouseUpImageSrc;
+    }
+    
 }
 /*
 onMouseMove: Function that is called when the mouse is moving over the button. Called every time the mouse moves. 
@@ -76,15 +80,25 @@ Params: None.
 Returns: None.
 */
 function onMouseDown() {
-    if (this.onMouseDownImageSrc) {
-        this.image.src = this.onMouseDownImageSrc;
-    }
+    if (this.isToggleButton) {
+        if (this.isToggled) {
+            this.image.src = this.onMouseUpImageSrc;
+        } else if (!this.isToggled) {
+            this.image.src = this.onMouseDownImageSrc;
+        }
     //For toggle functionality.
-    if (this.isToggleButton === true) {
         this.toggle();
         this.callFunction();
+    } 
+    else {
+        this.isPressed = true;
+        if (this.onMouseDownImageSrc) {
+            this.image.src = this.onMouseDownImageSrc;
+        }
+        
     }
-    this.isPressed = true;
+   
+    
     //DEBUG: console.log("pressed");
 }
 
@@ -94,13 +108,14 @@ Params: None.
 Returns: None.
 */
 function onMouseUp() {
-    this.image.src = this.onMouseUpImageSrc;
+    
     //If mouse has been pressed down and has not left the button.
     //And if the button is not a toggle button. 
     //And if there is a function to be called. 
         //THEN call the function. 
     if (this.isPressed && !(this.isToggleButton) && (this.func !== undefined)) {
         this.callFunction();
+        this.image.src = this.onMouseUpImageSrc;
     }
     this.isPressed = false;
     
@@ -176,16 +191,26 @@ function setSrc(srcPrimary, srcSecondary, anim) {
     if (anim !== undefined) {this.anim = anim;}
 }
 
-/*setText: Sets text for the button that will appear when this.hovered is true.  
+/*setText: Sets text for the button that will appear always.  
 Params: 
-- srcPrimary: The image source for the button when it is NOT pressed.
-- srcSecondary: Image source for the button when it is PRESSED. 
-Returns: None. Automatically sets image.src to the srcPrimary.
+- textString: String to be displayed on the button.
+- textOffsetX: x position from button origin
+- textOffsetY: y position from button origin
+Returns: None.
 */
 function setText(textString, offsetX, offsetY) {
     this.text = textString;
     this.textOffsetX = offsetX;
     this.textOffsetY = offsetY;
+}
+
+/*setTooltip: Sets text for the button that will appear when hovered.  
+Params: 
+- textString: String to be displayed next to the mouse.
+Returns: None.
+*/
+function setTooltip(textString) {
+    this.tooltip = textString;
 }
 
 /* 
@@ -198,6 +223,7 @@ function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
     this.text;
+    this.tooltip;
     this.fontSize;
     this.textSrc;
     this.textOffsetX = 0;
@@ -215,6 +241,7 @@ function Button(_function, _params) {
     this.params = _params;
     this.isToggleButton = false;
     this.hasTextValue = false;
+    this.hasTooltip = false;
     
     //ONLY USE THIS IF this.isToggleButton IS TRUE
     this.isToggled = false;
@@ -242,6 +269,7 @@ Button.prototype.update = function () {
             this.tickCount = 0; 
         }
     }
+    //console.log(this.name + " " + this.frameIndex);
 }
 Button.prototype.draw = function () {
     if (!this.anim) {
@@ -260,10 +288,17 @@ Button.prototype.draw = function () {
             this.width,
             this.height);
     }
-    if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+    if ((this.hovered && this.text !== undefined) || this.hasTextValue || this.hasTooltip){
+        if (this.text === undefined) {
+            //console.log(this.name);
+        } else {
         drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
+        }
+        if (this.tooltip != undefined && cursor.x != undefined && cursor.y != undefined && this.hovered) {
+    drawText(this.tooltip,cursor.x+5,cursor.y+5)
+        }
     }
-    this.drawChildren();
+    //this.drawChildren();
 }
 
 Button.prototype.drawChildren = function() {
@@ -283,6 +318,7 @@ Button.prototype.setupAnim = function (frameCount, rows, cols) {
     this.srcCols = cols;
 }
 Button.prototype.setText = setText;
+Button.prototype.setTooltip = setTooltip;
 Button.prototype.toggle = toggle;
 Button.prototype.mouseEventManager = mouseEventManager;
 Button.prototype.onMouseMove = onMouseMove;
