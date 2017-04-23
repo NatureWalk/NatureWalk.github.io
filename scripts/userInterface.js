@@ -12,6 +12,9 @@
  * Player's permanent animal. 
  */
 
+/*
+ *BUTTON TEXT IS AN ARRAY NOW
+ */
 
 /* ui_values
 * List of various source arrays for image resources and data objects like the attribute list. 
@@ -124,7 +127,8 @@ function buttonSetup() {
     login.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
     login.setSpriteAttributes(392,248,240,80, "login button")
     login.hasTextValue = true;
-    login.setText("Login With Fitbit",40,20)
+    login.setText(["Login With Fitbit"],40,20)
+    console.log(login.text);
     title.buttonArray.push(login);
 
     /////////////////////////////////////////////////
@@ -148,11 +152,11 @@ function buttonSetup() {
     
     
     
-    stepPane.setText(stepCount + " Steps", (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
+    stepPane.setText([stepCount + " Steps"], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
-        this.text = stepCount + " Steps";
+        this.updateText([stepCount + " Steps"]);
         this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
     };
     interface.buttonArray.push(stepPane);
@@ -165,10 +169,17 @@ function buttonSetup() {
     trackPane.setSrc("image_resources/TracksPaper.png");
     trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
     trackPane.hasTextValue = true;
+    trackPane.color = 'blue';
     
     //Changing the button's update function to get the step count every frame. 
     trackPane.update = function() {
-        this.text = numberConversion(Math.floor(dataObj.animalTracks)) + " Tracks";
+        var text = [];
+        var color = [];
+        text.push(numberConversion(Math.floor(dataObj.animalTracks)))
+        color.push('blue');
+        text.push(" Tracks");
+        color.push('black');
+        this.updateText(text,color);
         this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks) + " Tracks")
         this.textOffsetY = 10;
     };
@@ -186,7 +197,7 @@ function buttonSetup() {
         
         animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
-        animalIcon.setText(ui_values.animalAry[i], (5-ui_values.animalAry[i].length)*5, -24)
+        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24)
         interface.buttonArray.push(animalIcon);
         
         /////////////////////////////////////////////////
@@ -224,7 +235,7 @@ function buttonSetup() {
                 var temp = ui_values.animalAry[i].toLowerCase();
                 var level = controller.getAnimalBaseLevel(temp);
                 var charNum = numberLen(temp);  
-                //this.setText("Lvl " + level, (animalLevel.width / 2) - (5 * charNum), 0);
+                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5 * charNum), 0);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -234,7 +245,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //COMING SOON WORDS
     /////////////////////////////////////////////////
-    /*
+    
     animalIcon = new Button(function() {});
         
     animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
@@ -242,7 +253,7 @@ function buttonSetup() {
     animalIcon.setSpriteAttributes((71), 130, 60, 60, "animal_iconCS" + i);
     animalIcon.hasTextValue = true;
     animalIcon.fonstSize = '14px';
-    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
+    animalIcon.setText(["Coming"], ("Coming Soon".length) - 15, -19)
     interface.buttonArray.push(animalIcon);
     
     animalIcon = new Button(function() {});
@@ -252,9 +263,9 @@ function buttonSetup() {
     animalIcon.setSpriteAttributes((71), 150, 60, 60, "animal_iconCS" + i);
     animalIcon.hasTextValue = true;
     animalIcon.fonstSize = '14px';
-    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
+    animalIcon.setText(["Soon"], ("Coming Soon".length) - 10, -14)
     interface.buttonArray.push(animalIcon);
-    
+    /*
     
     
     animalIcon = new Button(function() {});
@@ -296,7 +307,7 @@ function buttonSetup() {
         attValue.fontSize = '22px';
         
         charNum = dataObj.animalStats[i].length;
-        attValue.setText(dataObj.animalStats[i], 0, 0);
+        attValue.setText([dataObj.animalStats[i]], 0, 0);
         interface.buttonArray.push(attValue);
         
         /////////////////////////////////////////////////
@@ -317,15 +328,20 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    if (testRef == undefined) {
+                        ui_values.selected = "base"
+                        return;
+                    }
                     if (testRef != undefined) {
                         testRef.splice(0,1);
-                        testRef.splice(3,1);
+                        testRef.splice(4,1);
                     }
-                    testref.push(controller.get)
-                    console.log(testRef)
+                    //console.log(testRef)
                 }
+                //Workaround, some event may be more broken
+                if (testRef == undefined) return;
                 var charNum = numberConversion(testRef[i]).length  
-                this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
+                this.setText([numberConversion(testRef[i])], (attNum.width / 2) - (5 * charNum), 0);
                 
             }
         })(i);
@@ -340,9 +356,9 @@ function buttonSetup() {
     var upgradeBtn;
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
-            upgrade_baseAnimal();
+            upgrade_baseAnimalMax();
         } else {
-            upgrade_animal();
+            upgrade_animalMax();
         }
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
@@ -352,7 +368,7 @@ function buttonSetup() {
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '20px';
     charnum = "upgrade".length;
-    upgradeBtn.setText("UPGRADE", (upgradeBtn.width / 2) - (6.3 * charnum), 5);
+    upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
     interface.buttonArray.push(upgradeBtn);    
     /////////////////////////////////////////////////
@@ -368,16 +384,22 @@ function buttonSetup() {
 
     upgradeCost.hasTextValue = true;
     upgradeCost.fontSize = '20px';
+    upgradeCost.color = ['blue'];
+
 
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
         } else {
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
             var level = controller.animals[ui_values.partyIndex].level;
         }
 
         charnum = numberConversion(level*100).length;
-        upgradeCost.setText(numberConversion(level*100), (upgradeCost.width / 2) - (4 * charnum), 5);
+        upgradeCost.setText([numberConversion(level*100)], (upgradeCost.width / 2) - (4 * charnum), 5);
     };
 
    
@@ -401,12 +423,17 @@ function buttonSetup() {
                 if (ui_values.selected == "base") {
                     var name = ui_values.currentAnimal;
                     var charNum = numberLen(name);  
-                    this.setText(name, -15 - (9 * charNum), -40);
+                    this.setText([name], -15 - (9 * charNum), -40);
                 } else {
                     //This line gave me cancer
-                    var name = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+                    if (controller.animals[ui_values.partyIndex] == undefined) {
+                        ui_values.selected = "base";
+                        return;
+                    }
+                    var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+                    var name = controller.animals[ui_values.partyIndex].name;
                     var charNum = numberLen(name);  
-                    this.setText(name+" "+ui_values.partyIndex, -15 - (9 * charNum), -40);
+                    this.setText([type+" "+name], -50 - (9 * charNum), -40);
                 }
             }
     
@@ -418,7 +445,7 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
     animalImage.update = function() {
-        animalImage.setText(2000 + 500*controller.animals.length + " Steps", 0 + (5.5 * charNum), 160);
+        animalImage.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
     }
     
 
@@ -505,7 +532,7 @@ function buttonSetup() {
     areaText.fontSize = '22px';
     areaText.update = function() {
         var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
-        this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
+        this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
 
@@ -570,8 +597,8 @@ function buttonSetup() {
             //console.log(testRef);
             eventLogEntry.update = function() {
                 if (eventLogAry[i]) {
-                    this.text = eventLogAry[i];
-                } else {this.text = "";}
+                    this.updateText([eventLogAry[i]]);
+                } else {this.updateText([""]);}
             }
         })(i);
         
@@ -589,9 +616,76 @@ function buttonSetup() {
     }
     /////////////////////////////////////////////////
     
+<<<<<<< HEAD
     
     
     
+=======
+    /////////////////////////////////////////////////
+    //ANIMAL ANIMATIONS
+    /////////////////////////////////////////////////
+    for (i = 0; i < 4; i++) {
+        var animalAnimation = new Button();
+        animalAnimation.setSrc(ui_values.animalWalkAry[i],ui_values.animalWalkAry[i], true);
+        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
+        
+        if (i==0) {
+            animalAnimation.setupAnim(0, 1, 1);
+        } else if (i==1) {
+            animalAnimation.setupAnim(16, 4, 5);
+        } else if (i==2) {
+            animalAnimation.setupAnim(21, 5, 5);
+        } else if (i==3) {
+            animalAnimation.setupAnim(6, 3, 3);
+        }
+        (function(i) {
+            animalAnimation.update = function() { 
+               var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
+                if (testRef === 0) {
+                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
+                } else {
+                    this.setSrc(ui_values.animalWalkAry[i],ui_values.animalWalkAry[i], true);
+                }
+                if (this.anim) {
+                    this.tickCount++; 
+                    if (this.tickCount > this.ticksPerFrame) {
+                        this.frameIndex++;
+                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                        this.tickCount = 0; 
+                    }
+                }
+            }
+        })(i);
+        interface.buttonArray.push(animalAnimation); 
+    }
+    /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    //Selected Party Animal Indicator
+    /////////////////////////////////////////////////
+    var selectedAnimal = new Button();
+    selectedAnimal.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+    selectedAnimal.setSpriteAttributes(101,455,40,40, "selected animal")
+    selectedAnimal.draw = function () {
+        if (partyButtons == undefined || partyButtons.length < 1 || ui_values.selected != "party") return;
+        ctx.save();
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x+this.width/2,this.y+this.width/2,this.width/2,0,2*Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        ctx.rect(517, 0, 475, 578);
+    }
+    selectedAnimal.update = function() {
+        if (controller.animals[ui_values.partyIndex] == undefined) {
+            ui_values.selected = "base";
+            return;
+        }
+        this.x = partyButtons[ui_values.partyIndex].x;
+        this.y = partyButtons[ui_values.partyIndex].y;
+    }
+    interface.buttonArray.push(selectedAnimal);
+>>>>>>> dan
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
@@ -700,6 +794,7 @@ var partyButtons = []
 */
 function updateParty() {
 	console.log("updating party")
+    //Remove all of the partyButtons from the engine
     for (var b=0; b<partyButtons.length; b++) {
 		for (var i in interface.buttonArray) {
             if (interface.buttonArray[i] == partyButtons[b]) {
@@ -709,6 +804,7 @@ function updateParty() {
         interface.remove(partyButtons[b]);
 	}
 
+    //Reset partyButtons and add update
 	partyButtons = []
 
 	var animals = controller.animals;
@@ -729,6 +825,7 @@ function updateParty() {
         interface.push(partyButtons[b]);
     }
 }
+
 
 /* upgrade_baseAnimal() - For increasing the level of animals. 
  * Params: None
@@ -754,6 +851,31 @@ function upgrade_animal() {
         controller.levelUpAnimal(ui_values.partyIndex);
     }
     soundMan.up1.play();
+}
+
+/* upgrade_baseAnimalMax() - For increasing the level of animals will all tracks. 
+ * Params: None
+ * Returns: None. 
+*/
+function upgrade_baseAnimalMax() {
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    while (dataObj.animalTracks - (level * 100) > 0) {
+        dataObj.animalTracks -= (level * 100);
+        controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
+        controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+        level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+        soundMan.up1.play();
+    }
+}
+
+function upgrade_animalMax() {
+    var level = controller.animals[ui_values.partyIndex].level;
+    while (dataObj.animalTracks - (level * 100) > 0) {
+        dataObj.animalTracks -= (level * 100);
+        controller.levelUpAnimal(ui_values.partyIndex);
+        level = controller.animals[ui_values.partyIndex].level;
+        soundMan.up1.play();
+    }
 }
 
 //Get the animal number from the animal type

@@ -193,15 +193,26 @@ function setSrc(srcPrimary, srcSecondary, anim) {
 
 /*setText: Sets text for the button that will appear always.  
 Params: 
-- textString: String to be displayed on the button.
+- textArray: Array of strings to be displayed on the button.
 - textOffsetX: x position from button origin
 - textOffsetY: y position from button origin
 Returns: None.
 */
-function setText(textString, offsetX, offsetY) {
-    this.text = textString;
+function setText(textArray, offsetX, offsetY) {
+    this.text = textArray;
     this.textOffsetX = offsetX;
     this.textOffsetY = offsetY;
+}
+
+/*updateText: Sets text for the button that will appear always.  
+Params: 
+- textArray: Array of strings to be displayed on the button.
+- colorArray: Color to be displayed on text on button.
+Returns: None.
+*/
+function updateText(textArray, colorArray=['black']) {
+    this.text = textArray;
+    this.color = colorArray;
 }
 
 /*setTooltip: Sets text for the button that will appear when hovered.  
@@ -210,7 +221,7 @@ Params:
 Returns: None.
 */
 function setTooltip(textString) {
-    this.tooltip = textString;
+    this.tooltip = [textString];
 }
 
 /* 
@@ -222,9 +233,10 @@ Returns: None.
 function Button(_function, _params) {
     //Directly calls the Sprite class to inherit Sprite's attributes. 
     Sprite.call(this);
-    this.text;
-    this.tooltip;
+    this.text = [];
+    this.tooltip = [];
     this.fontSize;
+    this.color = [];
     this.textSrc;
     this.textOffsetX = 0;
     this.textOffsetY = 0;
@@ -294,7 +306,7 @@ Button.prototype.draw = function () {
         if (this.text === undefined) {
             //console.log(this.name);
         } else {
-        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize);
+        drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, this.color);
         }
         if (this.tooltip != undefined && cursor.x != undefined && cursor.y != undefined && this.hovered) {
     drawText(this.tooltip,cursor.x+5,cursor.y+5)
@@ -320,6 +332,7 @@ Button.prototype.setupAnim = function (frameCount, rows, cols) {
     this.srcCols = cols;
 }
 Button.prototype.setText = setText;
+Button.prototype.updateText = updateText;
 Button.prototype.setTooltip = setTooltip;
 Button.prototype.toggle = toggle;
 Button.prototype.mouseEventManager = mouseEventManager;
