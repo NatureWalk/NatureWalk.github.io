@@ -6,7 +6,7 @@
 //Object that can hold all of the session and player data.
 var dataObj = {
     steps: 0,
-    totalSteps: fitbitSteps,
+    totalSteps: 0,
     animalTracks: 0,
     timeAccelFactor: 1,
     numberOfSessions: 0,
@@ -194,8 +194,10 @@ function everyThirty(seconds) {
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
     //dataObj.animalTracks += tracks;
+    if(loggedIn == true){
     createPackage();
     createData(lJson);
+    };
 }
 
 function everyMinute(minutes) {
@@ -229,7 +231,7 @@ function createPackage() {
         partySize: controller.party_limit,
         partyComp: [],
         playerSteps: stepCount,
-        playerTSteps: fitbitSteps,
+        playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };

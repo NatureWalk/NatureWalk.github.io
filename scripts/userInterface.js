@@ -110,11 +110,10 @@ function buttonSetup() {
     function loadGame() {
         //Would also include pulling from the server.
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
-        console.log("my user id is : " + userID);
-        if(userID == undefined){
-         userID = "asdfwer";
-         stepCount = 501800;
-        }
+    	if(userID == undefined){
+    	 userID = "asdfwer";
+    	 stepCount = 507500;
+    	}
 //**************************************************************************************************
         //logs user data to local storage
         console.log(userID);
