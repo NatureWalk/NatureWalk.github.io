@@ -109,7 +109,7 @@ function buttonSetup() {
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
     	if(userID == undefined){
     	 userID = "asdfwer";
-    	 stepCount = 501800;
+    	 stepCount = 507500;
     	}
 //**************************************************************************************************
     	//logs user data to local storage

@@ -2,9 +2,10 @@
 
 //variable that holds the number of lifetime steps of the player, pulled from fitbit API after fitbitstart() is executed
 var fitbitSteps;
-
+var loggedIn = false;
 //function that is called in loadGame() in userinterface.js
 function logIn(){
+	loggedIn = true;
 	loginPlayer();
 }
 
@@ -22,6 +23,9 @@ function loginPlayer(){
 		createData(initPackage());
 	} else {
 		returningUserSteps();
+		returningUserTracks();
+		returningUserArea();
+		returningUserParty();
 		createData(returningPackage(userID));
 	}
 }
@@ -44,6 +48,7 @@ function createData(localJson){
 
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
+	dataObj.totalSteps = fitbitSteps;
 	if(stepCount > 20000){
 		stepCount = 20000;
 	} else {
@@ -55,9 +60,32 @@ function firstTimeUserSteps(){
 //calculates stepCount using saved data
 function returningUserSteps(){
 	stepCount = ((stepCount - parseFloat(getJsonItem(userID, "playerTSteps")))) + parseFloat(getJsonItem(userID, "playerSteps"));
+	dataObj.totalSteps = fitbitSteps;
 	//console.log("returning steps ===== " + stepCount);
 }
 
+function returningUserTracks(){
+	dataObj.animalTracks = parseFloat(getJsonItem(userID, "playerTracks"));
+	//console.log("returning steps ===== " + stepCount);
+}
+
+function returningUserArea(){
+	console.log("current area is " + parseInt(getJsonItem(userID, "area")));
+	controller.area_level = parseInt(getJsonItem(userID, "area"));
+}
+
+
+function returningUserParty(){
+    var id = userID;
+    var key = "partyComp";
+	var jsonData = JSON.parse(localStorage.getItem(id.toString()));
+	var myarr = jsonData[key.toString()];	
+	//console.log(myarr[0]);
+	//controller.animals.push(myarr[0]);
+	for (var i = 0; i < myarr.length; i++) {
+        controller.animals.push(myarr[i]);
+    }
+}
 
 //creates an login package for a first time user
 function initPackage() {
@@ -84,6 +112,8 @@ function initPackage() {
 
 //creates a login package for a returning player
 function returningPackage(iD) {
+	dataObj.animalTracks = parseFloat(getJsonItem(iD, "playerTracks"));
+	console.log("player tracks are " + parseFloat(getJsonItem(iD, "playerTracks")));
 	var prevLifeSteps = parseFloat(getJsonItem(iD, "playerTSteps"));
 	//console.log("previous step count = " + prevLifeSteps);
 	var prevDispSteps = parseFloat(getJsonItem(iD, "playerSteps"));
