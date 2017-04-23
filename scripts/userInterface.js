@@ -37,7 +37,7 @@ var ui_values = {
                       ("image_resources/Icon_Bunny.png"),
                       ("image_resources/EventLog.png")],
 
-    animalWalkAry: [("image_resources/Icon_Bird.png"),
+    animalWalkAry: [("image_resources/BirdWalk.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
                     ("image_resources/FrogWalk100.png"),
                     ("image_resources/BunnyWalk.png")],
@@ -442,7 +442,7 @@ function buttonSetup() {
         animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
         
         if (i==0) {
-            animalAnimation.setupAnim(0, 1, 1);
+            animalAnimation.setupAnim(7, 3, 3);
         } else if (i==1) {
             animalAnimation.setupAnim(16, 4, 5);
         } else if (i==2) {
@@ -476,21 +476,22 @@ function buttonSetup() {
     //EVENT ANIMATIONS
     /////////////////////////////////////////////////
     var eventAnimation = new Button();
-    eventAnimation.setSrc("image_resources/PredatorEvent1.png", "image_resources/PredatorEvent1.png", true);
-    eventAnimation.setSpriteAttributes(115, 180, 900, 600, "weatherAnimation");
+    eventAnimation.setSrc("image_resources/ClearSquare.png");
+    eventAnimation.setSpriteAttributes(615, 380, 150, 100, "eventAnimation");
     
     eventAnimation.setupAnim(12, 4, 4);
-    //interface.buttonArray.push(eventAnimation); 
+    interface.buttonArray.push(eventAnimation); 
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
     //WEATHER EVENT ANIMATIONS
     /////////////////////////////////////////////////
     var weatherAnimation = new Button();
-    weatherAnimation.setSrc("image_resources/Rain480x376.png", "image_resources/Rain480x376.png", true);
-    weatherAnimation.setSpriteAttributes(515, 180, 480, 376, "weatherAnimation");
+    //weatherAnimation.setSrc("image_resources/ClearSquare.png");
+    weatherAnimation.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
+    weatherAnimation.setSpriteAttributes(515, 220, 480, 330, "weatherAnimation");
     
-    weatherAnimation.setupAnim(114, 11, 11);
+    weatherAnimation.setupAnim(22, 5, 5);
     interface.buttonArray.push(weatherAnimation); 
     /////////////////////////////////////////////////
     
@@ -601,10 +602,8 @@ function buttonSetup() {
 function select_base(animal_index) {
     ui_values.selected = "base";
     var ani_imgRef;
-    if (animal_index === 0) {
-        return;
-    }
     var aniSrc = ui_values.animalStaticAry;
+    
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
             //DEBUG: console.log(aniSrc[animal_index]);

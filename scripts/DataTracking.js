@@ -13,6 +13,7 @@ var dataObj = {
     timePlayed: 0,
     everySecondTrig: 0,
     eventTrigger: 10,
+    eventDisplayTimer: 0,
     sessionStartTime: 0,
     animalStats: ["Level", "Speed", "Evasion", "Strength"],
     devSignIn: false,
@@ -165,6 +166,9 @@ function everySecond(seconds) {
     console.log(Math.floor(areaTracks*animTracks));
     dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
+    if (--dataObj.eventDisplayTimer === 0) {
+        displayEvent();
+    }
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
@@ -329,25 +333,28 @@ function badEventHandler(evtRoll) {
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
-            //eventLogAry.push("")
+            displayEvent(b[0][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badStuffSort(badEventChecker(i,b[0][1]), badStuff);
 			}
     		break;
     	case evtRoll > 31 < 63:
     		console.log(b[1][0] + " " + b[1][1])
+            displayEvent(b[1][0]);
     	    for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[1][1]);
 			}
     		break;
     	case evtRoll >= 63 < 94:
     		console.log(b[2][0] + " " + b[2][1])
+            displayEvent(b[2][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[2][1]);
 			}
     		break;
     	case evtRoll >= 94:
     		console.log(b[3][0] + " " + b[3][1])
+            displayEvent(b[3][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[3][1],true);
 			}
@@ -441,6 +448,38 @@ function badStuffSort(badThing, badStuff) {
     badStuff[badThing]++;
 }
 
+function displayEvent(evt) {
+    if (evt === null || evt === undefined) {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "weatherAnimation") {
+                elem.setSrc("image_resources/ClearSquare.png");
+                //elem.setupAnim(22, 5, 5);
+            }
+            if (elem.name === "eventAnimation") {
+                elem.setSrc("image_resources/ClearSquare.png");
+                //elem.setupAnim(22, 5, 5);
+            }
+        });
+    }
+    if (evt === "rain storm") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "weatherAnimation") {
+                elem.setSrc("image_resources/Event_Rain.png", "image_resources/Event_Rain.png", true);
+                elem.setupAnim(22, 5, 5);
+            }
+        });
+        dataObj.eventDisplayTimer = 5;
+    } else if (evt === "snow storm") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "weatherAnimation") {
+                elem.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
+                elem.setupAnim(22, 5, 5);
+            }
+        });
+        dataObj.eventDisplayTimer = 5;
+    }
+}
+
 function areaEligible() {
     //
     var area = controller.getAreaLevel();
@@ -448,7 +487,7 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    console.log(dataObj.totalSteps);
+    //console.log(dataObj.totalSteps);
     if (dataObj.totalSteps >= areaReq) {return true;}
     else {return false}
 }
