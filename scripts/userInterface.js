@@ -614,7 +614,31 @@ function buttonSetup() {
         })(i);
     }
     /////////////////////////////////////////////////
-    
+    /////////////////////////////////////////////////
+    //Selected Party Animal Indicator
+    /////////////////////////////////////////////////
+    var selectedAnimal = new Button();
+    selectedAnimal.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+    selectedAnimal.setSpriteAttributes(101,455,40,40, "selected animal")
+    selectedAnimal.draw = function () {
+        if (partyButtons == undefined || partyButtons.length < 1 || ui_values.selected != "party") return;
+        ctx.save();
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x+this.width/2,this.y+this.width/2,this.width/2,0,2*Math.PI);
+        ctx.stroke();
+        ctx.restore();
+        ctx.rect(517, 0, 475, 578);
+    }
+    selectedAnimal.update = function() {
+        if (controller.animals[ui_values.partyIndex] == undefined) {
+            ui_values.selected = "base";
+            return;
+        }
+        this.x = partyButtons[ui_values.partyIndex].x;
+        this.y = partyButtons[ui_values.partyIndex].y;
+    }
+    interface.buttonArray.push(selectedAnimal);
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
