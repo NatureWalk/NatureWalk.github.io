@@ -631,10 +631,11 @@ function buttonSetup() {
         ctx.rect(517, 0, 475, 578);
     }
     selectedAnimal.update = function() {
-        if (controller.animals[ui_values.partyIndex] == undefined) {
+        if (controller.animals[ui_values.partyIndex] == undefined || partyButtons[ui_values.partyIndex] == undefined) {
             ui_values.selected = "base";
             return;
         }
+        console.log(partyButtons[ui_values.partyIndex]);
         this.x = partyButtons[ui_values.partyIndex].x;
         this.y = partyButtons[ui_values.partyIndex].y;
     }
