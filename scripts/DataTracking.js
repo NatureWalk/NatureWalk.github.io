@@ -23,31 +23,19 @@ var dataObj = {
     partySize: 0
 };
 
-
-//List of bad events. 
-
-
+/*
 //List of good events. 
 var goodEvents = [
     "stepmulti", "extratracks", "clickable", "fountain", 
     "meadow", "preservation"
 ];
+*/
 
 //Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
 
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
-    //this.timePlayed = 0;
-    //this.sessionStartTime = 0;
-    /*
-    if (getData(playerID, "timePlayed") === undefined) {
-        updateData(playerID, "timePlayed", 0);
-    } else {
-        dataObj["timePlayed"] = getData(playerID, "timePlayed");
-    }
-    */
-    
     sessionStart();
 }
 DataTracker.prototype.constructor = DataTracker;
@@ -61,10 +49,8 @@ DataTracker.prototype.openDevWindow = openDevWindow;
  * Returns - None. 
 */
 function sessionStart() {
-    //var _tempData = queryServer();
     dataObj.steps = stepCount;
     dataObj["totalSteps"] += dataObj.steps;
-    //console.log(dataObj.totalSteps + " " + stepCount);
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -72,11 +58,6 @@ function sessionStart() {
     //setupPlayer(serverPlayerData);
     
     //setupParty(serverPartyComp);
-    
-    
-    //console.log(dataObj["sessionStartTime"]);
-    //dataObj["numberOfSessions"] = getData(playerID, "numberOfSessions");
-    //console.log("Time Played: " + dataObj["timePlayed"]);
 }
 
 /* getTime() - Function that calculates any time that passes. 
@@ -86,8 +67,6 @@ function sessionStart() {
 function getTime() {
     var currentTime = Date.now() * dataObj["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
-    //console.log("hello");
-    //DEBUG: console.log(timeAry[1] + " Seconds\n" + timeAry[2] + " Minutes\n" + timeAry[3] + " Hours\n" + timeAry[4] + " Days");
     timeHandler(timeAry);
     
     return (currentTime - dataObj["sessionStartTime"]);
@@ -140,7 +119,6 @@ function timeHandler(timeAry) {
     
     if (timeAry[1] % 30 === 0) {
         if (dataObj.computationReady) {
-            //console.log("Computation Event!! " + tracks);
             everyThirty(timeAry[1]);
             dataObj.computationReady = false;
         } else {
@@ -160,10 +138,9 @@ function everySecond(seconds) {
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
     var animTracks = 2*controller.getNumAnimals();
-    //console.log("Area: " + areaTracks);
-    //console.log("Anim: " + animTracks);
-    console.log("Tracks: " + dataObj.animalTracks);
-    console.log(Math.floor(areaTracks*animTracks));
+
+    //DEBUG: console.log("Tracks: " + dataObj.animalTracks);
+    //DEBUG: console.log(Math.floor(areaTracks*animTracks));
     dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
     if (--dataObj.eventDisplayTimer === 0) {
@@ -189,15 +166,7 @@ function everySecond(seconds) {
 
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
-    /*
-    var tracks = 0;
-    for (var i = 0; i < 4; i++){
-        tracks += (controller.getNumAnimals() * 30);
-    } 
-    */
     //DEBUG: console.log("tracks = " + tracks);
-    //eventLogAry.shift();
-    //dataObj.animalTracks += tracks;
     createPackage();
     createData(lJson);
 }
@@ -209,6 +178,7 @@ function everyMinute(minutes) {
 function everyHour(hours) {
     
 }
+
 var lJson;
 function createPackage() {
     /* Things this needs to do. 
@@ -232,6 +202,10 @@ function createPackage() {
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
         partyComp: [],
+        birdBaseLevel: 0,
+        bunnyBaseLevel: 0,
+        deerBaseLevel: 0,
+        frogBaseLevel: 0,
         playerSteps: stepCount,
         playerTSteps: fitbitSteps,
         playerTracks: dataObj.animalTracks,
@@ -242,26 +216,18 @@ function createPackage() {
         package.partyComp.push(controller.animals[i]);
     }
     
+    var anim = "frog";
+    package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bunny";
+    package.bunnyBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bird";
+    package.birdBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "deer";
+    package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
+    
     jsonFile = JSON.stringify(package);
     console.log(jsonFile);
     lJson = jsonFile;
-    /*////////////JSON Tests/////////////
-    var myObj, obj2, myJSON, myParser;
-    myObj = {hello: "world", goodbye: ["sucka", "busta"]};
-    //obj2 = {hello: "sucka", goodbye: "world"};
-    //myObj += obj2;
-    myJSON = JSON.stringify(myObj);
-    
-    console.log("Object");
-    console.log(myObj.hello);
-    console.log("JSON");
-    console.log(myJSON);
-    
-    
-    
-    myParser = JSON.parse(myJSON);
-    console.log(myParser);
-    */
 }
 
 
@@ -487,7 +453,7 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    //console.log(dataObj.totalSteps);
+    console.log("Steps: " + dataObj.totalSteps + ". Required: " + areaReq);
     if (dataObj.totalSteps >= areaReq) {return true;}
     else {return false}
 }
