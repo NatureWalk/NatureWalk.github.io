@@ -244,7 +244,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //COMING SOON WORDS
     /////////////////////////////////////////////////
-    
+    /*
     animalIcon = new Button(function() {});
         
     animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
@@ -264,7 +264,7 @@ function buttonSetup() {
     animalIcon.fonstSize = '14px';
     animalIcon.setText(["Soon"], ("Coming Soon".length) - 10, -14)
     interface.buttonArray.push(animalIcon);
-    /*
+    
     
     
     animalIcon = new Button(function() {});
@@ -355,9 +355,11 @@ function buttonSetup() {
     var upgradeBtn;
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
-            upgrade_baseAnimalMax();
+            //upgrade_baseAnimalMax();
+            upgrade_baseAnimal();
         } else {
-            upgrade_animalMax();
+            //upgrade_animalMax();
+            upgrade_animal();
         }
     });
     upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
@@ -468,7 +470,7 @@ function buttonSetup() {
         animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
         
         if (i==0) {
-            animalAnimation.setupAnim(7, 3, 3);
+            animalAnimation.setupAnim(4, 3, 3);
         } else if (i==1) {
             animalAnimation.setupAnim(16, 4, 5);
         } else if (i==2) {
@@ -503,9 +505,10 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var eventAnimation = new Button();
     eventAnimation.setSrc("image_resources/ClearSquare.png");
-    eventAnimation.setSpriteAttributes(615, 380, 150, 100, "eventAnimation");
+    //eventAnimation.setSrc("image_resources/PredatorEvent1s.png", "image_resources/PredatorEvent1s.png", true);
+    eventAnimation.setSpriteAttributes(865, 380, 150, 100, "eventAnimation");
     
-    eventAnimation.setupAnim(12, 4, 4);
+    //eventAnimation.setupAnim(12, 4, 4);
     interface.buttonArray.push(eventAnimation); 
     /////////////////////////////////////////////////
 
@@ -513,11 +516,11 @@ function buttonSetup() {
     //WEATHER EVENT ANIMATIONS
     /////////////////////////////////////////////////
     var weatherAnimation = new Button();
-    //weatherAnimation.setSrc("image_resources/ClearSquare.png");
-    weatherAnimation.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
+    weatherAnimation.setSrc("image_resources/ClearSquare.png");
+    //weatherAnimation.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
     weatherAnimation.setSpriteAttributes(515, 220, 480, 330, "weatherAnimation");
     
-    weatherAnimation.setupAnim(22, 5, 5);
+    //weatherAnimation.setupAnim(22, 5, 5);
     interface.buttonArray.push(weatherAnimation); 
     /////////////////////////////////////////////////
     
@@ -614,6 +617,7 @@ function buttonSetup() {
         })(i);
     }
     /////////////////////////////////////////////////
+
     /////////////////////////////////////////////////
     //Selected Party Animal Indicator
     /////////////////////////////////////////////////

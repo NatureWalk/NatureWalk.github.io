@@ -100,9 +100,9 @@ ScreenManager.prototype.update = function(){
 }
 
 ScreenManager.prototype.draw = function(){
-    var screens = this.screens;
-    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    var screens = this.screens;
     for(var i in screens){
 
         if(screens[i].alwaysDraw || screens[i] == screens[screens.length-1]){
