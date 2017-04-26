@@ -14,7 +14,7 @@ var dataObj = {
     everySecondTrig: 0,
     eventTrigger: 10,
     sessionStartTime: 0,
-    animalStats: ["Speed", "Evasion", "Strength"],
+    animalStats: ["Level", "Speed", "Evasion", "Strength"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
@@ -230,15 +230,29 @@ function createPackage() {
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
         partyComp: [],
+        birdBaseLevel: 1,
+        bunnyBaseLevel: 1,
+        deerBaseLevel: 1,
+        frogBaseLevel: 1,
         playerSteps: stepCount,
         playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };
+
+    //sendData(package);
     
     for (var i = 0; i < controller.animals.length; i++) {
         package.partyComp.push(controller.animals[i]);
     }
+    var anim = "frog";
+    package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bunny";
+    package.bunnyBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bird";
+    package.birdBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "deer";
+    package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
     jsonFile = JSON.stringify(package);
     console.log(jsonFile);
@@ -326,12 +340,14 @@ function goodEventHandler(evtRoll) {
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
    var b = controller.getBadEvents();
+   //badStuff = [# of Unharmed, # Of Trips, # of Deaths]
+   var x, badStuff = [0, 0, 0];
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
             //eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[0][1]);
+				badStuffSort(badEventChecker(i,b[0][1]), badStuff);
 			}
     		break;
     	case evtRoll > 31 < 63:
@@ -425,15 +441,20 @@ function badEventChecker(index, stat,flag){
 		if (die < 5){
 			eventLogAry.push(x +" was tragically lost.");
 			controller.queueRemove(index);
+            return 2;
 		} else if(die < 50){
             dataObj.animalTracks -= (dataObj.animalTracks/200)
 			eventLogAry.push(x +" tripped, you lost some tracks.");
+            return 1;
 		} else {
 			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
+            return 0;
 		}
 	}
-	
-	
+}
+
+function badStuffSort(badThing, badStuff) {
+    badStuff[badThing]++;
 }
 
 function areaEligible() {
@@ -443,7 +464,7 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    console.log(dataObj.totalSteps);
+    //console.log(dataObj.totalSteps);
     if (dataObj.totalSteps >= areaReq) {return true;}
     else {return false}
 }

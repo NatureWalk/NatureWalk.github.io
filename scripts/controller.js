@@ -253,11 +253,13 @@ function master_controller() {
 				if(Date.now() >= this.animals[i].deathTime){
 					var arr = this.animals[i].name.concat(" died peacefully of old age.")
 					eventLogAry.push(arr);
-					this.removeAnimal[i];
-					i--;
+					//this.removeAnimal[i];
+					//i--;
+					this.queueRemove(i);
 				}
 			}
 		}
+		this.removeAllQueue();
 		
 		
 	}
@@ -331,6 +333,7 @@ function master_controller() {
 
 	this.getBaseData = function(animal) {
         var data = [];
+        data.push(this.base_levels[animal]);
         for(var i = 0; i < 3; i++){
             var stat = 1;
             for(var k = 0; k < this.base_levels[animal]; k++){

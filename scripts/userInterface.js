@@ -105,17 +105,19 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //Replace with a function that ensures the game data is loaded before the game is pushed.
     function loadGame() {
-    	//Would also include pulling from the server.
+        //Would also include pulling from the server.
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
-    	if(userID == undefined){
-    	 userID = "asdfwer";
-    	 stepCount = 507500;
-    	}
+        console.log("my user id is : " + userID);
+        if(userID == undefined){
+         userID = "asdfwer";
+         stepCount = 501800;
+        }
 //**************************************************************************************************
-    	//logs user data to local storage
-    	logIn();
-    	screenMan.push(game);
-    	screenMan.push(interface);
+        //logs user data to local storage
+        console.log(userID);
+        logIn();
+        screenMan.push(game);
+        screenMan.push(interface);
     }
 
     var login = new Button(loadGame)
@@ -283,7 +285,7 @@ function buttonSetup() {
     
     var attButton, attValue, animalImage;
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 4; i++) {
 
         attValue = new Button(function () {});
         attValue.setSrc("image_resources/ClearSquare.png");
@@ -315,9 +317,15 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    if (testRef != undefined) testRef.splice(0,2)
-                    console.log(testRef)
+                    
+                    if (testRef != undefined) {
+                        testRef.splice(0,1);
+                        testRef.splice(4,1);
+                    }
+                    //console.log(testRef)
                 }
+                //Workaround, some event may be more broken
+                if(testRef == undefined) return;
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText(numberConversion(testRef[i]), (attNum.width / 2) - (5 * charNum), 0);
                 
@@ -411,7 +419,7 @@ function buttonSetup() {
     
     animalImage.hasTextValue = true;
     animalImage.fontSize = '28px';
-    upgradeCost.update = function() {
+    animalImage.update = function() {
         animalImage.setText(2000 + 500*controller.animals.length + " Steps", 0 + (5.5 * charNum), 160);
     }
     
@@ -432,19 +440,31 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     areaText = new Button(function () {});
     areaText.setSrc("image_resources/StepPaper.png");
-    areaText.setSpriteAttributes(768, 250, 0, 40, "areaText");
+    areaText.setSpriteAttributes(600, 235, 300, 50, "areaText");
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
         var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
-        this.setText(text, (areaText.width / 2) - (5 * text.length), 0);
+        this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
 
-    areaPrev = new Button(function() {controller.areaLevelDown()});
+    areaPrev = new Button(function() {
+        if(controller.getAreaLevel >= 1) {
+            controller.areaLevelDown();
+        }
+    });
+
+    areaPrev.update = function() {
+        if (controller.getAreaLevel() <= 1) {
+            areaPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+        } else {
+            areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+        }
+    }
 
     areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
-    areaPrev.setSpriteAttributes(650, 250, 25, 25, "areaPrev");
+    areaPrev.setSpriteAttributes(625, 245, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
     //areaNext = new Button(controller.areaLevelUp);
@@ -452,9 +472,18 @@ function buttonSetup() {
             if (areaEligible()) {controller.areaLevelUp()}
         });
 
+    areaNext.update = function() {
+        if (!areaEligible()) {
+            areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
+        } else {
+            areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+        }
+    }
+
     areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
-    areaNext.setSpriteAttributes(870, 250, 25, 25, "areaNext");
-    areaNext.setTooltip(5000);
+
+    areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
+
     interface.buttonArray.push(areaNext);
 
     /////////////////////////////////////////////////
