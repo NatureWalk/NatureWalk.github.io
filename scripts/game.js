@@ -38,6 +38,8 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
+var pController = new popupController();
+
 var cursor = {};
 cursor.x=0;
 cursor.y=0;
@@ -80,6 +82,7 @@ interface.init = function() {
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
+    if (popupController != undefined) interface.push(popupController);
 }
 
 game.init = function() {	

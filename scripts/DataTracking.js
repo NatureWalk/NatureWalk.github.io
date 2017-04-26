@@ -454,8 +454,8 @@ function areaEligible() {
        areaReq = (areaReq+5000) * 1.01; 
     }
     console.log("Steps: " + dataObj.totalSteps + ". Required: " + areaReq);
-    if (dataObj.totalSteps >= areaReq) {return true;}
-    else {return false}
+    if (dataObj.totalSteps >= areaReq) return true;
+    return false;
 }
 
 // takes, in animal string argument, adds 20% of animals

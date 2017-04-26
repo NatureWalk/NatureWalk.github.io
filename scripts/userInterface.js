@@ -362,9 +362,9 @@ function buttonSetup() {
             upgrade_animal();
         }
     });
-    upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
+    upgradeBtn.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
 
-    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "UpgradeBtn");
+    upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '20px';
@@ -639,7 +639,6 @@ function buttonSetup() {
             ui_values.selected = "base";
             return;
         }
-        console.log(partyButtons[ui_values.partyIndex]);
         this.x = partyButtons[ui_values.partyIndex].x;
         this.y = partyButtons[ui_values.partyIndex].y;
     }
@@ -754,11 +753,7 @@ function updateParty() {
 	console.log("updating party")
     //Remove all of the partyButtons from the engine
     for (var b=0; b<partyButtons.length; b++) {
-		for (var i in interface.buttonArray) {
-            if (interface.buttonArray[i] == partyButtons[b]) {
-                interface.buttonArray.splice(i,1);
-            }
-        }
+		interface.removeButton(partyButtons[b]);
         interface.remove(partyButtons[b]);
 	}
 

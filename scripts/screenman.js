@@ -26,10 +26,22 @@ Screen.prototype.push = function(object) {
     this.objects.push(object);
 }
 
+Screen.prototype.pushButton = function(button) {
+    this.objects.push(button);
+}
+
 Screen.prototype.remove = function(object) {
     for (var i in this.objects) {
         if (this.objects[i] == object) {
             this.objects.splice(i,1);
+        }
+    }
+}
+
+Screen.prototype.removeButton = function(button) {
+    for (var i in this.buttonArray) {
+        if (this.buttonArray[i] == button) {
+            this.buttonArray.splice(i,1);
         }
     }
 }
