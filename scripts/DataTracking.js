@@ -22,6 +22,22 @@ var dataObj = {
     partySize: 0
 };
 
+//////////////////////////////////////////////////////
+// ADDED BY THEOREN
+// vars to track how many animals succeed and fail each event
+var bunnyNumDead = 0, birdNumDead = 0, deerNumDead = 0, frogNumDead = 0,
+	bunnyNumTripped = 0, birdNumTripped = 0, deerNumTripped = 0, frogNumTripped = 0,
+	bunnyNumSafe = 0, birdNumSafe = 0, deerNumSafe = 0, frogNumSafe = 0;
+
+// vars for event difficulty, animal rolls, number of rolling animals, and how many total animals failed or succeeded each event	
+var eventDiff = 0;
+var animalRoll = 0;
+//var numAnimalsRolled = 0;
+var numAnimalsDead = 0;
+var numAnimalsSafe = 0;
+var numAnimalsTrip = 0;
+
+/////////////////////////////////////////////////////
 
 //List of bad events. 
 
@@ -60,6 +76,14 @@ DataTracker.prototype.openDevWindow = openDevWindow;
  * Returns - None. 
 */
 function sessionStart() {
+	
+	///////////////////////////////////
+	// USED FOR TESTING! DELETES ALL LOCAL DATA!
+	// ONLY UNCOMMENT IF YOU WANT TO DELETE LOCAL DATA!
+	// localStorage.clear();
+	///////////////////////////////////
+	
+	
     //var _tempData = queryServer();
     dataObj.steps = stepCount;
     dataObj["totalSteps"] += dataObj.steps;
@@ -323,40 +347,120 @@ function goodEventHandler(evtRoll) {
 
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
+   var numAnimalsRolled = 0;
    var b = controller.getBadEvents();
    //badStuff = [# of Unharmed, # Of Trips, # of Deaths]
    var x, badStuff = [0, 0, 0];
+
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
             //eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badStuffSort(badEventChecker(i,b[0][1]), badStuff);
+				numAnimalsRolled++;
 			}
+			// Print the results of the event that occured
+			if(controller.getNumAnimals() > 0){
+				eventLogAry.push("A " + b[0][0] + " occured. It tested " + b[0][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
+				animalSafePrinter();
+				animalTrippedPrinter();
+				animalDeathPrinter();
+			}
+			eventDiff = 0;
+			animalRoll = 0;
     		break;
     	case evtRoll > 31 < 63:
     		console.log(b[1][0] + " " + b[1][1])
     	    for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[1][1]);
+				numAnimalsRolled++;
 			}
+			// Print the results of the event that occured
+			if(controller.getNumAnimals() > 0){
+				eventLogAry.push("A " + b[1][0] + " occured. It tested " + b[1][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
+				animalSafePrinter();
+				animalTrippedPrinter();
+				animalDeathPrinter();
+			}
+			eventDiff = 0;
+			animalRoll = 0;
     		break;
     	case evtRoll >= 63 < 94:
     		console.log(b[2][0] + " " + b[2][1])
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[2][1]);
+				numAnimalsRolled++;
 			}
+			// Print the results of the event that occured
+			if(controller.getNumAnimals() > 0){
+				eventLogAry.push("A " + b[2][0] + " occured. It tested " + b[2][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
+				animalSafePrinter();
+				animalTrippedPrinter();
+				animalDeathPrinter();
+			}
+			eventDiff = 0;
+			animalRoll = 0;
     		break;
     	case evtRoll >= 94:
     		console.log(b[3][0] + " " + b[3][1])
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[3][1],true);
+				numAnimalsRolled++;
 			}
+			// Print the results of the event that occured
+			if(controller.getNumAnimals() > 0){
+				eventLogAry.push("A " + b[3][0] + " occured. It tested " + b[3][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
+				animalSafePrinter();
+				animalTrippedPrinter();
+				animalDeathPrinter();
+			}
+			eventDiff = 0;
+			animalRoll = 0;
     		break;
     	    
-   }
-   controller.removeAllQueue();
-   console.log(controller.getNumAnimals());
+	}
+    controller.removeAllQueue();
+    console.log(controller.getNumAnimals());
+	//console.log("0 test" + bunnyNumDead + bunnyNumSafe + bunnyNumTripped + birdNumDead + birdNumSafe + birdNumTripped + frogNumDead + frogNumSafe + frogNumTripped + deerNumDead + deerNumSafe + deerNumTripped);
 }
+
+//////////////////////////////////////////////////
+// ADDED BY THEOREN
+function animalDeathPrinter(){
+	//console.log("number dead: " + numAnimalsDead);
+	if(numAnimalsDead == 0){
+		return;
+	}else{
+		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " bunnies, " + birdNumDead + " birds, and " + frogNumDead + " frogs were lost.")
+		numAnimalsDead = 0;
+		bunnyNumDead = 0, birdNumDead = 0, deerNumDead = 0, frogNumDead = 0;
+	}
+}
+
+function animalTrippedPrinter(){
+	//console.log("number trip: " + numAnimalsTrip);
+	if(numAnimalsTrip == 0){
+		return;
+	}else{
+		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " bunnies, " + birdNumTripped + " birds, and " + frogNumTripped + " frogs tripped and lost some tracks.")
+		numAnimalsTrip = 0;
+		bunnyNumTripped = 0, birdNumTripped = 0, deerNumTripped = 0, frogNumTripped = 0;
+	}
+}
+
+function animalSafePrinter(){
+	//console.log("number safe: " + numAnimalsSafe);
+	if(numAnimalsSafe == 0){
+		return;
+	}else{
+		eventLogAry.push(deerNumSafe + " deer, " + bunnyNumSafe + " bunnies, " + birdNumSafe + " birds, and " + frogNumSafe + " frogs failed, but managed to escape without harm.")
+		numAnimalsSafe = 0;
+		bunnyNumSafe = 0, birdNumSafe = 0, deerNumSafe = 0, frogNumSafe = 0;
+	}
+}
+//////////////////////////////////////////////////
+
 
 //Handles neutral events, takes in a new roll from the eventChooser.
 function noEventHandler(evtRoll) {
@@ -378,7 +482,7 @@ function noEventHandler(evtRoll) {
 // rolls for all animal count of the specific animal against their specified stat
 // removes the number of animals that fail the roll
 function badEventChecker(index, stat,flag){
-	
+
 	var playerRoll, gameRoll;
 	
 	var a = controller.getAnimalData();
@@ -417,25 +521,79 @@ function badEventChecker(index, stat,flag){
         case 'strength': roll(Math.round(e[2] + (25 * controller.getAreaLevel()), e[4]));
             break;
 	}
+	
+	// add up the difficulty and player roll to get the average later
+	eventDiff += gameRoll;
+	animalRoll += playerRoll;
+
 	console.log(playerRoll + " " + gameRoll);
 	if(playerRoll < gameRoll){
 		var die = roll(100);
         var x = toCapitalize(e[5]);
-        //console.log(x);
+        console.log("animal: " + x);
 		if (die < 5){
-			eventLogAry.push(x +" was tragically lost.");
+			//eventLogAry.push(x +" was tragically lost.");
+			deadTypeCheck(x);
 			controller.queueRemove(index);
             return 2;
 		} else if(die < 50){
             dataObj.animalTracks -= (dataObj.animalTracks/200)
-			eventLogAry.push(x +" tripped, you lost some tracks.");
+			//eventLogAry.push(x +" tripped, you lost some tracks.");
+			tripTypeCheck(x);
             return 1;
 		} else {
-			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
+			//eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
+			safeTypeCheck(x);
             return 0;
 		}
 	}
 }
+
+
+///////////////////////////////////////////////////
+// ADDED BY THEOREN
+// these three functions will increment the vars for how many animals are effected by each event
+
+function deadTypeCheck(animal){
+	if(animal == "Deer"){
+		deerNumDead++;
+	}else if(animal == "Bird"){
+		birdNumDead++;
+	}else if(animal == "Bunny"){
+		bunnyNumDead++;
+	}else if(animal == "Frog"){
+		frogNumDead++;
+	}
+	numAnimalsDead++;
+}
+
+function tripTypeCheck(animal){
+	if(animal == "Deer"){
+		deerNumTripped++;
+	}else if(animal == "Bird"){
+		birdNumTripped++;
+	}else if(animal == "Bunny"){
+		bunnyNumTripped++;
+	}else if(animal == "Frog"){
+		frogNumTripped++;
+	}
+	numAnimalsTrip++;
+}
+
+function safeTypeCheck(animal){
+	if(animal == "Deer"){
+		deerNumSafe++;
+	}else if(animal == "Bird"){
+		birdNumSafe++;
+	}else if(animal == "Bunny"){
+		bunnyNumSafe++;
+	}else if(animal == "Frog"){
+		frogNumSafe++;
+	}
+	numAnimalsSafe++;
+}
+
+////////////////////////////////////////////////
 
 function badStuffSort(badThing, badStuff) {
     badStuff[badThing]++;
@@ -448,7 +606,7 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    console.log(dataObj.totalSteps);
+    //console.log(dataObj.totalSteps);
     if (dataObj.totalSteps >= areaReq) {return true;}
     else {return false}
 }
