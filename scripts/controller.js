@@ -255,11 +255,13 @@ function master_controller() {
 				if(Date.now() >= this.animals[i].deathTime){
 					var arr = this.animals[i].name.concat(" died peacefully of old age.")
 					eventLogAry.push(arr);
-					this.removeAnimal[i];
-					i--;
+					//this.removeAnimal[i];
+					//i--;
+					this.queueRemove(i);
 				}
 			}
 		}
+		this.removeAllQueue();
 		
 		
 	}
