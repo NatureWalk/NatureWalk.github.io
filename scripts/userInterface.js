@@ -36,8 +36,8 @@ var ui_values = {
     //For gif animations, though I didn't figure out how to make them do gif things. 
     animalStaticAry: [("image_resources/Icon_Bird.png"),
                       ("image_resources/Icon_Deer.png"),
-                      ("image_resources/Icon_Frog.png"),
-                      ("image_resources/Icon_Bunny.png"),
+                      ("image_resources/FrogCroak.png"),
+                      ("image_resources/BunnyTurns.png"),
                       ("image_resources/EventLog.png")],
 
     animalWalkAry: [("image_resources/BirdWalk.png"),
@@ -242,59 +242,12 @@ function buttonSetup() {
         /////////////////////////////////////////////////  
     }
     
-    /////////////////////////////////////////////////
-    //COMING SOON WORDS
-    /////////////////////////////////////////////////
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((71), 130, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText(["Coming"], ("Coming Soon".length) - 15, -19)
-    interface.buttonArray.push(animalIcon);
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((71), 150, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText(["Soon"], ("Coming Soon".length) - 10, -14)
-    interface.buttonArray.push(animalIcon);
-    /*
-    
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((371), 130, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
-    interface.buttonArray.push(animalIcon);
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((371), 150, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
-    interface.buttonArray.push(animalIcon);
-    */
-    /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //ATTRIBUTE NAMES
     /////////////////////////////////////////////////
     
-    var attButton, attValue, animalImage;
+    var attButton, attValue, animalImage, animalImageCost;
 
     for (i = 0; i < 4; i++) {
 
@@ -420,32 +373,40 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '38px';
     animalImage.update = function() {
-                if (ui_values.selected == "base") {
-                    var name = ui_values.currentAnimal;
-                    var charNum = numberLen(name);  
-                    this.setText([name], -15 - (9 * charNum), -40);
-                } else {
-                    //This line gave me cancer
-                    if (controller.animals[ui_values.partyIndex] == undefined) {
-                        ui_values.selected = "base";
-                        return;
-                    }
-                    var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
-                    var name = controller.animals[ui_values.partyIndex].name;
-                    var charNum = numberLen(name);  
-                    this.setText([type+" "+name], -50 - (9 * charNum), -40);
-                }
+        if (this.anim) {
+            this.tickCount++; 
+            if (this.tickCount > this.ticksPerFrame) {
+                this.frameIndex++;
+                if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                this.tickCount = 0; 
             }
+        }
+        if (ui_values.selected == "base") {
+            var name = ui_values.currentAnimal;
+            var charNum = numberLen(name);  
+            this.setText([name], -15 - (9 * charNum), -40);
+        } else {
+            //This line gave me cancer
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
+            var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+            var name = controller.animals[ui_values.partyIndex].name;
+            var charNum = numberLen(name);  
+            this.setText([type+" "+name], -50 - (9 * charNum), -40);
+        }
+    }
     
-    animalImage = new Button(add_animal);
-    animalImage.setSrc("image_resources/ClearSquare.png");
-    animalImage.setSpriteAttributes(261, 245, 0, 0, "animal_image");
-    interface.buttonArray.push(animalImage);
+    animalImageCost = new Button(add_animal);
+    animalImageCost.setSrc("image_resources/ClearSquare.png");
+    animalImageCost.setSpriteAttributes(261, 245, 0, 0, "animal_image");
+    interface.buttonArray.push(animalImageCost);
     
-    animalImage.hasTextValue = true;
-    animalImage.fontSize = '28px';
-    animalImage.update = function() {
-        animalImage.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
+    animalImageCost.hasTextValue = true;
+    animalImageCost.fontSize = '28px';
+    animalImageCost.update = function() {
+        animalImageCost.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
     }
     
 
@@ -656,7 +617,25 @@ function select_base(animal_index) {
     
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
+            switch (animal_index) {
+                case 0:
+                    elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    break;
+                case 1:
+                    elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    break;
+                case 2:
+                    elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
+                    elem.setupAnim(44, 7, 7);
+                    break;
+                case 3:
+                    elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
+                    elem.setupAnim(15, 4, 4);
+                    
+            }
+        }
             //DEBUG: console.log(aniSrc[animal_index]);
+            /*
             if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
                 elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
                 elem.setupAnim(44, 7, 7);
@@ -665,6 +644,8 @@ function select_base(animal_index) {
                 elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
             }  
         }
+        */
+            
     });
     
     //Setting current animal so we all know what we're referencing. 
@@ -683,7 +664,7 @@ function select_animal(animal_index) {
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
             //DEBUG: console.log(aniSrc[animal_index]);
-            if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
+            if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet_200x200.png") {
                 elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
                 elem.setupAnim(44, 7, 7);
             } 
