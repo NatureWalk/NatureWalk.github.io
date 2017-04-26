@@ -539,7 +539,7 @@ function buttonSetup() {
     interface.buttonArray.push(areaText);
 
     areaPrev = new Button(function() {
-        if(controller.getAreaLevel >= 1) {
+        if(controller.getAreaLevel() > 1) {
             controller.areaLevelDown();
         }
     });
