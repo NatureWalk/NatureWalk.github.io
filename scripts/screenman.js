@@ -27,7 +27,7 @@ Screen.prototype.push = function(object) {
 }
 
 Screen.prototype.pushButton = function(button) {
-    this.objects.push(button);
+    this.buttonArray.push(button);
 }
 
 Screen.prototype.remove = function(object) {
@@ -46,6 +46,20 @@ Screen.prototype.removeButton = function(button) {
     }
 }
 
+Screen.prototype.contains = function(object) {
+    for (var i in this.objects) {
+        if (this.objects[i] == object) {
+            return true;
+        }
+    }
+    for (var i in this.buttonArray) {
+        if (this.buttonArray[i] == object) {
+            return true;
+        }
+    }
+    return false;
+}
+
 Screen.prototype.draw = function() {
     for (var i in this.objects) {
         this.objects[i].draw();
@@ -55,6 +69,7 @@ Screen.prototype.draw = function() {
 Screen.prototype.update = function() {
 	//console.log(this.objects);
     for (var i in this.objects) {
+        //console.log(this.objects[i])
         this.objects[i].update();
     }
     
