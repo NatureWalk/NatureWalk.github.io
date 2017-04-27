@@ -281,14 +281,10 @@ function buttonSetup() {
                     var testRef = controller.getBaseData(stats);
                 } else {
                     var testRef = controller.getAnimalData()[ui_values.partyIndex];
-<<<<<<< HEAD
                     if (testRef == undefined) {
                         ui_values.selected = "base"
                         return;
                     }
-=======
-                    
->>>>>>> origin/megan
                     if (testRef != undefined) {
                         testRef.splice(0,1);
                         testRef.splice(4,1);
@@ -296,11 +292,8 @@ function buttonSetup() {
                     //console.log(testRef)
                 }
                 //Workaround, some event may be more broken
-<<<<<<< HEAD
                 if (testRef == undefined) return;
-=======
-                if(testRef == undefined) return;
->>>>>>> origin/megan
+
                 var charNum = numberConversion(testRef[i]).length  
                 this.setText([numberConversion(testRef[i])], (attNum.width / 2) - (5 * charNum), 0);
                 
@@ -411,17 +404,10 @@ function buttonSetup() {
     animalImageCost.setSpriteAttributes(261, 245, 0, 0, "animal_image");
     interface.buttonArray.push(animalImageCost);
     
-<<<<<<< HEAD
     animalImageCost.hasTextValue = true;
     animalImageCost.fontSize = '28px';
     animalImageCost.update = function() {
         animalImageCost.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
-=======
-    animalImage.hasTextValue = true;
-    animalImage.fontSize = '28px';
-    animalImage.update = function() {
-        animalImage.setText(2000 + 500*controller.animals.length + " Steps", 0 + (5.5 * charNum), 160);
->>>>>>> origin/megan
     }
     
 
@@ -509,11 +495,8 @@ function buttonSetup() {
     areaText.fontSize = '22px';
     areaText.update = function() {
         var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
-<<<<<<< HEAD
         this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
-=======
-        this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
->>>>>>> origin/megan
+        //this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
 
