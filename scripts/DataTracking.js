@@ -166,12 +166,17 @@ function everySecond(seconds) {
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
     //DEBUG: console.log("tracks = " + tracks);
+<<<<<<< HEAD
     //eventLogAry.shift();
     //dataObj.animalTracks += tracks;
     if(loggedIn == true){
         createPackage();
         createData(lJson);
     };
+=======
+    createPackage();
+    createData(lJson);
+>>>>>>> dan
 }
 
 function everyMinute(minutes) {
@@ -271,8 +276,14 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
+<<<<<<< HEAD
     if (dataObj.totalSteps >= areaReq) {return true;}
     else {return false}
+=======
+    console.log("Steps: " + dataObj.totalSteps + ". Required: " + areaReq);
+    if (dataObj.totalSteps >= areaReq) return true;
+    return false;
+>>>>>>> dan
 }
 
 //Rolls an integer between 1 and a number parameter. 

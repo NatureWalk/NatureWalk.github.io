@@ -37,7 +37,7 @@ MouseManager.prototype.findTarget = function (evt) {
             for (var i=0; i<screens[s].buttonArray.length; i++) {
                 //DEBUG: console.log("Scanning buttonArray");
                 if (this.isInside(screens[s].buttonArray[i], mousePos)) {
-                    //console.log(screens[s].buttonArray[i].name);
+                    console.log(screens[s].buttonArray[i].name);
                     screens[s].buttonArray[i].mouseEventManager(evt.type);
                 } else {
                     if (screens[s].buttonArray[i].hovered){

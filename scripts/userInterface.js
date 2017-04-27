@@ -110,11 +110,18 @@ function buttonSetup() {
     function loadGame() {
         //Would also include pulling from the server.
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
+<<<<<<< HEAD
         console.log("my user id is : " + userID);
         if(userID == undefined){
          userID = "asdfwer";
          stepCount = 501800;
         }
+=======
+    	if(userID == undefined){
+    	 userID = "asdfwer";
+    	 stepCount = 507500;
+    	}
+>>>>>>> dan
 //**************************************************************************************************
         //logs user data to local storage
         console.log(userID);
@@ -242,6 +249,56 @@ function buttonSetup() {
         /////////////////////////////////////////////////  
     }
     
+<<<<<<< HEAD
+=======
+    /////////////////////////////////////////////////
+    //COMING SOON WORDS
+    /////////////////////////////////////////////////
+    /*
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((71), 130, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText(["Coming"], ("Coming Soon".length) - 15, -19)
+    interface.buttonArray.push(animalIcon);
+    
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((71), 150, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText(["Soon"], ("Coming Soon".length) - 10, -14)
+    interface.buttonArray.push(animalIcon);
+    
+    
+    
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((371), 130, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
+    interface.buttonArray.push(animalIcon);
+    
+    animalIcon = new Button(function() {});
+        
+    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
+
+    animalIcon.setSpriteAttributes((371), 150, 60, 60, "animal_iconCS" + i);
+    animalIcon.hasTextValue = true;
+    animalIcon.fonstSize = '14px';
+    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
+    interface.buttonArray.push(animalIcon);
+    */
+    /////////////////////////////////////////////////
+>>>>>>> dan
     
     /////////////////////////////////////////////////
     //ATTRIBUTE NAMES
@@ -310,14 +367,16 @@ function buttonSetup() {
     var upgradeBtn;
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
-            upgrade_baseAnimalMax();
+            //upgrade_baseAnimalMax();
+            upgrade_baseAnimal();
         } else {
-            upgrade_animalMax();
+            //upgrade_animalMax();
+            upgrade_animal();
         }
     });
-    upgradeBtn.setSrc("image_resources/StepPaper.png", "image_resources/TracksPaper.png");
+    upgradeBtn.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
 
-    upgradeBtn.setSpriteAttributes(76, 405, 120, 40, "UpgradeBtn");
+    upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '20px';
@@ -501,7 +560,7 @@ function buttonSetup() {
     interface.buttonArray.push(areaText);
 
     areaPrev = new Button(function() {
-        if(controller.getAreaLevel >= 1) {
+        if(controller.getAreaLevel() > 1) {
             controller.areaLevelDown();
         }
     });
@@ -597,7 +656,7 @@ function buttonSetup() {
         ctx.rect(517, 0, 475, 578);
     }
     selectedAnimal.update = function() {
-        if (controller.animals[ui_values.partyIndex] == undefined) {
+        if (controller.animals[ui_values.partyIndex] == undefined || partyButtons[ui_values.partyIndex] == undefined) {
             ui_values.selected = "base";
             return;
         }
@@ -731,11 +790,7 @@ function updateParty() {
 	console.log("updating party")
     //Remove all of the partyButtons from the engine
     for (var b=0; b<partyButtons.length; b++) {
-		for (var i in interface.buttonArray) {
-            if (interface.buttonArray[i] == partyButtons[b]) {
-                interface.buttonArray.splice(i,1);
-            }
-        }
+		interface.removeButton(partyButtons[b]);
         interface.remove(partyButtons[b]);
 	}
 
