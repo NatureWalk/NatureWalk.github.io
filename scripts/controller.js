@@ -6,7 +6,7 @@
 
 temp_storage = [];
 temp_storage['frog'] = 1;
-temp_storage['bunny'] =1;
+temp_storage['bunny'] = 1;
 temp_storage['bird'] = 1;
 temp_storage['deer'] = 1;
 animal_types = ['bird', 'deer', 'frog', 'bunny'];
@@ -65,12 +65,14 @@ badEvents = [
 ];
 
 badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
-badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["ice storm", "speed"]];
-badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
+badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
+//badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
+badEventsSpringDay = [["treefall", "evasion"], ["rain storm", "strength"], ["predator", "evasion"]];
 badEventsSpringNight = [["river", "strength"], ["sinkhole", "strength"], ["predator", "evasion"]];
 badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
 badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
-badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+//badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+badEventsFallDay = [["rain storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
 badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 'strength']];
 badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
 
@@ -98,6 +100,8 @@ badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption'
  *                           [animal type, animal level, Speed, Evasion, Strength, name]
  *                           ...
  *                          ]
+ *			 getBaseData: returns a 1D Array of base animal stats.
+ 							[Speed, Evasion, Strength]
  * 
  * 
  * 
@@ -186,12 +190,12 @@ function master_controller() {
 				    break;
 		}
 	var cata = roll(2,0);
-	this.usableEvents.push(badEventsCatastrophe[cata]);
+	//this.usableEvents.push(badEventsCatastrophe[cata]);
 	}
 	
 	this.areaLevelDown = function(){
 		this.area_level-=1;
-		if(this.area_level % 10 == 1){
+		if(this.area_level % 10 == 0){
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'winter';
@@ -251,11 +255,13 @@ function master_controller() {
 				if(Date.now() >= this.animals[i].deathTime){
 					var arr = this.animals[i].name.concat(" died peacefully of old age.")
 					eventLogAry.push(arr);
-					this.removeAnimal[i];
-					i--;
+					//this.removeAnimal[i];
+					//i--;
+					this.queueRemove(i);
 				}
 			}
 		}
+		this.removeAllQueue();
 		
 		
 	}
@@ -277,11 +283,18 @@ function master_controller() {
 			var ani = new animalClass(animal);
 			console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
+			//taken from http://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+			var text = "";
+		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		    for( var i=0; i < 5; i++ )
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+		    ani.name= text;
 			this.animals.push(ani);
 			return true;
 		} else {
 			return false;
 		}
+        
 	}
 	
 	this.queueRemove = function(index){
@@ -310,6 +323,7 @@ function master_controller() {
 		var data = [];
 		for(var i = 0; i < this.animals.length; i++){
 			var dat = [];
+
 			dat.push(this.animals[i].type)
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
@@ -327,6 +341,7 @@ function master_controller() {
 
 	this.getBaseData = function(animal) {
         var data = [];
+        data.push(this.base_levels[animal]);
         for(var i = 0; i < 3; i++){
             var stat = 1;
             for(var k = 0; k < this.base_levels[animal]; k++){
