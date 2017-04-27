@@ -30,6 +30,7 @@ console.log("returning player");
                 returningUserArea();
                 returningUserParty();
                 returningBaseLevels();
+                returningUserSeason();
 		createData(returningPackage(userID));
 	}
 }
@@ -85,6 +86,12 @@ function returningUserArea(){
 	controller.area_level = parseInt(getJsonItem(userID, "area"));
 }
 
+function returningUserSeason(){
+	var key = 'season';
+	var jsonData = JSON.parse(localStorage.getItem(userID.toString()));
+	//console.log(jsonData[key.toString()].toString());
+	controller.areaSeason = jsonData[key.toString()].toString();
+}
 
 function returningUserParty(){
 console.log("returning user party");
@@ -115,6 +122,7 @@ function initPackage() {
     package = { 
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
         birdBaseLevel: controller.getAnimalBaseLevel('bird'),
         bunnyBaseLevel: controller.getAnimalBaseLevel('bunny'),
@@ -145,6 +153,7 @@ function returningPackage(iD) {
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
+        season: controller.areaSeason,
         partySize: controller.party_limit,
         partyComp: [],
         birdBaseLevel: controller.getAnimalBaseLevel('bird'),
