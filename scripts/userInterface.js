@@ -77,7 +77,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/EventLog.png");
-    statPane.setSpriteAttributes(75, 235, 115, 183, "statPane");
+    statPane.setSpriteAttributes(75, 235, 115, 133, "statPane");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -86,7 +86,7 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     var statPane = new Sprite();
     statPane.setSrc("image_resources/EventLog.png");
-    statPane.setSpriteAttributes(180, 235, 70, 183, "statVals");
+    statPane.setSpriteAttributes(180, 235, 70, 133, "statVals");
     panes.push(statPane);
     /////////////////////////////////////////////////
     
@@ -110,18 +110,11 @@ function buttonSetup() {
     function loadGame() {
         //Would also include pulling from the server.
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
-<<<<<<< HEAD
         console.log("my user id is : " + userID);
         if(userID == undefined){
          userID = "asdfwer";
          stepCount = 501800;
         }
-=======
-    	if(userID == undefined){
-    	 userID = "asdfwer";
-    	 stepCount = 507500;
-    	}
->>>>>>> dan
 //**************************************************************************************************
         //logs user data to local storage
         console.log(userID);
@@ -249,57 +242,6 @@ function buttonSetup() {
         /////////////////////////////////////////////////  
     }
     
-<<<<<<< HEAD
-=======
-    /////////////////////////////////////////////////
-    //COMING SOON WORDS
-    /////////////////////////////////////////////////
-    /*
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((71), 130, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText(["Coming"], ("Coming Soon".length) - 15, -19)
-    interface.buttonArray.push(animalIcon);
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((71), 150, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText(["Soon"], ("Coming Soon".length) - 10, -14)
-    interface.buttonArray.push(animalIcon);
-    
-    
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((371), 130, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText("Coming", ("Coming Soon".length) - 15, -19)
-    interface.buttonArray.push(animalIcon);
-    
-    animalIcon = new Button(function() {});
-        
-    animalIcon.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png");
-
-    animalIcon.setSpriteAttributes((371), 150, 60, 60, "animal_iconCS" + i);
-    animalIcon.hasTextValue = true;
-    animalIcon.fonstSize = '14px';
-    animalIcon.setText("Soon", ("Coming Soon".length) - 10, -14)
-    interface.buttonArray.push(animalIcon);
-    */
-    /////////////////////////////////////////////////
->>>>>>> dan
-    
     /////////////////////////////////////////////////
     //ATTRIBUTE NAMES
     /////////////////////////////////////////////////
@@ -379,10 +321,19 @@ function buttonSetup() {
     upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
-    upgradeBtn.fontSize = '20px';
+    upgradeBtn.fontSize = '16px';
     charnum = "upgrade".length;
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
+    upgradeBtn.update = function () {
+        if (ui_values.selected === "base") {
+           charnum = "+1 (Base)".length;
+            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (4.3 * charnum), 5); 
+        } else {
+            charnum = "+1 (Selected)".length;
+            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5);
+        }
+    }
     interface.buttonArray.push(upgradeBtn);    
     /////////////////////////////////////////////////
     
@@ -816,6 +767,18 @@ function updateParty() {
     }
 }
 
+/////////////////////////////////////////////////
+//PARTY SIZE INDICATOR
+/////////////////////////////////////////////////
+var partyIndicator;
+
+partyIndicator = new Button(function () {});
+partyIndicator.setSrc("image_resources/ClearSquare.png");
+//@fix: Only does one row
+partyIndicator.setSpriteAttributes((161), (455), 40, 40, "party indicator");
+
+
+/////////////////////////////////////////////////
 
 /* upgrade_baseAnimal() - For increasing the level of animals. 
  * Params: None
