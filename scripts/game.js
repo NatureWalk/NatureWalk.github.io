@@ -1,5 +1,8 @@
 //fitbit_start(); //Make the fitbit work before anything else.
 
+/////////////////////////////////////////////////
+//VOLUME IN SOUND.JS HAS BEEN REDUCED, FIX THAT.
+/////////////////////////////////////////////////
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");

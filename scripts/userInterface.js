@@ -550,11 +550,11 @@ function buttonSetup() {
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
         eventLogEntry.setSrc("image_resources/ClearSquare.png");
-        eventLogEntry.setSpriteAttributes(567, (35*i)+50, 452, 54, "eventLog");
+        eventLogEntry.setSpriteAttributes(567, (45*i)+55    , 452, 54, "eventLog");
         interface.buttonArray.push(eventLogEntry);
 
         eventLogEntry.hasTextValue = true;
-        eventLogEntry.fontSize = '18px';
+        eventLogEntry.fontSize = '16px';
 
         (function(i) {
             var testRef = eventLogAry[i];
@@ -635,19 +635,7 @@ function select_base(animal_index) {
                     elem.setupAnim(15, 4, 4);
                     
             }
-        }
-            //DEBUG: console.log(aniSrc[animal_index]);
-            /*
-            if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet200_1400x1400.png") {
-                elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
-                elem.setupAnim(44, 7, 7);
-            } 
-            else {
-                elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
-            }  
-        }
-        */
-            
+        }   
     });
     
     //Setting current animal so we all know what we're referencing. 
@@ -663,17 +651,25 @@ function select_animal(animal_index) {
     console.log("Animal "+controller.animals[animal_index].type)
     var ani_imgRef = aniToNum(controller.animals[animal_index].type);
     console.log("ani_imgRef "+ani_imgRef)
+    console.log(animal_index);
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
-            //DEBUG: console.log(aniSrc[animal_index]);
-            if (aniSrc[animal_index] === "image_resources/FrogSpriteSheet_200x200.png") {
-                elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
-                elem.setupAnim(44, 7, 7);
-            } 
-            else {
-                elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
-            }  
-        }
+            switch (ani_imgRef) {
+                case 0:
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+                    break;
+                case 1:
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+                    break;
+                case 2:
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
+                    elem.setupAnim(44, 7, 7);
+                    break;
+                case 3:
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
+                    elem.setupAnim(15, 4, 4);   
+            }
+        }   
     })
 
     ui_values.partyIndex = animal_index;
