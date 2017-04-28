@@ -85,7 +85,7 @@ interface.init = function() {
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
-    //if (popupController != undefined) //interface.push(popupController);
+    if (popupController != undefined) interface.push(popupController);
     //addPopup("This is a test.",w/2,h/2);
 }
 
