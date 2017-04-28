@@ -28,7 +28,6 @@ console.log("returning player");
 		returningUserSteps();
                 returningUserTracks();
                 returningUserArea();
-                returningUserParty();
                 returningBaseLevels();
 		createData(returningPackage(userID));
 	}
@@ -77,6 +76,41 @@ function returningUserSteps(){
 
 function returningUserTracks(){
 	dataObj.animalTracks = parseFloat(getJsonItem(userID, "playerTracks"));
+	var lastLoginTime = parseFloat(getJsonItem(userID, "time"));
+	var id = userID;
+    var key = "partyComp";
+	var jsonData = JSON.parse(localStorage.getItem(id.toString()));
+	var myarr = jsonData[key.toString()];	
+	var currTime = Date.now();
+	var timeDiff = currTime - lastLoginTime;
+	
+	for(var i = 0; i < myarr.length; i++){
+		var endTime = currTime - myarr[i].deathTime;
+		if(endTime < 0){
+			endTime = math.floor((timeDiff/1000)/15);
+		} else {
+			endTime = math.floor(((myarr[i].deathTime - lastLoginTime)/1000)/15);
+		}
+		for(var j = 0; j < endTime; j++){
+			evtRoll = roll(100);
+			//Good Event
+    		if (evtRoll > 70) {
+        		evt2 = roll(100);
+        		if (evt2 < 26){
+        			dataObj.animalTracks += (dataObj.animalTracks/1000);
+        		}
+    		} 
+    		//Bad Event
+    		else if (evtRoll < 40) {
+    			evt2 = roll(100);
+        		switch (true) {
+    				case evt2 <= 31:
+    					
+    		}
+		}
+		
+	controller.animals.push(myarr[i]);	
+	}
 	//console.log("returning steps ===== " + stepCount);
 }
 

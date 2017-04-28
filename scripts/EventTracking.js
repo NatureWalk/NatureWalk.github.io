@@ -61,7 +61,7 @@ function goodEventHandler(evtRoll) {
         case evtRoll >= 30 && evtRoll < 55:
             //console.log(goodEvents[1]);
             eventLogAry.push("You find some animal tracks!");
-			dataObj.animalTracks += 2500;
+			dataObj.animalTracks += (dataObj.animalTracks/1000);
             break;
         //Fountain of Youth
         case evtRoll >= 55 && evtRoll < 60:
@@ -87,6 +87,7 @@ function goodEventHandler(evtRoll) {
 }
 
 //Handles bad events, takes in a new roll from the eventChooser.
+// IMPLEMENT STEP LOSS
 function badEventHandler(evtRoll) {
    var numAnimalsRolled = 0;
    var b = controller.getBadEvents();
