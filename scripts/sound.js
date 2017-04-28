@@ -1,6 +1,6 @@
 //Object for manipulating sounds
 
-var volume = 1
+var volume = 0
 
 //Object which holds all the sound objects for the game
 var soundManager = function() {
