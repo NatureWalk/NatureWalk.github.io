@@ -34,11 +34,17 @@ var ui_values = {
                   ("image_resources/EventLog.png")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
-    animalStaticAry: [("image_resources/Icon_Bird.png"),
-                      ("image_resources/Icon_Deer.png"),
-                      ("image_resources/FrogCroak.png"),
-                      ("image_resources/BunnyTurns.png"),
+    animalStaticAry: [("image_resources/Static_BirdT.png"),
+                      ("image_resources/Static_DeerT.png"),
+                      ("image_resources/Static_FrogT.png"),
+                      ("image_resources/Static_BunnyT.png"),
                       ("image_resources/EventLog.png")],
+    
+    animalStaticHover: 
+    [("image_resources/Static_BirdT_Hover.png"),
+     ("image_resources/Static_DeerT_Hover.png"),
+     ("image_resources/Static_FrogT_Hover.png"),
+     ("image_resources/Static_BunnyT_Hover.png")],
 
     animalWalkAry: [("image_resources/BirdWalk.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
@@ -384,6 +390,17 @@ function buttonSetup() {
     animalImage.hasTextValue = true;
     animalImage.fontSize = '38px';
     animalImage.update = function() {
+        var src = "";
+        var currIndex = ui_values.animalAry.indexOf(ui_values.currentAnimal);
+        
+        if (this.hovered) {
+            src = ui_values.animalStaticHover;
+            console.log("Hovered");
+        } else {
+            src = ui_values.animalStaticAry;
+        }
+        this.setSrc(src[currIndex], src[currIndex], false);
+        
         if (this.anim) {
             this.tickCount++; 
             if (this.tickCount > this.ticksPerFrame) {
@@ -625,25 +642,29 @@ function buttonSetup() {
 function select_base(animal_index) {
     ui_values.selected = "base";
     var ani_imgRef;
-    var aniSrc = ui_values.animalStaticAry;
+    var aniSrc = ui_values.animalStaticHover;
     
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
             switch (animal_index) {
                 case 0:
-                    elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    //elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    elem.setSrc(aniSrc[animal_index], aniSrc[animal_index], false);
                     break;
                 case 1:
-                    elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    //elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    elem.setSrc(aniSrc[animal_index], aniSrc[animal_index], false);
                     break;
                 case 2:
-                    elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
-                    elem.setupAnim(44, 7, 7);
+                    //elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    //elem.setupAnim(44, 7, 7);
+                    elem.setSrc(aniSrc[animal_index], aniSrc[animal_index], false);
                     break;
                 case 3:
-                    elem.setSrc(aniSrc[animal_index], aniSrc[4], true);
-                    elem.setupAnim(15, 4, 4);
-                    
+                    //elem.setSrc(aniSrc[animal_index], aniSrc[4], false);
+                    //elem.setupAnim(15, 4, 4);
+                    elem.setSrc(aniSrc[animal_index], aniSrc[animal_index], false);
+                    break;   
             }
         }   
     });
@@ -656,7 +677,7 @@ function select_base(animal_index) {
 function select_animal(animal_index) {
     ui_values.selected = "party";
     ui_values.partyIndex = animal_index;
-    var aniSrc = ui_values.animalStaticAry;
+    var aniSrc = ui_values.animalStaticHover;
 
     console.log("Animal "+controller.animals[animal_index].type)
     var ani_imgRef = aniToNum(controller.animals[animal_index].type);
@@ -666,18 +687,23 @@ function select_animal(animal_index) {
         if (elem.name === "animal_image") {
             switch (ani_imgRef) {
                 case 0:
-                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+                    //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
                     break;
                 case 1:
-                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+                    //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
                     break;
                 case 2:
-                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
-                    elem.setupAnim(44, 7, 7);
+                    //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
+                    //elem.setupAnim(44, 7, 7);
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
                     break;
                 case 3:
-                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
-                    elem.setupAnim(15, 4, 4);   
+                    //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
+                    //elem.setupAnim(15, 4, 4); 
+                    elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+                    break;
             }
         }   
     })

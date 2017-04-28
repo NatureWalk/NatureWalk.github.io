@@ -89,8 +89,8 @@ function returningUserArea(){
 function returningUserSeason(){
 	var key = 'season';
 	var jsonData = JSON.parse(localStorage.getItem(userID.toString()));
-	//console.log(jsonData[key.toString()].toString());
-	controller.areaSeason = jsonData[key.toString()].toString();
+	console.log(jsonData);
+	controller.areaSeason = jsonData[key].toString();
 }
 
 function returningUserParty(){
@@ -153,8 +153,8 @@ function returningPackage(iD) {
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
-        season: controller.areaSeason,
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
         birdBaseLevel: controller.getAnimalBaseLevel('bird'),
         bunnyBaseLevel: controller.getAnimalBaseLevel('bunny'),

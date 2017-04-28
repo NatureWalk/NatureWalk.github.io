@@ -204,8 +204,8 @@ function createPackage() {
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
-        season: controller.areaSeason,
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
         birdBaseLevel: 1,
         bunnyBaseLevel: 1,
