@@ -6,6 +6,7 @@
 //Object that can hold all of the session and player data.
 var dataObj = {
     steps: 0,
+    priorSteps: 0,
     totalSteps: 0,
     animalTracks: 0,
     timeAccelFactor: 1,
@@ -49,7 +50,7 @@ function sessionStart() {
 	
     //var _tempData = queryServer();
     dataObj.steps = stepCount;
-    dataObj["totalSteps"] += dataObj.steps;
+    //dataObj["totalSteps"] += dataObj.steps;
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -201,6 +202,7 @@ function createPackage() {
             - Player level?
         - Time of save. 
     */
+    
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
@@ -212,6 +214,7 @@ function createPackage() {
         deerBaseLevel: 1,
         frogBaseLevel: 1,
         playerSteps: stepCount,
+        playerPSteps: dataObj.priorSteps,
         playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
@@ -231,14 +234,6 @@ function createPackage() {
     var anim = "deer";
     package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
-    var anim = "frog";
-    package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
-    var anim = "bunny";
-    package.bunnyBaseLevel = controller.getAnimalBaseLevel(anim);
-    var anim = "bird";
-    package.birdBaseLevel = controller.getAnimalBaseLevel(anim);
-    var anim = "deer";
-    package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
     jsonFile = JSON.stringify(package);
     console.log(jsonFile);
@@ -349,12 +344,7 @@ function commandManager() {
     switch (cmd.toLowerCase()) {
         case "list":
             console.log("'stepoff' - adds steps");
-            console.log("'trackerdown(Not Implemented)' - adds tracks");
-            console.log("'gottagofast(Not Implemented)' - increases rate at which game time flows.");
-            console.log("'justaminutedeer(Not Implemented)' - time warps.");
-            console.log("'pidgeyohno' - removes all animals");
-            console.log("'toadallyfit(Not Implemented)' - makes animals invulnerable, not immortal");
-            console.log("'badhareday(Not Implemented)' - hardreset of player data");
+            console.log("'trackerdown' - adds tracks");
             break;
         //Give steps to the player.
         case "stepoff":

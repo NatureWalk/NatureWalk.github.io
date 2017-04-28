@@ -33,6 +33,11 @@ var ui_values = {
                   ("image_resources/Icon_Bunny.png"),
                   ("image_resources/EventLog.png")],
     
+    animalSrcHover: [("image_resources/Icon_BirdH.png"),
+                     ("image_resources/Icon_DeerH.png"),
+                     ("image_resources/Icon_FrogH.png"),
+                     ("image_resources/Icon_BunnyH.png")],
+    
     //For gif animations, though I didn't figure out how to make them do gif things. 
     animalStaticAry: [("image_resources/Static_BirdT.png"),
                       ("image_resources/Static_DeerT.png"),
@@ -203,7 +208,22 @@ function buttonSetup() {
         
         animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
-        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24)
+        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24);
+        
+        (function(i) {
+            animalIcon.update = function() {
+                var src; 
+                //var currIndex = ui_values.animalAry.indexOf(ui_values.currentAnimal);
+                if (this.hovered) {
+                    src = ui_values.animalSrcHover
+                } else {
+                    src = ui_values.animalSrcAry
+                }
+                //console.log(i);
+                this.setSrc(src[i], src[i], false);  
+            }
+        })(i);
+        
         interface.buttonArray.push(animalIcon);
         
         /////////////////////////////////////////////////
