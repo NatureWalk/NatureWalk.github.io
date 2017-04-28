@@ -123,8 +123,8 @@ function buttonSetup() {
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
         console.log("my user id is : " + userID);
         if(userID == undefined){
-         userID = "asdfwer";
-         stepCount = 501800;
+         userID = "oiuert";
+         stepCount = 25000;
         }
 //**************************************************************************************************
         //logs user data to local storage
@@ -223,7 +223,6 @@ function buttonSetup() {
                 this.setSrc(src[i], src[i], false);  
             }
         })(i);
-        
         interface.buttonArray.push(animalIcon);
         
         /////////////////////////////////////////////////
@@ -427,6 +426,22 @@ function buttonSetup() {
                 this.frameIndex++;
                 if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
                 this.tickCount = 0; 
+                /*
+<<<<<<< HEAD
+            }
+        }
+        if (ui_values.selected == "base") {
+            var name = ui_values.currentAnimal;
+            var charNum = numberLen(name);  
+            this.setText([name], -15 - (9 * charNum), -40);
+        } else {
+            //This line gave me cancer
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
+=======
+*/
             }
         }
         if (ui_values.selected == "base") {

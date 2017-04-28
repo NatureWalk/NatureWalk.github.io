@@ -77,6 +77,59 @@ badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 
 badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
 
 
+frogNames = ["Finn", "Finley", "Felix", "Francisco", "Finnegan", "Felipe", "Ford",
+"Francis", "Franklin", "Flynn", "Forrest", "Fletcher", "Farah", "Ferris", "Fernando",
+"Federico", "Foster", "Flora", "Fiona", "Fritz", "Francine", "Fabio", "Fern", "Fitzgerald",
+"Fabrizio", "Florian", "Fenton", "Fergus", "Flower", "Felton", "Fenix", "Franz", "Fraser",
+"Fleur", "Francois", "Finian", "Furman", "Funsho", "Matthew", "Fritzy", "Frita", "Froto",
+"Frisco", "Frenchie", "Freeman", "Freemont", "Fredo", "Fabian", "Fenwick", "Freshia", "Padda", "Bretkose", "Granoto", "Kikker",
+"Rana", "Baki", "Zaba", "Konn", "Rano", "Chura"];
+deerNames = ["Dre", "Cervol", "Osa", "Hjort",
+"Dakota", "Darius", "Dash", "Deana", "Dorian", "Delilah", "Daphne", "Dell", "Delbert", "Doris",
+"Derrick", "Dan", "Dax", "Dexter", "Diane", "Diana", "Dabney", "Drake", "Draco", "Dunston", "Dudley",
+"Damien", "Dora", "Daedra", "Dale", "Dean", "Dolby", "Dinah", "Daeton", "Drago", "Dahkim", "Dalton",
+"Dante", "Daicey", "Dione", "Dailee", "Dane", "Daisy", "Dasha", "DeShaun", "Daya", "Daken",
+"Dakeem", "Dalaney", "Dalbey", "Dalek", "Dilbert", "Daliza", "Dalton", "Dalmer", "Dalsgaard",
+"Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco"];
+bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond", "Ravi", "Robert", "Rob", "Robbie",
+"Rebecca", "Rene", "Rey", "Ray", "Roland", "Rachel", "Rachelle", "Rochelle", "Rory", "Racen", "Racquel", "Radcliffe",
+"Radford", "Randolf", "Randle", "Raina", "Rain", "Royal", "Ron", "Rip", "Reagan", "Reign",
+"Rylan", "Rhys", "Raleigh", "Raley", "RaeLynn", "Raven", "Rafael", "Rafaela", "Rafah", "Raffi",
+"Raffa", "Raffieli", "Rafianzie", "Raya", "Ritter", "Ritz", "Rumor", "Ritzbelle", "River", "Riverly",
+"Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto"];
+birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
+"Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
+"Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
+"Brandon", "Brynn", "Bobby", "Bob", "Bert", "Bertrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
+"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Bridget",
+"Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick"];
+
+function getName(myarr){
+	console.log("array using " + myarr);
+	var num = Math.floor((Math.random() * 59) + 0);
+	console.log("bunny " + myarr[0]);
+	return myarr[num];
+}
+
+function nameFrog(){
+	var num = Math.floor((Math.random() * 59) + 0);
+	return frogNames[num];
+}
+
+function nameBunny(){
+	var num = Math.floor((Math.random() * 59) + 0);
+	return bunnyNames[num];
+}
+
+function nameBird(){
+	var num = Math.floor((Math.random() * 59) + 0);
+	return birdNames[num];
+}
+
+function nameDeer(){
+	var num = Math.floor((Math.random() * 59) + 0);
+	return deerNames[num];
+}
 
 
 
@@ -284,10 +337,43 @@ function master_controller() {
 			console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
 			//taken from http://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+/*<<<<<<< HEAD
 			var text = "";
 		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		    for( var i=0; i < 5; i++ )
 		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+=======
+*/
+			console.log("animal type = " + ani.type);
+			
+			var text = "";
+		    /*var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		    for( var i=0; i < 5; i++ )
+		        text += possible.charAt(Math.floor(Math.random() * possible.length));
+		     var str1 =  ani.type;
+		     var str2 = "Names";
+		        
+		    var arrtype = str1.concat(str2);
+		    console.log("array " + arrtype[5]);
+		    console.log(getName(arrtype)); 
+		    */
+		    switch(ani.type) {
+    			case "frog":
+        			text = nameFrog();
+        			break;
+    			case "bunny":
+        			text = nameBunny();
+        			break;
+        		case "bird":
+        			text = nameBird();
+        			break;
+        		case "deer":
+        			text = nameDeer();
+        			break;
+    			default:
+        			text = "random name";
+			}
+
 		    ani.name= text;
 			this.animals.push(ani);
 			return true;
