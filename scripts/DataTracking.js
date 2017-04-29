@@ -37,6 +37,19 @@ var numAnimalsDead = 0;
 var numAnimalsSafe = 0;
 var numAnimalsTrip = 0;
 
+// grammar vars
+var birdDeadGrammar = "bird";
+var bunnyDeadGrammar = "bunny";
+var frogDeadGrammar = "frog";
+
+var birdTripGrammar = "bird";
+var bunnyTripGrammar = "bunny";
+var frogTripGrammar = "frog";
+
+var birdSafeGrammar = "bird";
+var bunnySafeGrammar = "bunny";
+var frogSafeGrammar = "frog";
+
 /////////////////////////////////////////////////////
 
 //List of bad events. 
@@ -80,7 +93,7 @@ function sessionStart() {
 	///////////////////////////////////
 	// USED FOR TESTING! DELETES ALL LOCAL DATA!
 	// ONLY UNCOMMENT IF YOU WANT TO DELETE LOCAL DATA!
-	// localStorage.clear();
+	 localStorage.clear();
 	///////////////////////////////////
 	
 	
@@ -363,9 +376,15 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[0][0] + " occured. It tested " + b[0][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-				animalSafePrinter();
-				animalTrippedPrinter();
-				animalDeathPrinter();
+				animalDeadGrammarCheck();
+				animalTripGrammarCheck();
+				animalSafeGrammarCheck();
+				//animalSafePrinter();
+				//animalTrippedPrinter();
+				//animalDeathPrinter();
+				bigDeathPrinter();
+				bigTrippedPrinter();
+				bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
@@ -379,9 +398,15 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[1][0] + " occured. It tested " + b[1][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-				animalSafePrinter();
-				animalTrippedPrinter();
-				animalDeathPrinter();
+				animalDeadGrammarCheck();
+				animalTripGrammarCheck();
+				animalSafeGrammarCheck();
+				//animalSafePrinter();
+				//animalTrippedPrinter();
+				//animalDeathPrinter();
+				bigDeathPrinter();
+				bigTrippedPrinter();
+				bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
@@ -395,9 +420,15 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[2][0] + " occured. It tested " + b[2][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-				animalSafePrinter();
-				animalTrippedPrinter();
-				animalDeathPrinter();
+				animalDeadGrammarCheck();
+				animalTripGrammarCheck();
+				animalSafeGrammarCheck();
+				//animalSafePrinter();
+				//animalTrippedPrinter();
+				//animalDeathPrinter();
+				bigDeathPrinter();
+				bigTrippedPrinter();
+				bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
@@ -411,9 +442,15 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[3][0] + " occured. It tested " + b[3][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-				animalSafePrinter();
-				animalTrippedPrinter();
-				animalDeathPrinter();
+				animalDeadGrammarCheck();
+				animalTripGrammarCheck();
+				animalSafeGrammarCheck();
+				//animalSafePrinter();
+				//animalTrippedPrinter();
+				//animalDeathPrinter();
+				bigDeathPrinter();
+				bigTrippedPrinter();
+				bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
@@ -427,12 +464,15 @@ function badEventHandler(evtRoll) {
 
 //////////////////////////////////////////////////
 // ADDED BY THEOREN
+
+// These are no longer in use
+/*
 function animalDeathPrinter(){
 	//console.log("number dead: " + numAnimalsDead);
 	if(numAnimalsDead == 0){
 		return;
 	}else{
-		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " bunnies, " + birdNumDead + " birds, and " + frogNumDead + " frogs were lost.")
+		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " " + bunnyDeadGrammar + ", " + birdNumDead + " " + birdDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and were lost.")
 		numAnimalsDead = 0;
 		bunnyNumDead = 0, birdNumDead = 0, deerNumDead = 0, frogNumDead = 0;
 	}
@@ -443,7 +483,7 @@ function animalTrippedPrinter(){
 	if(numAnimalsTrip == 0){
 		return;
 	}else{
-		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " bunnies, " + birdNumTripped + " birds, and " + frogNumTripped + " frogs tripped and lost some tracks.")
+		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.")
 		numAnimalsTrip = 0;
 		bunnyNumTripped = 0, birdNumTripped = 0, deerNumTripped = 0, frogNumTripped = 0;
 	}
@@ -454,10 +494,167 @@ function animalSafePrinter(){
 	if(numAnimalsSafe == 0){
 		return;
 	}else{
-		eventLogAry.push(deerNumSafe + " deer, " + bunnyNumSafe + " bunnies, " + birdNumSafe + " birds, and " + frogNumSafe + " frogs failed, but managed to escape without harm.")
+		eventLogAry.push(deerNumSafe + " deer, " + bunnyNumSafe + " " + bunnySafeGrammar + ", " + birdNumSafe + " " + birdSafeGrammar + ", and " + frogNumSafe + " " + frogSafeGrammar + " failed, but managed to escape without harm.")
 		numAnimalsSafe = 0;
 		bunnyNumSafe = 0, birdNumSafe = 0, deerNumSafe = 0, frogNumSafe = 0;
 	}
+}
+*/
+
+// These three big printers improve the display and grammar of the printed texts
+
+function bigDeathPrinter(){
+	console.log("death print");
+	if(deerNumDead > 0 && bunnyNumDead == 0 && birdNumDead == 0 && frogNumDead == 0){
+		eventLogAry.push(deerNumDead + " deer failed the event and unfortunately died.");
+	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead == 0 && frogNumDead == 0){
+		eventLogAry.push(deerNumDead + " deer and " + bunnyNumDead + " " + bunnyDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead == 0){
+		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " " + bunnyDeadGrammar + ", and " + birdNumDead + " " + birdDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead > 0){
+		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " " + bunnyDeadGrammar + ", " + birdNumDead + " " + birdDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead == 0 && bunnyNumDead > 0 && birdNumDead == 0 && frogNumDead == 0){
+		eventLogAry.push(bunnyNumDead + " " + bunnyDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead == 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead == 0){
+		eventLogAry.push(bunnyNumDead + " " + bunnyDeadGrammar + ", and " + birdNumDead + " " + birdDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead == 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead > 0){
+		eventLogAry.push(bunnyDeadGrammar + ", " + birdNumDead + " " + birdDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead == 0 && bunnyNumDead == 0 && birdNumDead > 0 && frogNumDead == 0){
+		eventLogAry.push(birdNumDead + " " + birdDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead == 0 && bunnyNumDead == 0 && birdNumDead > 0 && frogNumDead > 0){
+		eventLogAry.push(birdDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumDead == 0 && bunnyNumDead == 0 && birdNumDead == 0 && frogNumDead > 0){
+		eventLogAry.push(frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
+	}else{
+		console.log("none died");
+	}
+	
+	numAnimalsDead = 0;
+	bunnyNumDead = 0, birdNumDead = 0, deerNumDead = 0, frogNumDead = 0;
+}
+
+function bigTrippedPrinter(){
+	console.log("trip print");
+	if(deerNumTripped > 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped == 0){
+		eventLogAry.push(deerNumTripped + " deer tripped and lost some tracks.");
+	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
+		eventLogAry.push(deerNumTripped + " deer and " + bunnyNumTripped + " " + bunnyTripGrammar + " tripped and lost some tracks.");
+	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped == 0){
+		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
+	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){
+		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
+	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
+		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + " tripped and lost some tracks.");
+	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped == 0){
+		eventLogAry(bunnyNumTripped + " " + bunnyTripGrammar + ", and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
+	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){
+		eventLogAry(bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped == 0){
+		eventLogAry(birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
+	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped > 0){
+		eventLogAry(birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " failed the event and unfortunately died.");
+	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped > 0){
+		eventLogAry(frogNumTripped + " " + frogTripGrammar + " failed the event and unfortunately died.");
+	}else{
+		console.log("none tripped");
+	}
+	
+	numAnimalsTrip = 0;
+	bunnyNumTripped = 0, birdNumTripped = 0, deerNumTripped = 0, frogNumTripped = 0;
+}
+
+function bigSafePrinter(){
+	console.log("safe print");
+	if(deerNumSafe > 0 && bunnyNumSafe == 0 && birdNumSafe == 0 && frogNumSafe == 0){
+		eventLogAry.push(deerNumSafe + " deer failed, but escaped unharmed.");
+	}else if(deerNumSafe > 0 && bunnyNumSafe > 0 && birdNumSafe == 0 && frogNumSafe == 0){
+		eventLogAry.push(deerNumSafe + " deer and " + bunnyNumSafe + " " + bunnySafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe > 0 && bunnyNumSafe > 0 && birdNumSafe > 0 && frogNumSafe == 0){
+		eventLogAry.push(deerNumSafe + " deer, " + bunnyNumSafe + " " + bunnySafeGrammar + ", and " + birdNumSafe + " " + birdSafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe > 0 && bunnyNumSafe > 0 && birdNumSafe > 0 && frogNumSafe > 0){
+		eventLogAry.push(deerNumSafe + " deer, " + bunnyNumSafe + " " + bunnySafeGrammar + ", " + birdNumSafe + " " + birdSafeGrammar + ", and " + frogNumSafe + " " + frogSafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe == 0 && bunnyNumSafe > 0 && birdNumSafe == 0 && frogNumSafe == 0){
+		eventLogAry.push(bunnyNumSafe + " " + bunnySafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe == 0 && bunnyNumSafe > 0 && birdNumSafe > 0 && frogNumSafe == 0){
+		eventLogAry.push(bunnyNumSafe + " " + bunnySafeGrammar + ", and " + birdNumSafe + " " + birdSafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe == 0 && bunnyNumSafe > 0 && birdNumSafe > 0 && frogNumSafe > 0){
+		eventLogAry.push(bunnyNumSafe + " " + bunnySafeGrammar + ", " + birdNumSafe + " " + birdSafeGrammar + ", and " + frogNumSafe + " " + frogSafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe == 0 && bunnyNumSafe == 0 && birdNumSafe > 0 && frogNumSafe == 0){
+		eventLogAry.push(birdNumSafe + " " + birdSafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe == 0 && bunnyNumSafe == 0 && birdNumSafe > 0 && frogNumSafe > 0){
+		eventLogAry.push(birdNumSafe + " " + birdSafeGrammar + ", and " + frogNumSafe + " " + frogSafeGrammar + " failed, but escaped unharmed.");
+	}else if(deerNumSafe == 0 && bunnyNumSafe == 0 && birdNumSafe == 0 && frogNumSafe > 0){
+		eventLogAry.push(frogNumSafe + " " + frogSafeGrammar + " failed, but escaped unharmed.");
+	}else{
+		console.log("none safe");
+	}
+	
+	numAnimalsSafe = 0;
+	bunnyNumSafe = 0, birdNumSafe = 0, deerNumSafe = 0, frogNumSafe = 0;
+}
+
+// These three make sure that the grammar is properly chosen for the animals
+function animalDeadGrammarCheck(){
+	if(bunnyNumDead == 1){
+		bunnyDeadGrammar = "bunny";
+	}else{
+		bunnyDeadGrammar = "bunnies";
+	}
+	
+	if(birdNumDead == 1){
+		birdDeadGrammar = "bird";
+	}else{
+		birdDeadGrammar = "birds";
+	}
+	
+	if(frogNumDead == 1){
+		frogDeadGrammar = "frog";
+	}else{
+		frogDeadGrammar = "frogs";
+	}
+	//console.log(bunnyGrammar + " " + birdGrammar + " " + frogGrammar);
+}
+
+function animalTripGrammarCheck(){
+	if(bunnyNumTripped == 1){
+		bunnyTripGrammar = "bunny";
+	}else{
+		bunnyTripGrammar = "bunnies";
+	}
+	
+	if(birdNumTripped == 1){
+		birdTripGrammar = "bird";
+	}else{
+		birdTripGrammar = "birds";
+	}
+	
+	if(frogNumTripped == 1){
+		frogTripGrammar = "frog";
+	}else{
+		frogTripGrammar = "frogs";
+	}
+	//console.log(bunnyGrammar + " " + birdGrammar + " " + frogGrammar);
+}
+
+function animalSafeGrammarCheck(){
+	if(bunnyNumSafe == 1){
+		bunnySafeGrammar = "bunny";
+	}else{
+		bunnySafeGrammar = "bunnies";
+	}
+	
+	if(birdNumSafe == 1){
+		birdSafeGrammar = "bird";
+	}else{
+		birdSafeGrammar = "birds";
+	}
+	
+	if(frogNumSafe == 1){
+		frogSafeGrammar = "frog";
+	}else{
+		frogSafeGrammar = "frogs";
+	}
+	//console.log(bunnyGrammar + " " + birdGrammar + " " + frogGrammar);
 }
 //////////////////////////////////////////////////
 
