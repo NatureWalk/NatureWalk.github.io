@@ -305,25 +305,37 @@ function bigTrippedPrinter(){
     console.log("Bird: " + birdNumTripped);
     console.log("Frog: " + frogNumTripped);
     console.log("Bunny: "+ bunnyNumTripped);
+    
 	if(deerNumTripped > 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped == 0){
+        //Deer
 		eventLogAry.push(deerNumTripped + " deer tripped and lost some tracks.");
-	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
+	}
+    else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
+        //Deer and Bunny
 		eventLogAry.push(deerNumTripped + " deer and " + bunnyNumTripped + " " + bunnyTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped == 0){
+        //Deer and Bunny and Bird
 		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){
+        //Deer and Bunny and Bird and Frog
 		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
+        //Bunny
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped == 0){
+        //Bunny and Bird
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + ", and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
-	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){
+	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){ 
+        //Bunny and Bird and Frog
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " failed the event and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped == 0){
+        //Bird
 		eventLogAry.push(birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped > 0){
+        //Bird and Frog
 		eventLogAry.push(birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " failed the event and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped > 0){
+        //Frog
 		eventLogAry.push(frogNumTripped + " " + frogTripGrammar + " failed the event and lost some tracks.");
 	}else{
 		console.log("none tripped");
@@ -604,8 +616,9 @@ function displayEvent(evt) {
     } else if (evt === "predator") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
-                elem.setupAnim(22, 5, 5);
+                elem.setSpriteAttributes(elem.x, elem.y, 150, 100, "eventAnimation");
+                elem.setSrc("image_resources/PredatorEvent1s.png", "image_resources/PredatorEvent1s.png", true);
+                elem.setupAnim(12, 4, 4);
             }
         });
         dataObj.eventDisplayTimer = 5;

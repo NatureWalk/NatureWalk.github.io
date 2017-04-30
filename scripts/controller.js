@@ -102,22 +102,19 @@ bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond",
 "Raffa", "Raffieli", "Rafianzie", "Raya", "Ritter", "Ritz", "Rumor", "Ritzbelle", "River", "Riverly",
 "Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto", "Bigwig", "Bunnicula", "Fiver",
 "Harvey", "Max", "Ruby", "Pantoufle", "Frank", "Caerbannog"];
+
 birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
 "Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
 "Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
 "Brandon", "Brynn", "Bobby", "Bob", "Bert", "Bertrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
-"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Peckham", "Bridget",
-"Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick"];
+"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Bridget",
+"Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick", "Sweet Dee", "Phoenixperson", "Joel McQuail",
+"Wil Tweeton", "Stephen Squawking", "Zoidbird", "Flight Schrute", "Cyberbird", "Meryl Cheep"];
 
-function getName(myarr){
-	console.log("array using " + myarr);
-	var num = Math.floor((Math.random() * 59) + 0);
-	console.log("bunny " + myarr[0]);
-	return myarr[num];
-}
+
 
 function nameFrog(){
-	var num = Math.floor((Math.random() * 59) + 0);
+	var num = Math.floor((Math.random() * 68) + 0);
 	return frogNames[num];
 }
 
@@ -339,8 +336,11 @@ function master_controller() {
 	this.addAnimal = function(animal){
 		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
-			console.log(animal);
+			//console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
+
+			var text = "";
+
 		    switch(ani.type) {
     			case "frog":
         			text = nameFrog();
@@ -357,7 +357,8 @@ function master_controller() {
     			default:
         			text = "random name";
 			}
-
+		    
+		      
 		    ani.name= text;
 			this.animals.push(ani);
 			return true;

@@ -132,6 +132,7 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
+        //screenMan.push(popups);
     }
 
     var login = new Button(loadGame)
@@ -341,15 +342,14 @@ function buttonSetup() {
             upgrade_animal();
         }
     });
-    upgradeBtn.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
-
+    upgradeBtn.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
     upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '16px';
     charnum = "upgrade".length;
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
-    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
+    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
@@ -436,12 +436,13 @@ function buttonSetup() {
             var charNum = numberLen(name);  
             this.setText([name], -15 - (9 * charNum), -40);
         } else {
-            //This line gave me cancer
+
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
                 return;
             }
-            var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+            //This line gave me cancer
+            //var type = toCapitalize(controller.animals[ui_values.partyIndex].type);
             var name = controller.animals[ui_values.partyIndex].name;
             var charNum = numberLen(name);  
             this.setText([name], -30 - (4 * charNum), -40);
@@ -463,7 +464,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 
     //Mute Button
-    function mB() {soundMan.mute_music()}
+    //function mB() {soundMan.mute_music()}
+    function mB() {screenMan.push(popups)}
 
     muteButton = new Button(mB);
     muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
@@ -559,11 +561,11 @@ function buttonSetup() {
         if (controller.getAreaLevel() <= 1) {
             areaPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
-            areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+            areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
         }
     }
 
-    areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+    areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
     areaPrev.setSpriteAttributes(625, 245, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
@@ -576,11 +578,11 @@ function buttonSetup() {
         if (!areaEligible()) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
-            areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+            areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
         }
     }
 
-    areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+    areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
 
     areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
 
@@ -654,6 +656,29 @@ function buttonSetup() {
         this.y = partyButtons[ui_values.partyIndex].y;
     }
     interface.buttonArray.push(selectedAnimal);
+	
+	//blank animal portraits for bottom left page
+	
+	var blankPortrait = function(){
+			var partyLimit = 5;
+			var coordX=500;
+			var coordY=500;
+	};
+	
+	blankPortrait.update = function(){
+		
+	};
+	blankPortrait.draw = function(){
+		ctx.strokeStyle = "black";
+		for (var i = 0; i < 5; i++){
+			this.coordX = 103+(i*60);
+			this.coordY = 457;
+			ctx.strokeRect(this.coordX, this.coordY , 37, 37);
+		}
+		
+	};
+
+	interface.push(blankPortrait);
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
