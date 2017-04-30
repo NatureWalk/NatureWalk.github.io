@@ -1,3 +1,4 @@
+
 //Creates a popup with default background.
 function addPopup(text,x,y,name="popup") {
 	var button = new Button(function() {

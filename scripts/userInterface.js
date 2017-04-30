@@ -208,6 +208,7 @@ function buttonSetup() {
         
         animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
+<<<<<<< HEAD
         animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24);
         
         (function(i) {
@@ -223,6 +224,9 @@ function buttonSetup() {
                 this.setSrc(src[i], src[i], false);  
             }
         })(i);
+=======
+        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24)
+>>>>>>> origin/megan
         interface.buttonArray.push(animalIcon);
         
         /////////////////////////////////////////////////
@@ -391,7 +395,12 @@ function buttonSetup() {
             upgradeCost.setText([numberConversion(level*1.75*100)], (upgradeCost.width / 2) - (4 * charnum), 5);
         }
 
+<<<<<<< HEAD
         
+=======
+        charnum = numberConversion(level*100).length;
+        upgradeCost.setText([numberConversion(level*100)], (upgradeCost.width / 2) - (4 * charnum), 5);
+>>>>>>> origin/megan
     };
 
    
@@ -429,6 +438,7 @@ function buttonSetup() {
                 this.frameIndex++;
                 if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
                 this.tickCount = 0; 
+<<<<<<< HEAD
                 /*
 <<<<<<< HEAD
             }
@@ -461,6 +471,24 @@ function buttonSetup() {
             var name = controller.animals[ui_values.partyIndex].name;
             var charNum = numberLen(name);  
             this.setText([name], -30 - (4 * charNum), -40);
+=======
+            }
+        }
+        if (ui_values.selected == "base") {
+            var name = ui_values.currentAnimal;
+            var charNum = numberLen(name);  
+            this.setText([name], -15 - (9 * charNum), -40);
+        } else {
+            //This line gave me cancer
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
+            var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+            var name = controller.animals[ui_values.partyIndex].name;
+            var charNum = numberLen(name);  
+            this.setText([type+" "+name], -50 - (9 * charNum), -40);
+>>>>>>> origin/megan
         }
     }
     
@@ -719,32 +747,49 @@ function select_animal(animal_index) {
 
     //console.log("Animal "+controller.animals[animal_index].type)
     var ani_imgRef = aniToNum(controller.animals[animal_index].type);
+<<<<<<< HEAD
     //console.log("ani_imgRef "+ani_imgRef)
     //console.log(animal_index);
+=======
+    console.log("ani_imgRef "+ani_imgRef)
+    console.log(animal_index);
+>>>>>>> origin/megan
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
             switch (ani_imgRef) {
                 case 0:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+<<<<<<< HEAD
                     ui_values.currentAnimal = "Bird";
+=======
+>>>>>>> origin/megan
                     break;
                 case 1:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+<<<<<<< HEAD
                     ui_values.currentAnimal = "Deer";
+=======
+>>>>>>> origin/megan
                     break;
                 case 2:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
                     //elem.setupAnim(44, 7, 7);
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+<<<<<<< HEAD
                     ui_values.currentAnimal = "Frog";
+=======
+>>>>>>> origin/megan
                     break;
                 case 3:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
                     //elem.setupAnim(15, 4, 4); 
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+<<<<<<< HEAD
                     ui_values.currentAnimal = "Bunny";
+=======
+>>>>>>> origin/megan
                     break;
             }
         }   
@@ -880,8 +925,13 @@ function upgrade_animal() {
 */
 function upgrade_baseAnimalMax() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+<<<<<<< HEAD
     while (dataObj.animalTracks - (level* 2.75 * 1000) > 0) {
         dataObj.animalTracks -= (level* 2.75 * 1000);
+=======
+    while (dataObj.animalTracks - (level * 100) > 0) {
+        dataObj.animalTracks -= (level * 100);
+>>>>>>> origin/megan
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
         controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
         level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
@@ -891,8 +941,13 @@ function upgrade_baseAnimalMax() {
 
 function upgrade_animalMax() {
     var level = controller.animals[ui_values.partyIndex].level;
+<<<<<<< HEAD
     while (dataObj.animalTracks - (level* 1.75 * 100) > 0) {
         dataObj.animalTracks -= (level* 1.75 * 100);
+=======
+    while (dataObj.animalTracks - (level * 100) > 0) {
+        dataObj.animalTracks -= (level * 100);
+>>>>>>> origin/megan
         controller.levelUpAnimal(ui_values.partyIndex);
         level = controller.animals[ui_values.partyIndex].level;
         soundMan.up1.play();

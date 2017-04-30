@@ -48,7 +48,6 @@ var goodEvents = [
 
 //Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
-console.log(eventLogAry);
 
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
@@ -108,6 +107,7 @@ function goodEventHandler(evtRoll) {
             break;
     }
 }
+
 
 //Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
@@ -243,7 +243,6 @@ function badEventHandler(evtRoll) {
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
-    	    
 	}
     controller.removeAllQueue();
     console.log(controller.getNumAnimals());
@@ -407,7 +406,6 @@ function animalSafeGrammarCheck(){
 }
 //////////////////////////////////////////////////
 
-
 //Handles neutral events, takes in a new roll from the eventChooser.
 function noEventHandler(evtRoll) {
     switch (true) {
@@ -428,7 +426,6 @@ function noEventHandler(evtRoll) {
 // rolls for all animal count of the specific animal against their specified stat
 // removes the number of animals that fail the roll
 function badEventChecker(index, stat,flag){
-
 	var playerRoll, gameRoll;
 	
 	var a = controller.getAnimalData();
@@ -496,7 +493,6 @@ function badEventChecker(index, stat,flag){
 	}
 }
 
-
 ///////////////////////////////////////////////////
 // ADDED BY THEOREN
 // these three functions will increment the vars for how many animals are effected by each event
@@ -509,6 +505,7 @@ function deadTypeCheck(animal){
 	}else if(animal == "Bunny"){
 		bunnyNumDead++;
 	}else if(animal == "Frog"){
+
 		frogNumDead++;
 	}
 	numAnimalsDead++;

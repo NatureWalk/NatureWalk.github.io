@@ -83,7 +83,8 @@ frogNames = ["Finn", "Finley", "Felix", "Francisco", "Finnegan", "Felipe", "Ford
 "Fabrizio", "Florian", "Fenton", "Fergus", "Flower", "Felton", "Fenix", "Franz", "Fraser",
 "Fleur", "Francois", "Finian", "Furman", "Funsho", "Matthew", "Fritzy", "Frita", "Froto",
 "Frisco", "Frenchie", "Freeman", "Freemont", "Fredo", "Fabian", "Fenwick", "Freshia", "Padda", "Bretkose", "Granoto", "Kikker",
-"Rana", "Baki", "Zaba", "Konn", "Rano", "Chura"];
+"Rana", "Baki", "Zaba", "Konn", "Rano", "Chura", "Trevor", "Kermit", "Robin", "Keroppi", "Frogger",
+"Dat Boi", "HypnoToad", "Bighead", "Slippy"];
 
 deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Dakota", "Darius", "Dash", "Deana", "Dorian", "Delilah", "Daphne", "Dell", "Delbert", "Doris",
@@ -91,15 +92,16 @@ deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Damien", "Dora", "Daedra", "Dale", "Dean", "Dolby", "Dinah", "Daeton", "Drago", "Dahkim", "Dalton",
 "Dante", "Daicey", "Dione", "Dailee", "Dane", "Daisy", "Dasha", "DeShaun", "Daya", "Daken",
 "Dakeem", "Dalaney", "Dalbey", "Dalek", "Dilbert", "Daliza", "Dalton", "Dalmer", "Dalsgaard",
-"Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco"];
+"Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco", "Buck Henry", "Doe Lewis", "Fawn Hamm",
+"Alexandeer", "Bambi", "Mean Doe Greene", "Mark Buckerberg", "Fawnie Lee Miller", "Fawnathan Demme"];
 
 bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond", "Ravi", "Robert", "Rob", "Robbie",
 "Rebecca", "Rene", "Rey", "Ray", "Roland", "Rachel", "Rachelle", "Rochelle", "Rory", "Racen", "Racquel", "Radcliffe",
 "Radford", "Randolf", "Randle", "Raina", "Rain", "Royal", "Ron", "Rip", "Reagan", "Reign",
 "Rylan", "Rhys", "Raleigh", "Raley", "RaeLynn", "Raven", "Rafael", "Rafaela", "Rafah", "Raffi",
 "Raffa", "Raffieli", "Rafianzie", "Raya", "Ritter", "Ritz", "Rumor", "Ritzbelle", "River", "Riverly",
-"Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto"];
-
+"Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto", "Bigwig", "Bunnicula", "Fiver",
+"Harvey", "Max", "Ruby", "Pantoufle", "Frank", "Caerbannog"];
 birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
 "Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
 "Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
@@ -120,17 +122,17 @@ function nameFrog(){
 }
 
 function nameBunny(){
-	var num = Math.floor((Math.random() * 59) + 0);
+	var num = Math.floor((Math.random() * 68) + 0);
 	return bunnyNames[num];
 }
 
 function nameBird(){
-	var num = Math.floor((Math.random() * 59) + 0);
+	var num = Math.floor((Math.random() * 68) + 0);
 	return birdNames[num];
 }
 
 function nameDeer(){
-	var num = Math.floor((Math.random() * 59) + 0);
+	var num = Math.floor((Math.random() * 68) + 0);
 	return deerNames[num];
 }
 
@@ -339,27 +341,6 @@ function master_controller() {
 			var ani = new animalClass(animal);
 			console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
-			//taken from http://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-/*<<<<<<< HEAD
-			var text = "";
-		    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		    for( var i=0; i < 5; i++ )
-		        text += possible.charAt(Math.floor(Math.random() * possible.length));
-=======
-*/
-			console.log("animal type = " + ani.type);
-			
-			var text = "";
-		    /*var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		    for( var i=0; i < 5; i++ )
-		        text += possible.charAt(Math.floor(Math.random() * possible.length));
-		     var str1 =  ani.type;
-		     var str2 = "Names";
-		        
-		    var arrtype = str1.concat(str2);
-		    console.log("array " + arrtype[5]);
-		    console.log(getName(arrtype)); 
-		    */
 		    switch(ani.type) {
     			case "frog":
         			text = nameFrog();
