@@ -194,7 +194,15 @@ function returningPackage(iD) {
 
     //console.log(package);
     for (var i = 0; i < prevPartySize; i++) {
+        controller.animals[i].setLevel = function(lv){
+		  this.level = lv;
+	    }
+        controller.animals[i].levelUp = function(){
+		  this.level += 1;
+	    }
         package.partyComp.push(controller.animals[i]);
+        console.log(controller.animals[i].name + ": " +
+                   controller.animals[i].levelUp);
     }
     
     jsonFile = JSON.stringify(package);
