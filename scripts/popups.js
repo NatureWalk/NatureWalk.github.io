@@ -58,7 +58,7 @@ var fullUpgrade = new Button(function() {
     removePopup(this);
 });
 
-fullUpgrade.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
+fullUpgrade.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
 fullUpgrade.setSpriteAttributes(65,360,120,40, "fullUpgrade");
 fullUpgrade.hasTextValue = true;
 fullUpgrade.fontSize = '20px';

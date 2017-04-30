@@ -342,7 +342,7 @@ function buttonSetup() {
             upgrade_animal();
         }
     });
-    upgradeBtn.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
+    upgradeBtn.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
 
     upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
@@ -350,7 +350,7 @@ function buttonSetup() {
     upgradeBtn.fontSize = '16px';
     charnum = "upgrade".length;
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
-    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
+    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
@@ -557,11 +557,11 @@ function buttonSetup() {
         if (controller.getAreaLevel() <= 1) {
             areaPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
-            areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+            areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
         }
     }
 
-    areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+    areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
     areaPrev.setSpriteAttributes(625, 245, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
@@ -574,11 +574,11 @@ function buttonSetup() {
         if (!areaEligible()) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
-            areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+            areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
         }
     }
 
-    areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+    areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
 
     areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
 
