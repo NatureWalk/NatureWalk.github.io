@@ -66,13 +66,16 @@ charnum = "MAX".length;
 fullUpgrade.setText(["MAX"], (fullUpgrade.width / 2) - (6.3 * charnum), 5);
 
 function p_maxUpgrade() {
+	var threshold;
 	if (ui_values.selected == "base") {
-		var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase())
+		var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+		threshold = 1.75*1000;
 	} else{
-		var level = controller.animals[ui_values.partyIndex].level
+		var level = controller.animals[ui_values.partyIndex].level;
+		threshold = 1.75*100;
 	}	
 	if (interface.contains(fullUpgrade)) return;
-	if (dataObj.animalTracks - ((level * 100) + (level+1)*100) > 0) {
+	if (dataObj.animalTracks - ((level * threshold) + (level+1)*threshold) > 0) {
 		pushPopup(fullUpgrade);
 	} else {
 		removePopup(fullUpgrade);
