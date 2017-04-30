@@ -30,7 +30,7 @@ var popupController = function() {
 
 //Contains controls when popups appear
 popupController.update = function() {
-	console.log("controller updating")
+	//console.log("controller updating")
 	p_maxUpgrade();
 }
 

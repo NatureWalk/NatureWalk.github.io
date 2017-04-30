@@ -50,7 +50,7 @@ function sessionStart() {
 	
     //var _tempData = queryServer();
     dataObj.steps = stepCount;
-    //dataObj["totalSteps"] += dataObj.steps;
+    dataObj["totalSteps"] += dataObj.steps;
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -234,6 +234,14 @@ function createPackage() {
     var anim = "deer";
     package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
+    var anim = "frog";
+    package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bunny";
+    package.bunnyBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bird";
+    package.birdBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "deer";
+    package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
     jsonFile = JSON.stringify(package);
     console.log(jsonFile);
