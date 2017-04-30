@@ -84,6 +84,7 @@ frogNames = ["Finn", "Finley", "Felix", "Francisco", "Finnegan", "Felipe", "Ford
 "Fleur", "Francois", "Finian", "Furman", "Funsho", "Matthew", "Fritzy", "Frita", "Froto",
 "Frisco", "Frenchie", "Freeman", "Freemont", "Fredo", "Fabian", "Fenwick", "Freshia", "Padda", "Bretkose", "Granoto", "Kikker",
 "Rana", "Baki", "Zaba", "Konn", "Rano", "Chura"];
+
 deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Dakota", "Darius", "Dash", "Deana", "Dorian", "Delilah", "Daphne", "Dell", "Delbert", "Doris",
 "Derrick", "Dan", "Dax", "Dexter", "Diane", "Diana", "Dabney", "Drake", "Draco", "Dunston", "Dudley",
@@ -91,17 +92,19 @@ deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Dante", "Daicey", "Dione", "Dailee", "Dane", "Daisy", "Dasha", "DeShaun", "Daya", "Daken",
 "Dakeem", "Dalaney", "Dalbey", "Dalek", "Dilbert", "Daliza", "Dalton", "Dalmer", "Dalsgaard",
 "Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco"];
+
 bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond", "Ravi", "Robert", "Rob", "Robbie",
 "Rebecca", "Rene", "Rey", "Ray", "Roland", "Rachel", "Rachelle", "Rochelle", "Rory", "Racen", "Racquel", "Radcliffe",
 "Radford", "Randolf", "Randle", "Raina", "Rain", "Royal", "Ron", "Rip", "Reagan", "Reign",
 "Rylan", "Rhys", "Raleigh", "Raley", "RaeLynn", "Raven", "Rafael", "Rafaela", "Rafah", "Raffi",
 "Raffa", "Raffieli", "Rafianzie", "Raya", "Ritter", "Ritz", "Rumor", "Ritzbelle", "River", "Riverly",
 "Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto"];
+
 birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
 "Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
 "Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
 "Brandon", "Brynn", "Bobby", "Bob", "Bert", "Bertrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
-"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Bridget",
+"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Peckham", "Bridget",
 "Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick"];
 
 function getName(myarr){

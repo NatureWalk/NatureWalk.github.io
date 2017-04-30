@@ -457,7 +457,7 @@ function buttonSetup() {
             var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
             var name = controller.animals[ui_values.partyIndex].name;
             var charNum = numberLen(name);  
-            this.setText([type+" "+name], -50 - (9 * charNum), -40);
+            this.setText([name], -30 - (4 * charNum), -40);
         }
     }
     
@@ -714,30 +714,34 @@ function select_animal(animal_index) {
     ui_values.partyIndex = animal_index;
     var aniSrc = ui_values.animalStaticHover;
 
-    console.log("Animal "+controller.animals[animal_index].type)
+    //console.log("Animal "+controller.animals[animal_index].type)
     var ani_imgRef = aniToNum(controller.animals[animal_index].type);
-    console.log("ani_imgRef "+ani_imgRef)
-    console.log(animal_index);
+    //console.log("ani_imgRef "+ani_imgRef)
+    //console.log(animal_index);
     interface.buttonArray.forEach(function (elem) {
         if (elem.name === "animal_image") {
             switch (ani_imgRef) {
                 case 0:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+                    ui_values.currentAnimal = "Bird";
                     break;
                 case 1:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], false);
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+                    ui_values.currentAnimal = "Deer";
                     break;
                 case 2:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
                     //elem.setupAnim(44, 7, 7);
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+                    ui_values.currentAnimal = "Frog";
                     break;
                 case 3:
                     //elem.setSrc(aniSrc[ani_imgRef], aniSrc[4], true);
                     //elem.setupAnim(15, 4, 4); 
                     elem.setSrc(aniSrc[ani_imgRef], aniSrc[ani_imgRef], false);
+                    ui_values.currentAnimal = "Bunny";
                     break;
             }
         }   
