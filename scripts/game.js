@@ -41,12 +41,7 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
-<<<<<<< HEAD
 var pController = new popupController();
-
-=======
-//var pController = new popupController();
->>>>>>> origin/megan
 
 var cursor = {};
 cursor.x=0;
