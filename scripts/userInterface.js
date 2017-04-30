@@ -378,17 +378,20 @@ function buttonSetup() {
 
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
-            var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];       
+            var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];  
+            charnum = numberConversion(level*1.75*1000).length;
+            upgradeCost.setText([numberConversion(level*1.75*1000)], (upgradeCost.width / 2) - (4 * charnum), 5);
         } else {
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
                 return;
             }
             var level = controller.animals[ui_values.partyIndex].level;
+            charnum = numberConversion(level*1.75*100).length;
+            upgradeCost.setText([numberConversion(level*1.75*100)], (upgradeCost.width / 2) - (4 * charnum), 5);
         }
 
-        charnum = numberConversion(level*100).length;
-        upgradeCost.setText([numberConversion(level*100)], (upgradeCost.width / 2) - (4 * charnum), 5);
+        
     };
 
    
@@ -851,10 +854,10 @@ partyIndicator.setSpriteAttributes((161), (455), 40, 40, "party indicator");
 */
 function upgrade_baseAnimal() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    if (dataObj.animalTracks - (level * 100) < 0) {
+    if (dataObj.animalTracks - (level* 2.75 * 1000) < 0) {
         return;
     } else {
-        dataObj.animalTracks -= (level * 100);
+        dataObj.animalTracks -= (level* 2.75 * 1000);
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
     soundMan.up1.play();
@@ -862,10 +865,10 @@ function upgrade_baseAnimal() {
 
 function upgrade_animal() {
     var level = controller.animals[ui_values.partyIndex].level;
-    if (dataObj.animalTracks - (level * 100) < 0) {
+    if (dataObj.animalTracks - (level* 1.75 * 100) < 0) {
         return;
     } else {
-        dataObj.animalTracks -= (level * 100);
+        dataObj.animalTracks -= (level* 1.75 * 100);
         controller.levelUpAnimal(ui_values.partyIndex);
     }
     soundMan.up1.play();
@@ -877,8 +880,8 @@ function upgrade_animal() {
 */
 function upgrade_baseAnimalMax() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    while (dataObj.animalTracks - (level * 100) > 0) {
-        dataObj.animalTracks -= (level * 100);
+    while (dataObj.animalTracks - (level* 2.75 * 1000) > 0) {
+        dataObj.animalTracks -= (level* 2.75 * 1000);
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
         controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
         level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
@@ -888,8 +891,8 @@ function upgrade_baseAnimalMax() {
 
 function upgrade_animalMax() {
     var level = controller.animals[ui_values.partyIndex].level;
-    while (dataObj.animalTracks - (level * 100) > 0) {
-        dataObj.animalTracks -= (level * 100);
+    while (dataObj.animalTracks - (level* 1.75 * 100) > 0) {
+        dataObj.animalTracks -= (level* 1.75 * 100);
         controller.levelUpAnimal(ui_values.partyIndex);
         level = controller.animals[ui_values.partyIndex].level;
         soundMan.up1.play();
