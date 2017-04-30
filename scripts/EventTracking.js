@@ -468,6 +468,7 @@ function badEventChecker(index, stat,flag){
 	
 	var a = controller.getAnimalData();
 	
+    console.log(index);
 	var e = a[index];
 	
 	var diff = controller.getAreaLevel() * 75;
