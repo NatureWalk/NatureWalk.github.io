@@ -54,10 +54,15 @@ function createData(localJson){
 
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
-    dataObj.steps = 0;
-    dataObj.totalSteps = 0;
-    dataObj.priorSteps = fitbitSteps;
-    stepCount = 0;
+    dataObj.steps = 4500;
+    dataObj.totalSteps = 2500;
+    if (fitbitSteps) {
+        dataObj.priorSteps = fitbitSteps;
+    } else {
+        dataObj.priorSteps = 0;
+    }
+    
+    stepCount = dataObj.steps;
     console.log("Data Object");
     console.log(dataObj);
 }
@@ -192,8 +197,8 @@ function returningPackage(iD) {
         time: prevTime,
     };
 
-    //console.log(package);
-    for (var i = 0; i < prevPartySize; i++) {
+    console.log(prevPartySize);
+    for (var i = 0; i < controller.animals.length; i++) {
         controller.animals[i].setLevel = function(lv){
 		  this.level = lv;
 	    }
