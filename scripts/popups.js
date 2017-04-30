@@ -12,31 +12,47 @@ function addPopup(text,x,y,name="popup") {
 	pushPopup(button);
 }
 
-//Pushes and removes the popup from the engine
-function pushPopup(popup) {
+//For buttons you don't want to halt gameplay
+function pushInterface(popup) {
 	interface.push(popup);
 	interface.pushButton(popup);
 }
 
-function removePopup(popup) {
+function removeInterface(popup) {
 	interface.remove(popup);
 	interface.removeButton(popup);
 }
 
+
+//For buttons that will halt gameplay
+function pushPopup(popup) {
+	popups.push(popup);
+	popups.pushButton(popup);
+}
+
+function removePopup(popup) {
+	popups.remove(popup);
+	popups.removeButton(popup);
+}
+
+
+function startTutorial() {
+	screenMan.push(popups);
+}
+
 /////////////////
-var popupController = function() {
+function popupController() {
 	this.popups = [];
 };
 
 //Contains controls when popups appear
-popupController.update = function() {
+popupController.prototype.update = function() {
 	//console.log("controller updating")
-	p_maxUpgrade();
 }
 
-popupController.draw = function() {}
+popupController.prototype.draw = function() {}
 
-popupController.contains = function(popup) {
+popupController.prototype.contains = function(popup) {
 	for (var i in this.popups) {
         if (this.popups[i] == popup) {
             return true;
@@ -76,8 +92,8 @@ function p_maxUpgrade() {
 	}	
 	if (interface.contains(fullUpgrade)) return;
 	if (dataObj.animalTracks - ((level * threshold) + (level+1)*threshold) > 0) {
-		pushPopup(fullUpgrade);
+		pushInterface(fullUpgrade);
 	} else {
-		removePopup(fullUpgrade);
+		removeInterface(fullUpgrade);
 	}
 }

@@ -22,6 +22,14 @@ function Screen(alwaysUpdate, alwaysDraw){
 Screen.prototype.init = function() {
 }
 
+Screen.prototype.isEmpty = function() {
+    if (this.objects.length == 0 || this.buttonArray.length == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 Screen.prototype.push = function(object) {
     this.objects.push(object);
 }

@@ -132,6 +132,7 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
+        //screenMan.push(popups);
     }
 
     var login = new Button(loadGame)
@@ -479,7 +480,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 
     //Mute Button
-    function mB() {soundMan.mute_music()}
+    //function mB() {soundMan.mute_music()}
+    function mB() {screenMan.push(popups)}
 
     muteButton = new Button(mB);
     muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
