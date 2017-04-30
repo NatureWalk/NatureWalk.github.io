@@ -343,7 +343,6 @@ function buttonSetup() {
         }
     });
     upgradeBtn.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
-
     upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
@@ -453,6 +452,7 @@ function buttonSetup() {
             var charNum = numberLen(name);  
             this.setText([name], -15 - (9 * charNum), -40);
         } else {
+
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
                 return;
@@ -672,6 +672,29 @@ function buttonSetup() {
         this.y = partyButtons[ui_values.partyIndex].y;
     }
     interface.buttonArray.push(selectedAnimal);
+	
+	//blank animal portraits for bottom left page
+	
+	var blankPortrait = function(){
+			var partyLimit = 5;
+			var coordX=500;
+			var coordY=500;
+	};
+	
+	blankPortrait.update = function(){
+		
+	};
+	blankPortrait.draw = function(){
+		ctx.strokeStyle = "black";
+		for (var i = 0; i < 5; i++){
+			this.coordX = 103+(i*60);
+			this.coordY = 457;
+			ctx.strokeRect(this.coordX, this.coordY , 37, 37);
+		}
+		
+	};
+
+	interface.push(blankPortrait);
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 

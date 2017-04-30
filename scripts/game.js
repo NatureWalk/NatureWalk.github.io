@@ -57,6 +57,9 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
+var pController = new popupController();
+
+
 var cursor = {};
 cursor.x=0;
 cursor.y=0;
