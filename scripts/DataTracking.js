@@ -397,5 +397,6 @@ function commandManager() {
         case "badhareday":
             console.log(cmd);
             break;
+            
     }
 }

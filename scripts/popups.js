@@ -83,7 +83,6 @@ charnum = "MAX".length;
 fullUpgrade.setText(["MAX"], (fullUpgrade.width / 2) - (6.3 * charnum), 5);
 
 function p_maxUpgrade() {
-	console.log("p_maxUpgrade")
 	var threshold;
 	if (ui_values.selected == "base") {
 		var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
@@ -96,7 +95,13 @@ function p_maxUpgrade() {
 		if (interface.contains(fullUpgrade)) return;
 		pushInterface(fullUpgrade);
 	} else {
-		console.log("removing interface")
 		removeInterface(fullUpgrade);
 	}
+}
+
+function initTutorial(){
+    //addPopup("Welcome to Nature Walk!\nI see it's your first time here,\nso let me show you around!", )
+    //screenMan.push()
+    
+    
 }

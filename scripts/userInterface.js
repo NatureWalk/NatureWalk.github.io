@@ -132,7 +132,7 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
-        //screenMan.push(popups);
+        
     }
 
     var login = new Button(loadGame)

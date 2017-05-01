@@ -524,7 +524,7 @@ function badEventChecker(index, stat,flag){
 		for(var i = 0; i < controller.getAreaLevel() - 1; i++){
 			diffmin = Math.ceil(diffmin * 1.33)
 		}
-		diffmin = (diffmin * .85);
+		diffmin = (diffmin * 0.85);
 	}
 	
 	if(flag == true){
