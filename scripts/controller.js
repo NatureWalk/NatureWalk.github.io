@@ -202,15 +202,25 @@ function master_controller() {
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'summer';
+					background.layer2.setSrc("image_resources/layer2_sumer.png")
+					background.layer3.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'summer':
 				    this.areaSeason = 'fall';
+					background.layer2.setSrc("image_resources/layer2_fall.png")
+					background.layer3.setSrc("image_resources/layer3_fall.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'winter'
+				    background.layer1.setSrc("image_resources/moun_snow.png")
+					background.layer2.setSrc("image_resources/layer2_winter.png")
+					background.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'spring';
+				    background.layer1.setSrc("image_resources/mountain.png")
+					background.layer2.setSrc("image_resources/layer2_spring.png")
+					background.layer3.setSrc("image_resources/layer3_spring.png")
 				    break;
 			}
 		}

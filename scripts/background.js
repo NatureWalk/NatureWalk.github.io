@@ -4,9 +4,9 @@ var landscape = function() {
 	this.layer2 = new Sprite()
 	this.layer3 = new Sprite()
 
-	this.layer1.setSrc("image_resources/layer1.png")
-	this.layer2.setSrc("image_resources/layer2.png")
-	this.layer3.setSrc("image_resources/layer3.png")
+	this.layer1.setSrc("image_resources/mountain.png")
+	this.layer2.setSrc("image_resources/layer2_spring.png")
+	this.layer3.setSrc("image_resources/layer3_spring.png")
 
 	//Size of native image
 	this.layer1.width = this.layer2.width = this.layer3.width = 1280
