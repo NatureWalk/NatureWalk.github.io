@@ -6,6 +6,7 @@
 //Object that can hold all of the session and player data.
 var dataObj = {
     steps: 0,
+    priorSteps: 0,
     totalSteps: 0,
     animalTracks: 0,
     timeAccelFactor: 1,
@@ -19,17 +20,13 @@ var dataObj = {
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
-    timeAccelFactor: 1,
     partySize: 0
 };
-
-//Array that is referenced by the journal above the game map. 
-var eventLogAry = [];
 
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
     sessionStart();
-}
+};
 DataTracker.prototype.constructor = DataTracker;
 DataTracker.prototype.sessionStart = sessionStart;
 DataTracker.prototype.getTime = getTime;
@@ -44,12 +41,12 @@ function sessionStart() {
 	///////////////////////////////////
 	// USED FOR TESTING! DELETES ALL LOCAL DATA!
 	// ONLY UNCOMMENT IF YOU WANT TO DELETE LOCAL DATA!
-	// localStorage.clear();
+    //localStorage.clear();
 	///////////////////////////////////
 	
     //var _tempData = queryServer();
-    dataObj.steps = stepCount;
-    dataObj["totalSteps"] += dataObj.steps;
+    //dataObj.steps = stepCount;
+    //dataObj["totalSteps"] += dataObj.steps;
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -64,8 +61,10 @@ function sessionStart() {
  * Returns - None. 
 */
 function getTime() {
+    //console.log("Getting Time");
     var currentTime = Date.now() * dataObj["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
+    //console.log("Time Handler");
     timeHandler(timeAry);
     
     return (currentTime - dataObj["sessionStartTime"]);
@@ -82,7 +81,7 @@ function readableTime(milliseconds) {
     timeArray[0] = timeRemainder % 1000;
     timeRemainder = Math.floor(timeRemainder/1000);
     //Seconds
-    timeArray[1] = timeRemainder % 60
+    timeArray[1] = timeRemainder % 60;
     timeRemainder = Math.floor(timeRemainder/60);
     //Minutes
     timeArray[2] = timeRemainder % 60
@@ -105,13 +104,14 @@ function readableTime(milliseconds) {
 */
 function timeHandler(timeAry) {
     if (timeAry[1] === dataObj.everySecondTrig) {
-        //console.log(dataObj.everySecondTrig);
         everySecond(timeAry[1]);
         if (timeAry[1] === 59) {
             dataObj.everySecondTrig = 0;
         } else {
             dataObj.everySecondTrig++; 
-        }   
+        }
+    } else if (Math.abs(timeAry[1] - dataObj.everySecondTrig) >= 2) {
+        dataObj.everySecondTrig = timeAry[1] + 1;
     }
     
     //everyMinute(timeAry[2]);
@@ -155,7 +155,7 @@ function everySecond(seconds) {
         ++dataObj.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        dataObj.eventTrigger = roll(5) + 12;
+        dataObj.eventTrigger = roll(5);
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();
@@ -172,6 +172,7 @@ function everyThirty(seconds) {
         createPackage();
         createData(lJson);
     };
+
 }
 
 function everyMinute(minutes) {
@@ -200,16 +201,19 @@ function createPackage() {
             - Player level?
         - Time of save. 
     */
+    
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
         birdBaseLevel: 1,
         bunnyBaseLevel: 1,
         deerBaseLevel: 1,
         frogBaseLevel: 1,
         playerSteps: stepCount,
+        playerPSteps: dataObj.priorSteps,
         playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
@@ -220,15 +224,6 @@ function createPackage() {
     for (var i = 0; i < controller.animals.length; i++) {
         package.partyComp.push(controller.animals[i]);
     }
-    var anim = "frog";
-    package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
-    var anim = "bunny";
-    package.bunnyBaseLevel = controller.getAnimalBaseLevel(anim);
-    var anim = "bird";
-    package.birdBaseLevel = controller.getAnimalBaseLevel(anim);
-    var anim = "deer";
-    package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
-    
     var anim = "frog";
     package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
     var anim = "bunny";
@@ -271,8 +266,9 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    if (dataObj.totalSteps >= areaReq) {return true;}
-    else {return false}
+    //console.log("Steps: " + dataObj.totalSteps + ". Required: " + areaReq);
+    if (dataObj.totalSteps >= areaReq) return true;
+    return false;
 }
 
 //Rolls an integer between 1 and a number parameter. 
@@ -346,12 +342,7 @@ function commandManager() {
     switch (cmd.toLowerCase()) {
         case "list":
             console.log("'stepoff' - adds steps");
-            console.log("'trackerdown(Not Implemented)' - adds tracks");
-            console.log("'gottagofast(Not Implemented)' - increases rate at which game time flows.");
-            console.log("'justaminutedeer(Not Implemented)' - time warps.");
-            console.log("'pidgeyohno' - removes all animals");
-            console.log("'toadallyfit(Not Implemented)' - makes animals invulnerable, not immortal");
-            console.log("'badhareday(Not Implemented)' - hardreset of player data");
+            console.log("'trackerdown' - adds tracks");
             break;
         //Give steps to the player.
         case "stepoff":

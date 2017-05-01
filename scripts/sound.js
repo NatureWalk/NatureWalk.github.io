@@ -19,6 +19,7 @@ var soundManager = function() {
 	})
 	this.up1 = new Howl({
 		src: ['sounds/up1.wav'],
+		volume: 0.1,
 		buffer:true
 	})
 }

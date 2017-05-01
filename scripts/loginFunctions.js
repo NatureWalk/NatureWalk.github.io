@@ -26,8 +26,9 @@ console.log("first timer");
 	} else {
 console.log("returning player");
 		returningUserSteps();
-                returningUserTracks();
-                returningBaseLevels();
+        returningUserTracks();
+        returningBaseLevels();
+        returningUserSeason();
 		createData(returningPackage(userID));
 	}
 }
@@ -37,7 +38,7 @@ console.log("returning player");
 //used to retrieve playerSteps and playerTSteps
 function getJsonItem(iD, key){
 	var jsonData = JSON.parse(localStorage.getItem(iD.toString()));
-	console.log(parseInt(jsonData[key.toString()]));
+	console.log(key + ": " + parseInt(jsonData[key.toString()]));
 	return parseInt(jsonData[key.toString()]);
 }
 
@@ -50,12 +51,17 @@ function createData(localJson){
 
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
-        dataObj.totalSteps = fitbitSteps;
-	if(stepCount > 20000){
-		stepCount = 20000;
-	} else {
-		stepCount = stepCount;
-	};
+    dataObj.steps = 4500;
+    dataObj.totalSteps = 4500;
+    if (fitbitSteps) {
+        dataObj.priorSteps = fitbitSteps;
+    } else {
+        dataObj.priorSteps = 0;
+    }
+    
+    stepCount = dataObj.steps;
+    console.log("Data Object");
+    console.log(dataObj);
 }
 
 function returningBaseLevels(){
@@ -68,8 +74,25 @@ function returningBaseLevels(){
 
 //calculates stepCount using saved data
 function returningUserSteps(){
-	stepCount = ((stepCount - parseFloat(getJsonItem(userID, "playerTSteps")))) + parseFloat(getJsonItem(userID, "playerSteps"));
-        dataObj.totalSteps = fitbitSteps;
+	var priorSteps = parseFloat(getJsonItem(userID, "playerPSteps"));
+    var totalSteps = parseFloat(getJsonItem(userID, "playerTSteps"));
+    var playerSteps = parseFloat(getJsonItem(userID, "playerSteps"));
+    
+    console.log("Prior: " + priorSteps);
+    console.log("Total: " + totalSteps);
+    console.log("Player: " + playerSteps);
+    
+    playerSteps += 5000;
+    
+    stepCount =  (fitbitSteps - priorSteps) + playerSteps;
+    //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
+    
+    totalSteps += 5000;
+    
+    dataObj.priorSteps = priorSteps;
+    //dataObj.totalSteps = fitbitSteps - priorSteps;
+    dataObj.totalSteps = totalSteps;
+    dataObj.steps = stepCount;
 	console.log("returning steps ===== " + stepCount);
 }
 
@@ -321,6 +344,12 @@ function returningUserArea(){
 	controller.areaLevelUp();
 }
 
+function returningUserSeason(){
+	var key = 'season';
+	var jsonData = JSON.parse(localStorage.getItem(userID.toString()));
+	console.log(jsonData);
+	controller.areaSeason = jsonData[key].toString();
+}
 
 function returningUserParty(){
 console.log("returning user party");
@@ -351,13 +380,15 @@ function initPackage() {
     package = { 
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
         birdBaseLevel: controller.getAnimalBaseLevel('bird'),
         bunnyBaseLevel: controller.getAnimalBaseLevel('bunny'),
         deerBaseLevel: controller.getAnimalBaseLevel('deer'),
         frogBaseLevel: controller.getAnimalBaseLevel('frog'),
-        playerSteps: stepCount,
-        playerTSteps: fitbitSteps,
+        playerSteps: dataObj.steps,
+        playerPSteps: dataObj.priorSteps,
+        playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };
@@ -367,34 +398,58 @@ function initPackage() {
     }
     
     jsonFile = JSON.stringify(package);
-    //console.log(jsonFile);
+    console.log(jsonFile);
     return jsonFile;
 }
 
 
 //creates a login package for a returning player
 function returningPackage(iD) {
-	var prevLifeSteps = parseFloat(getJsonItem(iD, "playerTSteps"));
-	//console.log("previous step count = " + prevLifeSteps);
-	var prevDispSteps = parseFloat(getJsonItem(iD, "playerSteps"));
+	
 	//console.log("previous display = " + prevDispSteps);
-    var package, jsonFile; 
+    var prevArea = parseInt(getJsonItem(iD, "area"));
+    //console.log("previous pSteps = " + prevArea);
+    var prevPartySize = parseInt(getJsonItem(iD, "partySize"));
+    var prevSeason = getJsonItem(iD, "season");
+    var prevPartyComp;
+    var prevBirdBase = parseInt(getJsonItem(iD, "birdBaseLevel"));
+    var prevBunnBase = parseInt(getJsonItem(iD, "bunnyBaseLevel"));
+    var prevDeerBase = parseInt(getJsonItem(iD, "deerBaseLevel"));
+    var prevFrogBase = parseInt(getJsonItem(iD, "frogBaseLevel"));
+    var prevSteps = parseFloat(getJsonItem(iD, "playerSteps"));
+    var prevPSteps = parseFloat(getJsonItem(iD, "playerPSteps"));
+    console.log("Returning Prior: " + getJsonItem(iD, "playerPSteps"))
+    var prevTSteps = parseFloat(getJsonItem(iD, "playerTSteps"));
+    var prevTracks = parseFloat(getJsonItem(iD, "playerTracks"));
+    var prevTime = parseFloat(getJsonItem(iD, "time"));
+    //var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
-        birdBaseLevel: controller.getAnimalBaseLevel('bird'),
-        bunnyBaseLevel: controller.getAnimalBaseLevel('bunny'),
-        deerBaseLevel: controller.getAnimalBaseLevel('deer'),
-        frogBaseLevel: controller.getAnimalBaseLevel('frog'),
-        playerSteps: stepCount, 
-        playerTSteps: fitbitSteps,
-        playerTracks: dataObj.animalTracks,
-        time: Date.now(),
+        birdBaseLevel: prevBirdBase,
+        bunnyBaseLevel: prevBunnBase,
+        deerBaseLevel: prevDeerBase,
+        frogBaseLevel: prevFrogBase,
+        playerSteps: prevSteps,
+        playerPSteps: prevPSteps,
+        playerTSteps: prevTSteps,
+        playerTracks: prevTracks,
+        time: prevTime,
     };
 
+    console.log(prevPartySize);
     for (var i = 0; i < controller.animals.length; i++) {
+        controller.animals[i].setLevel = function(lv){
+		  this.level = lv;
+	    }
+        controller.animals[i].levelUp = function(){
+		  this.level += 1;
+	    }
         package.partyComp.push(controller.animals[i]);
+        console.log(controller.animals[i].name + ": " +
+                   controller.animals[i].levelUp);
     }
     
     jsonFile = JSON.stringify(package);

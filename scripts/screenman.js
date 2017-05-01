@@ -22,8 +22,20 @@ function Screen(alwaysUpdate, alwaysDraw){
 Screen.prototype.init = function() {
 }
 
+Screen.prototype.isEmpty = function() {
+    if (this.objects.length == 0 || this.buttonArray.length == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 Screen.prototype.push = function(object) {
     this.objects.push(object);
+}
+
+Screen.prototype.pushButton = function(button) {
+    this.buttonArray.push(button);
 }
 
 Screen.prototype.remove = function(object) {
@@ -32,6 +44,28 @@ Screen.prototype.remove = function(object) {
             this.objects.splice(i,1);
         }
     }
+}
+
+Screen.prototype.removeButton = function(button) {
+    for (var i in this.buttonArray) {
+        if (this.buttonArray[i] == button) {
+            this.buttonArray.splice(i,1);
+        }
+    }
+}
+
+Screen.prototype.contains = function(object) {
+    for (var i in this.objects) {
+        if (this.objects[i] == object) {
+            return true;
+        }
+    }
+    for (var i in this.buttonArray) {
+        if (this.buttonArray[i] == object) {
+            return true;
+        }
+    }
+    return false;
 }
 
 Screen.prototype.draw = function() {
@@ -43,6 +77,7 @@ Screen.prototype.draw = function() {
 Screen.prototype.update = function() {
 	//console.log(this.objects);
     for (var i in this.objects) {
+        //console.log(this.objects[i])
         this.objects[i].update();
     }
     
@@ -100,9 +135,9 @@ ScreenManager.prototype.update = function(){
 }
 
 ScreenManager.prototype.draw = function(){
-    var screens = this.screens;
-    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    var screens = this.screens;
     for(var i in screens){
 
         if(screens[i].alwaysDraw || screens[i] == screens[screens.length-1]){
