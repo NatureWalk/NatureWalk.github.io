@@ -256,7 +256,7 @@ function master_controller() {
 				    break;
 		}
 	var cata = roll(2,0);
-	//this.usableEvents.push(badEventsCatastrophe[cata]);
+	this.usableEvents.push(badEventsCatastrophe[cata]);
 	}
 	
 	this.areaLevelDown = function(){
