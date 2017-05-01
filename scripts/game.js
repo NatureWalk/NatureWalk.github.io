@@ -38,7 +38,9 @@ var popups = new Screen(false, true);
 var pcontroller_i = new popupController();
 pcontroller_i.update = function() {
     p_maxUpgrade();
+    
 }
+
 
 var pcontroller_p = new popupController();
 pcontroller_p.update = function() {
@@ -107,7 +109,7 @@ interface.init = function() {
 
 popups.init = function() {
     this.push(pcontroller_p);
-    addPopup("This is a test.",w/2,h/2)
+    //addPopup("This is a test.",w/2,h/2)
 }
 
 game.init = function() {	

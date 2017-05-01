@@ -9,6 +9,8 @@ function logIn(){
     loginPlayer();
 }
 
+firstTimeUserFlag = false;
+
 
 //initializes fitbitsteps to player's lifetime fitbit steps before stepCount is recalculated
 //checks if the player is a first time user
@@ -23,7 +25,7 @@ function loginPlayer(){
 console.log("first timer");
         firstTimeUserSteps();
         createData(initPackage());
-        initTutorial();
+        firstTimeUserFlag = true;
     } else {
         console.log("returning player");
         returningUserSteps();
@@ -82,12 +84,10 @@ function returningUserSteps(){
     console.log("Total: " + totalSteps);
     console.log("Player: " + playerSteps);
     
-    playerSteps += 5000;
     
     stepCount =  (fitbitSteps - priorSteps) + playerSteps;
     //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
-    
-    totalSteps += 5000;
+   
     
     dataObj.priorSteps = priorSteps;
     //dataObj.totalSteps = fitbitSteps - priorSteps;

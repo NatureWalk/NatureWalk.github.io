@@ -161,6 +161,11 @@ function everySecond(seconds) {
         updateParty();
         dataObj.partySize = controller.animals.length;
     } 
+    
+    if(firstTimeUserFlag == true){
+        firstTimeUserFlag = false;
+        startTutorial();
+    }
 }
 
 //Function that is called every thirty seconds. 

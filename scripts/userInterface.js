@@ -646,6 +646,11 @@ function buttonSetup() {
         ctx.stroke();
         ctx.restore();
         ctx.rect(517, 0, 475, 578);
+        
+        console.log(tutorialProgress);
+        if(tutorialProgress == 20){
+            startTutorialPartThree();
+        }
     }
     selectedAnimal.update = function() {
         if (controller.animals[ui_values.partyIndex] == undefined || partyButtons[ui_values.partyIndex] == undefined) {
@@ -654,6 +659,7 @@ function buttonSetup() {
         }
         this.x = partyButtons[ui_values.partyIndex].x;
         this.y = partyButtons[ui_values.partyIndex].y;
+        
     }
     interface.buttonArray.push(selectedAnimal);
 	
@@ -719,6 +725,8 @@ function select_base(animal_index) {
     //Setting current animal so we all know what we're referencing. 
     ui_values.currentAnimal = ui_values.animalAry[animal_index];
     soundMan.click.play();
+    
+    
 }
 
 function select_animal(animal_index) {
@@ -761,6 +769,10 @@ function select_animal(animal_index) {
 
     ui_values.partyIndex = animal_index;
     soundMan.click.play();
+    
+    
+    
+    
 }
 
 /* add_animal() - For adding animals to the party. 
@@ -790,6 +802,10 @@ function add_animal() {
             break;
         case 'Bunny':
             break;
+    }
+    
+    if(tutorialProgress == 12){
+        startTutorialPartTwo();
     }
     
 }
