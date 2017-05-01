@@ -202,25 +202,26 @@ function master_controller() {
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'summer';
-					background.layer2.setSrc("image_resources/layer2_sumer.png")
-					background.layer3.setSrc("image_resources/layer3_summer.png")
+					land.layer2.setSrc("image_resources/layer2_summer.png")
+					land.layer3.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'summer':
 				    this.areaSeason = 'fall';
-					background.layer2.setSrc("image_resources/layer2_fall.png")
-					background.layer3.setSrc("image_resources/layer3_fall.png")
+				
+                    land.layer2.setSrc("image_resources/layer2_fall.png")
+					land.layer3.setSrc("image_resources/layer3_fall.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'winter'
-				    background.layer1.setSrc("image_resources/moun_snow.png")
-					background.layer2.setSrc("image_resources/layer2_winter.png")
-					background.layer3.setSrc("image_resources/layer3_winter.png")
+				    land.layer1.setSrc("image_resources/moun_snow.png")
+					land.layer2.setSrc("image_resources/layer2_winter.png")
+					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'spring';
-				    background.layer1.setSrc("image_resources/mountain.png")
-					background.layer2.setSrc("image_resources/layer2_spring.png")
-					background.layer3.setSrc("image_resources/layer3_spring.png")
+				    land.layer1.setSrc("image_resources/mountain.png")
+					land.layer2.setSrc("image_resources/layer2_spring.png")
+					land.layer3.setSrc("image_resources/layer3_spring.png")
 				    break;
 			}
 		}
@@ -263,16 +264,27 @@ function master_controller() {
 		if(this.area_level % 10 == 0){
 			switch(this.areaSeason){
 				case 'spring':
-				    this.areaSeason = 'winter';
+				    this.areaSeason = 'winter'
+				    land.layer1.setSrc("image_resources/moun_snow.png")
+					land.layer2.setSrc("image_resources/layer2_winter.png")
+					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'summer':
-				    this.areaSeason = 'spring';
+				    this.areaSeason = 'winter'
+				    land.layer1.setSrc("image_resources/moun_snow.png")
+					land.layer2.setSrc("image_resources/layer2_winter.png")
+					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'fall':
-				    this.areaSeason = 'summer'
+				    this.areaSeason = 'summer';
+					land.layer2.setSrc("image_resources/layer2_summer.png")
+					land.layer3.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'fall';
+				
+                    land.layer2.setSrc("image_resources/layer2_fall.png")
+					land.layer3.setSrc("image_resources/layer3_fall.png")
 				    break;
 			}
 		}
