@@ -713,16 +713,34 @@ function displayEvent(evt) {
                 elem.fadeTimer = 1;
                 
                 elem.update = function () {
-                    this.x -= 1.5;
+                    this.x -= 1.75;
+                }
+                
+                elem.draw = function () {
                     
-                    if (this.anim) {
-                        this.tickCount++; 
-                        if (this.tickCount > this.ticksPerFrame) {
-                            this.frameIndex++;
-                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
-                            this.tickCount = 0; 
-                        }
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (dataObj.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
                     }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        dataObj.eventDisplayTimer = 4;
+    } else if (evt === "river") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 360, 120, 200, "eventAnimation");
+                elem.setSrc("image_resources/Event_River.png", "image_resources/Event_River.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= 1.75;
                 }
                 
                 elem.draw = function () {
