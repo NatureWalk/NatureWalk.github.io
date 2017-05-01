@@ -708,7 +708,7 @@ function displayEvent(evt) {
     } else if (evt === "treefall") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 360, 120, 200, "eventAnimation");
+                elem.setSpriteAttributes(865, 360, 120, 180, "eventAnimation");
                 elem.setSrc("image_resources/Event_FallenTree.png", "image_resources/Event_FallenTree.png", false);
                 elem.fadeTimer = 1;
                 
@@ -735,7 +735,7 @@ function displayEvent(evt) {
     } else if (evt === "river") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 360, 120, 200, "eventAnimation");
+                elem.setSpriteAttributes(865, 360, 120, 180, "eventAnimation");
                 elem.setSrc("image_resources/Event_River.png", "image_resources/Event_River.png", false);
                 elem.fadeTimer = 1;
                 
