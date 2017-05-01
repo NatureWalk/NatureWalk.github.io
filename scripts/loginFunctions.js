@@ -27,7 +27,6 @@ console.log("first timer");
 console.log("returning player");
 		returningUserSteps();
                 returningUserTracks();
-                returningUserArea();
                 returningBaseLevels();
 		createData(returningPackage(userID));
 	}
@@ -75,6 +74,7 @@ function returningUserSteps(){
 }
 
 function returningUserTracks(){
+	returningUserArea();
 	dataObj.animalTracks = parseFloat(getJsonItem(userID, "playerTracks"));
 	var lastLoginTime = parseFloat(getJsonItem(userID, "time"));
 	var id = userID;
@@ -84,14 +84,27 @@ function returningUserTracks(){
 	var currTime = Date.now();
 	var timeDiff = currTime - lastLoginTime;
 	
+	var areaMult = 2.16;
+    var areaTracks = controller.area_level*areaMult;
+	
 	for(var i = 0; i < myarr.length; i++){
+		var deadflag = false;
 		var endTime = currTime - myarr[i].deathTime;
 		if(endTime < 0){
 			endTime = math.floor((timeDiff/1000)/15);
 		} else {
 			endTime = math.floor(((myarr[i].deathTime - lastLoginTime)/1000)/15);
 		}
+		var spd = 1
+		var eva = 1
+		var str = 1
+		for(var k = 0; k < myarr[i].level; k++){
+			spd = Math.ceil(stat * animal_data[myarr[i].type][0]);
+			eva = Math.ceil(stat * animal_data[myarr[i].type][1]);
+			str = Math.ceil(stat * animal_data[myarr[i].type][2]);
+		}
 		for(var j = 0; j < endTime; j++){
+			dataObj.animalTracks += Math.floor(areaTracks*2*15);
 			evtRoll = roll(100);
 			//Good Event
     		if (evtRoll > 70) {
@@ -105,18 +118,207 @@ function returningUserTracks(){
     			evt2 = roll(100);
         		switch (true) {
     				case evt2 <= 31:
-    					
-    		}
+    					stat = controller.usableEvents[0][1];
+    					var playerRoll, gameRoll;
+    					var diff = controller.getAreaLevel() * 75;
+						var diffmin = (controller.getAreaLevel() - 1) * 75;
+	
+						for(var k = 0; k < controller.getAreaLevel(); k++){
+							diff = Math.ceil(diff * 1.33)
+						}
+	
+						if(controller.getAreaLevel() == 1){
+							diffmin = 1;
+						} else {
+							for(var k = 0; k < controller.getAreaLevel() - 1; k++){
+								diffmin = Math.ceil(diffmin * 1.33)
+							}
+							diffmin = (diffmin * .85);
+						}
+						
+						playerRoll = 0;
+						gameRoll = roll(diff, diffmin);
+						
+						switch(stat){
+       					case 'speed': 
+       						playerRoll = roll(Math.round(spd + (25 * controller.getAreaLevel()), spd));
+            				break;
+        				case 'evasion': 
+        					playerRoll = roll(Math.round(eva + (25 * controller.getAreaLevel()), eva));
+            				break;
+        				case 'strength': 
+        					playerRoll = roll(Math.round(str + (25 * controller.getAreaLevel()), str));
+            				break;
+						}
+						if(playerRoll < gameRoll){
+							var die = roll(100);
+							if (die < 5){
+								deadflag = true;
+							} else if(die < 50){
+            					dataObj.animalTracks -= (dataObj.animalTracks/200)
+							}
+						}
+						if(deadflag == true){
+							myArr[i].deathTime = lastLoginTime + (j * 15)
+						}
+						break;	
+    				case evtRoll > 31 < 63:
+    					stat = controller.usableEvents[2][1];
+    					var playerRoll, gameRoll;
+    					var diff = controller.getAreaLevel() * 75;
+						var diffmin = (controller.getAreaLevel() - 1) * 75;
+	
+						for(var k = 0; k < controller.getAreaLevel(); k++){
+							diff = Math.ceil(diff * 1.33)
+						}
+	
+						if(controller.getAreaLevel() == 1){
+							diffmin = 1;
+						} else {
+							for(var k = 0; k < controller.getAreaLevel() - 1; k++){
+								diffmin = Math.ceil(diffmin * 1.33)
+							}
+							diffmin = (diffmin * .85);
+						}
+						
+						playerRoll = 0;
+						gameRoll = roll(diff, diffmin);
+						
+						switch(stat){
+       					case 'speed': 
+       						playerRoll = roll(Math.round(spd + (25 * controller.getAreaLevel()), spd));
+            				break;
+        				case 'evasion': 
+        					playerRoll = roll(Math.round(eva + (25 * controller.getAreaLevel()), eva));
+            				break;
+        				case 'strength': 
+        					playerRoll = roll(Math.round(str + (25 * controller.getAreaLevel()), str));
+            				break;
+						}
+						if(playerRoll < gameRoll){
+							var die = roll(100);
+							if (die < 5){
+								deadflag = true;
+							} else if(die < 50){
+            					dataObj.animalTracks -= (dataObj.animalTracks/200)
+							}
+						}
+						if(deadflag == true){
+							myArr[i].deathTime = lastLoginTime + (j * 15)
+						}
+						break;	
+    				case evtRoll >= 63 < 95:
+    					stat = controller.usableEvents[0][1];
+    					var playerRoll, gameRoll;
+    					var diff = controller.getAreaLevel() * 75;
+						var diffmin = (controller.getAreaLevel() - 1) * 75;
+	
+						for(var k = 0; k < controller.getAreaLevel(); k++){
+							diff = Math.ceil(diff * 1.33)
+						}
+	
+						if(controller.getAreaLevel() == 1){
+							diffmin = 1;
+						} else {
+							for(var k = 0; k < controller.getAreaLevel() - 1; k++){
+								diffmin = Math.ceil(diffmin * 1.33)
+							}
+							diffmin = (diffmin * .85);
+						}
+						
+						playerRoll = 0;
+						gameRoll = roll(diff, diffmin);
+						
+						switch(stat){
+       					case 'speed': 
+       						playerRoll = roll(Math.round(spd + (25 * controller.getAreaLevel()), spd));
+            				break;
+        				case 'evasion': 
+        					playerRoll = roll(Math.round(eva + (25 * controller.getAreaLevel()), eva));
+            				break;
+        				case 'strength': 
+        					playerRoll = roll(Math.round(str + (25 * controller.getAreaLevel()), str));
+            				break;
+						}
+						if(playerRoll < gameRoll){
+							var die = roll(100);
+							if (die < 5){
+								deadflag = true;
+							} else if(die < 50){
+            					dataObj.animalTracks -= (dataObj.animalTracks/200)
+							}
+						}
+						if(deadflag == true){
+							myArr[i].deathTime = lastLoginTime + (j * 15)
+						}
+						break;	
+    				case evtRoll >= 95:
+    					stat = controller.usableEvents[3][1];
+    					var playerRoll, gameRoll;
+    					var diff = controller.getAreaLevel() * 75;
+						var diffmin = (controller.getAreaLevel() - 1) * 75;
+	
+						for(var k = 0; k < controller.getAreaLevel(); k++){
+							diff = Math.ceil(diff * 1.33)
+						}
+	
+						if(controller.getAreaLevel() == 1){
+							diffmin = 1;
+						} else {
+							for(var k = 0; k < controller.getAreaLevel() - 1; k++){
+								diffmin = Math.ceil(diffmin * 1.33)
+							}
+							diffmin = (diffmin * .85);
+						}
+						
+						diff = (diff*1.5);
+						diffmin = (diffmin*1.5);
+						
+						playerRoll = 0;
+						gameRoll = roll(diff, diffmin);
+						
+						switch(stat){
+       					case 'speed': 
+       						playerRoll = roll(Math.round(spd + (25 * controller.getAreaLevel()), spd));
+            				break;
+        				case 'evasion': 
+        					playerRoll = roll(Math.round(eva + (25 * controller.getAreaLevel()), eva));
+            				break;
+        				case 'strength': 
+        					playerRoll = roll(Math.round(str + (25 * controller.getAreaLevel()), str));
+            				break;
+						}
+						if(playerRoll < gameRoll){
+							var die = roll(100);
+							if (die < 5){
+								deadflag = true;
+							} else if(die < 50){
+            					dataObj.animalTracks -= (dataObj.animalTracks/200)
+							}
+						}
+						if(deadflag == true){
+							myArr[i].deathTime = lastLoginTime + (j * 15)
+						}
+						break;	
+    				
+    			}
+			}
+			if(deadflag == true){
+				break;	
+			}
 		}
-		
-	controller.animals.push(myarr[i]);	
+		if(deadflag != true && ((currTime - myarr[i].deathTime) > 0)){
+			controller.animals.push(myarr[i]);
+		}
+	
 	}
-	//console.log("returning steps ===== " + stepCount);
 }
 
 function returningUserArea(){
 	//console.log("current area is " + parseInt(getJsonItem(userID, "area")));
 	controller.area_level = parseInt(getJsonItem(userID, "area"));
+	controller.areaLevelDown();
+	controller.areaLevelUp();
 }
 
 
