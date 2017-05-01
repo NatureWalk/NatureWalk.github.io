@@ -6,49 +6,27 @@
 //Object that can hold all of the session and player data.
 var dataObj = {
     steps: 0,
-    totalSteps: fitbitSteps,
+    priorSteps: 0,
+    totalSteps: 0,
     animalTracks: 0,
     timeAccelFactor: 1,
     numberOfSessions: 0,
     timePlayed: 0,
     everySecondTrig: 0,
     eventTrigger: 10,
+    eventDisplayTimer: 0,
     sessionStartTime: 0,
     animalStats: ["Level", "Speed", "Evasion", "Strength"],
     devSignIn: false,
     computationReady: false,
     eventCounter: 0,
-    timeAccelFactor: 1,
     partySize: 0
 };
 
-
-//List of bad events. 
-
-
-//List of good events. 
-var goodEvents = [
-    "stepmulti", "extratracks", "clickable", "fountain", 
-    "meadow", "preservation"
-];
-
-//Array that is referenced by the journal above the game map. 
-var eventLogAry = [];
-
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
-    //this.timePlayed = 0;
-    //this.sessionStartTime = 0;
-    /*
-    if (getData(playerID, "timePlayed") === undefined) {
-        updateData(playerID, "timePlayed", 0);
-    } else {
-        dataObj["timePlayed"] = getData(playerID, "timePlayed");
-    }
-    */
-    
     sessionStart();
-}
+};
 DataTracker.prototype.constructor = DataTracker;
 DataTracker.prototype.sessionStart = sessionStart;
 DataTracker.prototype.getTime = getTime;
@@ -60,10 +38,15 @@ DataTracker.prototype.openDevWindow = openDevWindow;
  * Returns - None. 
 */
 function sessionStart() {
+	///////////////////////////////////
+	// USED FOR TESTING! DELETES ALL LOCAL DATA!
+	// ONLY UNCOMMENT IF YOU WANT TO DELETE LOCAL DATA!
+    //localStorage.clear();
+	///////////////////////////////////
+	
     //var _tempData = queryServer();
-    dataObj.steps = stepCount;
-    dataObj["totalSteps"] += dataObj.steps;
-    //console.log(dataObj.totalSteps + " " + stepCount);
+    //dataObj.steps = stepCount;
+    //dataObj["totalSteps"] += dataObj.steps;
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -71,11 +54,6 @@ function sessionStart() {
     //setupPlayer(serverPlayerData);
     
     //setupParty(serverPartyComp);
-    
-    
-    //console.log(dataObj["sessionStartTime"]);
-    //dataObj["numberOfSessions"] = getData(playerID, "numberOfSessions");
-    //console.log("Time Played: " + dataObj["timePlayed"]);
 }
 
 /* getTime() - Function that calculates any time that passes. 
@@ -83,10 +61,10 @@ function sessionStart() {
  * Returns - None. 
 */
 function getTime() {
+    //console.log("Getting Time");
     var currentTime = Date.now() * dataObj["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
-    //console.log("hello");
-    //DEBUG: console.log(timeAry[1] + " Seconds\n" + timeAry[2] + " Minutes\n" + timeAry[3] + " Hours\n" + timeAry[4] + " Days");
+    //console.log("Time Handler");
     timeHandler(timeAry);
     
     return (currentTime - dataObj["sessionStartTime"]);
@@ -103,7 +81,7 @@ function readableTime(milliseconds) {
     timeArray[0] = timeRemainder % 1000;
     timeRemainder = Math.floor(timeRemainder/1000);
     //Seconds
-    timeArray[1] = timeRemainder % 60
+    timeArray[1] = timeRemainder % 60;
     timeRemainder = Math.floor(timeRemainder/60);
     //Minutes
     timeArray[2] = timeRemainder % 60
@@ -126,20 +104,20 @@ function readableTime(milliseconds) {
 */
 function timeHandler(timeAry) {
     if (timeAry[1] === dataObj.everySecondTrig) {
-        //console.log(dataObj.everySecondTrig);
         everySecond(timeAry[1]);
         if (timeAry[1] === 59) {
             dataObj.everySecondTrig = 0;
         } else {
             dataObj.everySecondTrig++; 
-        }   
+        }
+    } else if (Math.abs(timeAry[1] - dataObj.everySecondTrig) >= 2) {
+        dataObj.everySecondTrig = timeAry[1] + 1;
     }
     
     //everyMinute(timeAry[2]);
     
     if (timeAry[1] % 30 === 0) {
         if (dataObj.computationReady) {
-            //console.log("Computation Event!! " + tracks);
             everyThirty(timeAry[1]);
             dataObj.computationReady = false;
         } else {
@@ -159,12 +137,14 @@ function everySecond(seconds) {
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
     var animTracks = 2*controller.getNumAnimals();
-    //console.log("Area: " + areaTracks);
-    //console.log("Anim: " + animTracks);
-    console.log("Tracks: " + dataObj.animalTracks);
-    console.log(Math.floor(areaTracks*animTracks));
+
+    //DEBUG: console.log("Tracks: " + dataObj.animalTracks);
+    //DEBUG: console.log(Math.floor(areaTracks*animTracks));
     dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
+    if (--dataObj.eventDisplayTimer === 0) {
+        displayEvent();
+    }
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
@@ -175,7 +155,7 @@ function everySecond(seconds) {
         ++dataObj.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        dataObj.eventTrigger = roll(5) + 12;
+        dataObj.eventTrigger = roll(5);
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();
@@ -185,17 +165,14 @@ function everySecond(seconds) {
 
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
-    /*
-    var tracks = 0;
-    for (var i = 0; i < 4; i++){
-        tracks += (controller.getNumAnimals() * 30);
-    } 
-    */
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
     //dataObj.animalTracks += tracks;
-    createPackage();
-    createData(lJson);
+    if(loggedIn == true){
+        createPackage();
+        createData(lJson);
+    };
+
 }
 
 function everyMinute(minutes) {
@@ -205,6 +182,7 @@ function everyMinute(minutes) {
 function everyHour(hours) {
     
 }
+
 var lJson;
 function createPackage() {
     /* Things this needs to do. 
@@ -223,45 +201,42 @@ function createPackage() {
             - Player level?
         - Time of save. 
     */
+    
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
         partySize: controller.party_limit,
+        season: controller.areaSeason,
         partyComp: [],
+        birdBaseLevel: 1,
+        bunnyBaseLevel: 1,
+        deerBaseLevel: 1,
+        frogBaseLevel: 1,
         playerSteps: stepCount,
-        playerTSteps: fitbitSteps,
+        playerPSteps: dataObj.priorSteps,
+        playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };
+
+    //sendData(package);
     
     for (var i = 0; i < controller.animals.length; i++) {
         package.partyComp.push(controller.animals[i]);
     }
+    var anim = "frog";
+    package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bunny";
+    package.bunnyBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "bird";
+    package.birdBaseLevel = controller.getAnimalBaseLevel(anim);
+    var anim = "deer";
+    package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
     jsonFile = JSON.stringify(package);
     console.log(jsonFile);
     lJson = jsonFile;
-    /*////////////JSON Tests/////////////
-    var myObj, obj2, myJSON, myParser;
-    myObj = {hello: "world", goodbye: ["sucka", "busta"]};
-    //obj2 = {hello: "sucka", goodbye: "world"};
-    //myObj += obj2;
-    myJSON = JSON.stringify(myObj);
-    
-    console.log("Object");
-    console.log(myObj.hello);
-    console.log("JSON");
-    console.log(myJSON);
-    
-    
-    
-    myParser = JSON.parse(myJSON);
-    console.log(myParser);
-    */
 }
-
-
-
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
@@ -284,163 +259,6 @@ function eventChooser(evtRoll) {
     }
 }
 
-//Handles good events, takes in a new roll from the eventChooser.
-function goodEventHandler(evtRoll) {
-    switch (true) {
-        //Multiplier
-        case evtRoll < 30:
-            //console.log(goodEvents[0]);
-            eventLogAry.push("You picked up a step multiplier.");
-            break;
-        //Extra Tracks
-        case evtRoll >= 30 && evtRoll < 55:
-            //console.log(goodEvents[1]);
-            eventLogAry.push("You find some animal tracks!");
-			dataObj.animalTracks += 2500;
-            break;
-        //Fountain of Youth
-        case evtRoll >= 55 && evtRoll < 60:
-            //console.log(goodEvents[2]);
-            eventLogAry.push("Your animals drink from the fountain of youth!");
-            break;
-        //Restful Meadow
-        case evtRoll >= 60 && evtRoll < 75:
-            //console.log(goodEvents[3]);
-            eventLogAry.push("This meadow looks like a good place to rest.");
-            break;
-        //Mating Season
-        case evtRoll >= 75 && evtRoll < 85:
-            //console.log(goodEvents[4]);
-            
-            break;
-        //Wildlife Preservation Attempts
-        case evtRoll >= 85 && evtRoll <= 100:
-            //console.log(goodEvents[5]);
-            eventLogAry.push("Wildlife preservationists are nearby.");
-            break;
-    }
-}
-
-//Handles bad events, takes in a new roll from the eventChooser.
-function badEventHandler(evtRoll) {
-   var b = controller.getBadEvents();
-   //badStuff = [# of Unharmed, # Of Trips, # of Deaths]
-   var x, badStuff = [0, 0, 0];
-   switch (true) {
-    	case evtRoll <= 31:
-    		console.log(b[0][0] + " " + b[0][1])
-            //eventLogAry.push("")
-    		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badStuffSort(badEventChecker(i,b[0][1]), badStuff);
-			}
-    		break;
-    	case evtRoll > 31 < 63:
-    		console.log(b[1][0] + " " + b[1][1])
-    	    for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[1][1]);
-			}
-    		break;
-    	case evtRoll >= 63 < 94:
-    		console.log(b[2][0] + " " + b[2][1])
-    		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[2][1]);
-			}
-    		break;
-    	case evtRoll >= 94:
-    		console.log(b[3][0] + " " + b[3][1])
-    		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[3][1],true);
-			}
-    		break;
-    	    
-   }
-   controller.removeAllQueue();
-   console.log(controller.getNumAnimals());
-}
-
-//Handles neutral events, takes in a new roll from the eventChooser.
-function noEventHandler(evtRoll) {
-    switch (true) {
-        //Predator
-        case evtRoll < 35:
-            eventLogAry.push("It's a wonderful day!");
-            break;
-        case evtRoll >= 35 && evtRoll < 45:
-            eventLogAry.push("Sunny and warm, perfect for nature walking.");
-            break;
-        case evtRoll >= 45:
-            eventLogAry.push("You pass by another animal.");
-            break;
-    }
-}
-
-//Two String arguments animal is either: 'frog','deer','bird','bunny', and stat is either: 'vitality', 'evasion', 'strength', 'athletics', 'instincts', 'lifespan'
-// rolls for all animal count of the specific animal against their specified stat
-// removes the number of animals that fail the roll
-function badEventChecker(index, stat,flag){
-	
-	var playerRoll, gameRoll;
-	
-	var a = controller.getAnimalData();
-	
-	var e = a[index];
-	
-	var diff = controller.getAreaLevel() * 75;
-	var diffmin = (controller.getAreaLevel() - 1) * 75;
-	
-	for(var i = 0; i < controller.getAreaLevel(); i++){
-		diff = Math.ceil(diff * 1.33)
-	}
-	
-	if(controller.getAreaLevel() == 1){
-		diffmin = 1;
-	} else {
-		for(var i = 0; i < controller.getAreaLevel() - 1; i++){
-			diffmin = Math.ceil(diffmin * 1.33)
-		}
-		diffmin = (diffmin * .85);
-	}
-	
-	if(flag == true){
-		diff = (diff*1.5);
-		diffmin = (diffmin*1.5);
-	}
-	
-    playerRoll = 0;
-	gameRoll = roll(diff, diffmin);
-		
-	switch(stat){
-       	case 'speed': playerRoll = roll(e[2] + (25 * controller.getAreaLevel()), e[2]);
-            break;
-        case 'evasion': playerRoll = roll(e[2] + (25 * controller.getAreaLevel()), e[3]);
-            break;
-        case 'strength': roll(Math.round(e[2] + (25 * controller.getAreaLevel()), e[4]));
-            break;
-	}
-	console.log(playerRoll + " " + gameRoll);
-	if(playerRoll < gameRoll){
-		var die = roll(100);
-        var x = toCapitalize(e[5]);
-        //console.log(x);
-		if (die < 5){
-			eventLogAry.push(x +" was tragically lost.");
-			controller.queueRemove(index);
-            return 2;
-		} else if(die < 50){
-            dataObj.animalTracks -= (dataObj.animalTracks/200)
-			eventLogAry.push(x +" tripped, you lost some tracks.");
-            return 1;
-		} else {
-			eventLogAry.push(x +" didn't succeed, but they were luckily unhurt.");
-            return 0;
-		}
-	}
-}
-
-function badStuffSort(badThing, badStuff) {
-    badStuff[badThing]++;
-}
-
 function areaEligible() {
     //
     var area = controller.getAreaLevel();
@@ -448,20 +266,11 @@ function areaEligible() {
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
     }
-    //console.log(dataObj.totalSteps);
-    if (dataObj.totalSteps >= areaReq) {return true;}
-    else {return false}
+    //console.log("Steps: " + dataObj.totalSteps + ". Required: " + areaReq);
+    if (dataObj.totalSteps >= areaReq) return true;
+    return false;
 }
 
-// takes, in animal string argument, adds 20% of animals
-function matingSeason(animal){
-	var a = Math.floor(controller.getAnimalCount(animal) * 0.2);
-	
-	controller.addAnimal(animal, a);
-	
-	console.log(animal + "s added by event : " + a);
-	
-}
 //Rolls an integer between 1 and a number parameter. 
 function roll(num, basenum) {
 	if(basenum != null){
@@ -533,12 +342,7 @@ function commandManager() {
     switch (cmd.toLowerCase()) {
         case "list":
             console.log("'stepoff' - adds steps");
-            console.log("'trackerdown(Not Implemented)' - adds tracks");
-            console.log("'gottagofast(Not Implemented)' - increases rate at which game time flows.");
-            console.log("'justaminutedeer(Not Implemented)' - time warps.");
-            console.log("'pidgeyohno' - removes all animals");
-            console.log("'toadallyfit(Not Implemented)' - makes animals invulnerable, not immortal");
-            console.log("'badhareday(Not Implemented)' - hardreset of player data");
+            console.log("'trackerdown' - adds tracks");
             break;
         //Give steps to the player.
         case "stepoff":

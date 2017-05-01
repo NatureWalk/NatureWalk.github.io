@@ -1,19 +1,26 @@
 
 
-function drawText(text, x, y, size) {
+function drawText(text, x, y, size='24px', color=['black']) {
     //console.log(size);
-    if (size) {ctx.font = size + ' Indie Flower';}
-    else {ctx.font = '24px Indie Flower';}
+    ctx.font = size + ' Indie Flower';
+    for (var t=0; t<text.length; t++) {
+        if (t < color.length) ctx.fillStyle = color[t]; 
+        ctx.textBaseline = 'top';
+        if (t>0) {
+            var xnew = x+ctx.measureText(text[t-1]).width
+        } else {
+            xnew = x;
+        }
+        ctx.fillText(text[t], xnew, y);
+    }
     ctx.fillStyle = 'black';
-    ctx.textBaseline = 'top';
-    ctx.fillText(text, x, y);
 }
 
 /* Text Wrapping Tutorial
 http://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
 */
 function drawWrappedText(text, x, y, fontSize, maxWidth, lineHeight) {
-        var words = text.split(' ');
+        var words = text[0].split(' ');
         var line = '';
 
         if (fontSize) {ctx.font = fontSize + ' Indie Flower';}

@@ -60,21 +60,78 @@ badEvents = [
     ["predator", 'evasion'], ["river", 'strength'], ["ravine", 'strength'],['Snow storm', 'speed'],
     ["treefall", 'evasion'], ["mudslide", 'speed'], ["lightning", 'speed'], 
     ["tornado", 'speed'], ["sinkhole", 'strength'], ["forestfire", 'speed'], ["drought", 'strength'], 
-    ["heatwave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
+    ["heat wave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
     ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
 ];
 
 badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
-badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["ice storm", "speed"]];
-badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
+badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
+//badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
+badEventsSpringDay = [["river", "evasion"], ["rain storm", "strength"], ["predator", "evasion"]];
 badEventsSpringNight = [["river", "strength"], ["sinkhole", "strength"], ["predator", "evasion"]];
 badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
 badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
-badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+//badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+badEventsFallDay = [["rain storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
 badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 'strength']];
 badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
 
 
+frogNames = ["Finn", "Finley", "Felix", "Francisco", "Finnegan", "Felipe", "Ford",
+"Francis", "Franklin", "Flynn", "Forrest", "Fletcher", "Farah", "Ferris", "Fernando",
+"Federico", "Foster", "Flora", "Fiona", "Fritz", "Francine", "Fabio", "Fern", "Fitzgerald",
+"Fabrizio", "Florian", "Fenton", "Fergus", "Flower", "Felton", "Fenix", "Franz", "Fraser",
+"Fleur", "Francois", "Finian", "Furman", "Funsho", "Matthew", "Fritzy", "Frita", "Froto",
+"Frisco", "Frenchie", "Freeman", "Freemont", "Fredo", "Fabian", "Fenwick", "Freshia", "Padda", "Bretkose", "Granoto", "Kikker",
+"Rana", "Baki", "Zaba", "Konn", "Rano", "Chura", "Trevor", "Kermit", "Robin", "Keroppi", "Frogger",
+"Dat Boi", "HypnoToad", "Bighead", "Slippy"];
+
+deerNames = ["Dre", "Cervol", "Osa", "Hjort",
+"Dakota", "Darius", "Dash", "Deana", "Dorian", "Delilah", "Daphne", "Dell", "Delbert", "Doris",
+"Derrick", "Dan", "Dax", "Dexter", "Diane", "Diana", "Dabney", "Drake", "Draco", "Dunston", "Dudley",
+"Damien", "Dora", "Daedra", "Dale", "Dean", "Dolby", "Dinah", "Daeton", "Drago", "Dahkim", "Dalton",
+"Dante", "Daicey", "Dione", "Dailee", "Dane", "Daisy", "Dasha", "DeShaun", "Daya", "Daken",
+"Dakeem", "Dalaney", "Dalbey", "Dalek", "Dilbert", "Daliza", "Dalton", "Dalmer", "Dalsgaard",
+"Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco", "Buck Henry", "Doe Lewis", "Fawn Hamm",
+"Alexandeer", "Bambi", "Mean Doe Greene", "Mark Buckerberg", "Fawnie Lee Miller", "Fawnathan Demme"];
+
+bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond", "Ravi", "Robert", "Rob", "Robbie",
+"Rebecca", "Rene", "Rey", "Ray", "Roland", "Rachel", "Rachelle", "Rochelle", "Rory", "Racen", "Racquel", "Radcliffe",
+"Radford", "Randolf", "Randle", "Raina", "Rain", "Royal", "Ron", "Rip", "Reagan", "Reign",
+"Rylan", "Rhys", "Raleigh", "Raley", "RaeLynn", "Raven", "Rafael", "Rafaela", "Rafah", "Raffi",
+"Raffa", "Raffieli", "Rafianzie", "Raya", "Ritter", "Ritz", "Rumor", "Ritzbelle", "River", "Riverly",
+"Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto", "Bigwig", "Bunnicula", "Fiver",
+"Harvey", "Max", "Ruby", "Pantoufle", "Frank", "Caerbannog"];
+
+birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
+"Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
+"Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
+"Brandon", "Brynn", "Bobby", "Bob", "Bert", "Bertrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
+"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Bridget",
+"Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick", "Sweet Dee", "Phoenixperson", "Joel McQuail",
+"Wil Tweeton", "Stephen Squawking", "Zoidbird", "Flight Schrute", "Cyberbird", "Meryl Cheep"];
+
+
+
+function nameFrog(){
+	var num = Math.floor((Math.random() * 68) + 0);
+	return frogNames[num];
+}
+
+function nameBunny(){
+	var num = Math.floor((Math.random() * 68) + 0);
+	return bunnyNames[num];
+}
+
+function nameBird(){
+	var num = Math.floor((Math.random() * 68) + 0);
+	return birdNames[num];
+}
+
+function nameDeer(){
+	var num = Math.floor((Math.random() * 68) + 0);
+	return deerNames[num];
+}
 
 
 
@@ -145,15 +202,25 @@ function master_controller() {
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'summer';
+					background.layer2.setSrc("image_resources/layer2_sumer.png")
+					background.layer3.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'summer':
 				    this.areaSeason = 'fall';
+					background.layer2.setSrc("image_resources/layer2_fall.png")
+					background.layer3.setSrc("image_resources/layer3_fall.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'winter'
+				    background.layer1.setSrc("image_resources/moun_snow.png")
+					background.layer2.setSrc("image_resources/layer2_winter.png")
+					background.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'spring';
+				    background.layer1.setSrc("image_resources/mountain.png")
+					background.layer2.setSrc("image_resources/layer2_spring.png")
+					background.layer3.setSrc("image_resources/layer3_spring.png")
 				    break;
 			}
 		}
@@ -253,11 +320,13 @@ function master_controller() {
 				if(Date.now() >= this.animals[i].deathTime){
 					var arr = this.animals[i].name.concat(" died peacefully of old age.")
 					eventLogAry.push(arr);
-					this.removeAnimal[i];
-					i--;
+					//this.removeAnimal[i];
+					//i--;
+					this.queueRemove(i);
 				}
 			}
 		}
+		this.removeAllQueue();
 		
 		
 	}
@@ -277,8 +346,30 @@ function master_controller() {
 	this.addAnimal = function(animal){
 		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
-			console.log(animal);
+			//console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
+
+			var text = "";
+
+		    switch(ani.type) {
+    			case "frog":
+        			text = nameFrog();
+        			break;
+    			case "bunny":
+        			text = nameBunny();
+        			break;
+        		case "bird":
+        			text = nameBird();
+        			break;
+        		case "deer":
+        			text = nameDeer();
+        			break;
+    			default:
+        			text = "random name";
+			}
+		    
+		      
+		    ani.name= text;
 			this.animals.push(ani);
 			return true;
 		} else {
