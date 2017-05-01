@@ -60,7 +60,7 @@ badEvents = [
     ["predator", 'evasion'], ["river", 'strength'], ["ravine", 'strength'],['Snow storm', 'speed'],
     ["treefall", 'evasion'], ["mudslide", 'speed'], ["lightning", 'speed'], 
     ["tornado", 'speed'], ["sinkhole", 'strength'], ["forestfire", 'speed'], ["drought", 'strength'], 
-    ["heatwave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
+    ["heat wave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
     ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
 ];
 

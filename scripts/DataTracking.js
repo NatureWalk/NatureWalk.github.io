@@ -155,7 +155,7 @@ function everySecond(seconds) {
         ++dataObj.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        dataObj.eventTrigger = roll(5) + 12;
+        dataObj.eventTrigger = roll(5);
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();

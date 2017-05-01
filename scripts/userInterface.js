@@ -353,10 +353,10 @@ function buttonSetup() {
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
-            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (4.3 * charnum), 5); 
+            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5); 
         } else {
             charnum = "+1 (Selected)".length;
-            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5);
+            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3 * charnum), 5);
         }
     }
     interface.buttonArray.push(upgradeBtn);    
@@ -923,7 +923,7 @@ function numberLen(num) {
 }
 
 function numberConversion(num) {
-    var suffixes = ['', 'k', 'M', 'B', 'T']
+    var suffixes = ['', 'k', 'm', 'b', 't', 'q', 'Q', 's', 'S']
     var conNum = num.toString();
     var len = conNum.length;
     var i = Math.floor(len/3);
