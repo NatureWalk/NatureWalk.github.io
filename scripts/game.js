@@ -1,4 +1,4 @@
-//fitbit_start(); //Make the fitbit work before anything else.
+fitbit_start(); //Make the fitbit work before anything else.
 
 /////////////////////////////////////////////////
 //VOLUME IN SOUND.JS HAS BEEN REDUCED, FIX THAT.

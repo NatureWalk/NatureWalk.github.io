@@ -356,6 +356,8 @@ function commandManager() {
             var stepCheat = Number(prompt("Enter number of steps to add."));
             if (typeof stepCheat === "number") {
                 stepCount += stepCheat;
+                dataObj.steps += stepCheat;
+                dataObj.totalSteps += stepCheat;
             } else { alert("Not a number."); }
             
             break;
