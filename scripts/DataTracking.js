@@ -45,8 +45,8 @@ function sessionStart() {
 	///////////////////////////////////
 	
     //var _tempData = queryServer();
-    dataObj.steps = stepCount;
-    dataObj["totalSteps"] += dataObj.steps;
+    //dataObj.steps = stepCount;
+    //dataObj["totalSteps"] += dataObj.steps;
     dataObj["sessionStartTime"] = Date.now();
     
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
@@ -110,7 +110,7 @@ function timeHandler(timeAry) {
         } else {
             dataObj.everySecondTrig++; 
         }
-    } else if (timeAry[1] > dataObj.everySecondTrig) {
+    } else if (Math.abs(timeAry[1] - dataObj.everySecondTrig) >= 2) {
         dataObj.everySecondTrig = timeAry[1] + 1;
     }
     

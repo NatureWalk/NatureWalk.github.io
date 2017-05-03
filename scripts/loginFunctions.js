@@ -55,7 +55,7 @@ function createData(localJson){
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
     dataObj.steps = 4500;
-    dataObj.totalSteps = 2500;
+    dataObj.totalSteps = 4500;
     if (fitbitSteps) {
         dataObj.priorSteps = fitbitSteps;
     } else {
@@ -85,9 +85,16 @@ function returningUserSteps(){
     console.log("Total: " + totalSteps);
     console.log("Player: " + playerSteps);
     
-    stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
+    playerSteps += 5000;
+    
+    stepCount =  (fitbitSteps - priorSteps) + playerSteps;
+    //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
+    
+    totalSteps += 5000;
+    
     dataObj.priorSteps = priorSteps;
-    dataObj.totalSteps = fitbitSteps - priorSteps;
+    //dataObj.totalSteps = fitbitSteps - priorSteps;
+    dataObj.totalSteps = totalSteps;
     dataObj.steps = stepCount;
 	console.log("returning steps ===== " + stepCount);
 }
@@ -144,10 +151,10 @@ function initPackage() {
         bunnyBaseLevel: controller.getAnimalBaseLevel('bunny'),
         deerBaseLevel: controller.getAnimalBaseLevel('deer'),
         frogBaseLevel: controller.getAnimalBaseLevel('frog'),
-        playerSteps: 0,
-        playerPSteps: fitbitSteps,
-        playerTSteps: 0,
-        playerTracks: 0,
+        playerSteps: dataObj.steps,
+        playerPSteps: dataObj.priorSteps,
+        playerTSteps: dataObj.totalSteps,
+        playerTracks: dataObj.animalTracks,
         time: Date.now(),
     };
     
@@ -156,7 +163,7 @@ function initPackage() {
     }
     
     jsonFile = JSON.stringify(package);
-    //console.log(jsonFile);
+    console.log(jsonFile);
     return jsonFile;
 }
 

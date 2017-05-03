@@ -1,3 +1,4 @@
+
 //Creates a popup with default background.
 function addPopup(text,x,y,name="popup") {
 	var button = new Button(function() {
@@ -12,31 +13,47 @@ function addPopup(text,x,y,name="popup") {
 	pushPopup(button);
 }
 
-//Pushes and removes the popup from the engine
-function pushPopup(popup) {
+//For buttons you don't want to halt gameplay
+function pushInterface(popup) {
 	interface.push(popup);
 	interface.pushButton(popup);
 }
 
-function removePopup(popup) {
+function removeInterface(popup) {
 	interface.remove(popup);
 	interface.removeButton(popup);
 }
 
+
+//For buttons that will halt gameplay
+function pushPopup(popup) {
+	popups.push(popup);
+	popups.pushButton(popup);
+}
+
+function removePopup(popup) {
+	popups.remove(popup);
+	popups.removeButton(popup);
+}
+
+
+function startTutorial() {
+	screenMan.push(popups);
+}
+
 /////////////////
-var popupController = function() {
+function popupController() {
 	this.popups = [];
 };
 
 //Contains controls when popups appear
-popupController.update = function() {
+popupController.prototype.update = function() {
 	//console.log("controller updating")
-	p_maxUpgrade();
 }
 
-popupController.draw = function() {}
+popupController.prototype.draw = function() {}
 
-popupController.contains = function(popup) {
+popupController.prototype.contains = function(popup) {
 	for (var i in this.popups) {
         if (this.popups[i] == popup) {
             return true;
@@ -58,7 +75,7 @@ var fullUpgrade = new Button(function() {
     removePopup(this);
 });
 
-fullUpgrade.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
+fullUpgrade.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
 fullUpgrade.setSpriteAttributes(65,360,120,40, "fullUpgrade");
 fullUpgrade.hasTextValue = true;
 fullUpgrade.fontSize = '20px';
@@ -66,15 +83,20 @@ charnum = "MAX".length;
 fullUpgrade.setText(["MAX"], (fullUpgrade.width / 2) - (6.3 * charnum), 5);
 
 function p_maxUpgrade() {
+	console.log("p_maxUpgrade")
+	var threshold;
 	if (ui_values.selected == "base") {
-		var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase())
+		var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+		threshold = 1.75*1000;
 	} else{
-		var level = controller.animals[ui_values.partyIndex].level
+		var level = controller.animals[ui_values.partyIndex].level;
+		threshold = 1.75*100;
 	}	
-	if (interface.contains(fullUpgrade)) return;
-	if (dataObj.animalTracks - ((level * 100) + (level+1)*100) > 0) {
-		pushPopup(fullUpgrade);
+	if (dataObj.animalTracks - ((level * threshold) + (level+1)*threshold) > 0) {
+		if (interface.contains(fullUpgrade)) return;
+		pushInterface(fullUpgrade);
 	} else {
-		removePopup(fullUpgrade);
+		console.log("removing interface")
+		removeInterface(fullUpgrade);
 	}
 }

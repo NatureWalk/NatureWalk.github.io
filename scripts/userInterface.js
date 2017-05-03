@@ -132,6 +132,7 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
+        //screenMan.push(popups);
     }
 
     var login = new Button(loadGame)
@@ -341,22 +342,21 @@ function buttonSetup() {
             upgrade_animal();
         }
     });
-    upgradeBtn.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
-
+    upgradeBtn.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
     upgradeBtn.setSpriteAttributes(65, 405, 120, 40, "UpgradeBtn");
 
     upgradeBtn.hasTextValue = true;
     upgradeBtn.fontSize = '16px';
     charnum = "upgrade".length;
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
-    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.")
+    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
-            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (4.3 * charnum), 5); 
+            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5); 
         } else {
             charnum = "+1 (Selected)".length;
-            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5);
+            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3 * charnum), 5);
         }
     }
     interface.buttonArray.push(upgradeBtn);    
@@ -379,8 +379,8 @@ function buttonSetup() {
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];  
-            charnum = numberConversion(level*1.75*1000).length;
-            upgradeCost.setText([numberConversion(level*1.75*1000)], (upgradeCost.width / 2) - (4 * charnum), 5);
+            charnum = numberConversion(level*2.75*1000).length;
+            upgradeCost.setText([numberConversion(level*2.75*1000)], (upgradeCost.width / 2) - (4 * charnum), 5);
         } else {
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
@@ -429,8 +429,6 @@ function buttonSetup() {
                 this.frameIndex++;
                 if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
                 this.tickCount = 0; 
-                /*
-<<<<<<< HEAD
             }
         }
         if (ui_values.selected == "base") {
@@ -438,26 +436,13 @@ function buttonSetup() {
             var charNum = numberLen(name);  
             this.setText([name], -15 - (9 * charNum), -40);
         } else {
-            //This line gave me cancer
+
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
                 return;
             }
-=======
-*/
-            }
-        }
-        if (ui_values.selected == "base") {
-            var name = ui_values.currentAnimal;
-            var charNum = numberLen(name);  
-            this.setText([name], -15 - (9 * charNum), -40);
-        } else {
             //This line gave me cancer
-            if (controller.animals[ui_values.partyIndex] == undefined) {
-                ui_values.selected = "base";
-                return;
-            }
-            var type = ui_values.animalAry[aniToNum(controller.animals[ui_values.partyIndex].type)];
+            //var type = toCapitalize(controller.animals[ui_values.partyIndex].type);
             var name = controller.animals[ui_values.partyIndex].name;
             var charNum = numberLen(name);  
             this.setText([name], -30 - (4 * charNum), -40);
@@ -479,7 +464,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 
     //Mute Button
-    function mB() {soundMan.mute_music()}
+    //function mB() {soundMan.mute_music()}
+    function mB() {screenMan.push(popups)}
 
     muteButton = new Button(mB);
     muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
@@ -575,11 +561,11 @@ function buttonSetup() {
         if (controller.getAreaLevel() <= 1) {
             areaPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
-            areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+            areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
         }
     }
 
-    areaPrev.setSrc("image_resources/left25x25.png","image_resources/ClearSquare.png");
+    areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
     areaPrev.setSpriteAttributes(625, 245, 25, 25, "areaPrev");
     interface.buttonArray.push(areaPrev);
 
@@ -592,11 +578,11 @@ function buttonSetup() {
         if (!areaEligible()) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
-            areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+            areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
         }
     }
 
-    areaNext.setSrc("image_resources/right25x25.png","image_resources/ClearSquare.png");
+    areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
 
     areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
 
@@ -671,9 +657,8 @@ function buttonSetup() {
     }
     interface.buttonArray.push(selectedAnimal);
 	
-	
-	//blank animal portraits for bottom left page
-	
+	//blank animal portraits for bottom left page + displays individual animal levels with portraits
+
 	var blankPortrait = function(){
 			var partyLimit = 5;
 			var coordX=500;
@@ -684,7 +669,15 @@ function buttonSetup() {
 		
 	};
 	blankPortrait.draw = function(){
-		ctx.strokeStyle = "black";
+		var levels = [];
+		
+		for(var i = 0; i < controller.animals.length; i++){
+			var X = 103+(i*60);
+			var Y = 457;
+			levels.push(controller.animals[i].level)
+			ctx.fillText("Lvl", X+10, Y + 40);
+			ctx.fillText(levels[i], X + 10, Y + 55);
+		}
 		for (var i = 0; i < 5; i++){
 			this.coordX = 103+(i*60);
 			this.coordY = 457;
@@ -694,6 +687,8 @@ function buttonSetup() {
 	};
 
 	interface.push(blankPortrait);
+	
+	
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
@@ -938,7 +933,7 @@ function numberLen(num) {
 }
 
 function numberConversion(num) {
-    var suffixes = ['', 'k', 'M', 'B', 'T']
+    var suffixes = ['', 'k', 'm', 'b', 't', 'q', 'Q', 's', 'S']
     var conNum = num.toString();
     var len = conNum.length;
     var i = Math.floor(len/3);
