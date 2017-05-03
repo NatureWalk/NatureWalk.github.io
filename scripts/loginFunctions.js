@@ -84,10 +84,8 @@ function returningUserSteps(){
     console.log("Total: " + totalSteps);
     console.log("Player: " + playerSteps);
     
-    
     stepCount =  (fitbitSteps - priorSteps) + playerSteps;
     //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
-   
     
     dataObj.priorSteps = priorSteps;
     //dataObj.totalSteps = fitbitSteps - priorSteps;

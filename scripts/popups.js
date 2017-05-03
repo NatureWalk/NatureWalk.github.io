@@ -1,7 +1,6 @@
 
 tutorialProgress = 0;
 
-
 //Creates a popup with default background.
 function addPopup(text,x,y,name="popup") {
 	var button = new Button(function() {
@@ -168,8 +167,11 @@ function addPopup(text,x,y,name="popup") {
 	pushPopup(button);
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/eric
 //For buttons you don't want to halt gameplay
 function pushInterface(popup) {
 	interface.push(popup);
@@ -195,6 +197,7 @@ function removePopup(popup) {
 
 
 function startTutorial() {
+<<<<<<< HEAD
     addPopup("Welcome to Nature Walk!\n\nClick on these boxes to\nmove on.",100, 40);
 	screenMan.push(popups);
 	
@@ -213,6 +216,11 @@ function startTutorialPartThree(){
 }
 
 
+=======
+	screenMan.push(popups);
+}
+
+>>>>>>> origin/eric
 /////////////////
 function popupController() {
 	this.popups = [];
@@ -220,7 +228,11 @@ function popupController() {
 
 //Contains controls when popups appear
 popupController.prototype.update = function() {
+<<<<<<< HEAD
 	
+=======
+	//console.log("controller updating")
+>>>>>>> origin/eric
 }
 
 popupController.prototype.draw = function() {}
@@ -255,6 +267,10 @@ charnum = "MAX".length;
 fullUpgrade.setText(["MAX"], (fullUpgrade.width / 2) - (6.3 * charnum), 5);
 
 function p_maxUpgrade() {
+<<<<<<< HEAD
+=======
+	console.log("p_maxUpgrade")
+>>>>>>> origin/eric
 	var threshold;
 	if (ui_values.selected == "base") {
 		var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
@@ -267,6 +283,10 @@ function p_maxUpgrade() {
 		if (interface.contains(fullUpgrade)) return;
 		pushInterface(fullUpgrade);
 	} else {
+<<<<<<< HEAD
+=======
+		console.log("removing interface")
+>>>>>>> origin/eric
 		removeInterface(fullUpgrade);
 	}
 }

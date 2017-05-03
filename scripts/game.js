@@ -41,7 +41,6 @@ pcontroller_i.update = function() {
     
 }
 
-
 var pcontroller_p = new popupController();
 pcontroller_p.update = function() {
     console.log("updating popup screen "+popups.objects.length)

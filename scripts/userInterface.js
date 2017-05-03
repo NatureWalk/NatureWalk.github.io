@@ -132,7 +132,11 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
+<<<<<<< HEAD
         
+=======
+        //screenMan.push(popups);
+>>>>>>> origin/eric
     }
 
     var login = new Button(loadGame)
@@ -379,8 +383,13 @@ function buttonSetup() {
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];  
+<<<<<<< HEAD
             charnum = numberConversion(level*2.75*500).length;
             upgradeCost.setText([numberConversion(level*2.75*500)], (upgradeCost.width / 2) - (4 * charnum), 5);
+=======
+            charnum = numberConversion(level*2.75*1000).length;
+            upgradeCost.setText([numberConversion(level*2.75*1000)], (upgradeCost.width / 2) - (4 * charnum), 5);
+>>>>>>> origin/eric
         } else {
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
@@ -663,8 +672,13 @@ function buttonSetup() {
     }
     interface.buttonArray.push(selectedAnimal);
 	
+<<<<<<< HEAD
 	//blank animal portraits for bottom left page
 	
+=======
+	//blank animal portraits for bottom left page + displays individual animal levels with portraits
+
+>>>>>>> origin/eric
 	var blankPortrait = function(){
 			var partyLimit = 5;
 			var coordX=500;
@@ -675,7 +689,15 @@ function buttonSetup() {
 		
 	};
 	blankPortrait.draw = function(){
-		ctx.strokeStyle = "black";
+		var levels = [];
+		
+		for(var i = 0; i < controller.animals.length; i++){
+			var X = 103+(i*60);
+			var Y = 457;
+			levels.push(controller.animals[i].level)
+			ctx.fillText("Lvl", X+10, Y + 40);
+			ctx.fillText(levels[i], X + 10, Y + 55);
+		}
 		for (var i = 0; i < 5; i++){
 			this.coordX = 103+(i*60);
 			this.coordY = 457;
@@ -685,6 +707,8 @@ function buttonSetup() {
 	};
 
 	interface.push(blankPortrait);
+	
+	
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
