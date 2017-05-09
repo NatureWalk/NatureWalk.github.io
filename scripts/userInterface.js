@@ -77,10 +77,10 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     //ATTRIBUTES PANE
     /////////////////////////////////////////////////
-    attributesPane = new Sprite();
+/*    attributesPane = new Sprite();
     attributesPane.setSrc("image_resources/AttPane.png");
     attributesPane.setSpriteAttributes(46, 195, 440, 370, "attributesPane");
-    panes.push(attributesPane);
+    panes.push(attributesPane);*/
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -464,8 +464,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
 
     //Mute Button
-    //function mB() {soundMan.mute_music()}
-    function mB() {screenMan.push(popups)}
+    function mB() {soundMan.mute_music()}
+    //function mB() {screenMan.push(popups)}
 
     muteButton = new Button(mB);
     muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
