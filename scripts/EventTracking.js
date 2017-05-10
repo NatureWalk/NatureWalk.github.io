@@ -285,7 +285,7 @@ function badEventHandler(evtRoll) {
 				}
 				
 				diffPrint();
-				eventLogAry.push("A " + b[3][0] + " occured. It tested " + b[3][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
+				eventLogAry.push("You encountered a " + b[3][0] + "."  + b[3][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
                 displayEvent(b[3][0]);
                 
