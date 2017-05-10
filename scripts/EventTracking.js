@@ -176,7 +176,7 @@ function badEventHandler(evtRoll) {
 					console.log("Array value: " + deadArr[i]);
 				}
 				
-				eventLogAry.push("A " + b[0][0] + " occured. It tested " + b[0][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
+				eventLogAry.push("You encountered a " + b[0][0] + ". It tested " + b[0][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
                 displayEvent(b[0][0]);
                 
@@ -212,7 +212,7 @@ function badEventHandler(evtRoll) {
 				}
 				
 				diffPrint();
-				eventLogAry.push("A " + b[1][0] + " occured. It tested " + b[1][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
+				eventLogAry.push("You encountered a " + b[1][0] + ". It tested " + b[1][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
                 displayEvent(b[1][0]);
                 
@@ -249,7 +249,7 @@ function badEventHandler(evtRoll) {
 				}
 				
 				diffPrint();
-				eventLogAry.push("A " + b[2][0] + " occured. It tested " + b[2][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
+				eventLogAry.push("You encountered a " + b[2][0] + ". It tested " + b[2][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
                 displayEvent(b[2][0]);
                 
@@ -285,7 +285,7 @@ function badEventHandler(evtRoll) {
 				}
 				
 				diffPrint();
-				eventLogAry.push("You encountered a " + b[3][0] + "."  + b[3][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
+				eventLogAry.push("You encountered a " + b[3][0] + ". It tested "  + b[3][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
                 displayEvent(b[3][0]);
                 
