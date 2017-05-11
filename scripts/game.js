@@ -1,4 +1,4 @@
-fitbit_start(); //Make the fitbit work before anything else.
+//fitbit_start(); //Make the fitbit work before anything else.
 
 /////////////////////////////////////////////////
 //VOLUME IN SOUND.JS HAS BEEN REDUCED, FIX THAT.
@@ -138,8 +138,8 @@ function overlap(a, b) {
 
 game_loop(screenMan);
 window.onbeforeunload = function () {
-    console.log("Closing");
+    //console.log("Closing");
     dataTracker.sessionEnd();
-    console.log("Sesson End");
-    return "Are you sure?";
+    //console.log("Sesson End");
+    //return "Are you sure?";
 }

@@ -18,11 +18,11 @@ firstTimeUserFlag = false;
 //if no, correct current stepCount is calculated and a returning user json is created and saved to local
 function loginPlayer(){
     fitbitSteps = stepCount;
-        console.log(userID);
+    console.log(userID);
     console.log(isFirstTimeUser(userID));
     console.log(fitbitSteps);
     if(isFirstTimeUser(userID)){
-console.log("first timer");
+        console.log("first timer");
         firstTimeUserSteps();
         createData(initPackage());
         firstTimeUserFlag = true;
@@ -65,15 +65,6 @@ function firstTimeUserSteps(){
     console.log("Data Object");
     console.log(dataObj);
 }
-
-function returningBaseLevels(){
-    controller.base_levels['frog'] = getJsonItem(userID, "frogBaseLevel");
-    controller.base_levels['bunny'] = getJsonItem(userID, "bunnyBaseLevel");
-    controller.base_levels['bird'] = getJsonItem(userID, "birdBaseLevel");
-    controller.base_levels['deer'] = getJsonItem(userID, "deerBaseLevel");
-}
-
-
 //calculates stepCount using saved data
 function returningUserSteps(){
     var priorSteps = parseFloat(getJsonItem(userID, "playerPSteps"));
@@ -341,10 +332,18 @@ function returningUserTracks(){
     
     }
 }
+function returningBaseLevels(){
+    controller.base_levels['frog'] = getJsonItem(userID, "frogBaseLevel");
+    controller.base_levels['bunny'] = getJsonItem(userID, "bunnyBaseLevel");
+    controller.base_levels['bird'] = getJsonItem(userID, "birdBaseLevel");
+    controller.base_levels['deer'] = getJsonItem(userID, "deerBaseLevel");
+}
 
 function returningUserArea(){
     //console.log("current area is " + parseInt(getJsonItem(userID, "area")));
     controller.area_level = parseInt(getJsonItem(userID, "area"));
+    dataObj.areaMax = parseInt(getJsonItem(userID, "maxArea"));
+    console.log("PREVAREAMAX: " + dataObj.areaMax);
 }
 
 function returningUserSeason(){
@@ -415,6 +414,7 @@ function initPackage() {
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
+        //areaMax: dataObj.maxArea,
         partySize: controller.party_limit,
         season: controller.areaSeason,
         partyComp: [],
@@ -426,6 +426,13 @@ function initPackage() {
         playerPSteps: dataObj.priorSteps,
         playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
+        //eventsGood: [evt1, evt2,...,evtn],
+        //eventsBad: [speedEvts, evasionEvts, strengthEvts],
+        //eventSuccesses: 0,
+        //eventFailures: 0,
+        //animalsTripped: 0,
+        //animalsDied: 0,
+        //animalsLeft: 0,
         time: Date.now(),
     };
     
@@ -441,37 +448,46 @@ function initPackage() {
 
 //creates a login package for a returning player
 function returningPackage(iD) {
-    
     //console.log("previous display = " + prevDispSteps);
     var prevArea = parseInt(getJsonItem(iD, "area"));
     //console.log("previous pSteps = " + prevArea);
+    var prevAreaMax = getJsonItem(iD, "areaMax");
+    
     var prevPartySize = parseInt(getJsonItem(iD, "partySize"));
-    var prevSeason = getJsonItem(iD, "season");
-    var prevPartyComp;
+    
     var prevBirdBase = parseInt(getJsonItem(iD, "birdBaseLevel"));
     var prevBunnBase = parseInt(getJsonItem(iD, "bunnyBaseLevel"));
     var prevDeerBase = parseInt(getJsonItem(iD, "deerBaseLevel"));
     var prevFrogBase = parseInt(getJsonItem(iD, "frogBaseLevel"));
+    
     var prevSteps = parseFloat(getJsonItem(iD, "playerSteps"));
     var prevPSteps = parseFloat(getJsonItem(iD, "playerPSteps"));
-    console.log("Returning Prior: " + getJsonItem(iD, "playerPSteps"))
     var prevTSteps = parseFloat(getJsonItem(iD, "playerTSteps"));
     var prevTracks = parseFloat(getJsonItem(iD, "playerTracks"));
     var prevTime = parseFloat(getJsonItem(iD, "time"));
     //var package, jsonFile; 
-    package = { 
+    //jsonFix(jsonFixAry);
+    package = {  
+        animalsDied: 0,
+        animalsLeft: 0,
+        animalsTripped: 0,
         area: controller.getAreaLevel(),
-        partySize: controller.party_limit,
-        season: controller.areaSeason,
+        areaMax: dataObj.areaMax,
+        baseLevelBird: prevBirdBase,
+        baseLevelBunny: prevBunnBase,
+        baseLevelDeer: prevDeerBase,
+        baseLevelFrog: prevFrogBase,
+        eventsGood: [],
+        eventsBad: [],
+        eventSuccesses: 0,
+        eventFailures: 0,
         partyComp: [],
-        birdBaseLevel: prevBirdBase,
-        bunnyBaseLevel: prevBunnBase,
-        deerBaseLevel: prevDeerBase,
-        frogBaseLevel: prevFrogBase,
+        partySize: controller.party_limit,
         playerSteps: prevSteps,
         playerPSteps: prevPSteps,
         playerTSteps: prevTSteps,
         playerTracks: prevTracks,
+        season: controller.areaSeason,
         time: prevTime,
     };
 
@@ -504,8 +520,16 @@ function isFirstTimeUser(myID){
         console.log("Browser does not support HTML5 local storage");
     }
 }
-
-
+/*
+function jsonFix(ary) {
+    var i;
+    for (i = 0; i < (ary.length - 1); i++) {
+        if (ary[i] > 0) {
+            
+        }
+    }
+}
+*/
 //checks if browser supports local storage. 
 //returns true if localstorage is supported, false if it is not
 function storageIsSupported(){

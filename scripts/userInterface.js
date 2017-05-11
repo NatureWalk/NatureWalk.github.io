@@ -83,6 +83,7 @@ function backgroundSetup() {
     panes.push(attributesPane);
     /////////////////////////////////////////////////
     
+    
     /////////////////////////////////////////////////
     //STATS PANE
     /////////////////////////////////////////////////
@@ -132,11 +133,6 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
-<<<<<<< HEAD
-        
-=======
-        //screenMan.push(popups);
->>>>>>> origin/eric
     }
 
     var login = new Button(loadGame)
@@ -288,8 +284,8 @@ function buttonSetup() {
         attValue.hasTextValue = true;
         attValue.fontSize = '22px';
         
-        charNum = dataObj.animalStats[i].length;
-        attValue.setText([dataObj.animalStats[i]], 0, 0);
+        charNum = gameState.animalStats[i].length;
+        attValue.setText([gameState.animalStats[i]], 0, 0);
         interface.buttonArray.push(attValue);
         
         /////////////////////////////////////////////////
@@ -383,13 +379,9 @@ function buttonSetup() {
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];  
-<<<<<<< HEAD
             charnum = numberConversion(level*2.75*500).length;
             upgradeCost.setText([numberConversion(level*2.75*500)], (upgradeCost.width / 2) - (4 * charnum), 5);
-=======
-            charnum = numberConversion(level*2.75*1000).length;
-            upgradeCost.setText([numberConversion(level*2.75*1000)], (upgradeCost.width / 2) - (4 * charnum), 5);
->>>>>>> origin/eric
+
         } else {
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
@@ -414,7 +406,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     animalImage = new Button(add_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
-    animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
+    animalImage.setSpriteAttributes(286, 230, 170, 170, "animal_image");
     animalImage.setTooltip("Pressing this calls the selected animal.");
     interface.buttonArray.push(animalImage);
     
@@ -443,7 +435,7 @@ function buttonSetup() {
         if (ui_values.selected == "base") {
             var name = ui_values.currentAnimal;
             var charNum = numberLen(name);  
-            this.setText([name], -15 - (9 * charNum), -40);
+            this.setText([name], -115 - (9 * charNum), -30);
         } else {
 
             if (controller.animals[ui_values.partyIndex] == undefined) {
@@ -454,13 +446,13 @@ function buttonSetup() {
             //var type = toCapitalize(controller.animals[ui_values.partyIndex].type);
             var name = controller.animals[ui_values.partyIndex].name;
             var charNum = numberLen(name);  
-            this.setText([name], -30 - (4 * charNum), -40);
+            this.setText([name], -130 - (4 * charNum), -30);
         }
     }
     
     animalImageCost = new Button(add_animal);
-    animalImageCost.setSrc("image_resources/ClearSquare.png");
-    animalImageCost.setSpriteAttributes(261, 245, 0, 0, "animal_image");
+    animalImageCost.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
+    animalImageCost.setSpriteAttributes(286, 405, 170, 40, "animal_cost");
     interface.buttonArray.push(animalImageCost);
     
     animalImageCost.hasTextValue = true;
@@ -580,11 +572,11 @@ function buttonSetup() {
 
     //areaNext = new Button(controller.areaLevelUp);
     areaNext = new Button(function() {
-            if (areaEligible()) {controller.areaLevelUp()}
+            if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
         });
 
     areaNext.update = function() {
-        if (!areaEligible()) {
+        if (!areaEligible(controller.getAreaLevel())) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
             areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
@@ -656,7 +648,7 @@ function buttonSetup() {
         ctx.restore();
         ctx.rect(517, 0, 475, 578);
         
-        console.log(tutorialProgress);
+        //console.log(tutorialProgress);
         if(tutorialProgress == 20){
             startTutorialPartThree();
         }
@@ -671,14 +663,7 @@ function buttonSetup() {
         
     }
     interface.buttonArray.push(selectedAnimal);
-	
-<<<<<<< HEAD
-	//blank animal portraits for bottom left page
-	
-=======
 	//blank animal portraits for bottom left page + displays individual animal levels with portraits
-
->>>>>>> origin/eric
 	var blankPortrait = function(){
 			var partyLimit = 5;
 			var coordX=500;

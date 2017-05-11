@@ -5,23 +5,35 @@
 */
 //Object that can hold all of the session and player data.
 var dataObj = {
-    steps: 0,
-    priorSteps: 0,
-    totalSteps: 0,
     animalTracks: 0,
-    timeAccelFactor: 1,
+    animalsDied: 0,
+    animalsLeft: 0,
+    animalsTripped: 0,
+    area: 0,
+    areaMax: 0,
+    eventFailures: 0, 
+    eventSuccesses: 0,
+    eventsBad: [],
+    eventsGood: [],
     numberOfSessions: 0,
-    timePlayed: 0,
-    everySecondTrig: 0,
+    partySize: 0,
+    priorSteps: 0,
+    steps: 0,
+    totalSteps: 0,
+    timePlayed: 0
+};
+
+var gameState = {
+    animalStats: ["Level", "Speed", "Evasion", "Strength"],
+    computationReady: false,
+    devSignIn: false,
+    eventCounter: 0,
     eventTrigger: 10,
     eventDisplayTimer: 0,
+    everySecondTrig: 0,
     sessionStartTime: 0,
-    animalStats: ["Level", "Speed", "Evasion", "Strength"],
-    devSignIn: false,
-    computationReady: false,
-    eventCounter: 0,
-    partySize: 0
-};
+    timeAccelFactor: 1,
+}
 
 //Constructor function for the DataTracker Object.
 var DataTracker = function() {
@@ -47,8 +59,16 @@ function sessionStart() {
     //var _tempData = queryServer();
     //dataObj.steps = stepCount;
     //dataObj["totalSteps"] += dataObj.steps;
-    dataObj["sessionStartTime"] = Date.now();
     
+    dataObj["sessionStartTime"] = Date.now();
+    dataObj.areaMax = maxArea();
+    var partySizeLimit = Math.floor(dataObj.areaMax / 25);
+    if (partySizeLimit > 4) {
+        partySizeLimit = 4 
+    }
+    for (var i = 0; i < partySizeLimit; i++) {
+        controller.partySizeUp();
+    }
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
     
     //setupPlayer(serverPlayerData);
@@ -62,7 +82,7 @@ function sessionStart() {
 */
 function getTime() {
     //console.log("Getting Time");
-    var currentTime = Date.now() * dataObj["timeAccelFactor"];
+    var currentTime = Date.now() * gameState["timeAccelFactor"];
     var timeAry = readableTime(currentTime - dataObj["sessionStartTime"]);
     //console.log("Time Handler");
     timeHandler(timeAry);
@@ -103,29 +123,29 @@ function readableTime(milliseconds) {
  * Returns - None. 
 */
 function timeHandler(timeAry) {
-    if (timeAry[1] === dataObj.everySecondTrig) {
+    if (timeAry[1] === gameState.everySecondTrig) {
         everySecond(timeAry[1]);
         if (timeAry[1] === 59) {
-            dataObj.everySecondTrig = 0;
+            gameState.everySecondTrig = 0;
         } else {
-            dataObj.everySecondTrig++; 
+            gameState.everySecondTrig++; 
         }
-    } else if (Math.abs(timeAry[1] - dataObj.everySecondTrig) >= 2) {
-        dataObj.everySecondTrig = timeAry[1] + 1;
+    } else if (Math.abs(timeAry[1] - gameState.everySecondTrig) >= 2) {
+        gameState.everySecondTrig = timeAry[1] + 1;
     }
     
     //everyMinute(timeAry[2]);
     
     if (timeAry[1] % 30 === 0) {
-        if (dataObj.computationReady) {
+        if (gameState.computationReady) {
             everyThirty(timeAry[1]);
-            dataObj.computationReady = false;
+            gameState.computationReady = false;
         } else {
             //console.log("Already computered.");
         }
     } else {
-        if (dataObj.computationReady === false) {
-            dataObj.computationReady = true;
+        if (gameState.computationReady === false) {
+            gameState.computationReady = true;
         }
     }
 }
@@ -142,20 +162,20 @@ function everySecond(seconds) {
     //DEBUG: console.log(Math.floor(areaTracks*animTracks));
     dataObj.animalTracks += Math.floor(areaTracks*animTracks);
     
-    if (--dataObj.eventDisplayTimer === 0) {
+    if (--gameState.eventDisplayTimer === 0) {
         displayEvent();
     }
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
-    if (dataObj.eventTrigger > 0) {
-        dataObj.eventTrigger--;
+    if (gameState.eventTrigger > 0) {
+        gameState.eventTrigger--;
     } else {
         var evtRoll = roll(100);
-        ++dataObj.eventCounter;
+        ++gameState.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        dataObj.eventTrigger = roll(5) + 12;
+        gameState.eventTrigger = roll(5);
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();
@@ -210,17 +230,24 @@ function createPackage() {
     var package, jsonFile; 
     package = { 
         area: controller.getAreaLevel(),
-        partySize: controller.party_limit,
-        season: controller.areaSeason,
+        animalsDied: 0,
+        animalsLeft: 0,
+        animalsTripped: 0,
+        baseLevelBird: 1,
+        baseLevelBunny: 1,
+        baseLevelDeer: 1,
+        baseLevelFrog: 1,
+        eventsGood: [],
+        eventsBad: [],
+        eventSuccesses: 0,
+        eventFailures: 0, 
         partyComp: [],
-        birdBaseLevel: 1,
-        bunnyBaseLevel: 1,
-        deerBaseLevel: 1,
-        frogBaseLevel: 1,
+        partySize: controller.party_limit,
         playerSteps: stepCount,
         playerPSteps: dataObj.priorSteps,
         playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
+        season: controller.areaSeason,
         time: Date.now(),
     };
 
@@ -264,9 +291,8 @@ function eventChooser(evtRoll) {
     }
 }
 
-function areaEligible() {
-    //
-    var area = controller.getAreaLevel();
+function areaEligible(area) {
+    //;
     var areaReq = 5000;
     for (var i = 1; i < area; i++) {
        areaReq = (areaReq+5000) * 1.01; 
@@ -274,6 +300,14 @@ function areaEligible() {
     //console.log("Steps: " + dataObj.totalSteps + ". Required: " + areaReq);
     if (dataObj.totalSteps >= areaReq) return true;
     return false;
+}
+
+function maxArea() {
+    var tempArea = 1;
+    while (areaEligible(tempArea)) {
+        tempArea++;
+    }
+    return tempArea;
 }
 
 //Rolls an integer between 1 and a number parameter. 
@@ -312,11 +346,11 @@ function openDevWindow() {
     background.setSrc("https://naturewalk.slack.com/files/hesi/F41C74HQC/ranimalsnw.jpg");
     background.setSpriteAttributes(25, 25, 150, 350, "devWindow");
     
-    if (dataObj.devSignIn === false) {
+    if (gameState.devSignIn === false) {
         var devName = prompt("Enter dev name: ");
         if (devAuth(devName)) {
             console.log("Authentication successful.");
-            dataObj["devSignIn"] = true;
+            gameState["devSignIn"] = true;
         } else {
             //console.log("Authentication failed.")
             alert("Authentication failed.")
