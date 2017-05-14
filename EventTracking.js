@@ -48,6 +48,7 @@ var goodEvents = [
 
 //Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
+console.log(eventLogAry);
 
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
@@ -83,7 +84,7 @@ function goodEventHandler(evtRoll) {
         case evtRoll >= 30 && evtRoll < 55:
             //console.log(goodEvents[1]);
             eventLogAry.push("You find some animal tracks!");
-			dataObj.animalTracks += (dataObj.animalTracks/1000);
+			dataObj.animalTracks += 2500;
             break;
         //Fountain of Youth
         case evtRoll >= 55 && evtRoll < 60:
@@ -107,7 +108,6 @@ function goodEventHandler(evtRoll) {
             break;
     }
 }
-
 
 //Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
@@ -153,21 +153,17 @@ function badEventHandler(evtRoll) {
    //badStuff = [# of Unharmed, # Of Trips, # of Deaths]
    var x, badStuff = [0, 0, 0];
 
-    console.log("Event Roll: " + evtRoll);
    switch (true) {
     	case evtRoll <= 31:
     		console.log(b[0][0] + " " + b[0][1])
             //eventLogAry.push("")
     		for(var i = 0; i < controller.getNumAnimals(); i++){
-				badEventChecker(i,b[0][1]);
+				badStuffSort(badEventChecker(i,b[0][1]), badStuff);
 				numAnimalsRolled++;
 			}
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[0][0] + " occured. It tested " + b[0][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-                
-                displayEvent(b[0][0]);
-                
 				animalDeadGrammarCheck();
 				animalTripGrammarCheck();
 				animalSafeGrammarCheck();
@@ -181,7 +177,7 @@ function badEventHandler(evtRoll) {
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
-    	case evtRoll > 31 && evtRoll < 63:
+    	case evtRoll > 31 < 63:
     		console.log(b[1][0] + " " + b[1][1])
     	    for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[1][1]);
@@ -190,9 +186,6 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[1][0] + " occured. It tested " + b[1][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-                
-                displayEvent(b[1][0]);
-                
 				animalDeadGrammarCheck();
 				animalTripGrammarCheck();
 				animalSafeGrammarCheck();
@@ -206,9 +199,8 @@ function badEventHandler(evtRoll) {
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
-    	case evtRoll >= 63 && evtRoll < 94:
+    	case evtRoll >= 63 < 94:
     		console.log(b[2][0] + " " + b[2][1])
-            
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[2][1]);
 				numAnimalsRolled++;
@@ -216,9 +208,6 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[2][0] + " occured. It tested " + b[2][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-                
-                displayEvent(b[2][0]);
-                
 				animalDeadGrammarCheck();
 				animalTripGrammarCheck();
 				animalSafeGrammarCheck();
@@ -241,9 +230,6 @@ function badEventHandler(evtRoll) {
 			// Print the results of the event that occured
 			if(controller.getNumAnimals() > 0){
 				eventLogAry.push("A " + b[3][0] + " occured. It tested " + b[3][1] + ". Your average animal roll was " + Math.ceil(animalRoll/numAnimalsRolled) + ". The event difficulty was " + Math.ceil(eventDiff/numAnimalsRolled) + ".");
-                
-                displayEvent(b[3][0]);
-                
 				animalDeadGrammarCheck();
 				animalTripGrammarCheck();
 				animalSafeGrammarCheck();
@@ -257,6 +243,7 @@ function badEventHandler(evtRoll) {
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
+    	    
 	}
     controller.removeAllQueue();
     console.log(controller.getNumAnimals());
@@ -267,37 +254,23 @@ function badEventHandler(evtRoll) {
 
 function bigDeathPrinter(){
 	console.log("death print");
-    console.log("Deer: " + deerNumDead);
-    console.log("Bird: " + birdNumDead);
-    console.log("Frog: " + frogNumDead);
-    console.log("Bunny: "+ bunnyNumDead);
-    
 	if(deerNumDead > 0 && bunnyNumDead == 0 && birdNumDead == 0 && frogNumDead == 0){
-        //Deer
 		eventLogAry.push(deerNumDead + " deer failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead == 0 && frogNumDead == 0){
-        //Deer and Bunny
 		eventLogAry.push(deerNumDead + " deer and " + bunnyNumDead + " " + bunnyDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead == 0 && birdNumDead > 0 && frogNumDead == 0){
-        //Deer and Bird
 		eventLogAry.push(deerNumDead + " deer and " + birdNumDead + " " + birdDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead == 0 && birdNumDead == 0 && frogNumDead > 0){
-        //Deer and Frog
 		eventLogAry.push(deerNumDead + " deer and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead == 0){
-        //Deer and Bunny and Bird
 		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " " + bunnyDeadGrammar + ", and " + birdNumDead + " " + birdDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead == 0 && frogNumDead > 0){
-        //Deer and Bunny and Frog
 		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " " + bunnyDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead == 0 && birdNumDead > 0 && frogNumDead > 0){
-        //Deer and Bird and Frog
 		eventLogAry.push(deerNumDead + " deer, " + birdNumDead + " " + birdDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead > 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead > 0){
-        //Deer and Bunny and Bird and Frog
 		eventLogAry.push(deerNumDead + " deer, " + bunnyNumDead + " " + bunnyDeadGrammar + ", " + birdNumDead + " " + birdDeadGrammar + ", and " + frogNumDead + " " + frogDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead == 0 && bunnyNumDead > 0 && birdNumDead == 0 && frogNumDead == 0){
-        //Bunny
 		eventLogAry.push(bunnyNumDead + " " + bunnyDeadGrammar + " failed the event and unfortunately died.");
 	}else if(deerNumDead == 0 && bunnyNumDead > 0 && birdNumDead > 0 && frogNumDead == 0){
 		eventLogAry.push(bunnyNumDead + " " + bunnyDeadGrammar + ", and " + birdNumDead + " " + birdDeadGrammar + " failed the event and unfortunately died.");
@@ -321,50 +294,35 @@ function bigDeathPrinter(){
 
 function bigTrippedPrinter(){
 	console.log("trip print");
-    console.log("Deer: " + deerNumTripped);
-    console.log("Bird: " + birdNumTripped);
-    console.log("Frog: " + frogNumTripped);
-    console.log("Bunny: "+ bunnyNumTripped);
-    
 	if(deerNumTripped > 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped == 0){
-        //Deer
 		eventLogAry.push(deerNumTripped + " deer tripped and lost some tracks.");
-	}
-    else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
-        //Deer and Bunny
+	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
 		eventLogAry.push(deerNumTripped + " deer and " + bunnyNumTripped + " " + bunnyTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped == 0){
 		eventLogAry.push(deerNumTripped + " deer and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped > 0){
 		eventLogAry.push(deerNumTripped + " deer and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped == 0){
-        //Deer and Bunny and Bird
 		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped > 0){
 		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped > 0){
 		eventLogAry.push(deerNumTripped + " deer, " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped > 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){
-        //Deer and Bunny and Bird and Frog
 		eventLogAry.push(deerNumTripped + " deer, " + bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped == 0){
-        //Bunny
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped == 0){
-        //Bunny and Bird
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + ", and " + birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped == 0 && frogNumTripped > 0){
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped > 0 && birdNumTripped > 0 && frogNumTripped > 0){
 		eventLogAry.push(bunnyNumTripped + " " + bunnyTripGrammar + ", " + birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " failed the event and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped == 0){
-        //Bird
 		eventLogAry.push(birdNumTripped + " " + birdTripGrammar + " tripped and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped > 0 && frogNumTripped > 0){
-        //Bird and Frog
 		eventLogAry.push(birdNumTripped + " " + birdTripGrammar + ", and " + frogNumTripped + " " + frogTripGrammar + " failed the event and lost some tracks.");
 	}else if(deerNumTripped == 0 && bunnyNumTripped == 0 && birdNumTripped == 0 && frogNumTripped > 0){
-        //Frog
 		eventLogAry.push(frogNumTripped + " " + frogTripGrammar + " failed the event and lost some tracks.");
 	}else{
 		console.log("none tripped");
@@ -376,10 +334,6 @@ function bigTrippedPrinter(){
 
 function bigSafePrinter(){
 	console.log("safe print");
-    console.log("Deer: " + deerNumSafe);
-    console.log("Bird: " + birdNumSafe);
-    console.log("Frog: " + frogNumSafe);
-    console.log("Bunny: "+ bunnyNumSafe);
 	if(deerNumSafe > 0 && bunnyNumSafe == 0 && birdNumSafe == 0 && frogNumSafe == 0){
 		eventLogAry.push(deerNumSafe + " deer failed, but escaped unharmed.");
 	}else if(deerNumSafe > 0 && bunnyNumSafe > 0 && birdNumSafe == 0 && frogNumSafe == 0){
@@ -483,6 +437,7 @@ function animalSafeGrammarCheck(){
 }
 //////////////////////////////////////////////////
 
+
 //Handles neutral events, takes in a new roll from the eventChooser.
 function noEventHandler(evtRoll) {
     switch (true) {
@@ -503,11 +458,11 @@ function noEventHandler(evtRoll) {
 // rolls for all animal count of the specific animal against their specified stat
 // removes the number of animals that fail the roll
 function badEventChecker(index, stat,flag){
+
 	var playerRoll, gameRoll;
 	
 	var a = controller.getAnimalData();
 	
-    console.log(index);
 	var e = a[index];
 	
 	var diff = controller.getAreaLevel() * 75;
@@ -523,7 +478,7 @@ function badEventChecker(index, stat,flag){
 		for(var i = 0; i < controller.getAreaLevel() - 1; i++){
 			diffmin = Math.ceil(diffmin * 1.33)
 		}
-		diffmin = (diffmin * 0.85);
+		diffmin = (diffmin * .85);
 	}
 	
 	if(flag == true){
@@ -571,6 +526,7 @@ function badEventChecker(index, stat,flag){
 	}
 }
 
+
 ///////////////////////////////////////////////////
 // ADDED BY THEOREN
 // these three functions will increment the vars for how many animals are effected by each event
@@ -586,7 +542,6 @@ function deadTypeCheck(animal){
 		frogNumDead++;
 	}
 	numAnimalsDead++;
-    console.log("Dead: " + animal);
 }
 
 function tripTypeCheck(animal){
@@ -600,13 +555,12 @@ function tripTypeCheck(animal){
 		frogNumTripped++;
 	}
 	numAnimalsTrip++;
-    console.log("Tripped: " + animal);
 }
 
 function safeTypeCheck(animal){
 	if(animal == "Deer"){
 		deerNumSafe++;
-        //console.log("Safe deer");
+        console.log("Safe deer");
 	}else if(animal == "Bird"){
 		birdNumSafe++;
 	}else if(animal == "Bunny"){
@@ -615,7 +569,6 @@ function safeTypeCheck(animal){
 		frogNumSafe++;
 	}
 	numAnimalsSafe++;
-    console.log("Safe: " + animal);
 }
 
 ////////////////////////////////////////////////
@@ -644,211 +597,22 @@ function displayEvent(evt) {
                 elem.setupAnim(22, 5, 5);
             }
         });
-        gameState.eventDisplayTimer = 5;
-    
-    } 
-    else if (evt === "snow storm") {
+        dataObj.eventDisplayTimer = 5;
+    } else if (evt === "snow storm") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "weatherAnimation") {
                 elem.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
                 elem.setupAnim(22, 5, 5);
             }
         });
-        gameState.eventDisplayTimer = 5;
-    
-    } 
-    else if (evt === "predator") {
+        dataObj.eventDisplayTimer = 5;
+    } else if (evt === "predator") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 410, 150, 100, "eventAnimation");
-                elem.setSrc("image_resources/Event_Predator.png", "image_resources/Event_Predator.png", true);
-                elem.setupAnim(12, 4, 4);
-                elem.fadeTimer = 1;
-                
-                elem.update = function () {
-                    this.x -= 1*gameState.eventDisplayTimer; 
-                    
-                    if (this.anim) {
-                        this.tickCount++; 
-                        if (this.tickCount > this.ticksPerFrame) {
-                            this.frameIndex++;
-                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
-                            this.tickCount = 0; 
-                        }
-                    }
-                }
-                
-                elem.draw = function () {
-                    
-                    ctx.globalAlpha = elem.fadeTimer;
-                    if (gameState.eventDisplayTimer <= 1) {
-                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
-                        else ctx.globalAlpha = 0;
-                    }
-                    
-                    if (!this.anim) {
-                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
-                    } else {
-                        //console.log("Animating " + this.name);
-                        ctx.drawImage(
-                            this.image, 
-                            //(this.frameIndex % 7) * this.width, 
-                            //Math.floor(this.frameIndex/7) * this.height, 
-                            (this.frameIndex % this.srcCols) * this.width, 
-                            Math.floor(this.frameIndex/this.srcCols) * this.height,
-                            this.width, 
-                            this.height, 
-                            this.x,
-                            this.y,
-                            this.width,
-                            this.height);
-
-                    }
-                    ctx.globalAlpha = 1;
-                }
+                elem.setSrc("image_resources/Event_Snow.png", "image_resources/Event_Snow.png", true);
+                elem.setupAnim(22, 5, 5);
             }
         });
-        gameState.eventDisplayTimer = 3;
-    
-    
-    } 
-    else if (evt === "lightning storm") {
-        interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 155, 120, 330, "eventAnimation");
-                elem.setSrc("image_resources/Event_Lightning.png", "image_resources/Event_Lightning.png", true);
-                elem.setupAnim(10, 4, 3);
-                elem.fadeTimer = 1;
-                
-                elem.update = function () {
-                    // 
-                    
-                    if (this.anim) {
-                        this.tickCount++; 
-                        if (this.tickCount > this.ticksPerFrame) {
-                            this.frameIndex++;
-                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
-                            this.tickCount = 0; 
-                        }
-                        this.x -= 1;
-                    }
-                }
-                
-                elem.draw = function () {
-                    
-                    ctx.globalAlpha = elem.fadeTimer;
-                    if (gameState.eventDisplayTimer <= 1) {
-                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
-                        else ctx.globalAlpha = 0;
-                    }
-                    
-                    if (!this.anim) {
-                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
-                    } else {
-                        //console.log("Animating " + this.name);
-                        ctx.drawImage(
-                            this.image, 
-                            //(this.frameIndex % 7) * this.width, 
-                            //Math.floor(this.frameIndex/7) * this.height, 
-                            (this.frameIndex % this.srcCols) * this.width, 
-                            Math.floor(this.frameIndex/this.srcCols) * this.height,
-                            this.width, 
-                            this.height, 
-                            this.x,
-                            this.y,
-                            this.width,
-                            this.height);
-
-                    }
-                    ctx.globalAlpha = 1;
-                }
-            }
-        });
-        gameState.eventDisplayTimer = 4;
-    } 
-    else if (evt === "treefall") {
-        interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 360, 120, 180, "eventAnimation");
-                elem.setSrc("image_resources/Event_FallenTree.png", "image_resources/Event_FallenTree.png", false);
-                elem.fadeTimer = 1;
-                
-                elem.update = function () {
-                    this.x -= 1.75;
-                }
-                
-                elem.draw = function () {
-                    
-                    ctx.globalAlpha = elem.fadeTimer;
-                    if (gameState.eventDisplayTimer <= 1) {
-                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
-                        else ctx.globalAlpha = 0;
-                    }
-                    
-                    if (!this.anim) {
-                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
-                    } 
-                    ctx.globalAlpha = 1;
-                }
-            }
-        });
-        gameState.eventDisplayTimer = 4;
-    
-    } 
-    else if (evt === "river") {
-        interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 380, 120, 180, "eventAnimation");
-                elem.setSrc("image_resources/Event_River.png", "image_resources/Event_River.png", false);
-                elem.fadeTimer = 1;
-                
-                elem.update = function () {
-                    this.x -= .85;
-                }
-                
-                elem.draw = function () {
-                    
-                    ctx.globalAlpha = elem.fadeTimer;
-                    if (gameState.eventDisplayTimer <= 1) {
-                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
-                        else ctx.globalAlpha = 0;
-                    }
-                    
-                    if (!this.anim) {
-                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
-                    } 
-                    ctx.globalAlpha = 1;
-                }
-            }
-        });
-        gameState.eventDisplayTimer = 8;
-    
-    }
-    else if (evt === "hunter") {
-        interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 420, 100, 100, "eventAnimation");
-                elem.setSrc("image_resources/Event_Hunter.png", "image_resources/Event_Hunter.png", false);
-                elem.fadeTimer = 1;
-                
-                elem.update = function () {
-                    elem.x -= .75;
-                }
-                
-                elem.draw = function () {
-                    ctx.globalAlpha = elem.fadeTimer;
-                    if (gameState.eventDisplayTimer <= 1) {
-                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
-                        else ctx.globalAlpha = 0;
-                    }
-                    
-                    if (!this.anim) {
-                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
-                    } 
-                    ctx.globalAlpha = 1;
-                }
-            }
-        });
-        gameState.eventDisplayTimer = 4;
+        dataObj.eventDisplayTimer = 5;
     }
 }

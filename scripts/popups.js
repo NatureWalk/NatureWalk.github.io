@@ -1,7 +1,6 @@
 
 tutorialProgress = 0;
 
-
 //Creates a popup with default background.
 function addPopup(text,x,y,name="popup") {
 	var button = new Button(function() {
@@ -168,8 +167,6 @@ function addPopup(text,x,y,name="popup") {
 	pushPopup(button);
 }
 
-
-
 //For buttons you don't want to halt gameplay
 function pushInterface(popup) {
 	interface.push(popup);
@@ -212,7 +209,6 @@ function startTutorialPartThree(){
     screenMan.push(popups);
 }
 
-
 /////////////////
 function popupController() {
 	this.popups = [];
@@ -220,7 +216,6 @@ function popupController() {
 
 //Contains controls when popups appear
 popupController.prototype.update = function() {
-	
 }
 
 popupController.prototype.draw = function() {}

@@ -43,7 +43,6 @@ pcontroller_i.update = function() {
     
 }
 
-
 var pcontroller_p = new popupController();
 pcontroller_p.update = function() {
     console.log("updating popup screen "+popups.objects.length)
@@ -145,8 +144,8 @@ function overlap(a, b) {
 
 game_loop(screenMan);
 window.onbeforeunload = function () {
-    console.log("Closing");
+    //console.log("Closing");
     dataTracker.sessionEnd();
-    console.log("Sesson End");
-    return "Are you sure?";
+    //console.log("Sesson End");
+    //return "Are you sure?";
 }
