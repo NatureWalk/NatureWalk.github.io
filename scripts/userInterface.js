@@ -135,13 +135,38 @@ function buttonSetup() {
         screenMan.push(interface);
     }
 
-    var login = new Button(loadGame)
+    var login = new Button(loadGame);
     login.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
     login.setSpriteAttributes(392,248,240,80, "login button")
     login.hasTextValue = true;
     login.setText(["Login With Fitbit"],40,20)
     console.log(login.text);
     title.buttonArray.push(login);
+
+    /////////////////////////////////////////////////
+    //Menu Button
+    /////////////////////////////////////////////////
+    //Opens the menu screen
+    function openMenu() {
+        screenMan.push(gameMenu);
+    }
+
+    var menuButton = new Button(openMenu);
+    menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
+    menuButton.setSpriteAttributes(40,70,30,30, "menuButton");
+    interface.buttonArray.push(menuButton);
+
+    /////////////////////////////////////////////////
+    //Menu Button
+    /////////////////////////////////////////////////
+    function mB() {soundMan.mute_music()}
+    //function mB() {screenMan.push(popups)}
+
+    muteButton = new Button(mB);
+    muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
+    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
+    muteButton.isToggleButton = true;
+    interface.buttonArray.push(muteButton);
 
     /////////////////////////////////////////////////
     //DEV ATTRIBUTES
@@ -349,7 +374,7 @@ function buttonSetup() {
     upgradeBtn.fontSize = '16px';
     charnum = "upgrade".length;
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
-    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
+    //upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
@@ -407,7 +432,7 @@ function buttonSetup() {
     animalImage = new Button(add_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
     animalImage.setSpriteAttributes(286, 230, 170, 170, "animal_image");
-    animalImage.setTooltip("Pressing this calls the selected animal.");
+    //animalImage.setTooltip("Pressing this calls the selected animal.");
     interface.buttonArray.push(animalImage);
     
     animalImage.hasTextValue = true;
@@ -464,15 +489,6 @@ function buttonSetup() {
 
     /////////////////////////////////////////////////
 
-    //Mute Button
-    function mB() {soundMan.mute_music()}
-    //function mB() {screenMan.push(popups)}
-
-    muteButton = new Button(mB);
-    muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
-    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
-    muteButton.isToggleButton = true;
-    interface.buttonArray.push(muteButton);
     
     /////////////////////////////////////////////////
     //ANIMAL ANIMATIONS

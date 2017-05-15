@@ -101,10 +101,12 @@ title.init = function() {
 }
 
 interface.init = function() {	
+    interface.push(land);
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
     this.push(pcontroller_i);
+
     //addPopup("This is a test.",w/2,h/2);
 }
 
@@ -115,13 +117,16 @@ popups.init = function() {
 
 gameMenu.init = function() {
     menuSetup();
+    if (gameMenu.buttonArray !== undefined) {
+        gameMenu.buttonArray.forEach( function(elem) {gameMenu.push(elem);} );
+    }
 }
 
 game.init = function() {	
 	background.setSrc("image_resources/bookBackground.png");
     this.push(background);
     this.push(controller);
-    this.push(land);
+    
     panes.forEach( function(elem) {game.push(elem);} );
 } 
 ///////////////////////////////local storage junk//////////////////////////
