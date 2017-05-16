@@ -604,9 +604,14 @@ function buttonSetup() {
     //areaNext = new Button(controller.areaLevelUp);
     areaNext = new Button(function() {
             if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
+        
+            if(dataObj.tutorialProgress == 32){
+                startTutorialPartFour();
+            }
         });
 
     areaNext.update = function() {
+        maxArea(controller.getAreaLevel());
         if (!areaEligible(controller.getAreaLevel())) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {

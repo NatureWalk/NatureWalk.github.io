@@ -119,24 +119,29 @@ function addPopup(text,x,y,cutout,name="popup") {
            //Here are 4000 more steps to get you there. You can call more animals with these. 
            //When you get to a certain number of steps, this arrow will advance you to the next area. Click it!
            case(dataObj.tutorialProgress == 30):
-               addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",700, 300, [728,238,22,38]);
+               addPopup("We will give you\n4000 more steps\nto get you there.",700, 300);
+               dataObj.steps += 4000;
+               dataObj.totalSteps += 4000;
                dataObj.tutorialProgress++;
+               areaNext.update();
                break;
            case(dataObj.tutorialProgress == 31):
-               addPopup("But never fear! If an\narea proves too hard for\nyour animals you can go\nback to an easier one.",700, 300);
+               addPopup("When a new area is\navailable, click this\narrow to move there\nwith your animals.",700, 300, [843,238,42,38]);
                dataObj.tutorialProgress++;
                break;
-            case(dataObj.tutorialProgress == 32):
+           case(dataObj.tutorialProgress == 33):
+               addPopup("But never fear! If an\narea proves too hard for\nyour animals you can go\nback to an easier one.",700, 300, [618,238,42,38]);
+               dataObj.tutorialProgress++;
+               break;
+            case(dataObj.tutorialProgress == 34):
                addPopup("That's all you need\nto know!",500, 250);
                dataObj.tutorialProgress++;
                break;  
-            case(dataObj.tutorialProgress == 33):
+            case(dataObj.tutorialProgress == 35):
                addPopup("Now get out there,\njournal in hand, and\nget to nature walking!",500, 250);
                //tutorialProgress++;
                dataObj.tutorialProgress++;
-               break;
-                
-           
+               break; 
         }
 		removePopup(this);
 	});
@@ -222,6 +227,13 @@ function startTutorialPartTwo(){
 function startTutorialPartThree(){
     dataObj.tutorialProgress++;
     addPopup("There you go!\nNow you can see your\nanimal's name and its\nindividual statistics.",250, 400);
+    screenMan.push(popups);
+}
+
+function startTutorialPartFour(){
+    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",700, 300, [728,238,22,38]);
+    dataObj.tutorialProgress++;
+    areaPrev.update();
     screenMan.push(popups);
 }
 

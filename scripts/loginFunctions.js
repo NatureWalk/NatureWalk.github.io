@@ -53,8 +53,8 @@ function createData(localJson){
 
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
-    dataObj.steps = 4500;
-    dataObj.totalSteps = 4500;
+    dataObj.steps = 2000;
+    dataObj.totalSteps = 2000;
     if (fitbitSteps) {
         dataObj.priorSteps = fitbitSteps;
     } else {
