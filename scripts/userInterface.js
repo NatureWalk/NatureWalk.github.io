@@ -153,11 +153,11 @@ function buttonSetup() {
 
     var menuButton = new Button(openMenu);
     menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
-    menuButton.setSpriteAttributes(40,70,30,30, "menuButton");
+    menuButton.setSpriteAttributes(40,80,30,30, "menuButton");
     interface.buttonArray.push(menuButton);
 
     /////////////////////////////////////////////////
-    //Menu Button
+    //Mute Button
     /////////////////////////////////////////////////
     function mB() {soundMan.mute_music()}
     //function mB() {screenMan.push(popups)}
