@@ -12,14 +12,14 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-//soundMan.music.play()
+soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
-background.setSrc("image_resources/Book(open).png");
+background.setSrc("image_resources/bookBackground.png");
 background.width = w;
 background.height = h;
 
@@ -34,6 +34,8 @@ var title = new Screen(false, false);
 var interface = new Screen(false, true);
 
 var popups = new Screen(false, true);
+
+var gameMenu = new Screen(false, true);
 
 var pcontroller_i = new popupController();
 pcontroller_i.update = function() {
@@ -99,10 +101,12 @@ title.init = function() {
 }
 
 interface.init = function() {	
+    interface.push(land);
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
     this.push(pcontroller_i);
+
     //addPopup("This is a test.",w/2,h/2);
 }
 
@@ -111,11 +115,18 @@ popups.init = function() {
     //addPopup("This is a test.",w/2,h/2)
 }
 
+gameMenu.init = function() {
+    menuSetup();
+    if (gameMenu.buttonArray !== undefined) {
+        gameMenu.buttonArray.forEach( function(elem) {gameMenu.push(elem);} );
+    }
+}
+
 game.init = function() {	
-	background.setSrc("image_resources/Book(open).png");
+	background.setSrc("image_resources/bookBackground.png");
     this.push(background);
     this.push(controller);
-    this.push(land);
+    
     panes.forEach( function(elem) {game.push(elem);} );
 } 
 ///////////////////////////////local storage junk//////////////////////////
