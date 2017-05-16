@@ -4,25 +4,71 @@
  * 3. Events appearing on screen. 
 */
 //Object that can hold all of the session and player data.
+/*dataObj:
+ * - animalsDied: How many animals have died due to events..
+ * - animalsLeft: How many animals have timed out.
+ * - animalsTripped: How many animals have tripped due to events.
+ * - animalsTracks: Current number of tracks the player has. 
+ * - animalsTracksLost: Total number of tracks lost by events. 
+ * - animalsTracksSpent: Total number of tracks spend on upgrades. 
+ * - area: Current area the player is on. 
+ * - areaMax: Highest area the player can go to. 
+ * - partySize: Maximum size a player's party of animals can be. 
+ * - priorSteps: Number of steps that the player had before starting the game. 
+ * - steps: Current number of steps the player has available.
+ * - totalSteps: Total number of steps the player has brought into the game since starting (TotalFitbitSteps - priorSteps).
+ * - tutorialProgress: The place in the tutorial that the player has completed. 
+*/
 var dataObj = {
-    animalTracks: 0,
     animalsDied: 0,
     animalsLeft: 0,
     animalsTripped: 0,
+    animalTracks: 0,
+    animalTracksLost: 0,
+    animalTracksSpend: 0,
     area: 0,
     areaMax: 0,
-    eventFailures: 0, 
-    eventSuccesses: 0,
-    eventsBad: [],
-    eventsGood: [],
-    numberOfSessions: 0,
+    //eventFailures: 0, 
+    //eventSuccesses: 0,
+    //eventsBad: [],
+    //eventsGood: [],
+    //numberOfSessions: 0,
     partySize: 0,
     priorSteps: 0,
     steps: 0,
+    //timePlayed: 0,
     totalSteps: 0,
-    timePlayed: 0
+    tutorialProgress: 0,
 };
 
+//Object that stores the number of times an event has been rolled. 
+//Organized alphabetically, by name. 
+var badEventsObj = {
+    drought: 0,
+    epidemic: 0,
+    eruption: 0,
+    flashflood: 0,
+    fog: 0,
+    frozenlake: 0,
+    heatwave: 0,
+    hunter: 0,
+    invasivespecies: 0,
+    lightningstorm: 0,
+    lowtemperatures: 0,
+    meteor: 0,
+    predator: 0,
+    rainstorm: 0,
+    river: 0,
+    scarcefood: 0,
+    sinkhole: 0,
+    snowslide: 0,
+    snowstorm: 0,
+    tornado: 0,
+    treefall: 0,
+    wildfire: 0, 
+}
+
+//Object for keeping track of the game state. Best for storing game loop data. 
 var gameState = {
     animalStats: ["Level", "Speed", "Evasion", "Strength"],
     computationReady: false,
@@ -61,14 +107,7 @@ function sessionStart() {
     //dataObj["totalSteps"] += dataObj.steps;
     
     dataObj["sessionStartTime"] = Date.now();
-    dataObj.areaMax = maxArea();
-    var partySizeLimit = Math.floor(dataObj.areaMax / 25);
-    if (partySizeLimit > 4) {
-        partySizeLimit = 4 
-    }
-    for (var i = 0; i < partySizeLimit; i++) {
-        controller.partySizeUp();
-    }
+    
     //offlineCalculations(serverTime, dataObj["sessionStartTime"]);
     
     //setupPlayer(serverPlayerData);
@@ -169,7 +208,9 @@ function everySecond(seconds) {
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
     if (gameState.eventTrigger > 0) {
-        gameState.eventTrigger--;
+        if (dataObj.tutorialProgress >= 34) {
+            gameState.eventTrigger--;
+        }
     } else {
         var evtRoll = roll(100);
         ++gameState.eventCounter;
@@ -197,6 +238,15 @@ function everyThirty(seconds) {
         createPackage();
         createData(lJson);
     };
+    dataObj.areaMax = maxArea();
+    console.log(dataObj.areaMax);
+    var partySizeLimit = Math.floor(dataObj.areaMax / 25);
+    if (partySizeLimit > 4) {
+        partySizeLimit = 4 
+    }
+    for (var i = 0; i < partySizeLimit; i++) {
+        controller.partySizeUp();
+    }
 
 }
 
@@ -208,39 +258,49 @@ function everyHour(hours) {
     
 }
 
+
+/* createPackage() - Function that will save the current state of the game into local storage. .
+ * Params: None. 
+ * Returns: None. 
+*/
 var lJson;
-function createPackage() {
-    /* Things this needs to do. 
-     * 1. Create a JSON file.
-     * 2. Fill the file with the following elements:
-        - Area You are On
-        - Base data of animals
-            - Party size.
-            - Party composition.
-                - Animal Type
-                - Animal Name
-                - Level
-        - Base player data
-            - Number of steps at time of save. 
-            - Number of tracks
-            - Player level?
-        - Time of save. 
-    */
-    
+function createPackage() {    
     var package, jsonFile; 
+    //Package object that will be stored in local storage at the end of the function. 
+    /*
+     * - animalsDied: How many animals have died due to events..
+     * - animalsLeft: How many animals have timed out.
+     * - animalsTripped: How many animals have tripped due to events.
+     * - animalsTracksLost: Total number of tracks lost by events. 
+     * - animalsTracksSpent: Total number of tracks spend on upgrades. 
+     * - area: Current area the player is on. 
+     * - baseLevel<animalname>: The current level of the base animal.
+     * - eventsGood: Object that accounts for all of the good events. Organized alphabetically, by name. 
+     * - eventsBad: Object that accounts for all of the bad events. Organized alphabetically, by name. 
+     * - partyComp: Current layout of the player's assortement of animals including level, name and the animal's leave timer. 
+     * - priorSteps: Number of steps that the player had before starting the game.
+     * - partySize: Maximum size of the player's party. 
+     * - playerSteps: Current available steps for the player.
+     * - playerPSteps: Player's steps from before they started the game.
+     * - playerTSteps: Player's total steps that they've brought into the game (totalFitbitSteps - priorSteps).
+     * - playerTracks: Player's current available animal tracks. 
+     * - season: Player's current season. 
+     * - time: The time, in milliseconds of the save. 
+     * - tutorialProgress: The place in the tutorial that the player has completed.
+     */
     package = { 
-        area: controller.getAreaLevel(),
         animalsDied: 0,
         animalsLeft: 0,
         animalsTripped: 0,
+        area: controller.getAreaLevel(),
         baseLevelBird: 1,
         baseLevelBunny: 1,
         baseLevelDeer: 1,
         baseLevelFrog: 1,
         eventsGood: [],
-        eventsBad: [],
-        eventSuccesses: 0,
-        eventFailures: 0, 
+        eventsBad: badEventsObj,
+        //eventSuccesses: 0,
+        //eventFailures: 0, 
         partyComp: [],
         partySize: controller.party_limit,
         playerSteps: stepCount,
@@ -249,13 +309,15 @@ function createPackage() {
         playerTracks: dataObj.animalTracks,
         season: controller.areaSeason,
         time: Date.now(),
+        tutorialProgress: dataObj.tutorialProgress,
     };
 
-    //sendData(package);
-    
+    //Saving the player's party composition. 
     for (var i = 0; i < controller.animals.length; i++) {
         package.partyComp.push(controller.animals[i]);
     }
+    
+    //Saving the player's base levels. 
     var anim = "frog";
     package.frogBaseLevel = controller.getAnimalBaseLevel(anim);
     var anim = "bunny";
@@ -265,15 +327,19 @@ function createPackage() {
     var anim = "deer";
     package.deerBaseLevel = controller.getAnimalBaseLevel(anim);
     
+    //Creating the json string for storage. 
     jsonFile = JSON.stringify(package);
-    console.log(jsonFile);
+    
+    //Copying the string to a global variable. 
     lJson = jsonFile;
 }
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
+        //Clear the event log so a new event can take it's place. 
         eventLogAry.pop();
     }
+    //Limit the number of lines the event log can display to 5 (6-1).
     if (eventLogAry.length === 6) {
         eventLogAry.shift();
     }
@@ -285,12 +351,18 @@ function eventChooser(evtRoll) {
     else if (evtRoll < 40) {
         badEventHandler(roll(100));
     }
-    //No Event
+    //No Event/Neutral Event
     else {
         noEventHandler(roll(100));
     }
 }
 
+/* areaEligible(area) - Function that determines if a player can advance to the next area.
+ * Params:
+ * - area: The current area that the player is on. 
+ * Returns: 
+ * - Boolean: True if the player is allowed to progress. . 
+*/
 function areaEligible(area) {
     //;
     var areaReq = 5000;
@@ -302,6 +374,11 @@ function areaEligible(area) {
     return false;
 }
 
+/* maxArea() - Function that determines the highest area a player can possibly progress to.
+ * Params: None. 
+ * Returns: 
+ * - tempArea: The integer value that is the highest area a player can possibly progress to. 
+*/
 function maxArea() {
     var tempArea = 1;
     while (areaEligible(tempArea)) {
