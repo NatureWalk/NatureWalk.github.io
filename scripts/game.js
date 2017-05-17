@@ -12,14 +12,14 @@ var w = canvas.width;
 var h = canvas.height;
 
 soundMan = new soundManager()
-//soundMan.music.play()
+soundMan.music.play()
 
 //----------------------Menu System Implementaton-----------------------
 //----------------------------------------------------------------------
 var dataTracker = new DataTracker();
 
 var background = new Sprite();
-background.setSrc("image_resources/Book(open).png");
+background.setSrc("image_resources/bookBackground.png");
 background.width = w;
 background.height = h;
 
@@ -33,6 +33,25 @@ var title = new Screen(false, false);
 //Must be pushed after "game"
 var interface = new Screen(false, true);
 
+var popups = new Screen(false, true);
+
+var gameMenu = new Screen(false, true);
+
+var pcontroller_i = new popupController();
+pcontroller_i.update = function() {
+    p_maxUpgrade();
+    
+}
+
+var pcontroller_p = new popupController();
+pcontroller_p.update = function() {
+    //console.log("updating popup screen "+popups.objects.length)
+    if (popups.objects.length == 1) {
+        console.log("stopping popups")
+        screenMan.pop();
+    }
+}
+
 //layerFix();
 //game.buttonArray = [];
 var controller = new master_controller();
@@ -41,7 +60,7 @@ buttonSetup();
 var mouseman = new MouseManager();
 console.log("game set up");
 
-//var pController = new popupController();
+var pController = new popupController();
 
 var cursor = {};
 cursor.x=0;
@@ -82,18 +101,32 @@ title.init = function() {
 }
 
 interface.init = function() {	
+    interface.push(land);
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
-    //if (popupController != undefined) //interface.push(popupController);
+    this.push(pcontroller_i);
+
     //addPopup("This is a test.",w/2,h/2);
 }
 
+popups.init = function() {
+    this.push(pcontroller_p);
+    //addPopup("This is a test.",w/2,h/2)
+}
+
+gameMenu.init = function() {
+    menuSetup();
+    if (gameMenu.buttonArray !== undefined) {
+        gameMenu.buttonArray.forEach( function(elem) {gameMenu.push(elem);} );
+    }
+}
+
 game.init = function() {	
-	background.setSrc("image_resources/Book(open).png");
+	background.setSrc("image_resources/bookBackground.png");
     this.push(background);
     this.push(controller);
-    this.push(land);
+    
     panes.forEach( function(elem) {game.push(elem);} );
 } 
 ///////////////////////////////local storage junk//////////////////////////
@@ -116,8 +149,8 @@ function overlap(a, b) {
 
 game_loop(screenMan);
 window.onbeforeunload = function () {
-    console.log("Closing");
+    //console.log("Closing");
     dataTracker.sessionEnd();
-    console.log("Sesson End");
-    return "Are you sure?";
+    //console.log("Sesson End");
+    //return "Are you sure?";
 }

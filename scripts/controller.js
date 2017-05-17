@@ -60,15 +60,15 @@ badEvents = [
     ["predator", 'evasion'], ["river", 'strength'], ["ravine", 'strength'],['Snow storm', 'speed'],
     ["treefall", 'evasion'], ["mudslide", 'speed'], ["lightning", 'speed'], 
     ["tornado", 'speed'], ["sinkhole", 'strength'], ["forestfire", 'speed'], ["drought", 'strength'], 
-    ["heatwave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
+    ["heat wave", 'strength'], ["flashflood", 'speed'], ["meteor", 'evasion'], 
     ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
 ];
 
 badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
 badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
 //badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
-badEventsSpringDay = [["treefall", "evasion"], ["rain storm", "strength"], ["predator", "evasion"]];
-badEventsSpringNight = [["river", "strength"], ["sinkhole", "strength"], ["predator", "evasion"]];
+badEventsSpringDay = [["river", "evasion"], ["lightning storm", "speed"], ["hunter", "evasion"]];
+badEventsSpringNight = [["river", "evasion"], ["sinkhole", "strength"], ["predator", "evasion"]];
 badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
 badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
 //badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
@@ -85,6 +85,7 @@ frogNames = ["Finn", "Finley", "Felix", "Francisco", "Finnegan", "Felipe", "Ford
 "Frisco", "Frenchie", "Freeman", "Freemont", "Fredo", "Fabian", "Fenwick", "Freshia", "Padda", "Bretkose", "Granoto", "Kikker",
 "Rana", "Baki", "Zaba", "Konn", "Rano", "Chura", "Trevor", "Kermit", "Robin", "Keroppi", "Frogger",
 "Dat Boi", "HypnoToad", "Bighead", "Slippy"];
+
 deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Dakota", "Darius", "Dash", "Deana", "Dorian", "Delilah", "Daphne", "Dell", "Delbert", "Doris",
 "Derrick", "Dan", "Dax", "Dexter", "Diane", "Diana", "Dabney", "Drake", "Draco", "Dunston", "Dudley",
@@ -93,6 +94,7 @@ deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Dakeem", "Dalaney", "Dalbey", "Dalek", "Dilbert", "Daliza", "Dalton", "Dalmer", "Dalsgaard",
 "Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco", "Buck Henry", "Doe Lewis", "Fawn Hamm",
 "Alexandeer", "Bambi", "Mean Doe Greene", "Mark Buckerberg", "Fawnie Lee Miller", "Fawnathan Demme"];
+
 bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond", "Ravi", "Robert", "Rob", "Robbie",
 "Rebecca", "Rene", "Rey", "Ray", "Roland", "Rachel", "Rachelle", "Rochelle", "Rory", "Racen", "Racquel", "Radcliffe",
 "Radford", "Randolf", "Randle", "Raina", "Rain", "Royal", "Ron", "Rip", "Reagan", "Reign",
@@ -100,11 +102,12 @@ bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond",
 "Raffa", "Raffieli", "Rafianzie", "Raya", "Ritter", "Ritz", "Rumor", "Ritzbelle", "River", "Riverly",
 "Ralphie", "Riverson", "Rivian", "Ruxton", "Rihanna", "Riyaz", "Roberto", "Bigwig", "Bunnicula", "Fiver",
 "Harvey", "Max", "Ruby", "Pantoufle", "Frank", "Caerbannog"];
+
 birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
 "Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
-"Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
-"Brandon", "Brynn", "Bobby", "Bob", "Bert", "Bertrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
-"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Bridget",
+"Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Birdtholemew",
+"Brandon", "Brynn", "Bobby", "Bob", "Bert", "Birdtrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
+"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "David Peckham", "Bridget",
 "Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick", "Sweet Dee", "Phoenixperson", "Joel McQuail",
 "Wil Tweeton", "Stephen Squawking", "Zoidbird", "Flight Schrute", "Cyberbird", "Meryl Cheep"];
 
@@ -199,15 +202,26 @@ function master_controller() {
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'summer';
+					land.layer2.setSrc("image_resources/layer2_summer.png")
+					land.layer3.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'summer':
 				    this.areaSeason = 'fall';
+				
+                    land.layer2.setSrc("image_resources/layer2_fall.png")
+					land.layer3.setSrc("image_resources/layer3_fall.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'winter'
+				    land.layer1.setSrc("image_resources/moun_snow.png")
+					land.layer2.setSrc("image_resources/layer2_winter.png")
+					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'spring';
+				    land.layer1.setSrc("image_resources/mountain.png")
+					land.layer2.setSrc("image_resources/layer2_spring.png")
+					land.layer3.setSrc("image_resources/layer3_spring.png")
 				    break;
 			}
 		}
@@ -242,7 +256,7 @@ function master_controller() {
 				    break;
 		}
 	var cata = roll(2,0);
-	//this.usableEvents.push(badEventsCatastrophe[cata]);
+	this.usableEvents.push(badEventsCatastrophe[cata]);
 	}
 	
 	this.areaLevelDown = function(){
@@ -250,16 +264,27 @@ function master_controller() {
 		if(this.area_level % 10 == 0){
 			switch(this.areaSeason){
 				case 'spring':
-				    this.areaSeason = 'winter';
+				    this.areaSeason = 'winter'
+				    land.layer1.setSrc("image_resources/moun_snow.png")
+					land.layer2.setSrc("image_resources/layer2_winter.png")
+					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'summer':
-				    this.areaSeason = 'spring';
+				    this.areaSeason = 'winter'
+				    land.layer1.setSrc("image_resources/moun_snow.png")
+					land.layer2.setSrc("image_resources/layer2_winter.png")
+					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'fall':
-				    this.areaSeason = 'summer'
+				    this.areaSeason = 'summer';
+					land.layer2.setSrc("image_resources/layer2_summer.png")
+					land.layer3.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'fall';
+				
+                    land.layer2.setSrc("image_resources/layer2_fall.png")
+					land.layer3.setSrc("image_resources/layer3_fall.png")
 				    break;
 			}
 		}
@@ -333,16 +358,11 @@ function master_controller() {
 	this.addAnimal = function(animal){
 		if(this.animals.length < this.party_limit) {
 			var ani = new animalClass(animal);
-			console.log(animal);
+			//console.log(animal);
 			ani.setLevel(this.base_levels[animal]);
-			//taken from http://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-			//console.log("animal type = " + ani.type);
-			
+
 			var text = "";
-		    /*var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		    for( var i=0; i < 5; i++ )
-		        text += possible.charAt(Math.floor(Math.random() * possible.length));
-		    */
+
 		    switch(ani.type) {
     			case "frog":
         			text = nameFrog();
