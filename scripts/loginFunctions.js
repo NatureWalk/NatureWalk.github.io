@@ -53,8 +53,8 @@ function createData(localJson){
 
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
-    dataObj.steps = 4500;
-    dataObj.totalSteps = 4500;
+    dataObj.steps = 2000;
+    dataObj.totalSteps = 2000;
     if (fitbitSteps) {
         dataObj.priorSteps = fitbitSteps;
     } else {
@@ -343,6 +343,7 @@ function returningUserArea(){
     //console.log("current area is " + parseInt(getJsonItem(userID, "area")));
     controller.area_level = parseInt(getJsonItem(userID, "area"));
     dataObj.areaMax = parseInt(getJsonItem(userID, "maxArea"));
+    dataObj.tutorialProgress = parseInt(getJsonItem(userID, "tutorialProgress"));
     console.log("PREVAREAMAX: " + dataObj.areaMax);
 }
 
@@ -452,6 +453,7 @@ function returningPackage(iD) {
     var prevArea = parseInt(getJsonItem(iD, "area"));
     //console.log("previous pSteps = " + prevArea);
     var prevAreaMax = getJsonItem(iD, "areaMax");
+    var prevTutProg = parseInt(getJsonItem(iD, "tutorialProgress"));
     
     var prevPartySize = parseInt(getJsonItem(iD, "partySize"));
     
@@ -489,6 +491,7 @@ function returningPackage(iD) {
         playerTracks: prevTracks,
         season: controller.areaSeason,
         time: prevTime,
+        tutorialProgress: prevTutProg,
     };
 
     console.log(prevPartySize);

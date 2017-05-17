@@ -45,7 +45,7 @@ pcontroller_i.update = function() {
 
 var pcontroller_p = new popupController();
 pcontroller_p.update = function() {
-    console.log("updating popup screen "+popups.objects.length)
+    //console.log("updating popup screen "+popups.objects.length)
     if (popups.objects.length == 1) {
         console.log("stopping popups")
         screenMan.pop();

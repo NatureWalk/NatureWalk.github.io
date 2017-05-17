@@ -153,11 +153,11 @@ function buttonSetup() {
 
     var menuButton = new Button(openMenu);
     menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
-    menuButton.setSpriteAttributes(40,70,30,30, "menuButton");
+    menuButton.setSpriteAttributes(40,80,30,30, "menuButton");
     interface.buttonArray.push(menuButton);
 
     /////////////////////////////////////////////////
-    //Menu Button
+    //Mute Button
     /////////////////////////////////////////////////
     function mB() {soundMan.mute_music()}
     //function mB() {screenMan.push(popups)}
@@ -237,7 +237,7 @@ function buttonSetup() {
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
-        animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
+        animalIcon.setSpriteAttributes((89 +(100*i)), 110, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
         animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24);
         
@@ -283,15 +283,16 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         animalLevel = new Button(function() {})
         animalLevel.setSrc("image_resources/ClearSquare.png");
-        animalLevel.setSpriteAttributes((91 +(100*i)), 165, 0, 0, "animal_level" + i);
+        animalLevel.setSpriteAttributes((121 +(100*i)), 165, 0, 0, "animal_level" + i);
         animalLevel.hasTextValue = true;
         
         (function(i) {
             animalLevel.update = function() {
                 var temp = ui_values.animalAry[i].toLowerCase();
                 var level = controller.getAnimalBaseLevel(temp);
-                var charNum = numberLen(temp);  
-                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5 * charNum), 0);
+                var charNum = numberLen("Lvl " + level);
+                //charNum += "Lvl ".length;
+                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5.2 * charNum), 0);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -383,10 +384,20 @@ function buttonSetup() {
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
-            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5); 
+            if (this.isPressed) {
+                upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (2.8 * charnum) - 5, 12); 
+            } else {
+                upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (2.8 * charnum), 7); 
+            }
+            
         } else {
             charnum = "+1 (Selected)".length;
-            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3 * charnum), 5);
+            if (this.isPressed) {
+                upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (2.8 * charnum) - 5, 12); 
+            } else {
+                upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (2.8 * charnum), 7);
+            }
+            
         }
     }
     interface.buttonArray.push(upgradeBtn);    
@@ -481,14 +492,18 @@ function buttonSetup() {
     }
     
     animalImageCost = new Button(add_animal);
-    animalImageCost.setSrc("image_resources/buttonOut.png", "image_resources/buttonIn.png");
+    animalImageCost.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
     animalImageCost.setSpriteAttributes(286, 405, 170, 40, "animal_cost");
     interface.buttonArray.push(animalImageCost);
     
     animalImageCost.hasTextValue = true;
-    animalImageCost.fontSize = '28px';
+    animalImageCost.fontSize = '22px';
     animalImageCost.update = function() {
-        animalImageCost.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
+        if (this.isPressed) {
+            animalImageCost.setText([2000 + " Steps"], 31, 7);
+        } else {
+            animalImageCost.setText([2000 + " Steps"], 36, 2);
+        }
     }
     
 
@@ -594,9 +609,14 @@ function buttonSetup() {
     //areaNext = new Button(controller.areaLevelUp);
     areaNext = new Button(function() {
             if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
+        
+            if(dataObj.tutorialProgress == 32){
+                startTutorialPartFour();
+            }
         });
 
     areaNext.update = function() {
+        maxArea(controller.getAreaLevel());
         if (!areaEligible(controller.getAreaLevel())) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
@@ -670,7 +690,7 @@ function buttonSetup() {
         ctx.rect(517, 0, 475, 578);
         
         //console.log(tutorialProgress);
-        if(tutorialProgress == 20){
+        if(dataObj.tutorialProgress == 20){
             startTutorialPartThree();
         }
     }
@@ -810,7 +830,7 @@ function select_animal(animal_index) {
  * Returns: None. 
 */
 function add_animal() {
-    if (stepCount - (2000 + (500*controller.getNumAnimals())) < 0) {
+    if (stepCount - 2000 < 0) {
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
@@ -819,7 +839,7 @@ function add_animal() {
 
     if (status === true){
         soundMan.click.play()
-        stepCount -= (2000 + (500*(controller.getNumAnimals() - 1)));
+        stepCount -= 2000;
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
     }
@@ -834,7 +854,7 @@ function add_animal() {
             break;
     }
     
-    if(tutorialProgress == 12){
+    if(dataObj.tutorialProgress == 12){
         startTutorialPartTwo();
     }
     

@@ -12,6 +12,6 @@ function menuSetup() {
 
 	var menuButton = new Button(closeMenu);
     menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
-    menuButton.setSpriteAttributes(40,70,30,30, "menuButton_close");
+    menuButton.setSpriteAttributes(40,80,30,30, "menuButton_close");
     gameMenu.buttonArray.push(menuButton);
 }
