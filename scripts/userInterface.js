@@ -184,19 +184,24 @@ function buttonSetup() {
     stepPane.setSrc("image_resources/StepPaper.png");
     stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
     stepPane.hasTextValue = true;
+
+    var stepLogo = new Button();
+    stepLogo.setSrc("image_resources/feet.png");
+    stepLogo.setSpriteAttributes(76+(stepPane.width-35), 40, 25, 25, "stepLogo");
     
     //Arbitrary step setup if the player does not have any steps yet. 
     
     
     
-    stepPane.setText([stepCount + " Steps"], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
+    stepPane.setText([stepCount], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
-        this.updateText([stepCount + " Steps"]);
+        this.updateText([stepCount]);
         this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
     };
     interface.buttonArray.push(stepPane);
+    interface.buttonArray.push(stepLogo);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
