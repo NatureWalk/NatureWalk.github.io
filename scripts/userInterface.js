@@ -150,7 +150,7 @@ function buttonSetup() {
     function changeUser() {
     	createPackage();
         createData(lJson);
-    	logout();
+    	//logout();
     }
 
     var logoutButton = new Button(changeUser);
