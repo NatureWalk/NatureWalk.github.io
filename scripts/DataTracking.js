@@ -74,7 +74,7 @@ var gameState = {
     computationReady: false,
     devSignIn: false,
     eventCounter: 0,
-    eventTrigger: 10,
+    eventTrigger: 5,
     eventDisplayTimer: 0,
     everySecondTrig: 0,
     sessionStartTime: 0,
@@ -216,7 +216,7 @@ function everySecond(seconds) {
         ++gameState.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        gameState.eventTrigger = roll(5);
+        gameState.eventTrigger = 1;
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();

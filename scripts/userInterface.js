@@ -582,7 +582,13 @@ function buttonSetup() {
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
-        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
+        var daynight;
+        if (controller.getAreaLevel() % 2 == 0) {
+            daynight = "Night";
+        } else {
+            daynight = "Day"
+        }
+        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason+", "+daynight);
         this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
         //this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }

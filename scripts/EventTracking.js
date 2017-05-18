@@ -780,6 +780,62 @@ function displayEvent(evt) {
         });
         gameState.eventDisplayTimer = 8;
     }
+    else if (evt === "fountain") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 380, 150, 150, "eventAnimation");
+                elem.setSrc("image_resources/fountain.png", "image_resources/fountain.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
+        else if (evt === "ravine") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 380, 160, 160, "eventAnimation");
+                elem.setSrc("image_resources/ravine.png", "image_resources/ravine.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
 }
 
 function updateEventData(eventName) {
