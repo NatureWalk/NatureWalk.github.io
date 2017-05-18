@@ -124,8 +124,8 @@ function buttonSetup() {
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
         console.log("my user id is : " + userID);
         if(userID == undefined){
-         userID = "testing11";
-         stepCount = 60000;
+         userID = "testing12";
+         stepCount = 70000;
         }
 //**************************************************************************************************
         //logs user data to local storage
@@ -348,14 +348,17 @@ function buttonSetup() {
         (function(i) {
             attNum.update = function() {
                 if (ui_values.selected == "base") {
-                	if(hoveredBase){	
+                	if(hoveredBase){
+                		this.color = ["green"];	
                 		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
                 	}else{
+                		this.color = ["black"];	
                     	var stats = (ui_values.currentAnimal).toLowerCase();
                     	var testRef = controller.getBaseData(stats);
                     };
                 } else {
                 	if(hoveredAnim){
+                		this.color = ["green"];	
                 		var testRef = controller.getAnimalLevelUp()[ui_values.partyIndex];
                     	if (testRef == undefined) {
                         	ui_values.selected = "base"
@@ -366,6 +369,7 @@ function buttonSetup() {
                         	testRef.splice(4,1);
                     	}
                 	}else{
+                		this.color = ["red"];	
                 		var testRef = controller.getAnimalData()[ui_values.partyIndex];
                     	if (testRef == undefined) {
                         	ui_values.selected = "base"
