@@ -431,6 +431,8 @@ function master_controller() {
 		}
 		return data;
 	}
+	
+	
 
 	this.getBaseData = function(animal) {
         var data = [];
@@ -444,7 +446,39 @@ function master_controller() {
         }
         return data;
     }
+    
+    this.getBaseLevelUp = function(animal) {
+        var data = [];
+        data.push(this.base_levels[animal]+1);
+        for(var i = 0; i < 3; i++){
+            var stat = 1;
+            for(var k = 0; k <= this.base_levels[animal]; k++){
+                stat = Math.ceil(stat * animal_data[animal][i]);
+            }
+            data.push(stat);
+        }
+        return data;
+    }
 
+	this.getAnimalLevelUp = function(){
+		var data = [];
+		for(var i = 0; i < this.animals.length; i++){
+			var dat = [];
+
+			dat.push(this.animals[i].type)
+			dat.push((this.animals[i].level)+1)
+			for(var j = 0; j < 3; j++){
+				var stat = 1;
+				for(var k = 0; k <= this.animals[i].level; k++){
+					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
+				}
+				dat.push(stat);
+			}
+			dat.push(this.animals[i].name)
+			data.push(dat);
+		}
+		return data;
+	}
 	
 	this.getAnimalBaseLevel = function(animal){
 		return this.base_levels[animal];

@@ -124,8 +124,8 @@ function buttonSetup() {
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
         console.log("my user id is : " + userID);
         if(userID == undefined){
-         userID = "oiuert";
-         stepCount = 25000;
+         userID = "testing11";
+         stepCount = 60000;
         }
 //**************************************************************************************************
         //logs user data to local storage
@@ -148,8 +148,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //Opens the menu screen
     function changeUser() {
-    	createPackage();
-        createData(lJson);
+    	//createPackage();
+        //createData(lJson);
     	//logout();
     }
 
@@ -334,6 +334,8 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         //ATTRIBUTE VALUES
         /////////////////////////////////////////////////
+    	var hoveredBase = false;
+    	var hoveredAnim = false;
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
@@ -341,22 +343,39 @@ function buttonSetup() {
         
         attNum.hasTextValue = true;
         attNum.fontSize = '22px';
+        attNum.color = ["black"];
         
         (function(i) {
             attNum.update = function() {
                 if (ui_values.selected == "base") {
-                    var stats = (ui_values.currentAnimal).toLowerCase();
-                    var testRef = controller.getBaseData(stats);
+                	if(hoveredBase){	
+                		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
+                	}else{
+                    	var stats = (ui_values.currentAnimal).toLowerCase();
+                    	var testRef = controller.getBaseData(stats);
+                    };
                 } else {
-                    var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    if (testRef == undefined) {
-                        ui_values.selected = "base"
-                        return;
-                    }
-                    if (testRef != undefined) {
-                        testRef.splice(0,1);
-                        testRef.splice(4,1);
-                    }
+                	if(hoveredAnim){
+                		var testRef = controller.getAnimalLevelUp()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+                	}else{
+                		var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+                    };
                     //console.log(testRef)
                 }
                 //Workaround, some event may be more broken
@@ -376,6 +395,7 @@ function buttonSetup() {
     //UPGRADE BUTTON
     /////////////////////////////////////////////////
     var upgradeBtn;
+ 
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
             //upgrade_baseAnimalMax();
@@ -394,6 +414,16 @@ function buttonSetup() {
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     //upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
+    //////////////
+    if(this.hovered && ui_values.selected == "base"){
+    	hoveredBase = true;
+    } else if(this.hovered){
+    	hoveredAnim = true;
+    } else {
+    	hoveredBase = false;
+    	hoveredAnim = false;
+    };
+    
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
             if (this.isPressed) {
@@ -472,6 +502,7 @@ function buttonSetup() {
         if (this.hovered) {
             src = ui_values.animalStaticHover;
             console.log("Hovered");
+            
         } else {
             src = ui_values.animalStaticAry;
         }
