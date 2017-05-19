@@ -142,6 +142,23 @@ function buttonSetup() {
     login.setText(["Login With Fitbit"],40,20)
     console.log(login.text);
     title.buttonArray.push(login);
+	
+	/////////////////////////////////////////////////
+    //Logout Button
+    /////////////////////////////////////////////////
+    //Opens the menu screen
+    function changeUser() {
+    	createPackage();
+        createData(lJson);
+    	//logout();
+    }
+
+    var logoutButton = new Button(changeUser);
+    logoutButton.setSrc("image_resources/user_logout.png","image_resources/ClearSquare.png");
+    logoutButton.setSpriteAttributes(40,120,30,30, "logoutButton");
+    interface.buttonArray.push(logoutButton);
+
+
 
     /////////////////////////////////////////////////
     //Menu Button
