@@ -459,6 +459,20 @@ function master_controller() {
         }
         return data;
     }
+    
+    this.getBaseMaxUpgrade = function(animal) {
+        var x = getMaxAnimalLevel();
+        var data = [];
+        data.push(x);
+        for(var i = 0; i < 3; i++){
+            var stat = 1;
+            for(var k = 0; k <= x; k++){
+                stat = Math.ceil(stat * animal_data[animal][i]);
+            }
+            data.push(stat);
+        }
+        return data;
+    }
 
 	this.getAnimalLevelUp = function(){
 		var data = [];
@@ -470,6 +484,27 @@ function master_controller() {
 			for(var j = 0; j < 3; j++){
 				var stat = 1;
 				for(var k = 0; k <= this.animals[i].level; k++){
+					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
+				}
+				dat.push(stat);
+			}
+			dat.push(this.animals[i].name)
+			data.push(dat);
+		}
+		return data;
+	}
+	
+	this.getAnimalMaxUpgrade = function(){
+		var y = getSelectedMaxLevel();
+		var data = [];
+		for(var i = 0; i < this.animals.length; i++){
+			var dat = [];
+
+			dat.push(this.animals[i].type)
+			dat.push(y)
+			for(var j = 0; j < 3; j++){
+				var stat = 1;
+				for(var k = 0; k <= y; k++){
 					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
 				}
 				dat.push(stat);

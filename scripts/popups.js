@@ -1,4 +1,5 @@
-
+    	var maxBaseHovered = false;
+    	var maxAnimalHovered = false;
 //Creates a popup with default background.
 function addPopup(text,x,y,cutout,name="popup") {
 	var button = new Button(function() {
@@ -255,9 +256,9 @@ popupController.prototype.contains = function(popup) {
         }
     }
 }
-/////////////////
-
-//Button that appears when player has enough tracks to do multiple upgrades
+	/////////////////////////////////////////////////////////////////////////////////////
+	//MAX BUTTON
+	////////////Button that appears when player has enough tracks to do multiple upgrades
 var fullUpgrade = new Button(function() {
     console.log("pushed");
     if (ui_values.selected == "base") {
@@ -276,7 +277,54 @@ fullUpgrade.hasTextValue = true;
 fullUpgrade.fontSize = '20px';
 charnum = "MAX".length;
 fullUpgrade.setText(["MAX"], (fullUpgrade.width / 2) - (6.3 * charnum), 5);
+fullUpgrade.update = function(){
+	//console.log("max available");
+	if(this.hovered && ui_values.selected == "base"){
+    	maxBaseHovered = true;
+    } else if(this.hovered){
+    	maxAnimalHovered = true;
+    } else {
+    	maxBaseHovered = false;
+    	maxAnimalHovered = false;
+    };
+};
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	
+    //////////////////////////////////////////////////////////////////////////////////////
+    //MAX COST
+    //////////////////////////////////////////////////////////////////////////////////////
+    var maxCost;
+    maxCost = new Button(function() {});
+    maxCost.setSrc("image_resources/StepPaper.png");
 
+    maxCost.setSpriteAttributes(186, 360, 65, 40, "upgradeCost");
+
+    maxCost.hasTextValue = true;
+    maxCost.fontSize = '20px';
+    maxCost.color = ['blue'];
+
+
+    maxCost.update = function() {
+        if (ui_values.selected == "base") {
+        	var displayNum = numberConversion(getMaxAnimalCost());
+            maxCost.setText([displayNum], (maxCost.width / 2) - (4 * displayNum.length), 5);
+
+        } else {
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
+            //console.log(getSelectedMaxLevel());
+            var displayNum = numberConversion(getSelectedMaxCost());
+            maxCost.setText([displayNum], (maxCost.width / 2) - (4 * displayNum.length), 5);
+        }
+
+        
+    };
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	
 function p_maxUpgrade() {
 	var threshold;
 	if (ui_values.selected == "base") {
@@ -289,8 +337,12 @@ function p_maxUpgrade() {
 	if (dataObj.animalTracks - ((level * threshold) + (level+1)*threshold) > 0) {
 		if (interface.contains(fullUpgrade)) return;
 		pushInterface(fullUpgrade);
+		pushInterface(maxCost);
 	} else {
 		removeInterface(fullUpgrade);
+		removeInterface(maxCost);
+		maxBaseHovered = false;
+    	maxAnimalHovered = false;
 	}
 }
 
