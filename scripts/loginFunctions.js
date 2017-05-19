@@ -5,7 +5,7 @@ var fitbitSteps;
 var loggedIn = false;
 //function that is called in loadGame() in userinterface.js
 function logIn(){
-        loggedIn = true;
+    loggedIn = true;
     loginPlayer();
 }
 
@@ -26,6 +26,7 @@ function loginPlayer(){
         firstTimeUserSteps();
         createData(initPackage());
         firstTimeUserFlag = true;
+        gameState.sprint = true;
     } else {
         console.log("returning player");
         returningUserSteps();
@@ -55,10 +56,13 @@ function createData(localJson){
 function firstTimeUserSteps(){
     dataObj.steps = 2000;
     dataObj.totalSteps = 2000;
+    console.log("Fitbit Steps: " + fitbitSteps);
     if (fitbitSteps) {
         dataObj.priorSteps = fitbitSteps;
+        gameState.newToFitbit = false; 
     } else {
         dataObj.priorSteps = 0;
+        gameState.newToFitbit = true;
     }
     
     stepCount = dataObj.steps;
@@ -70,18 +74,28 @@ function returningUserSteps(){
     var priorSteps = parseFloat(getJsonItem(userID, "playerPSteps"));
     var totalSteps = parseFloat(getJsonItem(userID, "playerTSteps"));
     var playerSteps = parseFloat(getJsonItem(userID, "playerSteps"));
+    var stepMult = parseFloat(getJsonItem(userID, "stepMultiplier"));
     
     console.log("Prior: " + priorSteps);
     console.log("Total: " + totalSteps);
     console.log("Player: " + playerSteps);
-    
-    stepCount =  (fitbitSteps - priorSteps) + playerSteps;
-    //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
+    console.log("Mult: " + stepMult);
     
     dataObj.priorSteps = priorSteps;
     //dataObj.totalSteps = fitbitSteps - priorSteps;
     dataObj.totalSteps = totalSteps;
+    //Add the additional steps from the step multiplier to the total. 
+    dataObj.multipliedSteps += ((playerSteps*stepMult) - playerSteps);
+    console.log("Multiplied Steps: " + (playerSteps*stepMult) - playerSteps);
+    dataObj.totalSteps += ((playerSteps*stepMult) - playerSteps);
     dataObj.steps = stepCount;
+    
+    playerSteps *= stepMult;
+    stepCount =  (fitbitSteps - priorSteps) + playerSteps;
+    //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
+    
+    
+    
     console.log("returning steps ===== " + stepCount);
 }
 

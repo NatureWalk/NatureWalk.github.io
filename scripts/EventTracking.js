@@ -83,6 +83,7 @@ function goodEventHandler(evtRoll) {
         case evtRoll < 30:
             //console.log(goodEvents[0]);
             eventLogAry.push("You picked up a step multiplier.");
+            stepMultiplier();
             break;
         //Extra Tracks
         case evtRoll >= 30 && evtRoll < 55:
@@ -98,7 +99,7 @@ function goodEventHandler(evtRoll) {
     }
 }
 
-
+/*
 //Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
     switch (true) {
@@ -135,6 +136,7 @@ function goodEventHandler(evtRoll) {
             break;
     }
 }
+*/
 
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
@@ -146,44 +148,38 @@ function badEventHandler(evtRoll) {
    console.log("Event Roll: " + evtRoll);
    switch (true) {
     	case evtRoll <= 31:
+            //Event 1 of current season has been rolled. 
     		console.log(b[0][0] + " " + b[0][1])
-            //eventLogAry.push("")
+            
+            //Log the event roll in the badEventObj object.
             updateEventData(b[0][0]);
+           
+            //Roll for each animal to see which animals fail. 
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[0][1]);
 				numAnimalsRolled++;
 			}
-			// Print the results of the event that occured
+			//If the player has animals, display the event in the log. 
 			if(controller.getNumAnimals() > 0){
 				diffPrint();
-				
 				for(var i = 0; i < deadArr.length; i++){
 					//console.log("Array value: " + deadArr[i]);
 				}
 				
 				eventLogAry.push("You encountered a " + b[0][0] + ". It tested " + b[0][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
+                //Display the event on screen. 
                 displayEvent(b[0][0]);
                 
-				//animalDeadGrammarCheck();
-				//animalTripGrammarCheck();
-				//animalSafeGrammarCheck();
-				//animalSafePrinter();
-				//animalTrippedPrinter();
-				//animalDeathPrinter();
-				
 				deadPrint();
 				tripPrint();
 				safePrint();
-				
-				//bigDeathPrinter();
-				//bigTrippedPrinter();
-				//bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
     	case evtRoll > 31 && evtRoll < 63:
+            //Event 2 of the current season has been rolled. 
     		console.log(b[1][0] + " " + b[1][1])
             updateEventData(b[1][0]);
     	    for(var i = 0; i < controller.getNumAnimals(); i++){
@@ -201,25 +197,15 @@ function badEventHandler(evtRoll) {
                 
                 displayEvent(b[1][0]);
                 
-				//animalDeadGrammarCheck();
-				//animalTripGrammarCheck();
-				//animalSafeGrammarCheck();
-				//animalSafePrinter();
-				//animalTrippedPrinter();
-				//animalDeathPrinter();
-				
 				deadPrint();
 				tripPrint();
 				safePrint();
-				
-				//bigDeathPrinter();
-				//bigTrippedPrinter();
-				//bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
     	case evtRoll >= 63 && evtRoll < 94:
+            //Event 2 of the current season has been rolled. 
     		console.log(b[2][0] + " " + b[2][1])
             updateEventData(b[2][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
@@ -256,6 +242,7 @@ function badEventHandler(evtRoll) {
 			animalRoll = 0;
     		break;
     	case evtRoll >= 94:
+            //Catastrophic event of the current season has been rolled. 
     		console.log(b[3][0] + " " + b[3][1]);
             updateEventData(b[3][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
@@ -274,28 +261,15 @@ function badEventHandler(evtRoll) {
                 
                 displayEvent(b[3][0]);
                 
-				//animalDeadGrammarCheck();
-				//animalTripGrammarCheck();
-				//animalSafeGrammarCheck();
-				//animalSafePrinter();
-				//animalTrippedPrinter();
-				//animalDeathPrinter();
-				
 				deadPrint();
 				tripPrint();
 				safePrint();
-				
-				//bigDeathPrinter();
-				//bigTrippedPrinter();
-				//bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
 	}
     controller.removeAllQueue();
-    //console.log(controller.getNumAnimals());
-	//console.log("0 test" + bunnyNumDead + bunnyNumSafe + bunnyNumTripped + birdNumDead + birdNumSafe + birdNumTripped + frogNumDead + frogNumSafe + frogNumTripped + deerNumDead + deerNumSafe + deerNumTripped);
 }
 
 // function to determine the event difficulty to print
@@ -521,11 +495,17 @@ function safeTypeCheck(animal){
 }
 
 ////////////////////////////////////////////////
-
+//Deprecated
 function badStuffSort(badThing, badStuff) {
     badStuff[badThing]++;
 }
 
+/* displayEvent() - Replaces the source file for the event elements
+of the UI so that it can be displayed. 
+ * Params: 
+ * - evt: The name of the event that is being displayed. 
+ * Returns - None. 
+*/
 function displayEvent(evt) {
     if (evt === null || evt === undefined) {
         interface.buttonArray.forEach(function (elem) {
@@ -753,6 +733,28 @@ function displayEvent(evt) {
         gameState.eventDisplayTimer = 4;
     }
 }
+
+/* stepMultiplier() - Updates the player's step multiplier when the event occurs.
+ * Params: - None. 
+ * Returns - None. 
+*/
+function stepMultiplier() {
+    var temp, rounded;
+    //temp is a number that is getting ever closer to 0
+    //as the player's step multiplier increases. 
+    temp = 2-dataObj.stepMultiplier;
+    //Round the number to the nearest hundreth. 
+    temp *= .2
+    //Set the step multiplier. 
+    //console.log(rounded);
+    dataObj.stepMultiplier += temp;
+}
+
+/* updateEventData() - Updates the event data so that the data can be stored. 
+ * Params: 
+ * - eventName: The name of the event that has occured. 
+ * Returns - None. 
+*/
 
 function updateEventData(eventName) {
     //console.log("Event Name: " + eventName);

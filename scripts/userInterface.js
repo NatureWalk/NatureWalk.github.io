@@ -178,12 +178,13 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //STEP PANE (but it's a button)
+    //STEP PANE
     /////////////////////////////////////////////////
     var stepPane = new Button();
     stepPane.setSrc("image_resources/StepPaper.png");
-    stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
+    stepPane.setSpriteAttributes(156, 35, 100, 50, "stepPane");
     stepPane.hasTextValue = true;
+    stepPane.fontSize = "20px";
     
     //Arbitrary step setup if the player does not have any steps yet. 
     
@@ -200,12 +201,52 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //TRACKS PANE (but it's a button)
+    //STEP MULTIPLIER PANE
+    /////////////////////////////////////////////////
+    var stepMultPane = new Button(function () {
+        //stepMultiplier();
+    });
+    stepMultPane.setSrc("image_resources/StepPaper.png");
+    stepMultPane.setSpriteAttributes(86, 35, 65, 50, "stepMultPane");
+    stepMultPane.hasTextValue = true;
+    stepMultPane.fontSize = '20px';
+    //stepMultPane.color = 'blue';
+    //Arbitrary step setup if the player does not have any steps yet. 
+    
+    
+    
+    stepMultPane.setText(["1.35x"], (stepMultPane.width / 2) - 5 * numberLen(1.35 + "x"), stepMultPane.height / 4);
+    
+    //Changeing the button's update function to get the step count every frame. 
+    stepMultPane.update = function() {
+        var text = [];
+        var color = [];
+        var mult = dataObj.stepMultiplier.toFixed(2);
+        text.push([mult]);
+        if (mult < 1.5) {
+            color.push("rgb(50,240,0)");
+        } else if (mult < 1.76) {
+            color.push("rgb(245,245,0)");
+        } else {
+            color.push("rgb(245,50,0)");
+        }
+        
+        text.push(["x"])
+        color.push('black')
+        this.updateText(text, color);
+        this.textOffsetX = (stepMultPane.width / 2) - 5 * numberLen(dataObj.stepMultiplier.toFixed(2) + "x")
+    };
+    interface.buttonArray.push(stepMultPane);
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //TRACKS PANE
     /////////////////////////////////////////////////
     var trackPane = new Button();
     trackPane.setSrc("image_resources/TracksPaper.png");
-    trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
+    trackPane.setSpriteAttributes(286, 35, 170, 50, "trackPane");
     trackPane.hasTextValue = true;
+    trackPane.fontSize = "20px";
     trackPane.color = 'blue';
     
     //Changing the button's update function to get the step count every frame. 
@@ -280,6 +321,7 @@ function buttonSetup() {
         animalLevel.setSrc("image_resources/ClearSquare.png");
         animalLevel.setSpriteAttributes((121 +(100*i)), 165, 0, 0, "animal_level" + i);
         animalLevel.hasTextValue = true;
+        animalLevel.fontSize = "16px";
         
         (function(i) {
             animalLevel.update = function() {
@@ -287,7 +329,7 @@ function buttonSetup() {
                 var level = controller.getAnimalBaseLevel(temp);
                 var charNum = numberLen("Lvl " + level);
                 //charNum += "Lvl ".length;
-                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5.2 * charNum), 0);
+                this.setText(["Lvl " + level], (animalLevel.width / 2) - (4 * charNum), 5);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -660,7 +702,7 @@ function buttonSetup() {
                     if (this.text === undefined) {
             //console.log(this.name);
                     } else {
-                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 400, 20);
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 16);
         }
     }
             }

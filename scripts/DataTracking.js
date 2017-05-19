@@ -33,9 +33,11 @@ var dataObj = {
     //eventsBad: [],
     //eventsGood: [],
     //numberOfSessions: 0,
+    multipliedSteps: 0,
     partySize: 0,
     priorSteps: 0,
     steps: 0,
+    stepMultiplier: 1,
     //timePlayed: 0,
     totalSteps: 0,
     tutorialProgress: 0,
@@ -77,7 +79,9 @@ var gameState = {
     eventTrigger: 10,
     eventDisplayTimer: 0,
     everySecondTrig: 0,
+    newToFitbit: false,
     sessionStartTime: 0,
+    sprint: false,
     timeAccelFactor: 1,
 }
 
@@ -208,8 +212,12 @@ function everySecond(seconds) {
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
     if (gameState.eventTrigger > 0) {
-        if (dataObj.tutorialProgress >= 34) {
+        if (dataObj.tutorialProgress >= 36) {
             gameState.eventTrigger--;
+            if (gameState.sprint) {
+                callSprint(gameState.newToFitbit);
+                gateState.sprint = false;
+            }
         }
     } else {
         var evtRoll = roll(100);
@@ -238,6 +246,13 @@ function everyThirty(seconds) {
         createPackage();
         createData(lJson);
     };
+    
+    if (dataObj.tutorialProgress >= 36) {
+        if (gameState.sprint) {
+            callSprint(gameState.newToFitbit);
+            gateState.sprint = false;
+        }
+    }
     dataObj.areaMax = maxArea();
     console.log(dataObj.areaMax);
     var partySizeLimit = Math.floor(dataObj.areaMax / 25);
@@ -304,10 +319,12 @@ function createPackage() {
         partyComp: [],
         partySize: controller.party_limit,
         playerSteps: stepCount,
+        playerMSteps: dataObj.multipliedSteps,
         playerPSteps: dataObj.priorSteps,
         playerTSteps: dataObj.totalSteps,
         playerTracks: dataObj.animalTracks,
         season: controller.areaSeason,
+        stepMultiplier: dataObj.stepMultiplier,
         time: Date.now(),
         tutorialProgress: dataObj.tutorialProgress,
     };
