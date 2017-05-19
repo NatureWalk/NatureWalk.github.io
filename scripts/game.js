@@ -102,6 +102,30 @@ title.init = function() {
 
 interface.init = function() {	
     interface.push(land);
+    switch(controller.areaSeason){
+                case 'summer':
+                    controller.areaSeason = 'summer';
+                    land.layer2.setSrc("image_resources/layer2_summer.png")
+                    land.layer3.setSrc("image_resources/layer3_summer.png")
+                    break;
+                case 'fall':
+                    controller.areaSeason = 'fall';
+                    land.layer2.setSrc("image_resources/layer2_fall.png")
+                    land.layer3.setSrc("image_resources/layer3_fall.png")
+                    break;
+                case 'winter':
+                    controller.areaSeason = 'winter';
+                    land.layer1.setSrc("image_resources/moun_snow.png")
+                    land.layer2.setSrc("image_resources/layer2_winter.png")
+                    land.layer3.setSrc("image_resources/layer3_winter.png")
+                    break;
+                case 'spring': 
+                    controller.areaSeason = 'spring';
+                    land.layer1.setSrc("image_resources/mountain.png")
+                    land.layer2.setSrc("image_resources/layer2_spring.png")
+                    land.layer3.setSrc("image_resources/layer3_spring.png")
+                    break;
+    }
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }

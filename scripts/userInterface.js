@@ -185,19 +185,22 @@ function buttonSetup() {
     stepPane.setSpriteAttributes(156, 35, 100, 50, "stepPane");
     stepPane.hasTextValue = true;
     stepPane.fontSize = "20px";
+
+    var stepLogo = new Button();
+    stepLogo.setSrc("image_resources/feet.png");
+    stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
     //Arbitrary step setup if the player does not have any steps yet. 
     
-    
-    
-    stepPane.setText([stepCount + " Steps"], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
+    stepPane.setText([stepCount], (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
-        this.updateText([stepCount + " Steps"]);
+        this.updateText([stepCount]);
         this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
     };
     interface.buttonArray.push(stepPane);
+    interface.buttonArray.push(stepLogo);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -255,13 +258,16 @@ function buttonSetup() {
         var color = [];
         text.push(numberConversion(Math.floor(dataObj.animalTracks)))
         color.push('blue');
-        text.push(" Tracks");
-        color.push('black');
         this.updateText(text,color);
-        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks) + " Tracks")
+        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks))
         this.textOffsetY = 10;
     };
     interface.buttonArray.push(trackPane);
+    
+    var trackLogo = new Button();
+    trackLogo.setSrc("image_resources/BunnyPrint.png");
+    trackLogo.setSpriteAttributes(trackPane.x+10, stepPane.y+10, 25, 25, "trackLogo");
+    interface.buttonArray.push(trackLogo);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -619,7 +625,13 @@ function buttonSetup() {
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
-        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
+        var daynight;
+        if (controller.getAreaLevel() % 2 == 0) {
+            daynight = "Night";
+        } else {
+            daynight = "Day"
+        }
+        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason+", "+daynight);
         this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
         //this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }

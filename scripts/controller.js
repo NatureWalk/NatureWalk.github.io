@@ -257,6 +257,7 @@ function master_controller() {
 		}
 	var cata = roll(2,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
+	console.log("AreaUp: "+this.usableEvents);
 	}
 	
 	this.areaLevelDown = function(){
@@ -270,10 +271,10 @@ function master_controller() {
 					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'summer':
-				    this.areaSeason = 'winter'
-				    land.layer1.setSrc("image_resources/moun_snow.png")
-					land.layer2.setSrc("image_resources/layer2_winter.png")
-					land.layer3.setSrc("image_resources/layer3_winter.png")
+				    this.areaSeason = 'spring'
+				    land.layer1.setSrc("image_resources/mountain.png")
+					land.layer2.setSrc("image_resources/layer2_spring.png")
+					land.layer3.setSrc("image_resources/layer3_spring.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'summer';
@@ -320,9 +321,11 @@ function master_controller() {
 		}
 	var cata = roll(2,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
+	console.log("AreaDown: "+this.usableEvents);
 	}
 	
 	this.getBadEvents = function(){
+		console.log("Current events: "+this.usableEvents);
 		return this.usableEvents;
 	}
 	
@@ -352,7 +355,9 @@ function master_controller() {
 	}
 	
 	this.partySizeUp = function(){
-		this.party_limit += 1;
+		if (this.party_limit < 12) {
+			this.party_limit += 1;
+		}
 	}
 	
 	this.addAnimal = function(animal){
