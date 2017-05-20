@@ -35,7 +35,11 @@ var interface = new Screen(false, true);
 
 var popups = new Screen(false, true);
 
-var gameMenu = new Screen(false, true);
+var gameMenu = new Screen(true, true);
+
+//Submenus
+var subSettings = new Screen(false, false);
+
 
 var pcontroller_i = new popupController();
 pcontroller_i.update = function() {
