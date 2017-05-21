@@ -39,6 +39,7 @@ var gameMenu = new Screen(true, true);
 
 //Submenus
 var subSettings = new Screen(false, false);
+var subHistory = new Screen(false, false);
 
 
 var pcontroller_i = new popupController();
@@ -99,9 +100,7 @@ title.init = function() {
 	titleback.y = h*.05;
 	this.push(background);
 	this.push(titleback);
-	if (title.buttonArray !== undefined) {
-        title.buttonArray.forEach( function(elem) {title.push(elem);} );
-    }
+	title.displayButtons();
 }
 
 interface.init = function() {	
@@ -130,9 +129,7 @@ interface.init = function() {
                     land.layer3.setSrc("image_resources/layer3_spring.png")
                     break;
     }
-    if (interface.buttonArray !== undefined) {
-        interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
-    }
+    interface.displayButtons();
     this.push(pcontroller_i);
 
     //addPopup("This is a test.",w/2,h/2);
@@ -145,9 +142,9 @@ popups.init = function() {
 
 gameMenu.init = function() {
     menuSetup();
-    if (gameMenu.buttonArray !== undefined) {
-        gameMenu.buttonArray.forEach( function(elem) {gameMenu.push(elem);} );
-    }
+    gameMenu.displayButtons();
+    subSettings.displayButtons();
+    subHistory.displayButtons();
 }
 
 game.init = function() {	

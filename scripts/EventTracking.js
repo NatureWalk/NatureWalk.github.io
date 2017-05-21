@@ -54,6 +54,9 @@ var goodEvents = [
 //Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
 
+// History of past events
+var historyAry = [];
+
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {

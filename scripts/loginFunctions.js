@@ -100,6 +100,12 @@ function returningUserSteps(){
 }
 
 function returningUserTracks(){
+	
+	var goodEvents = 0;
+	var badEvents = 0;
+	var totalDead = 0;
+	var totalTrip = 0;
+	
     returningUserArea();
     returningUserSeason();
     dataObj.animalTracks = parseFloat(getJsonItem(userID, "playerTracks"));
@@ -141,6 +147,7 @@ function returningUserTracks(){
             console.log(evtRoll);
             //Good Event
             if (evtRoll > 70) {
+				goodEvents++;
                 evt2 = roll(100);
                 if (evt2 < 26){
                     dataObj.animalTracks += (dataObj.animalTracks/1000);
@@ -148,6 +155,7 @@ function returningUserTracks(){
             } 
             //Bad Event
             else if (evtRoll < 40) {
+				badEvents++;
                 evt2 = roll(100);
                 switch (true) {
                     case evt2 <= 31:
@@ -186,8 +194,10 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                             } else if(die < 50){
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -231,8 +241,10 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                             } else if(die < 50){
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -276,8 +288,10 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                             } else if(die < 50){
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -324,8 +338,10 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                             } else if(die < 50){
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -345,6 +361,8 @@ function returningUserTracks(){
         }
     
     }
+	
+	historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
 }
 function returningBaseLevels(){
     controller.base_levels['frog'] = getJsonItem(userID, "frogBaseLevel");

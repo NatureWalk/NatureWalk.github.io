@@ -23,6 +23,7 @@ function menuSetup() {
     //SETTINGS BUTTON
     /////////////////////////////////////////////////
     function openSettings() {
+    	screenMan.pop()
     	screenMan.push(subSettings);
     }
 
@@ -63,5 +64,76 @@ function menuSetup() {
     //Fitbit legal stuff
 
     //Privacy Policy
+	
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Event History
+	/////////////////////////////////////////////////////////////////////////////////////////
+	
+	// History Button
+	function openHistory() {
+		screenMan.pop()
+    	screenMan.push(subHistory);
+    }
+
+    var historyButton = new Button(openHistory);
+    historyButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
+    historyButton.setSpriteAttributes(250,60,120,40);
+    
+    var charnum = "History".length
+    historyButton.hasTextValue = true;
+    historyButton.setText(["History"], (historyButton.width / 2) - (6.3 * charnum), 5);
+    //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
+    historyButton.update = function () {
+            if (this.isPressed) {
+                historyButton.setText(["History"], (historyButton.width / 2) - (4 * charnum) - 5, 12); 
+            } else {
+                historyButton.setText(["History"], (historyButton.width / 2) - (4 * charnum), 7); 
+            }
+    }
+
+    gameMenu.buttonArray.push(historyButton);
+	
+	
+	// History Pane 
+	// Uses same code as event log
+	var historyPane = new Button();
+    historyPane.setSrc("image_resources/EventLog.png");
+    historyPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
+    subHistory.buttonArray.push(historyPane);
+	
+	
+
+        
+    for (i = 0; i < 5; i++) {
+        var historyEntry = new Button();
+        historyEntry.setSrc("image_resources/ClearSquare.png");
+        historyEntry.setSpriteAttributes(567, (45*i)+55    , 452, 54, "eventLog");
+        subHistory.buttonArray.push(historyEntry);
+
+        historyEntry.hasTextValue = true;
+        historyEntry.fontSize = '16px';
+
+        (function(i) {
+            var testRef = historyAry[i];
+            //console.log(testRef);
+            historyEntry.update = function() {
+                if (historyAry[i]) {
+                    this.updateText([historyAry[i]]);
+                } else {this.updateText([""]);}
+            }
+        })(i);
+        
+        (function(i) {
+            historyEntry.draw = function() {
+                if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+                    if (this.text === undefined) {
+            //console.log(this.name);
+                    } else {
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 16);
+        }
+    }
+            }
+        })(i);
+    }
 
 }

@@ -54,6 +54,13 @@ Screen.prototype.removeButton = function(button) {
     }
 }
 
+//Pushes all of the buttonArray so they will be drawn on screen.
+Screen.prototype.displayButtons = function() {
+    for (var i in this.buttonArray) {
+        this.push(this.buttonArray[i]);
+    }
+}
+
 Screen.prototype.contains = function(object) {
     for (var i in this.objects) {
         if (this.objects[i] == object) {
@@ -98,6 +105,7 @@ ScreenManager.prototype.push = function(screen){
         }
     }
     this.screens.push(screen);
+    console.log(this.screens);
 }
 
 ScreenManager.prototype.pop = function(){
