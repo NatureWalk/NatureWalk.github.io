@@ -67,8 +67,8 @@ badEvents = [
 badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
 badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
 //badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
-badEventsSpringDay = [["river", "evasion"], ["rain storm", "strength"], ["predator", "evasion"]];
-badEventsSpringNight = [["river", "strength"], ["sinkhole", "strength"], ["predator", "evasion"]];
+badEventsSpringDay = [["river", "evasion"], ["lightning storm", "speed"], ["hunter", "evasion"]];
+badEventsSpringNight = [["river", "evasion"], ["sinkhole", "strength"], ["predator", "evasion"]];
 badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
 badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
 //badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
@@ -105,9 +105,9 @@ bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond",
 
 birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barbara", "Barclay", "Bardot",
 "Barrington", "Banjo", "Balthazar", "Brian", "Bradley", "Bryce", "Bruce", "Brieanne", "Bianca",
-"Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Bartholemew",
-"Brandon", "Brynn", "Bobby", "Bob", "Bert", "Bertrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
-"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "Beckham", "Bridget",
+"Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Birdtholemew",
+"Brandon", "Brynn", "Bobby", "Bob", "Bert", "Birdtrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
+"Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "David Peckham", "Bridget",
 "Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick", "Sweet Dee", "Phoenixperson", "Joel McQuail",
 "Wil Tweeton", "Stephen Squawking", "Zoidbird", "Flight Schrute", "Cyberbird", "Meryl Cheep"];
 
@@ -256,7 +256,8 @@ function master_controller() {
 				    break;
 		}
 	var cata = roll(2,0);
-	//this.usableEvents.push(badEventsCatastrophe[cata]);
+	this.usableEvents.push(badEventsCatastrophe[cata]);
+	console.log("AreaUp: "+this.usableEvents);
 	}
 	
 	this.areaLevelDown = function(){
@@ -270,10 +271,10 @@ function master_controller() {
 					land.layer3.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'summer':
-				    this.areaSeason = 'winter'
-				    land.layer1.setSrc("image_resources/moun_snow.png")
-					land.layer2.setSrc("image_resources/layer2_winter.png")
-					land.layer3.setSrc("image_resources/layer3_winter.png")
+				    this.areaSeason = 'spring'
+				    land.layer1.setSrc("image_resources/mountain.png")
+					land.layer2.setSrc("image_resources/layer2_spring.png")
+					land.layer3.setSrc("image_resources/layer3_spring.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'summer';
@@ -320,9 +321,11 @@ function master_controller() {
 		}
 	var cata = roll(2,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
+	console.log("AreaDown: "+this.usableEvents);
 	}
 	
 	this.getBadEvents = function(){
+		console.log("Current events: "+this.usableEvents);
 		return this.usableEvents;
 	}
 	
@@ -352,7 +355,9 @@ function master_controller() {
 	}
 	
 	this.partySizeUp = function(){
-		this.party_limit += 1;
+		if (this.party_limit < 12) {
+			this.party_limit += 1;
+		}
 	}
 	
 	this.addAnimal = function(animal){
