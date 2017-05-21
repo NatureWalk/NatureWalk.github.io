@@ -33,7 +33,7 @@ MouseManager.prototype.findTarget = function (evt) {
     var mousePos = this.getMousePos(canvas, evt);
     screens = screenMan.screens;
     for(var s = 0; s < screens.length; s++){
-        if(screens[s].alwaysUpdate || screens[s] == screens[screens.length-1]){
+        if((screens[s].alwaysUpdate || screens[s] == screens[screens.length-1]) && screens[s].buttonArray != undefined){
             for (var i=0; i<screens[s].buttonArray.length; i++) {
                 //DEBUG: console.log("Scanning buttonArray");
                 if (this.isInside(screens[s].buttonArray[i], mousePos)) {

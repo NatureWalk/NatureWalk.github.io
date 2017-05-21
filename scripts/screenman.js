@@ -22,6 +22,14 @@ function Screen(alwaysUpdate, alwaysDraw){
 Screen.prototype.init = function() {
 }
 
+Screen.prototype.isEmpty = function() {
+    if (this.objects.length == 0 || this.buttonArray.length == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 Screen.prototype.push = function(object) {
     this.objects.push(object);
 }
@@ -43,6 +51,13 @@ Screen.prototype.removeButton = function(button) {
         if (this.buttonArray[i] == button) {
             this.buttonArray.splice(i,1);
         }
+    }
+}
+
+//Pushes all of the buttonArray so they will be drawn on screen.
+Screen.prototype.displayButtons = function() {
+    for (var i in this.buttonArray) {
+        this.push(this.buttonArray[i]);
     }
 }
 
@@ -90,6 +105,7 @@ ScreenManager.prototype.push = function(screen){
         }
     }
     this.screens.push(screen);
+    console.log(this.screens);
 }
 
 ScreenManager.prototype.pop = function(){

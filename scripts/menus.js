@@ -23,6 +23,7 @@ function menuSetup() {
     //SETTINGS BUTTON
     /////////////////////////////////////////////////
     function openSettings() {
+    	screenMan.pop()
     	screenMan.push(subSettings);
     }
 
@@ -70,7 +71,8 @@ function menuSetup() {
 	
 	// History Button
 	function openHistory() {
-    	screenMan.push(subSettings);
+		screenMan.pop()
+    	screenMan.push(subHistory);
     }
 
     var historyButton = new Button(openHistory);
@@ -97,7 +99,7 @@ function menuSetup() {
 	var historyPane = new Button();
     historyPane.setSrc("image_resources/EventLog.png");
     historyPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
-    interface.buttonArray.push(historyPane);
+    subHistory.buttonArray.push(historyPane);
 	
 	
 
@@ -106,7 +108,7 @@ function menuSetup() {
         var historyEntry = new Button();
         historyEntry.setSrc("image_resources/ClearSquare.png");
         historyEntry.setSpriteAttributes(567, (45*i)+55    , 452, 54, "eventLog");
-        interface.buttonArray.push(historyEntry);
+        subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
         historyEntry.fontSize = '16px';
