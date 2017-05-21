@@ -96,10 +96,10 @@ function menuSetup() {
 	
 	// History Pane 
 	// Uses same code as event log
-	var historyPane = new Button();
+	/*var historyPane = new Button();
     historyPane.setSrc("image_resources/EventLog.png");
-    historyPane.setSpriteAttributes(527, 30, 452, 204, "eventLog");
-    subHistory.buttonArray.push(historyPane);
+    historyPane.setSpriteAttributes(30, 70, 500, 200, "eventLog");
+    subHistory.buttonArray.push(historyPane);*/
 	
 	
 
@@ -107,7 +107,7 @@ function menuSetup() {
     for (i = 0; i < 5; i++) {
         var historyEntry = new Button();
         historyEntry.setSrc("image_resources/ClearSquare.png");
-        historyEntry.setSpriteAttributes(567, (45*i)+55    , 452, 54, "eventLog");
+        historyEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
         subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
