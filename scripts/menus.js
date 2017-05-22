@@ -155,12 +155,11 @@ function menuSetup() {
 			ctx.fillText(achievements[i] + ":  " + rewardText[i], X , Y);
 			ctx.fillText(achievText[i], X , Y+20 );
 			if(completed[i] == 1){
-				ctx.beginPath();
 				ctx.moveTo(X,Y+15);
 				ctx.lineTo(X+400,Y+15);
 				ctx.moveTo(X,Y+35);
 				ctx.lineTo(X+400,Y+35);
-				ctx.stroke();
+				ctx.stroke(); 
 			}
 		}
 	}

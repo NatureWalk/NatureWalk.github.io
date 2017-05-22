@@ -370,7 +370,7 @@ function createPackage() {
     
     //Creating the json string for storage. 
     jsonFile = JSON.stringify(package);
-    console.log(jsonFile);
+    //console.log(jsonFile);
     //Copying the string to a global variable. 
     lJson = jsonFile;
 }

@@ -13,11 +13,11 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 2):
-               addPopup("Here on the left\npage, you can\ncall animals to explore\nthe world.",150, 90,[0,0,514,600]);
+               addPopup("Here on the left\npage, you can\ncall animals to explore\nthe world.",150, 90,[20,10,494,580]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 3):
-               addPopup("On the right\npage, you can\nsee your animals as\nthey explore.",700, 90,[514,0,514,600]);
+               addPopup("On the right\npage, you can\nsee your animals as\nthey explore.",700, 90,[514,10,494,580]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 4):
@@ -25,19 +25,19 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 5):
-               addPopup("These are your Steps.\nYou get these by walking\naround with your Fitbit\nand are used to call animals.",71, 90, [71,25,160,60]);
+               addPopup("These are your Steps.\nYou get these by walking\naround with your Fitbit\nand are used to call animals.",71, 90, [143,25,113,60]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 6):
-               addPopup("These are your Tracks.\nYour animals make these\nas they explore. You will\nuse tracks to upgrade\nyour animals.",240, 90, [225,25,252,57]);
+               addPopup("These are your Tracks.\nYour animals make these\nas they explore. You will\nuse tracks to upgrade\nyour animals.",240, 90, [281,25,175,55]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 7):
-               addPopup("There are four different\nanimal types you can\ncall to travel the world.",150, 200, [50,85,410,105]);
+               addPopup("There are four different\nanimal types you can\ncall to travel the world.",150, 200, [79,85,385,105]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 8):
-               addPopup("Each has their own\nstrengths and\nweaknesses.",150, 200, [50,85,410,105]);
+               addPopup("Each has their own\nstrengths and\nweaknesses.",150, 200, [79,85,385,105]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 9):
@@ -235,7 +235,7 @@ function startTutorialPartThree(){
 }
 
 function startTutorialPartFour(){
-    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",700, 300, [728,238,22,38]);
+    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",680, 300, [728,238,22,38]);
     dataObj.tutorialProgress++;
     areaPrev.update();
     screenMan.push(popups);

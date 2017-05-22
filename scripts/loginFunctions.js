@@ -409,6 +409,20 @@ function returningUserTracks(){
     //console.log("Total Offline Tracks: " + offlineTracks);
     offlinePopupObj.offlineTracks = offlineTracks;
 
+    var history_text = "While you were gone, ";
+    if (goodEvents > 0 || badEvents > 0) {
+        history_text += "your animals encountered ";
+        if (goodEvents > 0) {
+            history_text += goodEvents + " good events";
+            if (badEvents > 0) {
+                history_text += " and " + badEvents + " bad events.";
+            } else {
+                history_text += ". "
+            }
+        } else if (badEvents > 0) {
+            history_text += badEvents + " bad events. ";
+        }
+    }
 	historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
 }
 function returningBaseLevels(){

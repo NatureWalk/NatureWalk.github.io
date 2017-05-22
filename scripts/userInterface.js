@@ -239,7 +239,7 @@ function buttonSetup() {
     //STEP MULTIPLIER PANE
     /////////////////////////////////////////////////
     var stepMultPane = new Button(function () {
-        stepMultiplier();
+        //stepMultiplier();
     });
     stepMultPane.setSrc("image_resources/StepPaper.png");
     stepMultPane.setSpriteAttributes(86, 35, 65, 50, "stepMultPane");
@@ -415,7 +415,7 @@ function buttonSetup() {
                 	if(hoveredBase){
                 		this.color = ["green"];	
                 		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
-                        console.log(testRef);
+                        //console.log(testRef);
                 	}else{
                 		this.color = ["black"];	
                     	var stats = (ui_values.currentAnimal).toLowerCase();
@@ -425,7 +425,7 @@ function buttonSetup() {
                     	this.color = ["green"];
                     	var testRef = controller.getBaseMaxUpgrade(ui_values.currentAnimal.toLowerCase());
                     };
-                    console.log(maxBaseHovered);
+                    //console.log(maxBaseHovered);
                 } else {
                 	if(hoveredAnim){
                 		this.color = ["green"];	
@@ -1040,7 +1040,7 @@ function add_animal() {
     console.log("party: "+controller.getNumAnimals())
 
     if (status === true){
-        soundMan.click.play()
+        //soundMan.click.play()
         stepCount -= 2000;
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
@@ -1055,7 +1055,7 @@ function add_animal() {
         case 'Bunny':
             break;
     }
-    
+    console.log("Tutorial Progress: " + dataObj.tutorialProgress);
     if(dataObj.tutorialProgress == 12){
         startTutorialPartTwo();
     }
@@ -1103,7 +1103,7 @@ function updateParty() {
                 var num = aniToNum(animals[j+(6*i)].type);
                 //console.log("animal number: "+num)
                 partyIcon = new Button(select_animal,[j+(6*i)]);
-                partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcAry[4]);
+                partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcHover[num]);
                 //@fix: Only does one row
                 partyIcon.setSpriteAttributes((101 + (60*j)), (455 + 50*i), 40, 40, "party animal "+i);
                 partyButtons.push(partyIcon); 

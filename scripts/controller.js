@@ -335,7 +335,7 @@ function master_controller() {
 				    }
 				    break;
 		}
-	var cata = roll(2,0);
+	var cata = roll(3,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
 	//console.log("AreaDown: "+this.usableEvents);
 	}

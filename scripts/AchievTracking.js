@@ -12,8 +12,8 @@ var achievements = [
 
 var achievText = [
 	"Gain 10000 tracks",
-	"Spawn 5 of the animal in the same party",
-	"Upgrade the base level of a animal 10 times",
+    "Call 5 of the same animal to your party",
+	"Upgrade the base level of an animal 10 times",
 	"Get to area 10",
 	"Get to area 30",
 	"Get to area 70",
