@@ -196,7 +196,8 @@ function timeHandler(timeAry) {
 //Function that will be called every second. 
 function everySecond(seconds) {
     //Track generation code. 
-
+	
+	updateLog();
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
     var animTracks = 2*controller.getNumAnimals();

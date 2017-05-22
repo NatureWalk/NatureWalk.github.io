@@ -33,13 +33,13 @@ function menuSetup() {
     
     var charnum = "Settings".length
     settingsButton.hasTextValue = true;
-    settingsButton.setText(["Settings"], (settingsButton.width / 2) - (6.3 * charnum), 5);
+    settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     settingsButton.update = function () {
             if (this.isPressed) {
-                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (4 * charnum) - 5, 12); 
+                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
-                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (4 * charnum), 7); 
+                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
             }
     }
 
@@ -116,6 +116,56 @@ function menuSetup() {
     //Fitbit legal stuff
 
     //Privacy Policy
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Achievements
+	/////////////////////////////////////////////////////////////////////////////////////////
+    function openAchievements() {
+    	screenMan.pop();
+    	screenMan.push(subAchievements);
+    }
+    var achieveButton = new Button(openAchievements)
+    achieveButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
+    achieveButton.setSpriteAttributes(330,60,160,40);
+    var charnum = "Milestones".length
+    achieveButton.hasTextValue = true;
+    achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum), 3);
+
+    achieveButton.update = function () {
+        if (this.isPressed) {
+            achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum) - 5, 6); 
+        } else {
+            achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum), 3); 
+        }
+    }
+
+    gameMenu.buttonArray.push(achieveButton);
+
+    //Display Achievement List in menu screen
+	var achievList = new Button();
+    achievList.setSrc("image_resources/ClearSquare.png");
+	achievList.setSpriteAttributes(0,0,700,700);
+	achievList.fontSize = "10px";
+	achievList.draw = function () {
+		//ctx.fillText("Milestones:", 250, 70);
+		for(var i = 0; i < achievText.length; i++){
+			var X = 70;
+			var Y = 100+60*i;
+			//ctx.font = "10px Arial";
+			ctx.fillText(achievements[i] + ":  " + rewardText[i], X , Y);
+			ctx.fillText(achievText[i], X , Y+20 );
+			if(completed[i] == 1){
+				ctx.beginPath();
+				ctx.moveTo(X,Y+15);
+				ctx.lineTo(X+400,Y+15);
+				ctx.moveTo(X,Y+35);
+				ctx.lineTo(X+400,Y+35);
+				ctx.stroke();
+			}
+		}
+	}
+
+	subAchievements.buttonArray.push(achievList);
 	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Event History
@@ -129,17 +179,17 @@ function menuSetup() {
 
     var historyButton = new Button(openHistory);
     historyButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    historyButton.setSpriteAttributes(250,60,120,40);
+    historyButton.setSpriteAttributes(215,60,120,40);
     
     var charnum = "History".length
     historyButton.hasTextValue = true;
-    historyButton.setText(["History"], (historyButton.width / 2) - (6.3 * charnum), 5);
+    historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum), 4);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     historyButton.update = function () {
             if (this.isPressed) {
-                historyButton.setText(["History"], (historyButton.width / 2) - (4 * charnum) - 5, 12); 
+                historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
-                historyButton.setText(["History"], (historyButton.width / 2) - (4 * charnum), 7); 
+                historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum), 3); 
             }
     }
 
@@ -163,7 +213,7 @@ function menuSetup() {
         subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
-        historyEntry.fontSize = '16px';
+        historyEntry.fontSize = '24px';
 
         (function(i) {
             var testRef = historyAry[i];

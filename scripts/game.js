@@ -39,7 +39,10 @@ var gameMenu = new Screen(true, true);
 
 //Submenus
 var subSettings = new Screen(false, false);
+
 var subHistory = new Screen(false, false);
+
+var subAchievements = new Screen(false, false);
 
 
 var pcontroller_i = new popupController();
@@ -145,6 +148,7 @@ gameMenu.init = function() {
     gameMenu.displayButtons();
     subSettings.displayButtons();
     subHistory.displayButtons();
+    subAchievements.displayButtons();
 }
 
 game.init = function() {	
