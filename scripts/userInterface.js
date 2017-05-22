@@ -149,6 +149,7 @@ function buttonSetup() {
     //Opens the menu screen
     function openMenu() {
         screenMan.push(gameMenu);
+        screenMan.push(subSettings);
     }
 
     var menuButton = new Button(openMenu);
@@ -191,8 +192,9 @@ function buttonSetup() {
     stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    
-    stepPane.setText([stepCount], (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
+    if (stepCount != undefined) {
+        stepPane.setText([stepCount], (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
+    }
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
