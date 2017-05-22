@@ -925,7 +925,7 @@ function buttonSetup() {
 			levels.push(controller.animals[i].level)
 			//ctx.fillText("Lvl", X+10, Y + 40);
 			ctx.font = "14px handlee";
-            ctx.fillStyle="#009933";
+            ctx.fillStyle="#00ff00";
 			ctx.fillText(levels[i], X + 27, Y + 19);
             ctx.color = "black"
 		}
