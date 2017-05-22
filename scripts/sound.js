@@ -12,14 +12,13 @@ var soundManager = function() {
 	  //onend: function() {volume = 0.1}
 	})
 
-	click = new Howl({
+	this.click = new Howl({
 		src: ['sounds/click.wav'],
 		volume: 0.5,
 		buffer: true
 	})
-	click.type = "sfx";
 
-	up1 = new Howl({
+	this.up1 = new Howl({
 		src: ['sounds/up1.wav'],
 		volume: 0.1,
 		buffer:true

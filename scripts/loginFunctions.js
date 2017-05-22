@@ -3,6 +3,7 @@
 //variable that holds the number of lifetime steps of the player, pulled from fitbit API after fitbitstart() is executed
 var fitbitSteps;
 var loggedIn = false;
+var NaNReset = false;
 //function that is called in loadGame() in userinterface.js
 function logIn(){
     loggedIn = true;
@@ -27,16 +28,24 @@ function loginPlayer(){
         createData(initPackage());
         firstTimeUserFlag = true;
         gameState.sprint = true;
-    } else {
+    } else { 
         console.log("returning player");
         returningUserSteps();
         returningUserEvents();
         returningUserTracks();
         returningBaseLevels();
-        createData(returningPackage(userID));
-        if (dataObj.tutorialProgress < 36) {
+        if (NaNReset) {
+            clearUser(userID); 
             firstTimeUserFlag = true;
+            loginPlayer();
+        } else {
+            createData(returningPackage(userID));
+            if (dataObj.tutorialProgress < 36) {
+                firstTimeUserFlag = true;
+            }
         }
+        
+        
     }
 }
 
@@ -80,6 +89,9 @@ function returningUserSteps(){
     var playerSteps = parseFloat(getJsonItem(userID, "playerSteps"));
     var stepMult = parseFloat(getJsonItem(userID, "stepMultiplier"));
     //var temp = parseFloat(stepMult);
+    if (priorSteps === NaN || totalSteps === NaN || playerSteps === NaN || stepMult === NaN) {
+        NanReset = true;
+    }
     console.log("Prior: " + priorSteps);
     console.log("Total: " + totalSteps);
     console.log("Player: " + playerSteps);
@@ -97,8 +109,6 @@ function returningUserSteps(){
     playerSteps *= stepMult;
     stepCount =  (fitbitSteps - priorSteps) + playerSteps;
     //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
-    
-    
     
     console.log("returning steps ===== " + stepCount);
 }
@@ -430,6 +440,12 @@ function returningBaseLevels(){
     controller.base_levels['bunny'] = getJsonItem(userID, "bunnyBaseLevel");
     controller.base_levels['bird'] = getJsonItem(userID, "birdBaseLevel");
     controller.base_levels['deer'] = getJsonItem(userID, "deerBaseLevel");
+    if (controller.base_levels['frog'] === NaN ||
+        controller.base_levels['bunny'] === NaN ||
+        controller.base_levels['bird'] === NaN ||
+        controller.base_levels['deer'] === NaN) {
+        NaNReset = true;
+    }
 }
 
 function returningUserArea(){
@@ -491,14 +507,14 @@ console.log("returning user party");
     //console.log(myarr[0]);
     //controller.animals.push(myarr[0]);
     if(myarr.length == 0){
-    console.log("no animals in party");
+    //console.log("no animals in party");
     }
     for (var i = 0; i < myarr.length; i++) {
         if(myarr[i].deathTime > Date.now()){
-            console.log("animal added");
+            //console.log("animal added");
             controller.animals.push(myarr[i]);
         } else {
-            console.log("animal removed");
+            //console.log("animal removed");
         }
     }
 }

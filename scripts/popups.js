@@ -29,7 +29,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 6):
-               addPopup("These are your Tracks.\nYour animals make these\nas they explore. You will\nuse tracks to upgrade\nyour animals.",240, 90, [281,25,175,55]);
+               addPopup("These are your Tracks.\nYour animals make these\nas they explore. You will\nuse tracks to upgrade\nyour animals.",240, 90, [282,27,175,55]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 7):
@@ -69,7 +69,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 17):
-               addPopup("Failing these challenges \ncould slow down, or even \nkill your animals, so try \nand keep them healthy.",250, 300);
+               addPopup("Failing these challenges \ncould slow down, or even \nkill your animals, so level\nthem up when you can.",250, 300);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 18):
@@ -235,7 +235,7 @@ function startTutorialPartThree(){
 }
 
 function startTutorialPartFour(){
-    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",680, 300, [728,238,22,38]);
+    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",680, 300, [708,238,22,38]);
     dataObj.tutorialProgress++;
     areaPrev.update();
     screenMan.push(popups);

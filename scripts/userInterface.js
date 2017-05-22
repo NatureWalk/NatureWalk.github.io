@@ -624,7 +624,7 @@ function buttonSetup() {
         if (ui_values.selected == "base") {
             var name = ui_values.currentAnimal;
             var charNum = numberLen(name);  
-            this.setText([name], -115 - (9 * charNum), -30);
+            this.setText([name], -115 - (25 * charNum), -30);
         } else {
 
             if (controller.animals[ui_values.partyIndex] == undefined) {

@@ -250,7 +250,7 @@ function everySecond(seconds) {
         ++gameState.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        gameState.eventTrigger = roll(5);
+        gameState.eventTrigger = roll(5) + 12;
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();
@@ -259,17 +259,17 @@ function everySecond(seconds) {
     
     if(firstTimeUserFlag == true){
         firstTimeUserFlag = false;
-        if (dataObj.tutorialProgress < 12) {
+        if (dataObj.tutorialProgress <= 12) {
             console.log("Tutorial Reset");
             dataObj.tutorialProgress = 0;
             startTutorial();
-        } else if (dataObj.tutorialProgress < 20) {
+        } else if (dataObj.tutorialProgress <= 20) {
             dataObj.tutorialProgress = 12;
             startTutorialPartTwo();
-        } else if (dataObj.tutorialProgress < 32) {
+        } else if (dataObj.tutorialProgress <= 32) {
             dataObj.tutorialProgress = 20;
             startTutorialPartThree();
-        } else if (dataObj.tutorialProgress < 36) {
+        } else if (dataObj.tutorialProgress <= 36) {
             dataObj.tutorialProgress = 32;
             startTutorialPartFour();
         }
