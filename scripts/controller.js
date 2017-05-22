@@ -227,28 +227,28 @@ function master_controller() {
 		}
 		switch(this.areaSeason){
 				case 'spring':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsSpringNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsSpringDay.slice();
 				    }
 				    break;
 				case 'summer':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsSummerNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsSummerDay.slice();
 				    }
 				    break;
 				case 'fall':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsFallNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsFallDay.slice();
 				    }
 				    break;
 				case 'winter': 
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsWinterNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsWinterDay.slice();
@@ -291,28 +291,28 @@ function master_controller() {
 		}
 		switch(this.areaSeason){
 				case 'spring':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsSpringNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsSpringDay.slice();
 				    }
 				    break;
 				case 'summer':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsSummerNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsSummerDay.slice();
 				    }
 				    break;
 				case 'fall':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsFallNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsFallDay.slice();
 				    }
 				    break;
 				case 'winter': 
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
 				    	this.usableEvents = badEventsWinterNight.slice();
 				    } else {
 				    	this.usableEvents = badEventsWinterDay.slice();
@@ -425,7 +425,16 @@ function master_controller() {
 			dat.push(this.animals[i].type)
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
-				var stat = 1;
+				var stat = 2 * animal_data[this.animals[i].type][j];
+				if(stat > 2.5){
+					if (stat >= 3){
+						stat = 3;
+					} else {
+						stat = 2;
+					}
+				} else{
+					stat = 1;
+				}
 				for(var k = 0; k < this.animals[i].level; k++){
 					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
 				}

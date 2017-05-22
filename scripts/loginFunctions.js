@@ -386,28 +386,28 @@ function returningUserSeason(){
     controller.areaSeason = jsonData[key].toString();
     switch(controller.areaSeason){
                 case 'spring':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsSpringNight.slice();
                     } else {
                         controller.usableEvents = badEventsSpringDay.slice();
                     }
                     break;
                 case 'summer':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsSummerNight.slice();
                     } else {
                         controller.usableEvents = badEventsSummerDay.slice();
                     }
                     break;
                 case 'fall':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsFallNight.slice();
                     } else {
                         controller.usableEvents = badEventsFallDay.slice();
                     }
                     break;
                 case 'winter': 
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsWinterNight.slice();
                     } else {
                         controller.usableEvents = badEventsWinterDay.slice();

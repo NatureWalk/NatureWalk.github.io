@@ -359,10 +359,12 @@ function badEventChecker(index, stat,flag){
         //console.log("animal: " + x);
 		if (die < 5){
 			//eventLogAry.push(x +" was tragically lost.");
-            dataObj.animalsDied++;
-			deadTypeCheck(x);
-			deadArr.push(controller.animals[index].name);
-			controller.queueRemove(index);
+			if(controller.animals[index].canDie == true){
+            	dataObj.animalsDied++;
+				deadTypeCheck(x);
+				deadArr.push(controller.animals[index].name);
+				controller.queueRemove(index);
+			}
             return 2;
 		} else if(die < 50){
             tempTracksLost = (dataObj.animalTracks/200);
