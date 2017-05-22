@@ -333,6 +333,37 @@ function callOfflinePopup() {
     //dataObj.stepMultiplier = 2;
 }
 
+function dataCorruptionApology() {
+    var apologyPopup = new Button(function() {
+        removePopup(this);
+    });
+    
+    text = "We are sorry to say that your previous data was corrupted and we have restarted your nature walk to fix the problem. Please accept these steps as an apology from us at Team Nature Walk." 
+    
+    //console.log(text);
+    dataObj.steps += 8000;
+    stepCount += 8000
+    
+    apologyPopup.setSrc("image_resources/Tooltip.png");
+	apologyPopup.setSpriteAttributes(275,225,450,150, "sprintPopup");
+    
+	apologyPopup.hasTextValue = true;
+	apologyPopup.fontSize = '20px';
+	charnum = text.length;
+    
+	apologyPopup.setText([text], 5, 5);
+    //console.log(offlinePopup.text);
+    apologyPopup.draw = function() {
+        ctx.globalAlpha = 0.3;
+	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+	    ctx.globalAlpha = 1.0;
+        
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 450, 25);
+    }
+    pushPopup(button);
+}
+
 /////////////////
 function popupController() {
 	this.popups = [];
