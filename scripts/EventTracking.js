@@ -507,6 +507,7 @@ of the UI so that it can be displayed.
  * Returns - None. 
 */
 function displayEvent(evt) {
+    //Clears all events being displayed on screen. 
     if (evt === null || evt === undefined) {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "weatherAnimation") {
@@ -519,13 +520,21 @@ function displayEvent(evt) {
             }
         });
     }
+    
+    /////////////////////////////////////////////////
+    //WEATHER EVENTS
+    /////////////////////////////////////////////////
+    //If evt matches the name
     if (evt === "rain storm") {
+        //Find the 'weatherAnimation' element on the interface.
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "weatherAnimation") {
+                //Set the source of the UI element to the proper event asset.
                 elem.setSrc("image_resources/Event_Rain.png", "image_resources/Event_Rain.png", true);
                 elem.setupAnim(22, 5, 5);
             }
         });
+        //How long, in seconds, that the event will be displayed for.
         gameState.eventDisplayTimer = 5;
     
     } 
@@ -537,17 +546,26 @@ function displayEvent(evt) {
             }
         });
         gameState.eventDisplayTimer = 5;
-    
     } 
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //ANIMATED EVENTS
+    /////////////////////////////////////////////////
     else if (evt === "predator") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
+                //Replace the eventAnimation element back to the right side of the canvas.
                 elem.setSpriteAttributes(865, 410, 150, 100, "eventAnimation");
                 elem.setSrc("image_resources/Event_Predator.png", "image_resources/Event_Predator.png", true);
                 elem.setupAnim(12, 4, 4);
+                
+                //The time when the animation will fade out. 
                 elem.fadeTimer = 1;
                 
+                //Change the update function so that the animation behaves as you want it to.
                 elem.update = function () {
+                    //Quickly moves to the left, but gets slower over time. 
                     this.x -= 1*gameState.eventDisplayTimer; 
 
                     if (this.anim) {
@@ -560,13 +578,16 @@ function displayEvent(evt) {
                     }
                 }
                 
+                //Change the draw function so it will behave in the desired way. 
                 elem.draw = function () {                  
                     ctx.globalAlpha = elem.fadeTimer;
+                    //Starts to fade out during the last second of the animation. 
                     if (gameState.eventDisplayTimer <= 1) {
                         if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
                         else ctx.globalAlpha = 0;
                     }
                     
+                    //Normal button draw function. 
                     if (!this.anim) {
                         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
                     } else {
@@ -585,14 +606,143 @@ function displayEvent(evt) {
                             this.height);
 
                     }
+                    //Resets the canvas' opacity. 
                     ctx.globalAlpha = 1;
                 }
             }
         });
+        //The time, in seconds, that the animation will be displayed for. 
         gameState.eventDisplayTimer = 3;
     
     
     } 
+    else if (evt === "wildfire") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                //Replace the eventAnimation element back to the right side of the canvas.
+                elem.setSpriteAttributes(515, 260, 480, 125, "eventAnimation");
+                elem.setSrc("image_resources/Event_Fire.png", "image_resources/Event_Fire.png", true);
+                elem.setupAnim(14, 4, 4);
+                
+                //The time when the animation will fade out. 
+                elem.fadeTimer = 1;
+                
+                //Change the update function so that the animation behaves as you want it to.
+                elem.update = function () {
+                    //Quickly moves to the left, but gets slower over time. 
+                    //this.x -= .85; 
+
+                    if (this.anim) {
+                        this.tickCount++; 
+                        if (this.tickCount > this.ticksPerFrame) {
+                            this.frameIndex++;
+                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                            this.tickCount = 0; 
+                        }
+                    }
+                }
+                
+                //Change the draw function so it will behave in the desired way. 
+                elem.draw = function () {                  
+                    ctx.globalAlpha = elem.fadeTimer;
+                    //Starts to fade out during the last second of the animation. 
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    //Normal button draw function. 
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } else {
+                        //console.log("Animating " + this.name);
+                        ctx.drawImage(
+                            this.image, 
+                            //(this.frameIndex % 7) * this.width, 
+                            //Math.floor(this.frameIndex/7) * this.height, 
+                            (this.frameIndex % this.srcCols) * this.width, 
+                            Math.floor(this.frameIndex/this.srcCols) * this.height,
+                            this.width, 
+                            this.height, 
+                            this.x,
+                            this.y,
+                            this.width,
+                            this.height);
+
+                    }
+                    //Resets the canvas' opacity. 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        //The time, in seconds, that the animation will be displayed for. 
+        gameState.eventDisplayTimer = 4;
+    
+    
+    } 
+    else if (evt === "tornado") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                //Replace the eventAnimation element back to the right side of the canvas.
+                elem.setSpriteAttributes(815, 210, 180, 330, "eventAnimation");
+                elem.setSrc("image_resources/Event_Tornado.png", "image_resources/Event_Tornado.png", true);
+                elem.setupAnim(9, 4, 4);
+                
+                //The time when the animation will fade out. 
+                elem.fadeTimer = 1;
+                
+                //Change the update function so that the animation behaves as you want it to.
+                elem.update = function () {
+                    //Quickly moves to the left, but gets slower over time. 
+                    this.x -= .85; 
+
+                    if (this.anim) {
+                        this.tickCount++; 
+                        if (this.tickCount > this.ticksPerFrame) {
+                            this.frameIndex++;
+                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                            this.tickCount = 0; 
+                        }
+                    }
+                }
+                
+                //Change the draw function so it will behave in the desired way. 
+                elem.draw = function () {                  
+                    ctx.globalAlpha = elem.fadeTimer;
+                    //Starts to fade out during the last second of the animation. 
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    //Normal button draw function. 
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } else {
+                        //console.log("Animating " + this.name);
+                        ctx.drawImage(
+                            this.image, 
+                            //(this.frameIndex % 7) * this.width, 
+                            //Math.floor(this.frameIndex/7) * this.height, 
+                            (this.frameIndex % this.srcCols) * this.width, 
+                            Math.floor(this.frameIndex/this.srcCols) * this.height,
+                            this.width, 
+                            this.height, 
+                            this.x,
+                            this.y,
+                            this.width,
+                            this.height);
+
+                    }
+                    //Resets the canvas' opacity. 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        //The time, in seconds, that the animation will be displayed for. 
+        gameState.eventDisplayTimer = 4;
+    
+    }
     else if (evt === "lightning storm") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
@@ -642,7 +792,14 @@ function displayEvent(evt) {
 
                     }
                     ctx.globalAlpha = 1;
-                }
+                } 
+            }
+        });
+        //Adds rain to this animation. 
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "weatherAnimation") {
+                elem.setSrc("image_resources/Event_Rain.png", "image_resources/Event_Rain.png", true);
+                elem.setupAnim(22, 5, 5);
             }
         });
         gameState.eventDisplayTimer = 4;
@@ -679,7 +836,7 @@ function displayEvent(evt) {
     else if (evt === "river") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 380, 120, 180, "eventAnimation");
+                elem.setSpriteAttributes(865, 370, 120, 180, "eventAnimation");
                 elem.setSrc("image_resources/Event_River.png", "image_resources/Event_River.png", false);
                 elem.fadeTimer = 1;
                 
@@ -735,8 +892,36 @@ function displayEvent(evt) {
     else if (evt === "sinkhole") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 380, 160, 160, "eventAnimation");
-                elem.setSrc("image_resources/sinkhole.png", "image_resources/sinkhole.png", false);
+                elem.setSpriteAttributes(865, 400, 160, 100, "eventAnimation");
+                elem.setSrc("image_resources/Event_Sinkhole.png", "image_resources/Event_Sinkhole.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
+    else if (evt === "frozen lake") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 425, 170, 100, "eventAnimation");
+                elem.setSrc("image_resources/Event_FrozenLake.png", "image_resources/Event_FrozenLake.png", false);
                 elem.fadeTimer = 1;
                 
                 elem.update = function () {
@@ -764,7 +949,7 @@ function displayEvent(evt) {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
                 elem.setSpriteAttributes(865, 380, 150, 150, "eventAnimation");
-                elem.setSrc("image_resources/fountain.png", "image_resources/fountain.png", false);
+                elem.setSrc("image_resources/Event_Fountain.png", "image_resources/Event_Fountain.png", false);
                 elem.fadeTimer = 1;
                 
                 elem.update = function () {
@@ -792,7 +977,7 @@ function displayEvent(evt) {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
                 elem.setSpriteAttributes(865, 380, 160, 160, "eventAnimation");
-                elem.setSrc("image_resources/ravine.png", "image_resources/ravine.png", false);
+                elem.setSrc("image_resources/Event_Ravine.png", "image_resources/Event_Ravine.png", false);
                 elem.fadeTimer = 1;
                 
                 elem.update = function () {
@@ -827,10 +1012,11 @@ function stepMultiplier() {
     //temp is a number that is getting ever closer to 0
     //as the player's step multiplier increases. 
     temp = 2-dataObj.stepMultiplier;
+    
     //Round the number to the nearest hundreth. 
     temp *= .2
+    
     //Set the step multiplier. 
-    //console.log(rounded);
     dataObj.stepMultiplier += temp;
 }
 

@@ -146,11 +146,13 @@ function addPopup(text,x,y,cutout,name="popup") {
         }
 		removePopup(this);
 	});
+    console.log("Button Created");
 	button.setSrc("image_resources/Tooltip.png");
 	button.setSpriteAttributes(x,y,228,150, name)
 	button.hasTextValue = true;
 	button.fontSize = '20px';
 	charnum = text.length;
+    console.log("Button Created: " + button.x + " " + button.onMouseUpImageSrc);
 	button.setText([text], (button.width / 2) - (6.3 * charnum), 5);
     button.cutout = function (ary) {
         //console.log(ary);
@@ -214,9 +216,9 @@ function removePopup(popup) {
 
 
 function startTutorial() {
-    addPopup("Welcome to Nature Walk!\n\nClick on \fthese notecards\f\nto move on.",100, 40);
+    console.log("Tutorial Start");
+    addPopup("Welcome to Nature Walk!\n\nClick on these notecards\nto move on.",100, 40);
 	screenMan.push(popups);
-	
 }
 
 function startTutorialPartTwo(){
@@ -243,17 +245,23 @@ function callSprint(newFitbit) {
     var sprintPopup = new Button(function() {
         removeInterface(this);
     });
+    newFitBit = true;
     if (newFitbit) {
         text = "This is a brand new Fitbit that has never been" +
                " used before, let's give you a cool multiplier" +
                " so you can get a lot of steps!"
+        dataObj.stepMultiplier = 2;
     } else {
         text = "You seem to already have some steps on your" +
                " Fitbit from before, let's pull some of those" +
                " steps in so you can use them right away!"
+        console.log(fitbitSteps);
+        stepCount += fitbitSteps/10;
+        dataObj.totalSteps += fitbitSteps/10;
+        dataObj.steps += fitbitSteps/10;
     } 
     sprintPopup.setSrc("image_resources/Tooltip.png");
-	sprintPopup.setSpriteAttributes(225,225,450,150, "sprintPopup");
+	sprintPopup.setSpriteAttributes(325,225,450,150, "sprintPopup");
     
 	sprintPopup.hasTextValue = true;
 	sprintPopup.fontSize = '20px';
@@ -262,13 +270,66 @@ function callSprint(newFitbit) {
 	sprintPopup.setText([text], 5, 5);
     console.log(sprintPopup.text);
     sprintPopup.draw = function() {
+        ctx.globalAlpha = 0.3;
+	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+	    ctx.globalAlpha = 1.0;
+        
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 450, 25);
     }
     pushInterface(sprintPopup)
     gameState.newToFitbit = false;
     gameState.sprint = false; 
-    dataObj.stepMultiplier = 2;
+    //dataObj.stepMultiplier = 2;
+}
+
+function callOfflinePopup() {
+    var text;
+    var offlineDistance = dataObj.totalSteps*0.000568182;
+    var offlinePopup = new Button(function() {
+        removeInterface(this);
+    });
+    text = "Welcome back! You have walked a total of " + offlineDistance.toFixed(3) + " miles since starting your nature walk. Your animals collected " + Math.floor(offlinePopupObj.offlineTracks) + " tracks" 
+    if (offlinePopupObj.events.length > 0) {
+        text += " while facing ";
+    } else {
+        text += ".";
+    }
+    
+    for (var i = 0; i < offlinePopupObj.events.length; i++) {
+        if (offlinePopupObj.events[i] !== 0) {
+            text += offlinePopupObj.events[i]
+            if (i === offlinePopupObj.events.length - 2) {
+                text += " and ";
+            } else if (i < offlinePopupObj.events.length - 2) {
+                text += "s, ";
+            } else {
+                text += "s! ";
+            }   
+        }
+        
+    }
+    
+    console.log(text);
+    offlinePopup.setSrc("image_resources/Tooltip.png");
+	offlinePopup.setSpriteAttributes(325,225,450,150, "sprintPopup");
+    
+	offlinePopup.hasTextValue = true;
+	offlinePopup.fontSize = '20px';
+	charnum = text.length;
+    
+	offlinePopup.setText([text], 5, 5);
+    console.log(offlinePopup.text);
+    offlinePopup.draw = function() {
+        ctx.globalAlpha = 0.3;
+	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+	    ctx.globalAlpha = 1.0;
+        
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 450, 25);
+    }
+    pushInterface(offlinePopup) 
+    //dataObj.stepMultiplier = 2;
 }
 
 /////////////////

@@ -64,15 +64,15 @@ badEvents = [
     ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
 ];
 
-badEventsWinterDay = [["snow storm", 'speed']["scarce food", 'strength'], ["frozen lake", 'evasion']];
-badEventsWinterNight = [["low temperatures", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
+badEventsWinterDay = [["snow storm", 'speed'],["food scarcity", 'strength'], ["frozen lake", 'evasion']];
+badEventsWinterNight = [["temperature drop", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
 //badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
-badEventsSpringDay = [["river", "evasion"], ["lightning storm", "speed"], ["hunter", "evasion"]];
-badEventsSpringNight = [["river", "evasion"], ["sinkhole", "strength"], ["predator", "evasion"]];
+badEventsSpringDay = [["river", "strength"], ["lightning storm", "speed"], ["hunter", "evasion"]];
+badEventsSpringNight = [["treefall", "evasion"], ["sinkhole", "strength"], ["predator", "evasion"]];
 badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
-badEventsSummerNight = [["lightning storm", "speed"], ["flash flood", "speed"], ["invasive species", "evasion"]];
+badEventsSummerNight = [["lightning storm", "speed"], ["summer storm", "speed"], ["predator", "evasion"]];
 //badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
-badEventsFallDay = [["rain storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
+badEventsFallDay = [["rain storm", "strength"], ["river", 'strength'], ['hunter', 'evasion']];
 badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 'strength']];
 badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
 
@@ -202,60 +202,68 @@ function master_controller() {
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'summer';
-					land.layer2.setSrc("image_resources/layer2_summer.png")
-					land.layer3.setSrc("image_resources/layer3_summer.png")
+					land.layer3.setSrc("image_resources/layer2_summer.png")
+					land.layer4.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'summer':
 				    this.areaSeason = 'fall';
 				
-                    land.layer2.setSrc("image_resources/layer2_fall.png")
-					land.layer3.setSrc("image_resources/layer3_fall.png")
+                    land.layer3.setSrc("image_resources/layer2_fall.png")
+					land.layer4.setSrc("image_resources/layer3_fall.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'winter'
-				    land.layer1.setSrc("image_resources/moun_snow.png")
-					land.layer2.setSrc("image_resources/layer2_winter.png")
-					land.layer3.setSrc("image_resources/layer3_winter.png")
+				    land.layer2.setSrc("image_resources/moun_snow.png")
+					land.layer3.setSrc("image_resources/layer2_winter.png")
+					land.layer4.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'spring';
-				    land.layer1.setSrc("image_resources/mountain.png")
-					land.layer2.setSrc("image_resources/layer2_spring.png")
-					land.layer3.setSrc("image_resources/layer3_spring.png")
+				    land.layer2.setSrc("image_resources/mountain.png")
+					land.layer3.setSrc("image_resources/layer2_spring.png")
+					land.layer4.setSrc("image_resources/layer3_spring.png")
 				    break;
 			}
 		}
 		switch(this.areaSeason){
 				case 'spring':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsSpringNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsSpringDay.slice();
 				    }
 				    break;
 				case 'summer':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsSummerNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsSummerDay.slice();
 				    }
 				    break;
 				case 'fall':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsFallNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsFallDay.slice();
 				    }
 				    break;
 				case 'winter': 
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsWinterNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsWinterDay.slice();
 				    }
 				    break;
 		}
-	var cata = roll(2,0);
+	var cata = roll(3,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
 	console.log("AreaUp: "+this.usableEvents);
 	}
@@ -266,55 +274,63 @@ function master_controller() {
 			switch(this.areaSeason){
 				case 'spring':
 				    this.areaSeason = 'winter'
-				    land.layer1.setSrc("image_resources/moun_snow.png")
-					land.layer2.setSrc("image_resources/layer2_winter.png")
-					land.layer3.setSrc("image_resources/layer3_winter.png")
+				    land.layer2.setSrc("image_resources/moun_snow.png")
+					land.layer3.setSrc("image_resources/layer2_winter.png")
+					land.layer4.setSrc("image_resources/layer3_winter.png")
 				    break;
 				case 'summer':
 				    this.areaSeason = 'spring'
-				    land.layer1.setSrc("image_resources/mountain.png")
-					land.layer2.setSrc("image_resources/layer2_spring.png")
-					land.layer3.setSrc("image_resources/layer3_spring.png")
+				    land.layer2.setSrc("image_resources/mountain.png")
+					land.layer3.setSrc("image_resources/layer2_spring.png")
+					land.layer4.setSrc("image_resources/layer3_spring.png")
 				    break;
 				case 'fall':
 				    this.areaSeason = 'summer';
-					land.layer2.setSrc("image_resources/layer2_summer.png")
-					land.layer3.setSrc("image_resources/layer3_summer.png")
+					land.layer3.setSrc("image_resources/layer2_summer.png")
+					land.layer4.setSrc("image_resources/layer3_summer.png")
 				    break;
 				case 'winter': 
 				    this.areaSeason = 'fall';
 				
-                    land.layer2.setSrc("image_resources/layer2_fall.png")
-					land.layer3.setSrc("image_resources/layer3_fall.png")
+                    land.layer3.setSrc("image_resources/layer2_fall.png")
+					land.layer4.setSrc("image_resources/layer3_fall.png")
 				    break;
 			}
 		}
 		switch(this.areaSeason){
 				case 'spring':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsSpringNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsSpringDay.slice();
 				    }
 				    break;
 				case 'summer':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsSummerNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsSummerDay.slice();
 				    }
 				    break;
 				case 'fall':
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsFallNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsFallDay.slice();
 				    }
 				    break;
 				case 'winter': 
-				    if(this.areaLevel % 2 == 0){
+				    if(this.area_level % 2 == 0){
+                        land.layer1.setSrc("image_resources/night.png");
 				    	this.usableEvents = badEventsWinterNight.slice();
 				    } else {
+                        land.layer1.setSrc("image_resources/ClearSquare.png");
 				    	this.usableEvents = badEventsWinterDay.slice();
 				    }
 				    break;
@@ -357,6 +373,7 @@ function master_controller() {
 	this.partySizeUp = function(){
 		if (this.party_limit < 12) {
 			this.party_limit += 1;
+            //this.party_limit = 12
 		}
 	}
 	
