@@ -50,10 +50,62 @@ function menuSetup() {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     //Master Volume
+    var mVolLabel = new Button();
+    mVolLabel.setSpriteAttributes(110,110,0,0);
+    mVolLabel.hasTextValue = true;
+    mVolLabel.setText(["Master Volume"],0,0)
+    subSettings.pushButton(mVolLabel);
+    
+    var mVolText = new Button();
+    mVolText.setSpriteAttributes(310,110,0,0);
+    mVolText.hasTextValue = true;
+    mVolText.setText([Howler.volume()*10], 0,0);
 
+    mVolText.update = function() {
+    	mVolText.setText([Math.floor(Howler.volume()*10)],0,0);
+    }
+
+    subSettings.buttonArray.push(mVolText);
+
+    var mVolDown = new Button(function() {Howler.volume(Howler.volume()-.1)});
+    mVolDown.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
+    mVolDown.setSpriteAttributes(280,110,25,25);
+    subSettings.buttonArray.push(mVolDown);
+
+    var mVolUp = new Button(function() {Howler.volume(Howler.volume()+.1)});
+    mVolUp.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
+    mVolUp.setSpriteAttributes(340,110,25,25);
+    subSettings.buttonArray.push(mVolUp);
+    
     //Music Volume
+    var musVolLabel = new Button();
+    musVolLabel.setSpriteAttributes(110,140,0,0);
+    musVolLabel.hasTextValue = true;
+    musVolLabel.setText(["Music Volume"],0,0)
+    subSettings.pushButton(musVolLabel);
+    
+    var musVolText = new Button();
+    musVolText.setSpriteAttributes(310,140,0,0);
+    musVolText.hasTextValue = true;
+    musVolText.setText([soundMan.music.volume()*10], 0,0);
 
-    //SFX Volume
+    musVolText.update = function() {
+    	musVolText.setText([Math.floor(soundMan.music.volume()*10)],0,0);
+    }
+
+    subSettings.buttonArray.push(musVolText);
+
+    var musVolDown = new Button(function() {soundMan.music.volume(soundMan.music.volume()-.1)});
+    musVolDown.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
+    musVolDown.setSpriteAttributes(280,140,25,25);
+    subSettings.buttonArray.push(musVolDown);
+
+    var musVolUp = new Button(function() {soundMan.music.volume(soundMan.music.volume()+.1)});
+    musVolUp.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
+    musVolUp.setSpriteAttributes(340,140,25,25);
+    subSettings.buttonArray.push(musVolUp);
+
+    //SFX Volume FUCK
 
     //Click sounds
 

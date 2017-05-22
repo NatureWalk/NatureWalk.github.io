@@ -6,6 +6,7 @@
 //Use Sprite.call(this); for a function class and = new Sprite(); for a prototype or variable.
 function Sprite() {
     this.image = new Image();
+    this.image.src = "image_resources/ClearSquare.png";
     this.x = 0;
     this.y = 0;
     this.width = 100;
