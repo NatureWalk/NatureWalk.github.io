@@ -6,7 +6,7 @@ var volume = 0
 var soundManager = function() {
 	this.muted = false
 	this.music = new Howl({
-	  src: ['sounds/musicV1.wav'],
+	  src: ['sounds/musicV1.mp3'],
 	  buffer: true,
 	  loop: true,
 	  //onend: function() {volume = 0.1}
