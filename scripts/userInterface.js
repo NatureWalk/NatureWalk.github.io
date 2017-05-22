@@ -137,8 +137,8 @@ function buttonSetup() {
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
         console.log("my user id is : " + userID);
         if(userID == undefined){
-         userID = "oiuert";
-         stepCount = 25000;
+         userID = "testing21";
+         stepCount = 70000;
         }
 //**************************************************************************************************
         //logs user data to local storage
@@ -161,8 +161,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //Opens the menu screen
     function changeUser() {
-    	createPackage();
-        createData(lJson);
+    	//createPackage();
+        //createData(lJson);
     	//logout();
     }
 
@@ -319,12 +319,12 @@ function buttonSetup() {
             animalIcon.update = function() {
                 var src; 
                 //var currIndex = ui_values.animalAry.indexOf(ui_values.currentAnimal);
-                if (this.hovered) {
-                    src = ui_values.animalSrcHover
-                } else {
-                    src = ui_values.animalSrcAry
-                }
                 //console.log(i);
+                if(ui_values.selected == 'base' && ui_values.animalAry[i] == ui_values.currentAnimal){
+                	src = ui_values.animalSrcHover;
+                } else {
+                	src = ui_values.animalSrcAry;
+                };
                 this.setSrc(src[i], src[i], false);  
             }
         })(i);
@@ -397,6 +397,9 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         //ATTRIBUTE VALUES
         /////////////////////////////////////////////////
+    	var hoveredBase = false;
+    	var hoveredAnim = false;
+    	
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
@@ -404,22 +407,62 @@ function buttonSetup() {
         
         attNum.hasTextValue = true;
         attNum.fontSize = '22px';
+        attNum.color = ["black"];
         
         (function(i) {
             attNum.update = function() {
                 if (ui_values.selected == "base") {
-                    var stats = (ui_values.currentAnimal).toLowerCase();
-                    var testRef = controller.getBaseData(stats);
+                	if(hoveredBase){
+                		this.color = ["green"];	
+                		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
+                	}else{
+                		this.color = ["black"];	
+                    	var stats = (ui_values.currentAnimal).toLowerCase();
+                    	var testRef = controller.getBaseData(stats);
+                    };
+                    if(maxBaseHovered){
+                    	this.color = ["green"];
+                    	var testRef = controller.getBaseMaxUpgrade(ui_values.currentAnimal.toLowerCase());
+                    };
+                    console.log(maxBaseHovered);
                 } else {
-                    var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    if (testRef == undefined) {
-                        ui_values.selected = "base"
-                        return;
-                    }
-                    if (testRef != undefined) {
-                        testRef.splice(0,1);
-                        testRef.splice(4,1);
-                    }
+                	if(hoveredAnim){
+                		this.color = ["green"];	
+                		var testRef = controller.getAnimalLevelUp()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+                	}else{
+                		this.color = ["red"];	
+                		var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+                    };
+                    if(maxAnimalHovered){
+                    	this.color = ["green"];
+                    	
+                    	var testRef = controller.getAnimalMaxUpgrade()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+
+                    };
                     //console.log(testRef)
                 }
                 //Workaround, some event may be more broken
@@ -439,6 +482,7 @@ function buttonSetup() {
     //UPGRADE BUTTON
     /////////////////////////////////////////////////
     var upgradeBtn;
+ 
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
             //upgrade_baseAnimalMax();
@@ -457,6 +501,16 @@ function buttonSetup() {
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     //upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
+    //////////////
+    if(this.hovered && ui_values.selected == "base"){
+    	hoveredBase = true;
+    } else if(this.hovered){
+    	hoveredAnim = true;
+    } else {
+    	hoveredBase = false;
+    	hoveredAnim = false;
+    };
+    
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
             if (this.isPressed) {
@@ -1128,6 +1182,57 @@ function upgrade_animalMax() {
     }
     soundMan.up1.play();
 }
+
+function getMaxAnimalLevel() {
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    console.log("level " + level);
+    var tracks = dataObj.animalTracks;
+    console.log("tracks " + tracks);
+    while (tracks - (level* 2.75 * 500) > 0) {
+        tracks -= (level* 2.75 * 500);
+        level++;  
+    }
+    return level;
+}
+
+function getMaxAnimalCost() {
+	var prevTracks = dataObj.animalTracks;
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    var tracks = prevTracks;
+    while (tracks - (level* 2.75 * 500) > 0) {
+        tracks -= (level* 2.75 * 500);
+        level++;  
+    }
+    return prevTracks - tracks;
+}
+
+function getSelectedMaxLevel() {
+    var level = controller.animals[ui_values.partyIndex].level;
+    var tracks = dataObj.animalTracks;
+    while (tracks - (level* 1.75 * 100) > 0) {
+        tracks -= (level* 1.75 * 100);
+        //controller.levelUpAnimal(ui_values.partyIndex);
+        level++;
+        //soundMan.up1.play();
+    }
+    return level;
+}
+
+function getSelectedMaxCost() {
+	var cost = 0;
+    var level = controller.animals[ui_values.partyIndex].level;
+    var tracks = dataObj.animalTracks;
+    while (tracks - (level* 1.75 * 100) > 0) {
+        tracks -= (level* 1.75 * 100);
+        cost += (level* 1.75 * 100);
+        //controller.levelUpAnimal(ui_values.partyIndex);
+        level++;
+        //soundMan.up1.play();
+    }
+    return cost;
+}
+
+
 
 //Get the animal number from the animal type
 function aniToNum(animal) {
