@@ -56,6 +56,12 @@ function createData(localJson){
 }
 
 
+//delete a key and its value from local storage
+function clearUser(myKey){
+	localStorage.removeItem(myKey);
+}
+
+
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
     dataObj.steps = 2000;
