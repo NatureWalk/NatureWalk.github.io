@@ -27,7 +27,6 @@ http://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
 function drawWrappedText(text, x, y, fontSize, maxWidth, lineHeight) {
         var words = text[0].split(' ');
         var line = '';
-
         if (fontSize) {ctx.font = fontSize + s3;}
         else {ctx.font = '24px ' + s3;}
         for(var n = 0; n < words.length; n++) {
@@ -35,7 +34,7 @@ function drawWrappedText(text, x, y, fontSize, maxWidth, lineHeight) {
           var metrics = ctx.measureText(testLine);
           var testWidth = metrics.width;
           if (testWidth > maxWidth && n > 0) {
-            y -= (lineHeight/2);
+            //y -= (lineHeight/2);
             ctx.fillText(line, x, y);
             line = words[n] + ' ';
             y += lineHeight;

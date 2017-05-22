@@ -39,6 +39,7 @@ var ui_values = {
                      ("image_resources/Icon_BunnyH.png")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
+    /*
     animalStaticAry: [("image_resources/Static_BirdT.png"),
                       ("image_resources/Static_DeerT.png"),
                       ("image_resources/Static_FrogT.png"),
@@ -50,6 +51,18 @@ var ui_values = {
      ("image_resources/Static_DeerT_Hover.png"),
      ("image_resources/Static_FrogT_Hover.png"),
      ("image_resources/Static_BunnyT_Hover.png")],
+     */
+    animalStaticAry: [("image_resources/BirdStill.png"),
+                      ("image_resources/DeerStill.png"),
+                      ("image_resources/FrogStill.png"),
+                      ("image_resources/BunnyStill.png"),
+                      ("image_resources/EventLog.png")],
+    
+    animalStaticHover: 
+    [("image_resources/BirdStillAnim.png"),
+     ("image_resources/DeerStillAnim.png"),
+     ("image_resources/FrogStillAnim.png"),
+     ("image_resources/BunnyStillAnim.png")],
 
     animalWalkAry: [("image_resources/BirdWalk.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
@@ -166,6 +179,7 @@ function buttonSetup() {
     //Opens the menu screen
     function openMenu() {
         screenMan.push(gameMenu);
+        screenMan.push(subSettings);
     }
 
     var menuButton = new Button(openMenu);
@@ -195,34 +209,79 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //STEP PANE (but it's a button)
+    //STEP PANE
     /////////////////////////////////////////////////
     var stepPane = new Button();
     stepPane.setSrc("image_resources/StepPaper.png");
-    stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
+    stepPane.setSpriteAttributes(146, 35, 110, 50, "stepPane");
     stepPane.hasTextValue = true;
+    stepPane.fontSize = "20px";
+
+    var stepLogo = new Button();
+    stepLogo.setSrc("image_resources/feet.png");
+    stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
+    //Arbitrary step setup if the player does not have any steps yet. 
+    //console.log(stepCount);
+    stepPane.setText([stepCount], 150, stepPane.height / 4);
+    
+    //Changeing the button's update function to get the step count every frame. 
+    stepPane.update = function() {
+        this.updateText([numberConversion(stepCount)]);
+        this.textOffsetX = (stepPane.width / 2) - 3.5 * numberLen(numberConversion(stepCount))
+    };
+    
+    interface.buttonArray.push(stepPane);
+    interface.buttonArray.push(stepLogo);
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //STEP MULTIPLIER PANE
+    /////////////////////////////////////////////////
+    var stepMultPane = new Button(function () {
+        //stepMultiplier();
+    });
+    stepMultPane.setSrc("image_resources/StepPaper.png");
+    stepMultPane.setSpriteAttributes(86, 35, 65, 50, "stepMultPane");
+    stepMultPane.hasTextValue = true;
+    stepMultPane.fontSize = '20px';
+    //stepMultPane.color = 'blue';
     //Arbitrary step setup if the player does not have any steps yet. 
     
     
     
-    stepPane.setText([stepCount + " Steps"], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
+    stepMultPane.setText(["1.35x"], (stepMultPane.width / 2) - 5 * numberLen(1.35 + "x"), stepMultPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
-    stepPane.update = function() {
-        this.updateText([stepCount + " Steps"]);
-        this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
+    stepMultPane.update = function() {
+        var text = [];
+        var color = [];
+        var mult = dataObj.stepMultiplier.toFixed(2);
+        text.push([mult]);
+        if (mult < 1.5) {
+            color.push("rgb(50,240,0)");
+        } else if (mult < 1.76) {
+            color.push("rgb(245,245,0)");
+        } else {
+            color.push("rgb(245,50,0)");
+        }
+        
+        text.push(["x"])
+        color.push('black')
+        this.updateText(text, color);
+        this.textOffsetX = (stepMultPane.width / 2) - 5 * numberLen(dataObj.stepMultiplier.toFixed(2) + "x")
     };
-    interface.buttonArray.push(stepPane);
+    interface.buttonArray.push(stepMultPane);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //TRACKS PANE (but it's a button)
+    //TRACKS PANE
     /////////////////////////////////////////////////
     var trackPane = new Button();
     trackPane.setSrc("image_resources/TracksPaper.png");
-    trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
+    trackPane.setSpriteAttributes(286, 35, 170, 50, "trackPane");
     trackPane.hasTextValue = true;
+    trackPane.fontSize = "20px";
     trackPane.color = 'blue';
     
     //Changing the button's update function to get the step count every frame. 
@@ -231,13 +290,16 @@ function buttonSetup() {
         var color = [];
         text.push(numberConversion(Math.floor(dataObj.animalTracks)))
         color.push('blue');
-        text.push(" Tracks");
-        color.push('black');
         this.updateText(text,color);
-        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks) + " Tracks")
+        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks))
         this.textOffsetY = 10;
     };
     interface.buttonArray.push(trackPane);
+    
+    var trackLogo = new Button();
+    trackLogo.setSrc("image_resources/BunnyPrint.png");
+    trackLogo.setSpriteAttributes(trackPane.x+10, stepPane.y+10, 25, 25, "trackLogo");
+    interface.buttonArray.push(trackLogo);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -297,6 +359,7 @@ function buttonSetup() {
         animalLevel.setSrc("image_resources/ClearSquare.png");
         animalLevel.setSpriteAttributes((121 +(100*i)), 165, 0, 0, "animal_level" + i);
         animalLevel.hasTextValue = true;
+        animalLevel.fontSize = "16px";
         
         (function(i) {
             animalLevel.update = function() {
@@ -304,7 +367,7 @@ function buttonSetup() {
                 var level = controller.getAnimalBaseLevel(temp);
                 var charNum = numberLen("Lvl " + level);
                 //charNum += "Lvl ".length;
-                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5.2 * charNum), 0);
+                this.setText(["Lvl " + level], (animalLevel.width / 2) - (4 * charNum), 5);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -352,6 +415,7 @@ function buttonSetup() {
                 	if(hoveredBase){
                 		this.color = ["green"];	
                 		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
+                        //console.log(testRef);
                 	}else{
                 		this.color = ["black"];	
                     	var stats = (ui_values.currentAnimal).toLowerCase();
@@ -361,7 +425,7 @@ function buttonSetup() {
                     	this.color = ["green"];
                     	var testRef = controller.getBaseMaxUpgrade(ui_values.currentAnimal.toLowerCase());
                     };
-                    console.log(maxBaseHovered);
+                    //console.log(maxBaseHovered);
                 } else {
                 	if(hoveredAnim){
                 		this.color = ["green"];	
@@ -525,12 +589,28 @@ function buttonSetup() {
         
         if (this.hovered) {
             src = ui_values.animalStaticHover;
-            console.log("Hovered");
+            this.setSrc(src[currIndex], src[currIndex], true);
+            switch (currIndex) {
+                case 0:
+                    this.setupAnim(27, 6, 6);
+                    break;
+                case 1:
+                    this.setupAnim(26, 6, 6);
+                    break;
+                case 2:
+                    this.setupAnim(26, 6, 6);
+                    break;
+                case 3:
+                    this.setupAnim(23, 5, 5);
+                    break;
+            }
             
+            //console.log("Hovered");
         } else {
             src = ui_values.animalStaticAry;
+            this.setSrc(src[currIndex], src[currIndex], false);
         }
-        this.setSrc(src[currIndex], src[currIndex], false);
+        
         
         if (this.anim) {
             this.tickCount++; 
@@ -576,15 +656,26 @@ function buttonSetup() {
 
     /////////////////////////////////////////////////
 
+    /////////////////////////////////////////////////
+    //EVENT ANIMATIONS
+    /////////////////////////////////////////////////
+    var eventAnimation = new Button();
+    eventAnimation.setSrc("image_resources/ClearSquare.png");
+    //eventAnimation.setSrc("image_resources/PredatorEvent1s.png", "image_resources/PredatorEvent1s.png", true);
+    eventAnimation.setSpriteAttributes(865, 380, 150, 100, "eventAnimation");
+    
+    //eventAnimation.setupAnim(12, 4, 4);
+    interface.buttonArray.push(eventAnimation); 
+    /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //ANIMAL ANIMATIONS
     /////////////////////////////////////////////////
-    for (i = 0; i < 4; i++) {
+    for (i = 1; i <= 12; i++) {
         var animalAnimation = new Button();
         animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
-        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
-        
+        animalAnimation.setSpriteAttributes(707 + roll(60) - (80*((i-1)%3)), (10*Math.floor(i-1/4))+340, 100, 100, "animalAnimation");
+        /*
         if (i==0) {
             animalAnimation.setupAnim(4, 3, 3);
         } else if (i==1) {
@@ -594,7 +685,9 @@ function buttonSetup() {
         } else if (i==3) {
             animalAnimation.setupAnim(6, 3, 3);
         }
+        */
         (function(i) {
+            /*
             animalAnimation.update = function() { 
                var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
                 if (testRef === 0) {
@@ -611,21 +704,53 @@ function buttonSetup() {
                     }
                 }
             }
+            */
+            animalAnimation.update = function() { 
+                var party_size = controller.getNumAnimals();
+                //console.log("Party Size " + party_size);
+                var animal_select;
+                if (party_size < i || party_size === 0) {
+                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
+                } else {
+                    animal_select = controller.animals[i-1];
+                    //console.log(animal_select.type);
+                    switch (animal_select.type) {
+                        case "bird":
+                            this.setSrc(ui_values.animalWalkAry[0],
+                                        ui_values.animalWalkAry[0], true);
+                            this.setupAnim(4, 3, 3);
+                            break;
+                        case "deer":
+                            this.setSrc(ui_values.animalWalkAry[1],
+                                        ui_values.animalWalkAry[1], true);
+                            this.setupAnim(16, 4, 5);
+                            break;
+                        case "frog":
+                            this.setSrc(ui_values.animalWalkAry[2],
+                                        ui_values.animalWalkAry[2], true);
+                            this.setupAnim(21, 5, 5);
+                            break;
+                        case "bunny":
+                            this.setSrc(ui_values.animalWalkAry[3],
+                                        ui_values.animalWalkAry[3], true);
+                            this.setupAnim(6, 3, 3);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (this.anim) {
+                    this.tickCount++; 
+                    if (this.tickCount > this.ticksPerFrame) {
+                        this.frameIndex++;
+                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                        this.tickCount = 0; 
+                    }
+                }
+            }
         })(i);
         interface.buttonArray.push(animalAnimation); 
     }
-    /////////////////////////////////////////////////
-    
-    /////////////////////////////////////////////////
-    //EVENT ANIMATIONS
-    /////////////////////////////////////////////////
-    var eventAnimation = new Button();
-    eventAnimation.setSrc("image_resources/ClearSquare.png");
-    //eventAnimation.setSrc("image_resources/PredatorEvent1s.png", "image_resources/PredatorEvent1s.png", true);
-    eventAnimation.setSpriteAttributes(865, 380, 150, 100, "eventAnimation");
-    
-    //eventAnimation.setupAnim(12, 4, 4);
-    interface.buttonArray.push(eventAnimation); 
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
@@ -647,10 +772,16 @@ function buttonSetup() {
     areaText.setSrc("image_resources/StepPaper.png");
     areaText.setSpriteAttributes(600, 235, 300, 50, "areaText");
     areaText.hasTextValue = true;
-    areaText.fontSize = '22px';
+    areaText.fontSize = '20px';
     areaText.update = function() {
-        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
-        this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
+        var daynight;
+        if (controller.getAreaLevel() % 2 == 0) {
+            daynight = "Night";
+        } else {
+            daynight = "Day"
+        }
+        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason+", "+daynight);
+        this.setText([text], (areaText.width / 2) - (4.1 * text.length), 10);
         //this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
@@ -710,7 +841,7 @@ function buttonSetup() {
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
         eventLogEntry.setSrc("image_resources/ClearSquare.png");
-        eventLogEntry.setSpriteAttributes(567, (45*i)+55    , 452, 54, "eventLog");
+        eventLogEntry.setSpriteAttributes(567, (40*i)+45, 452, 54, "eventLog");
         interface.buttonArray.push(eventLogEntry);
 
         eventLogEntry.hasTextValue = true;
@@ -732,7 +863,7 @@ function buttonSetup() {
                     if (this.text === undefined) {
             //console.log(this.name);
                     } else {
-                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 400, 20);
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 16);
         }
     }
             }
@@ -773,7 +904,8 @@ function buttonSetup() {
     interface.buttonArray.push(selectedAnimal);
 	//blank animal portraits for bottom left page + displays individual animal levels with portraits
 	var blankPortrait = function(){
-			var partyLimit = 5;
+			var party_limit = controller.party_limit;
+            var party_size = 0;
 			var coordX=500;
 			var coordY=500;
 	};
@@ -782,19 +914,26 @@ function buttonSetup() {
 		
 	};
 	blankPortrait.draw = function(){
-		var levels = [];
+		var party_limit = controller.party_limit;
+        var party_size = 0;
+        var levels = [];
 		
 		for(var i = 0; i < controller.animals.length; i++){
 			var X = 103+(i*60);
 			var Y = 457;
 			levels.push(controller.animals[i].level)
-			ctx.fillText("Lvl", X+10, Y + 40);
-			ctx.fillText(levels[i], X + 10, Y + 55);
+			//ctx.fillText("Lvl", X+10, Y + 40);
+			//ctx.fillText(levels[i], X + 10, Y + 55);
 		}
-		for (var i = 0; i < 5; i++){
-			this.coordX = 103+(i*60);
-			this.coordY = 457;
-			ctx.strokeRect(this.coordX, this.coordY , 37, 37);
+		for (var i = 0; i < 2; i++){
+            for (var j = 0; j < 6; j++){
+                if (party_size < party_limit){
+                    this.coordX = 103+(j*60);
+                    this.coordY = 457+(i*50);
+                    ctx.strokeRect(this.coordX, this.coordY , 37, 37);
+                    party_size++
+                }
+            }
 		}
 		
 	};
@@ -886,10 +1025,6 @@ function select_animal(animal_index) {
 
     ui_values.partyIndex = animal_index;
     soundMan.click.play();
-    
-    
-    
-    
 }
 
 /* add_animal() - For adding animals to the party. 
@@ -905,7 +1040,7 @@ function add_animal() {
     console.log("party: "+controller.getNumAnimals())
 
     if (status === true){
-        soundMan.click.play()
+        //soundMan.click.play()
         stepCount -= 2000;
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
@@ -920,7 +1055,7 @@ function add_animal() {
         case 'Bunny':
             break;
     }
-    
+    console.log("Tutorial Progress: " + dataObj.tutorialProgress);
     if(dataObj.tutorialProgress == 12){
         startTutorialPartTwo();
     }
@@ -960,14 +1095,20 @@ function updateParty() {
 
 	var animals = controller.animals;
 	var partyIcon = new Button();
-	for (var i = 0; i < animals.length;i++) {
-		var num = aniToNum(animals[i].type);
-		console.log("animal number: "+num)
-		partyIcon = new Button(select_animal,[i]);
-		partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcAry[4]);
-		//@fix: Only does one row
-		partyIcon.setSpriteAttributes((101 + 60*i), (455), 40, 40, "party animal "+i);
-		partyButtons.push(partyIcon);
+	for (var i = 0; i < 2; i++) {
+        for (var j = 0; j < 6; j++) {
+            //console.log(animals[j+(6*i)]);
+            if (animals[j+(6*i)]!==undefined) {
+                //console.log(animals[j+(6*i)]);
+                var num = aniToNum(animals[j+(6*i)].type);
+                //console.log("animal number: "+num)
+                partyIcon = new Button(select_animal,[j+(6*i)]);
+                partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcHover[num]);
+                //@fix: Only does one row
+                partyIcon.setSpriteAttributes((101 + (60*j)), (455 + 50*i), 40, 40, "party animal "+i);
+                partyButtons.push(partyIcon); 
+            }
+        }
     }
 
     console.log(partyButtons);

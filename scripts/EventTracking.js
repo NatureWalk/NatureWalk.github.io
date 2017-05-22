@@ -54,6 +54,9 @@ var goodEvents = [
 //Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
 
+// History of past events
+var historyAry = [];
+
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
@@ -83,6 +86,7 @@ function goodEventHandler(evtRoll) {
         case evtRoll < 30:
             //console.log(goodEvents[0]);
             eventLogAry.push("You picked up a step multiplier.");
+            stepMultiplier();
             break;
         //Extra Tracks
         case evtRoll >= 30 && evtRoll < 55:
@@ -98,7 +102,7 @@ function goodEventHandler(evtRoll) {
     }
 }
 
-
+/*
 //Handles good events, takes in a new roll from the eventChooser.
 function goodEventHandler(evtRoll) {
     switch (true) {
@@ -135,6 +139,7 @@ function goodEventHandler(evtRoll) {
             break;
     }
 }
+*/
 
 //Handles bad events, takes in a new roll from the eventChooser.
 function badEventHandler(evtRoll) {
@@ -146,44 +151,38 @@ function badEventHandler(evtRoll) {
    console.log("Event Roll: " + evtRoll);
    switch (true) {
     	case evtRoll <= 31:
+            //Event 1 of current season has been rolled. 
     		console.log(b[0][0] + " " + b[0][1])
-            //eventLogAry.push("")
+            
+            //Log the event roll in the badEventObj object.
             updateEventData(b[0][0]);
+           
+            //Roll for each animal to see which animals fail. 
     		for(var i = 0; i < controller.getNumAnimals(); i++){
 				badEventChecker(i,b[0][1]);
 				numAnimalsRolled++;
 			}
-			// Print the results of the event that occured
+			//If the player has animals, display the event in the log. 
 			if(controller.getNumAnimals() > 0){
 				diffPrint();
-				
 				for(var i = 0; i < deadArr.length; i++){
 					//console.log("Array value: " + deadArr[i]);
 				}
 				
 				eventLogAry.push("You encountered a " + b[0][0] + ". It tested " + b[0][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 
+                //Display the event on screen. 
                 displayEvent(b[0][0]);
                 
-				//animalDeadGrammarCheck();
-				//animalTripGrammarCheck();
-				//animalSafeGrammarCheck();
-				//animalSafePrinter();
-				//animalTrippedPrinter();
-				//animalDeathPrinter();
-				
 				deadPrint();
 				tripPrint();
 				safePrint();
-				
-				//bigDeathPrinter();
-				//bigTrippedPrinter();
-				//bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
     	case evtRoll > 31 && evtRoll < 63:
+            //Event 2 of the current season has been rolled. 
     		console.log(b[1][0] + " " + b[1][1])
             updateEventData(b[1][0]);
     	    for(var i = 0; i < controller.getNumAnimals(); i++){
@@ -201,25 +200,15 @@ function badEventHandler(evtRoll) {
                 
                 displayEvent(b[1][0]);
                 
-				//animalDeadGrammarCheck();
-				//animalTripGrammarCheck();
-				//animalSafeGrammarCheck();
-				//animalSafePrinter();
-				//animalTrippedPrinter();
-				//animalDeathPrinter();
-				
 				deadPrint();
 				tripPrint();
 				safePrint();
-				
-				//bigDeathPrinter();
-				//bigTrippedPrinter();
-				//bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
     	case evtRoll >= 63 && evtRoll < 94:
+            //Event 2 of the current season has been rolled. 
     		console.log(b[2][0] + " " + b[2][1])
             updateEventData(b[2][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
@@ -256,6 +245,7 @@ function badEventHandler(evtRoll) {
 			animalRoll = 0;
     		break;
     	case evtRoll >= 94:
+            //Catastrophic event of the current season has been rolled. 
     		console.log(b[3][0] + " " + b[3][1]);
             updateEventData(b[3][0]);
     		for(var i = 0; i < controller.getNumAnimals(); i++){
@@ -274,28 +264,15 @@ function badEventHandler(evtRoll) {
                 
                 displayEvent(b[3][0]);
                 
-				//animalDeadGrammarCheck();
-				//animalTripGrammarCheck();
-				//animalSafeGrammarCheck();
-				//animalSafePrinter();
-				//animalTrippedPrinter();
-				//animalDeathPrinter();
-				
 				deadPrint();
 				tripPrint();
 				safePrint();
-				
-				//bigDeathPrinter();
-				//bigTrippedPrinter();
-				//bigSafePrinter();
 			}
 			eventDiff = 0;
 			animalRoll = 0;
     		break;
 	}
     controller.removeAllQueue();
-    //console.log(controller.getNumAnimals());
-	//console.log("0 test" + bunnyNumDead + bunnyNumSafe + bunnyNumTripped + birdNumDead + birdNumSafe + birdNumTripped + frogNumDead + frogNumSafe + frogNumTripped + deerNumDead + deerNumSafe + deerNumTripped);
 }
 
 // function to determine the event difficulty to print
@@ -382,10 +359,12 @@ function badEventChecker(index, stat,flag){
         //console.log("animal: " + x);
 		if (die < 5){
 			//eventLogAry.push(x +" was tragically lost.");
-            dataObj.animalsDied++;
-			deadTypeCheck(x);
-			deadArr.push(controller.animals[index].name);
-			controller.queueRemove(index);
+			if(controller.animals[index].canDie == true){
+            	dataObj.animalsDied++;
+				deadTypeCheck(x);
+				deadArr.push(controller.animals[index].name);
+				controller.queueRemove(index);
+			}
             return 2;
 		} else if(die < 50){
             tempTracksLost = (dataObj.animalTracks/200);
@@ -521,12 +500,19 @@ function safeTypeCheck(animal){
 }
 
 ////////////////////////////////////////////////
-
+//Deprecated
 function badStuffSort(badThing, badStuff) {
     badStuff[badThing]++;
 }
 
+/* displayEvent() - Replaces the source file for the event elements
+of the UI so that it can be displayed. 
+ * Params: 
+ * - evt: The name of the event that is being displayed. 
+ * Returns - None. 
+*/
 function displayEvent(evt) {
+    //Clears all events being displayed on screen. 
     if (evt === null || evt === undefined) {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "weatherAnimation") {
@@ -539,13 +525,21 @@ function displayEvent(evt) {
             }
         });
     }
+    
+    /////////////////////////////////////////////////
+    //WEATHER EVENTS
+    /////////////////////////////////////////////////
+    //If evt matches the name
     if (evt === "rain storm") {
+        //Find the 'weatherAnimation' element on the interface.
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "weatherAnimation") {
+                //Set the source of the UI element to the proper event asset.
                 elem.setSrc("image_resources/Event_Rain.png", "image_resources/Event_Rain.png", true);
                 elem.setupAnim(22, 5, 5);
             }
         });
+        //How long, in seconds, that the event will be displayed for.
         gameState.eventDisplayTimer = 5;
     
     } 
@@ -557,17 +551,26 @@ function displayEvent(evt) {
             }
         });
         gameState.eventDisplayTimer = 5;
-    
     } 
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //ANIMATED EVENTS
+    /////////////////////////////////////////////////
     else if (evt === "predator") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
+                //Replace the eventAnimation element back to the right side of the canvas.
                 elem.setSpriteAttributes(865, 410, 150, 100, "eventAnimation");
                 elem.setSrc("image_resources/Event_Predator.png", "image_resources/Event_Predator.png", true);
                 elem.setupAnim(12, 4, 4);
+                
+                //The time when the animation will fade out. 
                 elem.fadeTimer = 1;
                 
+                //Change the update function so that the animation behaves as you want it to.
                 elem.update = function () {
+                    //Quickly moves to the left, but gets slower over time. 
                     this.x -= 1*gameState.eventDisplayTimer; 
 
                     if (this.anim) {
@@ -580,13 +583,16 @@ function displayEvent(evt) {
                     }
                 }
                 
+                //Change the draw function so it will behave in the desired way. 
                 elem.draw = function () {                  
                     ctx.globalAlpha = elem.fadeTimer;
+                    //Starts to fade out during the last second of the animation. 
                     if (gameState.eventDisplayTimer <= 1) {
                         if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
                         else ctx.globalAlpha = 0;
                     }
                     
+                    //Normal button draw function. 
                     if (!this.anim) {
                         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
                     } else {
@@ -605,14 +611,143 @@ function displayEvent(evt) {
                             this.height);
 
                     }
+                    //Resets the canvas' opacity. 
                     ctx.globalAlpha = 1;
                 }
             }
         });
+        //The time, in seconds, that the animation will be displayed for. 
         gameState.eventDisplayTimer = 3;
     
     
     } 
+    else if (evt === "wildfire") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                //Replace the eventAnimation element back to the right side of the canvas.
+                elem.setSpriteAttributes(515, 260, 480, 125, "eventAnimation");
+                elem.setSrc("image_resources/Event_Fire.png", "image_resources/Event_Fire.png", true);
+                elem.setupAnim(14, 4, 4);
+                
+                //The time when the animation will fade out. 
+                elem.fadeTimer = 1;
+                
+                //Change the update function so that the animation behaves as you want it to.
+                elem.update = function () {
+                    //Quickly moves to the left, but gets slower over time. 
+                    //this.x -= .85; 
+
+                    if (this.anim) {
+                        this.tickCount++; 
+                        if (this.tickCount > this.ticksPerFrame) {
+                            this.frameIndex++;
+                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                            this.tickCount = 0; 
+                        }
+                    }
+                }
+                
+                //Change the draw function so it will behave in the desired way. 
+                elem.draw = function () {                  
+                    ctx.globalAlpha = elem.fadeTimer;
+                    //Starts to fade out during the last second of the animation. 
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    //Normal button draw function. 
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } else {
+                        //console.log("Animating " + this.name);
+                        ctx.drawImage(
+                            this.image, 
+                            //(this.frameIndex % 7) * this.width, 
+                            //Math.floor(this.frameIndex/7) * this.height, 
+                            (this.frameIndex % this.srcCols) * this.width, 
+                            Math.floor(this.frameIndex/this.srcCols) * this.height,
+                            this.width, 
+                            this.height, 
+                            this.x,
+                            this.y,
+                            this.width,
+                            this.height);
+
+                    }
+                    //Resets the canvas' opacity. 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        //The time, in seconds, that the animation will be displayed for. 
+        gameState.eventDisplayTimer = 4;
+    
+    
+    } 
+    else if (evt === "tornado") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                //Replace the eventAnimation element back to the right side of the canvas.
+                elem.setSpriteAttributes(815, 210, 180, 330, "eventAnimation");
+                elem.setSrc("image_resources/Event_Tornado.png", "image_resources/Event_Tornado.png", true);
+                elem.setupAnim(9, 4, 4);
+                
+                //The time when the animation will fade out. 
+                elem.fadeTimer = 1;
+                
+                //Change the update function so that the animation behaves as you want it to.
+                elem.update = function () {
+                    //Quickly moves to the left, but gets slower over time. 
+                    this.x -= .85; 
+
+                    if (this.anim) {
+                        this.tickCount++; 
+                        if (this.tickCount > this.ticksPerFrame) {
+                            this.frameIndex++;
+                            if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                            this.tickCount = 0; 
+                        }
+                    }
+                }
+                
+                //Change the draw function so it will behave in the desired way. 
+                elem.draw = function () {                  
+                    ctx.globalAlpha = elem.fadeTimer;
+                    //Starts to fade out during the last second of the animation. 
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    //Normal button draw function. 
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } else {
+                        //console.log("Animating " + this.name);
+                        ctx.drawImage(
+                            this.image, 
+                            //(this.frameIndex % 7) * this.width, 
+                            //Math.floor(this.frameIndex/7) * this.height, 
+                            (this.frameIndex % this.srcCols) * this.width, 
+                            Math.floor(this.frameIndex/this.srcCols) * this.height,
+                            this.width, 
+                            this.height, 
+                            this.x,
+                            this.y,
+                            this.width,
+                            this.height);
+
+                    }
+                    //Resets the canvas' opacity. 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        //The time, in seconds, that the animation will be displayed for. 
+        gameState.eventDisplayTimer = 4;
+    
+    }
     else if (evt === "lightning storm") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
@@ -662,7 +797,14 @@ function displayEvent(evt) {
 
                     }
                     ctx.globalAlpha = 1;
-                }
+                } 
+            }
+        });
+        //Adds rain to this animation. 
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "weatherAnimation") {
+                elem.setSrc("image_resources/Event_Rain.png", "image_resources/Event_Rain.png", true);
+                elem.setupAnim(22, 5, 5);
             }
         });
         gameState.eventDisplayTimer = 4;
@@ -699,7 +841,7 @@ function displayEvent(evt) {
     else if (evt === "river") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 380, 120, 180, "eventAnimation");
+                elem.setSpriteAttributes(865, 370, 120, 180, "eventAnimation");
                 elem.setSrc("image_resources/Event_River.png", "image_resources/Event_River.png", false);
                 elem.fadeTimer = 1;
                 
@@ -752,7 +894,142 @@ function displayEvent(evt) {
         });
         gameState.eventDisplayTimer = 4;
     }
+    else if (evt === "sinkhole") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 400, 160, 100, "eventAnimation");
+                elem.setSrc("image_resources/Event_Sinkhole.png", "image_resources/Event_Sinkhole.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
+    else if (evt === "frozen lake") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(815, 425, 170, 100, "eventAnimation");
+                elem.setSrc("image_resources/Event_FrozenLake.png", "image_resources/Event_FrozenLake.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
+    else if (evt === "fountain") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 380, 150, 150, "eventAnimation");
+                elem.setSrc("image_resources/Event_Fountain.png", "image_resources/Event_Fountain.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
+        else if (evt === "ravine") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimation") {
+                elem.setSpriteAttributes(865, 380, 160, 160, "eventAnimation");
+                elem.setSrc("image_resources/Event_Ravine.png", "image_resources/Event_Ravine.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 8;
+    }
 }
+
+/* stepMultiplier() - Updates the player's step multiplier when the event occurs.
+ * Params: - None. 
+ * Returns - None. 
+*/
+function stepMultiplier() {
+    var temp, rounded;
+    //temp is a number that is getting ever closer to 0
+    //as the player's step multiplier increases. 
+    temp = 2-dataObj.stepMultiplier;
+    
+    //Round the number to the nearest hundreth. 
+    temp *= .2
+    
+    //Set the step multiplier. 
+    dataObj.stepMultiplier += temp;
+}
+
+/* updateEventData() - Updates the event data so that the data can be stored. 
+ * Params: 
+ * - eventName: The name of the event that has occured. 
+ * Returns - None. 
+*/
 
 function updateEventData(eventName) {
     //console.log("Event Name: " + eventName);
