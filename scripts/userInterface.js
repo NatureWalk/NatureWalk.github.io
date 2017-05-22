@@ -21,6 +21,7 @@
 Most of these elements are in a SPECIFIC order to accomodate the code. 
 Something more general would probably be more efficient if we intend to add more animals or animal variations. 
 */
+
 var ui_values = {
     //Capitalized for the sake of displaying, 
     //when using these to acquire data from animal.js, 
@@ -923,7 +924,10 @@ function buttonSetup() {
 			var Y = 457;
 			levels.push(controller.animals[i].level)
 			//ctx.fillText("Lvl", X+10, Y + 40);
-			//ctx.fillText(levels[i], X + 10, Y + 55);
+			ctx.font = "14px handlee";
+            ctx.fillStyle="#009933";
+			ctx.fillText(levels[i], X + 27, Y + 19);
+            ctx.color = "black"
 		}
 		for (var i = 0; i < 2; i++){
             for (var j = 0; j < 6; j++){
