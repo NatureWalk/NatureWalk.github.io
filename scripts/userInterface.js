@@ -257,12 +257,12 @@ function buttonSetup() {
             animalIcon.update = function() {
                 var src; 
                 //var currIndex = ui_values.animalAry.indexOf(ui_values.currentAnimal);
-                if (this.hovered) {
-                    src = ui_values.animalSrcHover
-                } else {
-                    src = ui_values.animalSrcAry
-                }
                 //console.log(i);
+                if(ui_values.selected == 'base' && ui_values.animalAry[i] == ui_values.currentAnimal){
+                	src = ui_values.animalSrcHover;
+                } else {
+                	src = ui_values.animalSrcAry;
+                };
                 this.setSrc(src[i], src[i], false);  
             }
         })(i);
