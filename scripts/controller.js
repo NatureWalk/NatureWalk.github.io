@@ -450,7 +450,16 @@ function master_controller() {
         var data = [];
         data.push(this.base_levels[animal]);
         for(var i = 0; i < 3; i++){
-            var stat = 1;
+        var stat = 2 * animal_data[animal][j];
+           if(stat > 2.5){
+					if (stat >= 3){
+						stat = 3;
+					} else {
+						stat = 2;
+					}
+				} else{
+					stat = 1;
+				}
             for(var k = 0; k < this.base_levels[animal]; k++){
                 stat = Math.ceil(stat * animal_data[animal][i]);
             }
