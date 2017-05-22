@@ -469,7 +469,7 @@ function master_controller() {
         var data = [];
         data.push(this.base_levels[animal]);
         for(var i = 0; i < 3; i++){
-        var stat = 2 * animal_data[animal][j];
+        var stat = 2 * animal_data[animal][i];
            if(stat > 2.5){
 					if (stat >= 3){
 						stat = 3;
@@ -491,8 +491,17 @@ function master_controller() {
         var data = [];
         data.push(this.base_levels[animal]+1);
         for(var i = 0; i < 3; i++){
-            var stat = 1;
-            for(var k = 0; k <= this.base_levels[animal]; k++){
+        var stat = 2 * animal_data[animal][i];
+           if(stat > 2.5){
+					if (stat >= 3){
+						stat = 3;
+					} else {
+						stat = 2;
+					}
+				} else{
+					stat = 1;
+				}
+            for(var k = 0; k < this.base_levels[animal]+1; k++){
                 stat = Math.ceil(stat * animal_data[animal][i]);
             }
             data.push(stat);
@@ -522,8 +531,17 @@ function master_controller() {
 			dat.push(this.animals[i].type)
 			dat.push((this.animals[i].level)+1)
 			for(var j = 0; j < 3; j++){
-				var stat = 1;
-				for(var k = 0; k <= this.animals[i].level; k++){
+				var stat = 2 * animal_data[this.animals[i].type][j];
+				if(stat > 2.5){
+					if (stat >= 3){
+						stat = 3;
+					} else {
+						stat = 2;
+					}
+				} else{
+					stat = 1;
+				}
+				for(var k = 0; k < this.animals[i].level+1; k++){
 					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
 				}
 				dat.push(stat);

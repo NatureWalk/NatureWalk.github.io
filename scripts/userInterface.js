@@ -415,6 +415,7 @@ function buttonSetup() {
                 	if(hoveredBase){
                 		this.color = ["green"];	
                 		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
+                        console.log(testRef);
                 	}else{
                 		this.color = ["black"];	
                     	var stats = (ui_values.currentAnimal).toLowerCase();
