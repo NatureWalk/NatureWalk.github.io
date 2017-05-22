@@ -104,7 +104,10 @@ function returningUserSteps(){
 }
 
 function returningUserTracks(){
-    //Get the area and season that the player left off at. 
+	var goodEvents = 0;
+	var badEvents = 0;
+	var totalDead = 0;
+	var totalTrip = 0;
     returningUserArea();
     returningUserSeason();
     dataObj.animalTracks = parseFloat(getJsonItem(userID, "playerTracks"));
@@ -153,6 +156,7 @@ function returningUserTracks(){
             //console.log(evtRoll);
             //Good Event
             if (evtRoll > 70) {
+				goodEvents++;
                 evt2 = roll(100);
                 if (evt2 < 26){
                     offlineTracks += dataObj.animalTracks/1000;
@@ -161,6 +165,7 @@ function returningUserTracks(){
             } 
             //Bad Event
             else if (evtRoll < 40) {
+				badEvents++;
                 evt2 = roll(100);
                 switch (true) {
                     case evt2 <= 31:
@@ -206,11 +211,13 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                                 console.log(myarr[i]);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200;
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -260,11 +267,13 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                                 console.log(myarr[i]);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -313,11 +322,13 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                                 console.log(myarr[i]);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -369,11 +380,13 @@ function returningUserTracks(){
                         if(playerRoll < gameRoll){
                             var die = roll(100);
                             if (die < 5){
+								totalDead++;
                                 deadflag = true;
                                 console.log(myarr[i].name);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200
+								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -393,8 +406,10 @@ function returningUserTracks(){
         }
     
     }
-    console.log("Total Offline Tracks: " + offlineTracks);
+    //console.log("Total Offline Tracks: " + offlineTracks);
     offlinePopupObj.offlineTracks = offlineTracks;
+
+	historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
 }
 function returningBaseLevels(){
     controller.base_levels['frog'] = getJsonItem(userID, "frogBaseLevel");
@@ -418,28 +433,28 @@ function returningUserSeason(){
     controller.areaSeason = jsonData[key].toString();
     switch(controller.areaSeason){
                 case 'spring':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsSpringNight.slice();
                     } else {
                         controller.usableEvents = badEventsSpringDay.slice();
                     }
                     break;
                 case 'summer':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsSummerNight.slice();
                     } else {
                         controller.usableEvents = badEventsSummerDay.slice();
                     }
                     break;
                 case 'fall':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsFallNight.slice();
                     } else {
                         controller.usableEvents = badEventsFallDay.slice();
                     }
                     break;
                 case 'winter': 
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsWinterNight.slice();
                     } else {
                         controller.usableEvents = badEventsWinterDay.slice();

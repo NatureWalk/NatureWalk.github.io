@@ -337,11 +337,11 @@ function master_controller() {
 		}
 	var cata = roll(2,0);
 	this.usableEvents.push(badEventsCatastrophe[cata]);
-	console.log("AreaDown: "+this.usableEvents);
+	//console.log("AreaDown: "+this.usableEvents);
 	}
 	
 	this.getBadEvents = function(){
-		console.log("Current events: "+this.usableEvents);
+		//console.log("Current events: "+this.usableEvents);
 		return this.usableEvents;
 	}
 	
@@ -442,7 +442,16 @@ function master_controller() {
 			dat.push(this.animals[i].type)
 			dat.push(this.animals[i].level)
 			for(var j = 0; j < 3; j++){
-				var stat = 1;
+				var stat = 2 * animal_data[this.animals[i].type][j];
+				if(stat > 2.5){
+					if (stat >= 3){
+						stat = 3;
+					} else {
+						stat = 2;
+					}
+				} else{
+					stat = 1;
+				}
 				for(var k = 0; k < this.animals[i].level; k++){
 					stat = Math.ceil(stat * animal_data[this.animals[i].type][j]);
 				}

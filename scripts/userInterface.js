@@ -179,6 +179,7 @@ function buttonSetup() {
     //Opens the menu screen
     function openMenu() {
         screenMan.push(gameMenu);
+        screenMan.push(subSettings);
     }
 
     var menuButton = new Button(openMenu);
@@ -221,7 +222,7 @@ function buttonSetup() {
     stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    console.log(stepCount);
+    //console.log(stepCount);
     stepPane.setText([stepCount], 150, stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 

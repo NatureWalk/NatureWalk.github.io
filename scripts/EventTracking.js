@@ -54,6 +54,9 @@ var goodEvents = [
 //Array that is referenced by the journal above the game map. 
 var eventLogAry = [];
 
+// History of past events
+var historyAry = [];
+
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
@@ -356,10 +359,12 @@ function badEventChecker(index, stat,flag){
         //console.log("animal: " + x);
 		if (die < 5){
 			//eventLogAry.push(x +" was tragically lost.");
-            dataObj.animalsDied++;
-			deadTypeCheck(x);
-			deadArr.push(controller.animals[index].name);
-			controller.queueRemove(index);
+			if(controller.animals[index].canDie == true){
+            	dataObj.animalsDied++;
+				deadTypeCheck(x);
+				deadArr.push(controller.animals[index].name);
+				controller.queueRemove(index);
+			}
             return 2;
 		} else if(die < 50){
             tempTracksLost = (dataObj.animalTracks/200);
@@ -920,7 +925,7 @@ function displayEvent(evt) {
     else if (evt === "frozen lake") {
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 425, 170, 100, "eventAnimation");
+                elem.setSpriteAttributes(815, 425, 170, 100, "eventAnimation");
                 elem.setSrc("image_resources/Event_FrozenLake.png", "image_resources/Event_FrozenLake.png", false);
                 elem.fadeTimer = 1;
                 
