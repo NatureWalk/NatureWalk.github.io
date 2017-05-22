@@ -6,7 +6,7 @@ var volume = 0
 var soundManager = function() {
 	this.muted = false
 	this.music = new Howl({
-	  src: ['sounds/ambisynth_livedraft.mp3'],
+	  src: ['sounds/musicV1.wav'],
 	  buffer: true,
 	  loop: true,
 	  //onend: function() {volume = 0.1}
@@ -30,13 +30,13 @@ soundManager.prototype.draw = function() {}
 
 soundManager.prototype.mute_music = function() {
 	if (!this.muted) {
-		this.music.fade(volume,0,10)
+		this.music.fade(1,0,10)
 		console.log(this.music.volume())
 		this.muted = true;
 	}
 	else {
 		this.muted = false;
-		this.music.fade(0,volume,10)
+		this.music.fade(0,1,10)
 		console.log(this.music.volume())
 		
 	}

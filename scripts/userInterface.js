@@ -77,11 +77,12 @@ function backgroundSetup() {
     /////////////////////////////////////////////////
     //ATTRIBUTES PANE
     /////////////////////////////////////////////////
-    attributesPane = new Sprite();
+/*    attributesPane = new Sprite();
     attributesPane.setSrc("image_resources/AttPane.png");
     attributesPane.setSpriteAttributes(46, 195, 440, 370, "attributesPane");
-    panes.push(attributesPane);
+    panes.push(attributesPane);*/
     /////////////////////////////////////////////////
+    
     
     /////////////////////////////////////////////////
     //STATS PANE
@@ -132,16 +133,40 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
-        
     }
 
-    var login = new Button(loadGame)
+    var login = new Button(loadGame);
     login.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
     login.setSpriteAttributes(392,248,240,80, "login button")
     login.hasTextValue = true;
     login.setText(["Login With Fitbit"],40,20)
     console.log(login.text);
     title.buttonArray.push(login);
+
+    /////////////////////////////////////////////////
+    //Menu Button
+    /////////////////////////////////////////////////
+    //Opens the menu screen
+    function openMenu() {
+        screenMan.push(gameMenu);
+    }
+
+    var menuButton = new Button(openMenu);
+    menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
+    menuButton.setSpriteAttributes(40,80,30,30, "menuButton");
+    interface.buttonArray.push(menuButton);
+
+    /////////////////////////////////////////////////
+    //Mute Button
+    /////////////////////////////////////////////////
+    function mB() {soundMan.mute_music()}
+    //function mB() {screenMan.push(popups)}
+
+    muteButton = new Button(mB);
+    muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
+    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
+    muteButton.isToggleButton = true;
+    interface.buttonArray.push(muteButton);
 
     /////////////////////////////////////////////////
     //DEV ATTRIBUTES
@@ -153,34 +178,78 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //STEP PANE (but it's a button)
+    //STEP PANE
     /////////////////////////////////////////////////
     var stepPane = new Button();
     stepPane.setSrc("image_resources/StepPaper.png");
-    stepPane.setSpriteAttributes(76, 30, 150, 50, "stepPane");
+    stepPane.setSpriteAttributes(156, 35, 100, 50, "stepPane");
     stepPane.hasTextValue = true;
+    stepPane.fontSize = "20px";
+
+    var stepLogo = new Button();
+    stepLogo.setSrc("image_resources/feet.png");
+    stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
+    //Arbitrary step setup if the player does not have any steps yet. 
+    
+    stepPane.setText([stepCount], (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
+    
+    //Changeing the button's update function to get the step count every frame. 
+    stepPane.update = function() {
+        this.updateText([stepCount]);
+        this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
+    };
+    interface.buttonArray.push(stepPane);
+    interface.buttonArray.push(stepLogo);
+    /////////////////////////////////////////////////
+    
+    /////////////////////////////////////////////////
+    //STEP MULTIPLIER PANE
+    /////////////////////////////////////////////////
+    var stepMultPane = new Button(function () {
+        //stepMultiplier();
+    });
+    stepMultPane.setSrc("image_resources/StepPaper.png");
+    stepMultPane.setSpriteAttributes(86, 35, 65, 50, "stepMultPane");
+    stepMultPane.hasTextValue = true;
+    stepMultPane.fontSize = '20px';
+    //stepMultPane.color = 'blue';
     //Arbitrary step setup if the player does not have any steps yet. 
     
     
     
-    stepPane.setText([stepCount + " Steps"], (stepPane.width / 2) - 5 * numberLen(stepCount + " Steps"), stepPane.height / 4);
+    stepMultPane.setText(["1.35x"], (stepMultPane.width / 2) - 5 * numberLen(1.35 + "x"), stepMultPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
-    stepPane.update = function() {
-        this.updateText([stepCount + " Steps"]);
-        this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
+    stepMultPane.update = function() {
+        var text = [];
+        var color = [];
+        var mult = dataObj.stepMultiplier.toFixed(2);
+        text.push([mult]);
+        if (mult < 1.5) {
+            color.push("rgb(50,240,0)");
+        } else if (mult < 1.76) {
+            color.push("rgb(245,245,0)");
+        } else {
+            color.push("rgb(245,50,0)");
+        }
+        
+        text.push(["x"])
+        color.push('black')
+        this.updateText(text, color);
+        this.textOffsetX = (stepMultPane.width / 2) - 5 * numberLen(dataObj.stepMultiplier.toFixed(2) + "x")
     };
-    interface.buttonArray.push(stepPane);
+    interface.buttonArray.push(stepMultPane);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
-    //TRACKS PANE (but it's a button)
+    //TRACKS PANE
     /////////////////////////////////////////////////
     var trackPane = new Button();
     trackPane.setSrc("image_resources/TracksPaper.png");
-    trackPane.setSpriteAttributes(226, 35, 250, 50, "trackPane");
+    trackPane.setSpriteAttributes(286, 35, 170, 50, "trackPane");
     trackPane.hasTextValue = true;
+    trackPane.fontSize = "20px";
     trackPane.color = 'blue';
     
     //Changing the button's update function to get the step count every frame. 
@@ -189,13 +258,16 @@ function buttonSetup() {
         var color = [];
         text.push(numberConversion(Math.floor(dataObj.animalTracks)))
         color.push('blue');
-        text.push(" Tracks");
-        color.push('black');
         this.updateText(text,color);
-        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks) + " Tracks")
+        this.textOffsetX = (trackPane.width / 2) - 5 * numberLen(Math.floor(dataObj.animalTracks))
         this.textOffsetY = 10;
     };
     interface.buttonArray.push(trackPane);
+    
+    var trackLogo = new Button();
+    trackLogo.setSrc("image_resources/BunnyPrint.png");
+    trackLogo.setSpriteAttributes(trackPane.x+10, stepPane.y+10, 25, 25, "trackLogo");
+    interface.buttonArray.push(trackLogo);
     /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
@@ -207,7 +279,7 @@ function buttonSetup() {
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
-        animalIcon.setSpriteAttributes((71 +(100*i)), 110, 60, 60, "animal_icon" + i);
+        animalIcon.setSpriteAttributes((89 +(100*i)), 110, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
         animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24);
         
@@ -253,15 +325,17 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         animalLevel = new Button(function() {})
         animalLevel.setSrc("image_resources/ClearSquare.png");
-        animalLevel.setSpriteAttributes((91 +(100*i)), 165, 0, 0, "animal_level" + i);
+        animalLevel.setSpriteAttributes((121 +(100*i)), 165, 0, 0, "animal_level" + i);
         animalLevel.hasTextValue = true;
+        animalLevel.fontSize = "16px";
         
         (function(i) {
             animalLevel.update = function() {
                 var temp = ui_values.animalAry[i].toLowerCase();
                 var level = controller.getAnimalBaseLevel(temp);
-                var charNum = numberLen(temp);  
-                this.setText(["Lvl " + level], (animalLevel.width / 2) - (5 * charNum), 0);
+                var charNum = numberLen("Lvl " + level);
+                //charNum += "Lvl ".length;
+                this.setText(["Lvl " + level], (animalLevel.width / 2) - (4 * charNum), 5);
             }
         })(i);
         interface.buttonArray.push(animalLevel);
@@ -284,8 +358,8 @@ function buttonSetup() {
         attValue.hasTextValue = true;
         attValue.fontSize = '22px';
         
-        charNum = dataObj.animalStats[i].length;
-        attValue.setText([dataObj.animalStats[i]], 0, 0);
+        charNum = gameState.animalStats[i].length;
+        attValue.setText([gameState.animalStats[i]], 0, 0);
         interface.buttonArray.push(attValue);
         
         /////////////////////////////////////////////////
@@ -349,14 +423,24 @@ function buttonSetup() {
     upgradeBtn.fontSize = '16px';
     charnum = "upgrade".length;
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
-    upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
+    //upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
-            upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (3.3 * charnum), 5); 
+            if (this.isPressed) {
+                upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (2.8 * charnum) - 5, 12); 
+            } else {
+                upgradeBtn.setText(["+1 (Base)"], (upgradeBtn.width / 2) - (2.8 * charnum), 7); 
+            }
+            
         } else {
             charnum = "+1 (Selected)".length;
-            upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (3 * charnum), 5);
+            if (this.isPressed) {
+                upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (2.8 * charnum) - 5, 12); 
+            } else {
+                upgradeBtn.setText(["+1 (Selected)"], (upgradeBtn.width / 2) - (2.8 * charnum), 7);
+            }
+            
         }
     }
     interface.buttonArray.push(upgradeBtn);    
@@ -379,8 +463,9 @@ function buttonSetup() {
     upgradeCost.update = function() {
         if (ui_values.selected == "base") {
             var level = controller.base_levels[(ui_values.currentAnimal).toLowerCase()];  
-            charnum = numberConversion(level*2.75*1000).length;
-            upgradeCost.setText([numberConversion(level*2.75*1000)], (upgradeCost.width / 2) - (4 * charnum), 5);
+            charnum = numberConversion(level*2.75*500).length;
+            upgradeCost.setText([numberConversion(level*2.75*500)], (upgradeCost.width / 2) - (4 * charnum), 5);
+
         } else {
             if (controller.animals[ui_values.partyIndex] == undefined) {
                 ui_values.selected = "base";
@@ -405,8 +490,8 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     animalImage = new Button(add_animal);
     animalImage.setSrc(ui_values.animalStaticAry[1], "image_resources/EventLog.png");
-    animalImage.setSpriteAttributes(261, 245, 200, 200, "animal_image");
-    animalImage.setTooltip("Pressing this calls the selected animal.");
+    animalImage.setSpriteAttributes(286, 230, 170, 170, "animal_image");
+    //animalImage.setTooltip("Pressing this calls the selected animal.");
     interface.buttonArray.push(animalImage);
     
     animalImage.hasTextValue = true;
@@ -434,7 +519,7 @@ function buttonSetup() {
         if (ui_values.selected == "base") {
             var name = ui_values.currentAnimal;
             var charNum = numberLen(name);  
-            this.setText([name], -15 - (9 * charNum), -40);
+            this.setText([name], -115 - (9 * charNum), -30);
         } else {
 
             if (controller.animals[ui_values.partyIndex] == undefined) {
@@ -445,33 +530,28 @@ function buttonSetup() {
             //var type = toCapitalize(controller.animals[ui_values.partyIndex].type);
             var name = controller.animals[ui_values.partyIndex].name;
             var charNum = numberLen(name);  
-            this.setText([name], -30 - (4 * charNum), -40);
+            this.setText([name], -130 - (4 * charNum), -30);
         }
     }
     
     animalImageCost = new Button(add_animal);
-    animalImageCost.setSrc("image_resources/ClearSquare.png");
-    animalImageCost.setSpriteAttributes(261, 245, 0, 0, "animal_image");
+    animalImageCost.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+    animalImageCost.setSpriteAttributes(286, 405, 170, 40, "animal_cost");
     interface.buttonArray.push(animalImageCost);
     
     animalImageCost.hasTextValue = true;
-    animalImageCost.fontSize = '28px';
+    animalImageCost.fontSize = '22px';
     animalImageCost.update = function() {
-        animalImageCost.setText([2000 + 500*controller.animals.length + " Steps"], 0 + (5.5 * charNum), 160);
+        if (this.isPressed) {
+            animalImageCost.setText([2000 + " Steps"], 31, 7);
+        } else {
+            animalImageCost.setText([2000 + " Steps"], 36, 2);
+        }
     }
     
 
     /////////////////////////////////////////////////
 
-    //Mute Button
-    //function mB() {soundMan.mute_music()}
-    function mB() {screenMan.push(popups)}
-
-    muteButton = new Button(mB);
-    muteButton.setSrc("image_resources/Sound0.png", "image_resources/Sound.png");
-    muteButton.setSpriteAttributes(40,40,30,30, "mute_music");
-    muteButton.isToggleButton = true;
-    interface.buttonArray.push(muteButton);
     
     /////////////////////////////////////////////////
     //ANIMAL ANIMATIONS
@@ -545,7 +625,13 @@ function buttonSetup() {
     areaText.hasTextValue = true;
     areaText.fontSize = '22px';
     areaText.update = function() {
-        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason);
+        var daynight;
+        if (controller.getAreaLevel() % 2 == 0) {
+            daynight = "Night";
+        } else {
+            daynight = "Day"
+        }
+        var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason+", "+daynight);
         this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
         //this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }
@@ -571,11 +657,16 @@ function buttonSetup() {
 
     //areaNext = new Button(controller.areaLevelUp);
     areaNext = new Button(function() {
-            if (areaEligible()) {controller.areaLevelUp()}
+            if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
+        
+            if(dataObj.tutorialProgress == 32){
+                startTutorialPartFour();
+            }
         });
 
     areaNext.update = function() {
-        if (!areaEligible()) {
+        maxArea(controller.getAreaLevel());
+        if (!areaEligible(controller.getAreaLevel())) {
             areaNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
         } else {
             areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
@@ -623,7 +714,7 @@ function buttonSetup() {
                     if (this.text === undefined) {
             //console.log(this.name);
                     } else {
-                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 400, 20);
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 16);
         }
     }
             }
@@ -647,8 +738,8 @@ function buttonSetup() {
         ctx.restore();
         ctx.rect(517, 0, 475, 578);
         
-        console.log(tutorialProgress);
-        if(tutorialProgress == 20){
+        //console.log(tutorialProgress);
+        if(dataObj.tutorialProgress == 20){
             startTutorialPartThree();
         }
     }
@@ -662,9 +753,7 @@ function buttonSetup() {
         
     }
     interface.buttonArray.push(selectedAnimal);
-	
-	//blank animal portraits for bottom left page
-	
+	//blank animal portraits for bottom left page + displays individual animal levels with portraits
 	var blankPortrait = function(){
 			var partyLimit = 5;
 			var coordX=500;
@@ -675,7 +764,15 @@ function buttonSetup() {
 		
 	};
 	blankPortrait.draw = function(){
-		ctx.strokeStyle = "black";
+		var levels = [];
+		
+		for(var i = 0; i < controller.animals.length; i++){
+			var X = 103+(i*60);
+			var Y = 457;
+			levels.push(controller.animals[i].level)
+			ctx.fillText("Lvl", X+10, Y + 40);
+			ctx.fillText(levels[i], X + 10, Y + 55);
+		}
 		for (var i = 0; i < 5; i++){
 			this.coordX = 103+(i*60);
 			this.coordY = 457;
@@ -685,6 +782,8 @@ function buttonSetup() {
 	};
 
 	interface.push(blankPortrait);
+	
+	
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
@@ -780,7 +879,7 @@ function select_animal(animal_index) {
  * Returns: None. 
 */
 function add_animal() {
-    if (stepCount - (2000 + (500*controller.getNumAnimals())) < 0) {
+    if (stepCount - 2000 < 0) {
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
@@ -789,7 +888,7 @@ function add_animal() {
 
     if (status === true){
         soundMan.click.play()
-        stepCount -= (2000 + (500*(controller.getNumAnimals() - 1)));
+        stepCount -= 2000;
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
     }
@@ -804,7 +903,7 @@ function add_animal() {
             break;
     }
     
-    if(tutorialProgress == 12){
+    if(dataObj.tutorialProgress == 12){
         startTutorialPartTwo();
     }
     
@@ -879,10 +978,10 @@ partyIndicator.setSpriteAttributes((161), (455), 40, 40, "party indicator");
 */
 function upgrade_baseAnimal() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    if (dataObj.animalTracks - (level* 2.75 * 1000) < 0) {
+    if (dataObj.animalTracks - (level* 2.75 * 500) < 0) {
         return;
     } else {
-        dataObj.animalTracks -= (level* 2.75 * 1000);
+        dataObj.animalTracks -= (level* 2.75 * 500);
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
     soundMan.up1.play();
@@ -905,13 +1004,14 @@ function upgrade_animal() {
 */
 function upgrade_baseAnimalMax() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    while (dataObj.animalTracks - (level* 2.75 * 1000) > 0) {
-        dataObj.animalTracks -= (level* 2.75 * 1000);
+    while (dataObj.animalTracks - (level* 2.75 * 500) > 0) {
+        dataObj.animalTracks -= (level* 2.75 * 500);
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
         controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
         level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-        soundMan.up1.play();
+        
     }
+    soundMan.up1.play();
 }
 
 function upgrade_animalMax() {
@@ -920,8 +1020,9 @@ function upgrade_animalMax() {
         dataObj.animalTracks -= (level* 1.75 * 100);
         controller.levelUpAnimal(ui_values.partyIndex);
         level = controller.animals[ui_values.partyIndex].level;
-        soundMan.up1.play();
+        //soundMan.up1.play();
     }
+    soundMan.up1.play();
 }
 
 //Get the animal number from the animal type
