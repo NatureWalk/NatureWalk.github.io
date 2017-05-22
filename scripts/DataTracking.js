@@ -202,7 +202,8 @@ function timeHandler(timeAry) {
 //Function that will be called every second. 
 function everySecond(seconds) {
     //Track generation code. 
-
+	
+	updateLog();
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
     var animTracks = 2*controller.getNumAnimals();
@@ -273,6 +274,10 @@ function everySecond(seconds) {
             startTutorialPartFour();
         }
     }
+    if(loggedIn == true){
+        createPackage();
+        createData(lJson);
+    };
 }
 
 //Function that is called every thirty seconds. 
@@ -282,10 +287,6 @@ function everyThirty(seconds) {
     //dataObj.animalTracks += tracks;
     console.log("Official Offline: " + offlinePopupObj.offlineTracks);
     console.log("Official Offline Events: " + offlinePopupObj.events);
-    if(loggedIn == true){
-        createPackage();
-        createData(lJson);
-    };
 }
 
 function everyMinute(minutes) {

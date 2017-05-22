@@ -181,7 +181,7 @@ function master_controller() {
 	this.areaSeason = 'spring';
 	
 	this.usableEvents = badEventsSpringDay.slice();
-	var evR = roll(2,0);
+	var evR = roll(3,0);
 	this.usableEvents.push(badEventsCatastrophe[evR]);
 	
 	
