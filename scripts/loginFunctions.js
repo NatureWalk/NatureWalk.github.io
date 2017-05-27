@@ -1,5 +1,15 @@
 //functions to update player stats in local storage
 
+//////////////////////////////////////////////////
+// Event history vars
+var deathNum = 0;
+var tripNum = 0;
+var deathArr = [];
+var tripArr = [];
+
+//////////////////////////////////////////////////
+
+
 //variable that holds the number of lifetime steps of the player, pulled from fitbit API after fitbitstart() is executed
 var fitbitSteps;
 var loggedIn = false;
@@ -223,10 +233,14 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
                                 console.log(myarr[i]);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200;
+								tripNum++;
+								tripArr.push(myarr[i].name);
 								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
@@ -279,11 +293,15 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
                                 console.log(myarr[i]);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200
 								totalTrip++;
+								tripNum++;
+								tripArr.push(myarr[i].name);
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -334,11 +352,15 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
                                 console.log(myarr[i]);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200
 								totalTrip++;
+								tripNum++;
+								tripArr.push(myarr[i].name);
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -392,11 +414,15 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
                                 console.log(myarr[i].name);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
                                 offlineTracks -= dataObj.animalTracks/200
 								totalTrip++;
+								tripNum++;
+								tripArr.push(myarr[i].name);
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -410,6 +436,7 @@ function returningUserTracks(){
             if(deadflag == true){
                 break;  
             }
+			tripHistory();
         }
         if(deadflag == false && ((currTime - myarr[i].deathTime) < 0)){
             controller.animals.push(myarr[i]);
@@ -433,8 +460,62 @@ function returningUserTracks(){
             history_text += badEvents + " bad events. ";
         }
     }
-	historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
+	//historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
+	deathHistory();
 }
+
+//////////////////////////////////////////////////////
+// Event history stuff
+
+function deathHistory(){
+	if(deathNum > 0){
+		var printText = "";
+		if(deathNum == 1){
+			//eventLogAry.push(deadArr[0] + " unfortunately died.");
+			printText = deathArr[0] + " unfortunately died.";
+		}else if(deathNum == 2){
+			//eventLogAry.push(deadArr[0] + "and " + dedArr[2] + " unfortunately died.");
+			printText = deathArr[0] + " and " + deathArr[1] + " unfortunately died.";
+		}else if(deathNum > 2){
+			for(var i = 0; i < deathArr.length - 1; i++){
+				printText = printText.concat(deathArr[i], ", ");
+			}
+			printText = printText.concat("and ", deathArr[deathArr.length-1], " unfortunately died.");
+		}
+		historyAry.push(printText);
+	}
+	deathNum = 0;
+	deathArr.splice(0, deathArr.length);
+}
+
+function tripHistory(){
+	if(tripNum > 0){
+		var printText = "";
+		if(tripNum == 1){
+			//eventLogAry.push(deadArr[0] + " unfortunately died.");
+			printText = tripArr[0] + " tripped and lost some tracks.";
+		}else if(tripNum == 2){
+			//eventLogAry.push(deadArr[0] + "and " + dedArr[2] + " unfortunately died.");
+			printText = tripArr[0] + " and " + tripArr[1] + " tripped and lost some tracks.";
+		}else if(tripNum > 2){
+			for(var i = 0; i < tripArr.length - 1; i++){
+				printText = printText.concat(tripArr[i], ", ");
+			}
+			printText = printText.concat("and ", tripArr[deathArr.length-1], " tripped and lost some tracks.");
+		}
+		historyAry.push(printText);
+	}
+	tripNum = 0;
+	tripArr.splice(0, tripArr.length);
+}
+
+
+
+///////////////////////////////////////////////
+
+
+
+
 function returningBaseLevels(){
     controller.base_levels['frog'] = getJsonItem(userID, "frogBaseLevel");
     controller.base_levels['bunny'] = getJsonItem(userID, "bunnyBaseLevel");
