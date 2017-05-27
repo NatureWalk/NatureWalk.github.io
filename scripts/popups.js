@@ -257,9 +257,10 @@ function callSprint(newFitbit) {
                " Fitbit from before, let's pull some of those" +
                " steps in so you can use them right away!"
         console.log(fitbitSteps);
-        stepCount += fitbitSteps/10;
-        dataObj.totalSteps += fitbitSteps/10;
-        dataObj.steps += fitbitSteps/10;
+        stepCount += Math.floor(fitbitSteps/10);
+        console.log(stepCount);
+        dataObj.totalSteps += Math.floor(fitbitSteps/10);
+        dataObj.steps += Math.floor(fitbitSteps/10);
     } 
     sprintPopup.setSrc("image_resources/Tooltip.png");
 	sprintPopup.setSpriteAttributes(325,225,450,150, "sprintPopup");
@@ -288,7 +289,8 @@ function callOfflinePopup() {
     var text;
     var offlineDistance = dataObj.totalSteps*0.000568182;
     var offlinePopup = new Button(function() {
-        removeInterface(this);
+        //removeInterface(this);
+        removePopup(this);
     });
     text = "Welcome back! You have walked a total of " + offlineDistance.toFixed(3) + " miles since starting your nature walk. Your animals collected " + Math.floor(offlinePopupObj.offlineTracks) + " tracks" 
     if (offlinePopupObj.events.length > 0) {
@@ -320,7 +322,7 @@ function callOfflinePopup() {
 	charnum = text.length;
     
 	offlinePopup.setText([text], 5, 5);
-    console.log(offlinePopup.text);
+    //console.log(offlinePopup.text);
     offlinePopup.draw = function() {
         ctx.globalAlpha = 0.3;
 	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
@@ -329,7 +331,9 @@ function callOfflinePopup() {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 450, 25);
     }
-    pushInterface(offlinePopup) 
+    pushPopup(offlinePopup);
+    screenMan.push(popups);
+    //pushInterface(offlinePopup)
     //dataObj.stepMultiplier = 2;
 }
 

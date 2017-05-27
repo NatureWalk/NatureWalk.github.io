@@ -64,16 +64,16 @@ badEvents = [
     ["eruption", 'speed'], ["hunter", 'evasion'], ["invasive speces", 'evasion'], 
 ];
 
-badEventsWinterDay = [["snow storm", 'speed'],["food scarcity", 'strength'], ["frozen lake", 'evasion']];
+badEventsWinterDay = [["snow storm", 'speed'],["predator", 'evasion'], ["frozen lake", 'evasion']];
 badEventsWinterNight = [["temperature drop", "strength"], ["snowslide", "speed"], ["snow storm", "speed"]];
 //badEventsSpringDay = [["treefall", "evasion"], ["mudslide", "speed"], ["hunter", "evasion"]];
 badEventsSpringDay = [["river", "strength"], ["lightning storm", "speed"], ["hunter", "evasion"]];
-badEventsSpringNight = [["treefall", "evasion"], ["sinkhole", "strength"], ["predator", "evasion"]];
-badEventsSummerDay = [["heat wave", "strength"], ["drought", "strength"], ["wildfire", "speed"]];
+badEventsSpringNight = [["sinkhole", "evasion"], ["mudslide", "speed"], ["predator", "evasion"]];
+badEventsSummerDay = [["heat wave", "strength"], ["ravine", "strength"], ["wildfire", "speed"]];
 badEventsSummerNight = [["lightning storm", "speed"], ["summer storm", "speed"], ["predator", "evasion"]];
 //badEventsFallDay = [["wind storm", "strength"], ["epidemic", 'strength'], ['hunter', 'evasion']];
 badEventsFallDay = [["rain storm", "strength"], ["river", 'strength'], ['hunter', 'evasion']];
-badEventsFallNight = [["predator", 'evasion'], ['fog', 'speed'], ['rain storm', 'strength']];
+badEventsFallNight = [["predator", 'evasion'], ['mudslide', 'speed'], ['rain storm', 'strength']];
 badEventsCatastrophe = [["tornado", 'speed'], ['meteor', 'evasion'], ['eruption', 'speed']];
 
 
@@ -93,7 +93,7 @@ deerNames = ["Dre", "Cervol", "Osa", "Hjort",
 "Dante", "Daicey", "Dione", "Dailee", "Dane", "Daisy", "Dasha", "DeShaun", "Daya", "Daken",
 "Dakeem", "Dalaney", "Dalbey", "Dalek", "Dilbert", "Daliza", "Dalton", "Dalmer", "Dalsgaard",
 "Daluchi", "Dalvyn", "Damani", "Damar", "DaMarco", "Buck Henry", "Doe Lewis", "Fawn Hamm",
-"Alexandeer", "Bambi", "Mean Doe Greene", "Mark Buckerberg", "Fawnie Lee Miller", "Fawnathan Demme"];
+"Alexandeer", "Bambi", "Doe Greene", "Buckerberg", "Fawnie Lee", "Fawnathan"];
 
 bunnyNames = ["Raheem", "Ronaldo", "Ryan", "Riley", "Ripley", "Rami", "Raymond", "Ravi", "Robert", "Rob", "Robbie",
 "Rebecca", "Rene", "Rey", "Ray", "Roland", "Rachel", "Rachelle", "Rochelle", "Rory", "Racen", "Racquel", "Radcliffe",
@@ -108,7 +108,7 @@ birdNames = ["Baara", "Barack", "Banyan", "Bill", "Billy", "Barb", "Babs", "Barb
 "Barbie", "Banksy", "Binky", "Bitsy", "Betsy", "Betty", "Betty", "Bernie", "Bernard", "Banjo", "Bart", "Birdtholemew",
 "Brandon", "Brynn", "Bobby", "Bob", "Bert", "Birdtrum", "Brick", "Bruce", "Bailey", "Bailor", "Brayden", "Bode",
 "Benson", "Bentley", "Bennet", "Belinda", "Beau", "Beatrix", "Bea", "Belinda", "David Peckham", "Bridget",
-"Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick", "Sweet Dee", "Phoenixperson", "Joel McQuail",
+"Brinley", "Bristol", "Brett", "Brock", "Byron", "Bruno", "Broderick", "Sweet Dee", "Birdperson", "Joel McQuail",
 "Wil Tweeton", "Stephen Squawking", "Zoidbird", "Flight Schrute", "Cyberbird", "Meryl Cheep"];
 
 

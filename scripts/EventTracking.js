@@ -91,8 +91,8 @@ function goodEventHandler(evtRoll) {
         //Extra Tracks
         case evtRoll >= 30 && evtRoll < 55:
             //console.log(goodEvents[1]);
-            eventLogAry.push("You find some animal tracks!");
-			dataObj.animalTracks += (dataObj.animalTracks/1000);
+            eventLogAry.push("You find some animal tracks! +" + Math.floor(dataObj.animalTracks/1000) + " Tracks");
+			dataObj.animalTracks += Math.floor(dataObj.animalTracks/1000);
             break;
         //Restful Meadow
         case evtRoll >= 60 && evtRoll < 75:
@@ -293,10 +293,18 @@ function noEventHandler(evtRoll) {
     switch (true) {
         //Predator
         case evtRoll < 35:
-            eventLogAry.push("It's a wonderful day!");
+            if (controller.getAreaLevel()%2 === 0) {
+                eventLogAry.push("It's a wonderful night!");
+            } else {
+                eventLogAry.push("It's a wonderful day!");
+            }
             break;
         case evtRoll >= 35 && evtRoll < 45:
-            eventLogAry.push("Sunny and warm, perfect for nature walking.");
+            if (controller.getAreaLevel()%2 === 0) {
+                eventLogAry.push("Cool and quiet, perfect for nature walking.");
+            } else {
+                eventLogAry.push("Sunny and warm, perfect for nature walking.");
+            }
             break;
         case evtRoll >= 45:
             eventLogAry.push("You pass by another animal.");
@@ -519,7 +527,11 @@ function displayEvent(evt) {
                 elem.setSrc("image_resources/ClearSquare.png");
                 //elem.setupAnim(22, 5, 5);
             }
-            if (elem.name === "eventAnimation") {
+            if (elem.name === "eventAnimationRear") {
+                elem.setSrc("image_resources/ClearSquare.png");
+                //elem.setupAnim(22, 5, 5);
+            }
+            if (elem.name === "eventAnimationFrong") {
                 elem.setSrc("image_resources/ClearSquare.png");
                 //elem.setupAnim(22, 5, 5);
             }
@@ -530,7 +542,7 @@ function displayEvent(evt) {
     //WEATHER EVENTS
     /////////////////////////////////////////////////
     //If evt matches the name
-    if (evt === "rain storm") {
+    if (evt === "rain storm" || evt === "summer storm") {
         //Find the 'weatherAnimation' element on the interface.
         interface.buttonArray.forEach(function (elem) {
             if (elem.name === "weatherAnimation") {
@@ -559,15 +571,15 @@ function displayEvent(evt) {
     /////////////////////////////////////////////////
     else if (evt === "predator") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
+            if (elem.name === "eventAnimationFront") {
                 //Replace the eventAnimation element back to the right side of the canvas.
-                elem.setSpriteAttributes(865, 410, 150, 100, "eventAnimation");
+                elem.setSpriteAttributes(865, 410, 160, 100, "eventAnimationFront");
                 elem.setSrc("image_resources/Event_Predator.png", "image_resources/Event_Predator.png", true);
-                elem.setupAnim(12, 4, 4);
+                elem.setupAnim(36, 7, 6);
                 
                 //The time when the animation will fade out. 
                 elem.fadeTimer = 1;
-                
+                elem.framIndex = 0;
                 //Change the update function so that the animation behaves as you want it to.
                 elem.update = function () {
                     //Quickly moves to the left, but gets slower over time. 
@@ -623,9 +635,9 @@ function displayEvent(evt) {
     } 
     else if (evt === "wildfire") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
+            if (elem.name === "eventAnimationRear") {
                 //Replace the eventAnimation element back to the right side of the canvas.
-                elem.setSpriteAttributes(515, 260, 480, 125, "eventAnimation");
+                elem.setSpriteAttributes(515, 260, 480, 125, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_Fire.png", "image_resources/Event_Fire.png", true);
                 elem.setupAnim(14, 4, 4);
                 
@@ -687,9 +699,9 @@ function displayEvent(evt) {
     } 
     else if (evt === "tornado") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
+            if (elem.name === "eventAnimationFrong") {
                 //Replace the eventAnimation element back to the right side of the canvas.
-                elem.setSpriteAttributes(815, 210, 180, 330, "eventAnimation");
+                elem.setSpriteAttributes(815, 210, 180, 330, "eventAnimationFront");
                 elem.setSrc("image_resources/Event_Tornado.png", "image_resources/Event_Tornado.png", true);
                 elem.setupAnim(9, 4, 4);
                 
@@ -750,8 +762,8 @@ function displayEvent(evt) {
     }
     else if (evt === "lightning storm") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 155, 120, 330, "eventAnimation");
+            if (elem.name === "eventAnimationFrong") {
+                elem.setSpriteAttributes(865, 155, 120, 330, "eventAnimationFront");
                 elem.setSrc("image_resources/Event_Lightning.png", "image_resources/Event_Lightning.png", true);
                 elem.setupAnim(10, 4, 3);
                 elem.fadeTimer = 1;
@@ -811,8 +823,8 @@ function displayEvent(evt) {
     } 
     else if (evt === "treefall") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 360, 120, 180, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 360, 120, 180, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_FallenTree.png", "image_resources/Event_FallenTree.png", false);
                 elem.fadeTimer = 1;
                 
@@ -838,10 +850,68 @@ function displayEvent(evt) {
         gameState.eventDisplayTimer = 4;
     
     } 
+    else if (evt === "mudslide") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 380, 120, 180, "eventAnimationRear");
+                elem.setSrc("image_resources/Event_Mudslide.png", "image_resources/Event_Mudslide.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 4;
+    
+    }
+    else if (evt === "snowslide") {
+        interface.buttonArray.forEach(function (elem) {
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 380, 120, 180, "eventAnimationRear");
+                elem.setSrc("image_resources/Event_Snowslide.png", "image_resources/Event_Snowslide.png", false);
+                elem.fadeTimer = 1;
+                
+                elem.update = function () {
+                    this.x -= .85;
+                }
+                
+                elem.draw = function () {
+                    
+                    ctx.globalAlpha = elem.fadeTimer;
+                    if (gameState.eventDisplayTimer <= 1) {
+                        if (elem.fadeTimer > 0) elem.fadeTimer -= .05;
+                        else ctx.globalAlpha = 0;
+                    }
+                    
+                    if (!this.anim) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);       
+                    } 
+                    ctx.globalAlpha = 1;
+                }
+            }
+        });
+        gameState.eventDisplayTimer = 4;
+    
+    }
     else if (evt === "river") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 370, 120, 180, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 370, 120, 180, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_River.png", "image_resources/Event_River.png", false);
                 elem.fadeTimer = 1;
                 
@@ -869,8 +939,8 @@ function displayEvent(evt) {
     }
     else if (evt === "hunter") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 420, 100, 100, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 420, 100, 100, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_Hunter.png", "image_resources/Event_Hunter.png", false);
                 elem.fadeTimer = 1;
                 
@@ -896,8 +966,8 @@ function displayEvent(evt) {
     }
     else if (evt === "sinkhole") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 400, 160, 100, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 400, 160, 100, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_Sinkhole.png", "image_resources/Event_Sinkhole.png", false);
                 elem.fadeTimer = 1;
                 
@@ -924,8 +994,8 @@ function displayEvent(evt) {
     }
     else if (evt === "frozen lake") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(815, 425, 170, 100, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(815, 425, 170, 100, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_FrozenLake.png", "image_resources/Event_FrozenLake.png", false);
                 elem.fadeTimer = 1;
                 
@@ -952,8 +1022,8 @@ function displayEvent(evt) {
     }
     else if (evt === "fountain") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 380, 150, 150, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 380, 150, 150, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_Fountain.png", "image_resources/Event_Fountain.png", false);
                 elem.fadeTimer = 1;
                 
@@ -980,8 +1050,8 @@ function displayEvent(evt) {
     }
         else if (evt === "ravine") {
         interface.buttonArray.forEach(function (elem) {
-            if (elem.name === "eventAnimation") {
-                elem.setSpriteAttributes(865, 380, 160, 160, "eventAnimation");
+            if (elem.name === "eventAnimationRear") {
+                elem.setSpriteAttributes(865, 380, 160, 160, "eventAnimationRear");
                 elem.setSrc("image_resources/Event_Ravine.png", "image_resources/Event_Ravine.png", false);
                 elem.fadeTimer = 1;
                 
