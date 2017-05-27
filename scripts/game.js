@@ -142,11 +142,7 @@ interface.init = function() {
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
-    /*
-=======
-    interface.displayButtons();
->>>>>>> origin/duncan
-*/
+    
     this.push(pcontroller_i);
 
     //addPopup("This is a test.",w/2,h/2);

@@ -223,7 +223,6 @@ function buttonSetup() {
     stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    console.log(stepCount);
     stepPane.setText([stepCount], 150, stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
@@ -625,6 +624,7 @@ function buttonSetup() {
             var name = ui_values.currentAnimal;
             var charNum = numberLen(name);  
             this.setText([name], -140 - (5 *charNum), -30);
+
         } else {
 
             if (controller.animals[ui_values.partyIndex] == undefined) {
@@ -676,8 +676,53 @@ function buttonSetup() {
         var animalAnimation = new Button();
         animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
         animalAnimation.setSpriteAttributes(707 + roll(60) - (80*((i-1)%3)), (10*Math.floor(i-1/4))+340, 100, 100, "animalAnimation");
- 
+
         (function(i) {
+            /*
+            animalAnimation.update = function() { 
+                var party_size = controller.getNumAnimals();
+                //console.log("Party Size " + party_size);
+                var animal_select;
+                if (party_size < i || party_size === 0) {
+                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
+                } else {
+                    animal_select = controller.animals[i-1];
+                    //console.log(animal_select.type);
+                    switch (animal_select.type) {
+                        case "bird":
+                            this.setSrc(ui_values.animalWalkAry[0],
+                                        ui_values.animalWalkAry[0], true);
+                            this.setupAnim(4, 3, 3);
+                            break;
+                        case "deer":
+                            this.setSrc(ui_values.animalWalkAry[1],
+                                        ui_values.animalWalkAry[1], true);
+                            this.setupAnim(16, 4, 5);
+                            break;
+                        case "frog":
+                            this.setSrc(ui_values.animalWalkAry[2],
+                                        ui_values.animalWalkAry[2], true);
+                            this.setupAnim(21, 5, 5);
+                            break;
+                        case "bunny":
+                            this.setSrc(ui_values.animalWalkAry[3],
+                                        ui_values.animalWalkAry[3], true);
+                            this.setupAnim(6, 3, 3);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (this.anim) {
+                    this.tickCount++; 
+                    if (this.tickCount > this.ticksPerFrame) {
+                        this.frameIndex++;
+                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                        this.tickCount = 0; 
+                    }
+                }
+            }
+            */
             animalAnimation.update = function() { 
                 var party_size = controller.getNumAnimals();
                 //console.log("Party Size " + party_size);
@@ -737,7 +782,7 @@ function buttonSetup() {
     //eventAnimation.setupAnim(12, 4, 4);
     interface.buttonArray.push(eventAnimationFront); 
     /////////////////////////////////////////////////
-    
+
     /////////////////////////////////////////////////
     //WEATHER EVENT ANIMATIONS
     /////////////////////////////////////////////////
@@ -902,23 +947,6 @@ function buttonSetup() {
         var party_size = 0;
         var levels = [];
 
-        /*
-        for (var i = 0; i < 2; i++){
-            for (var j = 0; j < 6; j++){
-                //levels.push(controller.animals[i].level)
-                if ((j+(6*i)) < controller.getNumAnimals()) {
-                    this.coordX = 103+(j*60);
-                    this.coordY = 457+(i*50);
-                    levels.push(controller.animals[j+(6*i)].level)
-                    //ctx.fillText("Lvl", X+10, Y + 40);
-                    ctx.font = "14px handlee";
-                    ctx.fillStyle="#00ff00";
-                    ctx.fillText(levels[j+(6*i)], this.coordX + 27 - (numberLen(levels[j+(6*i)]) * 3), this.coordY + 19);
-                    ctx.color = "black"
-                }
-            }
-		}
-        */
 		for (var i = 0; i < 2; i++){
             for (var j = 0; j < 6; j++){
                 if (party_size < party_limit){
@@ -1088,11 +1116,13 @@ function updateParty() {
 	var animals = controller.animals;
 	var partyIcon = new Button();
     var levels = [];
+
 	for (var i = 0; i < 2; i++) {
         for (var j = 0; j < 6; j++) {
             //console.log(animals[j+(6*i)]);
             if (animals[j+(6*i)]!==undefined) {
                 levels.push(controller.animals[j+(6*i)].level)
+
                 //console.log(animals[j+(6*i)]);
                 var num = aniToNum(animals[j+(6*i)].type);
                 //console.log("animal number: "+num)
@@ -1116,10 +1146,6 @@ function updateParty() {
                 //ctx.color = "black"
 
                 partyButtons.push(partyIcon); 
-                
-                
-                //ctx.fillText("Lvl", X+10, Y + 40);
-                
             }
         }
     }

@@ -579,7 +579,8 @@ function displayEvent(evt) {
                 
                 //The time when the animation will fade out. 
                 elem.fadeTimer = 1;
-                elem.framIndex = 0;
+                elem.frameIndex = 0;
+
                 //Change the update function so that the animation behaves as you want it to.
                 elem.update = function () {
                     //Quickly moves to the left, but gets slower over time. 
@@ -702,6 +703,7 @@ function displayEvent(evt) {
             if (elem.name === "eventAnimationFrong") {
                 //Replace the eventAnimation element back to the right side of the canvas.
                 elem.setSpriteAttributes(815, 210, 180, 330, "eventAnimationFront");
+
                 elem.setSrc("image_resources/Event_Tornado.png", "image_resources/Event_Tornado.png", true);
                 elem.setupAnim(9, 4, 4);
                 

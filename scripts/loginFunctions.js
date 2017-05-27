@@ -422,6 +422,7 @@ function returningUserTracks(){
                                 deadflag = true;
 								deathNum++;
 								deathArr.push(myarr[i].name);
+
                                 console.log(myarr[i].name);
                                 offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
@@ -429,6 +430,7 @@ function returningUserTracks(){
 								totalTrip++;
 								tripNum++;
 								tripArr.push(myarr[i].name);
+
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -466,7 +468,7 @@ function returningUserTracks(){
             history_text += badEvents + " bad events. ";
         }
     }
-	//historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
+
 	deathHistory();
 }
 

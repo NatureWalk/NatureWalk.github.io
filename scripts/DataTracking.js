@@ -262,7 +262,6 @@ function everySecond(seconds) {
     if(firstTimeUserFlag == true){
         firstTimeUserFlag = false;
         if (dataObj.tutorialProgress <= 12) {
-            //console.log("Tutorial Reset");
             dataObj.tutorialProgress = 0;
             startTutorial();
         } else if (dataObj.tutorialProgress <= 20) {

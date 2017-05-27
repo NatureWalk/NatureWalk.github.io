@@ -256,9 +256,9 @@ function callSprint(newFitbit) {
         text = "You seem to already have some steps on your" +
                " Fitbit from before, let's pull some of those" +
                " steps in so you can use them right away!"
-        console.log(fitbitSteps);
+        //console.log(fitbitSteps);
         stepCount += Math.floor(fitbitSteps/10);
-        console.log(stepCount);
+        //console.log(stepCount);
         dataObj.totalSteps += Math.floor(fitbitSteps/10);
         dataObj.steps += Math.floor(fitbitSteps/10);
     } 
@@ -289,7 +289,7 @@ function callOfflinePopup() {
     var text;
     var offlineDistance = dataObj.totalSteps*0.000568182;
     var offlinePopup = new Button(function() {
-        //removeInterface(this);
+
         removePopup(this);
     });
     text = "Welcome back! You have walked a total of " + offlineDistance.toFixed(3) + " miles since starting your nature walk. Your animals collected " + Math.floor(offlinePopupObj.offlineTracks) + " tracks" 
@@ -322,7 +322,7 @@ function callOfflinePopup() {
 	charnum = text.length;
     
 	offlinePopup.setText([text], 5, 5);
-    //console.log(offlinePopup.text);
+
     offlinePopup.draw = function() {
         ctx.globalAlpha = 0.3;
 	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
@@ -433,7 +433,6 @@ fullUpgrade.update = function(){
     maxCost.hasTextValue = true;
     maxCost.fontSize = '20px';
     maxCost.color = ['blue'];
-
 
     maxCost.update = function() {
         if (ui_values.selected == "base") {
