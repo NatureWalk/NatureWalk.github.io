@@ -1,8 +1,19 @@
 //functions to update player stats in local storage
 
+//////////////////////////////////////////////////
+// Event history vars
+var deathNum = 0;
+var tripNum = 0;
+var deathArr = [];
+var tripArr = [];
+
+//////////////////////////////////////////////////
+
+
 //variable that holds the number of lifetime steps of the player, pulled from fitbit API after fitbitstart() is executed
 var fitbitSteps;
 var loggedIn = false;
+var NaNReset = false;
 //function that is called in loadGame() in userinterface.js
 function logIn(){
     loggedIn = true;
@@ -18,7 +29,7 @@ firstTimeUserFlag = false;
 //if no, correct current stepCount is calculated and a returning user json is created and saved to local
 function loginPlayer(){
     fitbitSteps = stepCount;
-    console.log(userID);
+    console.log("USERID: " + userID);
     console.log(isFirstTimeUser(userID));
     console.log(fitbitSteps);
     if(isFirstTimeUser(userID)){
@@ -27,12 +38,24 @@ function loginPlayer(){
         createData(initPackage());
         firstTimeUserFlag = true;
         gameState.sprint = true;
-    } else {
+    } else { 
         console.log("returning player");
         returningUserSteps();
+        returningUserEvents();
         returningUserTracks();
         returningBaseLevels();
-        createData(returningPackage(userID));
+        if (NaNReset) {
+            clearUser(userID); 
+            firstTimeUserFlag = true;
+            loginPlayer();
+        } else {
+            createData(returningPackage(userID));
+            if (dataObj.tutorialProgress < 36) {
+                firstTimeUserFlag = true;
+            }
+        }
+        
+        
     }
 }
 
@@ -41,7 +64,7 @@ function loginPlayer(){
 //used to retrieve playerSteps and playerTSteps
 function getJsonItem(iD, key){
     var jsonData = JSON.parse(localStorage.getItem(iD.toString()));
-    console.log(key + ": " + parseInt(jsonData[key.toString()]));
+    //console.log(key + ": " + parseInt(jsonData[key.toString()]));
     return parseInt(jsonData[key.toString()]);
 }
 
@@ -75,18 +98,21 @@ function returningUserSteps(){
     var totalSteps = parseFloat(getJsonItem(userID, "playerTSteps"));
     var playerSteps = parseFloat(getJsonItem(userID, "playerSteps"));
     var stepMult = parseFloat(getJsonItem(userID, "stepMultiplier"));
-    
+    //var temp = parseFloat(stepMult);
+    if (priorSteps === NaN || totalSteps === NaN || playerSteps === NaN || stepMult === NaN) {
+        NanReset = true;
+    }
     console.log("Prior: " + priorSteps);
     console.log("Total: " + totalSteps);
     console.log("Player: " + playerSteps);
     console.log("Mult: " + stepMult);
-    
+    //console.log(stepMult * 2);
     dataObj.priorSteps = priorSteps;
     //dataObj.totalSteps = fitbitSteps - priorSteps;
     dataObj.totalSteps = totalSteps;
     //Add the additional steps from the step multiplier to the total. 
     dataObj.multipliedSteps += ((playerSteps*stepMult) - playerSteps);
-    console.log("Multiplied Steps: " + (playerSteps*stepMult) - playerSteps);
+    console.log("Multiplied Steps: " + ((playerSteps*stepMult) - playerSteps));
     dataObj.totalSteps += ((playerSteps*stepMult) - playerSteps);
     dataObj.steps = stepCount;
     
@@ -94,18 +120,14 @@ function returningUserSteps(){
     stepCount =  (fitbitSteps - priorSteps) + playerSteps;
     //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
     
-    
-    
     console.log("returning steps ===== " + stepCount);
 }
 
 function returningUserTracks(){
-	
 	var goodEvents = 0;
 	var badEvents = 0;
 	var totalDead = 0;
 	var totalTrip = 0;
-	
     returningUserArea();
     returningUserSeason();
     dataObj.animalTracks = parseFloat(getJsonItem(userID, "playerTracks"));
@@ -114,15 +136,17 @@ function returningUserTracks(){
     var key = "partyComp";
     var jsonData = JSON.parse(localStorage.getItem(id.toString()));
     var myarr = jsonData[key.toString()];   
-    console.log(myarr);
+    console.log("myarr: " + myarr);
     var currTime = Date.now();
     var timeDiff = currTime - lastLoginTime;
-    console.log(timeDiff);
+    //console.log(timeDiff);
     
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
+    var offlineTracks = 0;
+    var evt;
     
-    console.log(myarr.length);
+    //console.log(myarr.length);
     for(var i = 0; i < myarr.length; i++){
         var deadflag = false;
         var endTime = currTime - myarr[i].deathTime;
@@ -131,25 +155,31 @@ function returningUserTracks(){
         } else {
             endTime = Math.floor(((myarr[i].deathTime - lastLoginTime)/1000)/15);
         }
-        console.log(endTime);
+        console.log("End time: " + endTime);
         var spd = 1
         var eva = 1
         var str = 1
+        
+        //Get individual animal stats. 
         for(var k = 0; k < myarr[i].level; k++){
             spd = Math.ceil(spd * animal_data[myarr[i].type][0]);
             eva = Math.ceil(eva * animal_data[myarr[i].type][1]);
             str = Math.ceil(str * animal_data[myarr[i].type][2]);
         }
-        console.log(spd + " " + eva + " " + str);
+        //console.log(spd + " " + eva + " " + str);
         for(var j = 0; j < endTime; j++){
+            //Give tracks equal to what you would earn until an event would occur.
+            offlineTracks += Math.floor(areaTracks*2*15);
             dataObj.animalTracks += Math.floor(areaTracks*2*15);
+            console.log("Added Offline Tracks: " + offlineTracks);
             evtRoll = roll(100);
-            console.log(evtRoll);
+            //console.log(evtRoll);
             //Good Event
             if (evtRoll > 70) {
 				goodEvents++;
                 evt2 = roll(100);
                 if (evt2 < 26){
+                    offlineTracks += dataObj.animalTracks/1000;
                     dataObj.animalTracks += (dataObj.animalTracks/1000);
                 }
             } 
@@ -160,10 +190,16 @@ function returningUserTracks(){
                 switch (true) {
                     case evt2 <= 31:
                         stat = controller.usableEvents[0][1];
+                        evt = controller.usableEvents[0][0];
+                        updateEventData(controller.evt);
+                        if (offlinePopupObj.events[0] === 0) {
+                            offlinePopupObj.events[0] = evt;
+                        }
                         var playerRoll, gameRoll;
                         var diff = controller.getAreaLevel() * 75;
                         var diffmin = (controller.getAreaLevel() - 1) * 75;
     
+                        //Set area event difficulty.
                         for(var k = 0; k < controller.getAreaLevel(); k++){
                             diff = Math.ceil(diff * 1.33)
                         }
@@ -180,6 +216,7 @@ function returningUserTracks(){
                         playerRoll = 0;
                         gameRoll = roll(diff, diffmin);
                         
+                        //Figure out the stat being checked, then roll.
                         switch(stat){
                         case 'speed': 
                             playerRoll = roll(Math.round(spd + (25 * controller.getAreaLevel()), spd));
@@ -196,7 +233,14 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
+                                console.log(myarr[i]);
+                                offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
+                                offlineTracks -= dataObj.animalTracks/200;
+								tripNum++;
+								tripArr.push(myarr[i].name);
 								totalTrip++;
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
@@ -206,7 +250,13 @@ function returningUserTracks(){
                         }
                         break;  
                     case evtRoll > 31 < 63:
-                        stat = controller.usableEvents[2][1];
+                        stat = controller.usableEvents[1][1];
+                        evt = controller.usableEvents[1][0];
+                        //console.log(controller.usableEvents[1][0]);
+                        updateEventData(controller.evt);
+                        if (offlinePopupObj.events.includes(evt) === false) {
+                            offlinePopupObj.events.push(evt);
+                        } 
                         var playerRoll, gameRoll;
                         var diff = controller.getAreaLevel() * 75;
                         var diffmin = (controller.getAreaLevel() - 1) * 75;
@@ -243,8 +293,15 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
+                                console.log(myarr[i]);
+                                offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
+                                offlineTracks -= dataObj.animalTracks/200
 								totalTrip++;
+								tripNum++;
+								tripArr.push(myarr[i].name);
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -253,7 +310,12 @@ function returningUserTracks(){
                         }
                         break;  
                     case evtRoll >= 63 < 95:
-                        stat = controller.usableEvents[0][1];
+                        stat = controller.usableEvents[2][1];
+                        evt = controller.usableEvents[2][0];
+                        updateEventData(controller.evt);
+                        if (offlinePopupObj.events[2] === 0) {
+                            offlinePopupObj.events[2] = evt;
+                        }
                         var playerRoll, gameRoll;
                         var diff = controller.getAreaLevel() * 75;
                         var diffmin = (controller.getAreaLevel() - 1) * 75;
@@ -290,8 +352,15 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
+                                console.log(myarr[i]);
+                                offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
+                                offlineTracks -= dataObj.animalTracks/200
 								totalTrip++;
+								tripNum++;
+								tripArr.push(myarr[i].name);
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -301,6 +370,11 @@ function returningUserTracks(){
                         break;  
                     case evtRoll >= 95:
                         stat = controller.usableEvents[3][1];
+                        evt = controller.usableEvents[3][0];
+                        updateEventData(controller.evt);
+                        if (offlinePopupObj.events[3] === 0) {
+                            offlinePopupObj.events[3] = evt;
+                        }
                         var playerRoll, gameRoll;
                         var diff = controller.getAreaLevel() * 75;
                         var diffmin = (controller.getAreaLevel() - 1) * 75;
@@ -340,8 +414,15 @@ function returningUserTracks(){
                             if (die < 5){
 								totalDead++;
                                 deadflag = true;
+								deathNum++;
+								deathArr.push(myarr[i].name);
+                                console.log(myarr[i].name);
+                                offlinePopupObj.deaths.push(myarr[i].name);
                             } else if(die < 50){
+                                offlineTracks -= dataObj.animalTracks/200
 								totalTrip++;
+								tripNum++;
+								tripArr.push(myarr[i].name);
                                 dataObj.animalTracks -= (dataObj.animalTracks/200)
                             }
                         }
@@ -355,20 +436,97 @@ function returningUserTracks(){
             if(deadflag == true){
                 break;  
             }
+			tripHistory();
         }
         if(deadflag == false && ((currTime - myarr[i].deathTime) < 0)){
             controller.animals.push(myarr[i]);
         }
     
     }
-	
-	historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + " animals unfortunately died.")
+    //console.log("Total Offline Tracks: " + offlineTracks);
+    offlinePopupObj.offlineTracks = offlineTracks;
+
+    var history_text = "While you were gone, ";
+    if (goodEvents > 0 || badEvents > 0) {
+        history_text += "your animals encountered ";
+        if (goodEvents > 0) {
+            history_text += goodEvents + " good events";
+            if (badEvents > 0) {
+                history_text += " and " + badEvents + " bad events.";
+            } else {
+                history_text += ". "
+            }
+        } else if (badEvents > 0) {
+            history_text += badEvents + " bad events. ";
+        }
+    }
+	//historyAry.push("While you were gone, your animals encountered " + goodEvents + " good events and " + badEvents + " bad events. Your animals tripped and lost some tracks " + totalTrip + " times, and " + totalDead + "animals unfortunately died.")
+	deathHistory();
 }
+
+//////////////////////////////////////////////////////
+// Event history stuff
+
+function deathHistory(){
+	if(deathNum > 0){
+		var printText = "";
+		if(deathNum == 1){
+			//eventLogAry.push(deadArr[0] + " unfortunately died.");
+			printText = deathArr[0] + " unfortunately died.";
+		}else if(deathNum == 2){
+			//eventLogAry.push(deadArr[0] + "and " + dedArr[2] + " unfortunately died.");
+			printText = deathArr[0] + " and " + deathArr[1] + " unfortunately died.";
+		}else if(deathNum > 2){
+			for(var i = 0; i < deathArr.length - 1; i++){
+				printText = printText.concat(deathArr[i], ", ");
+			}
+			printText = printText.concat("and ", deathArr[deathArr.length-1], " unfortunately died.");
+		}
+		historyAry.push(printText);
+	}
+	deathNum = 0;
+	deathArr.splice(0, deathArr.length);
+}
+
+function tripHistory(){
+	if(tripNum > 0){
+		var printText = "";
+		if(tripNum == 1){
+			//eventLogAry.push(deadArr[0] + " unfortunately died.");
+			printText = tripArr[0] + " tripped and lost some tracks.";
+		}else if(tripNum == 2){
+			//eventLogAry.push(deadArr[0] + "and " + dedArr[2] + " unfortunately died.");
+			printText = tripArr[0] + " and " + tripArr[1] + " tripped and lost some tracks.";
+		}else if(tripNum > 2){
+			for(var i = 0; i < tripArr.length - 1; i++){
+				printText = printText.concat(tripArr[i], ", ");
+			}
+			printText = printText.concat("and ", tripArr[deathArr.length-1], " tripped and lost some tracks.");
+		}
+		historyAry.push(printText);
+	}
+	tripNum = 0;
+	tripArr.splice(0, tripArr.length);
+}
+
+
+
+///////////////////////////////////////////////
+
+
+
+
 function returningBaseLevels(){
     controller.base_levels['frog'] = getJsonItem(userID, "frogBaseLevel");
     controller.base_levels['bunny'] = getJsonItem(userID, "bunnyBaseLevel");
     controller.base_levels['bird'] = getJsonItem(userID, "birdBaseLevel");
     controller.base_levels['deer'] = getJsonItem(userID, "deerBaseLevel");
+    if (controller.base_levels['frog'] === NaN ||
+        controller.base_levels['bunny'] === NaN ||
+        controller.base_levels['bird'] === NaN ||
+        controller.base_levels['deer'] === NaN) {
+        NaNReset = true;
+    }
 }
 
 function returningUserArea(){
@@ -386,28 +544,28 @@ function returningUserSeason(){
     controller.areaSeason = jsonData[key].toString();
     switch(controller.areaSeason){
                 case 'spring':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsSpringNight.slice();
                     } else {
                         controller.usableEvents = badEventsSpringDay.slice();
                     }
                     break;
                 case 'summer':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsSummerNight.slice();
                     } else {
                         controller.usableEvents = badEventsSummerDay.slice();
                     }
                     break;
                 case 'fall':
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsFallNight.slice();
                     } else {
                         controller.usableEvents = badEventsFallDay.slice();
                     }
                     break;
                 case 'winter': 
-                    if(controller.areaLevel % 2 == 0){
+                    if(controller.area_level % 2 == 0){
                         controller.usableEvents = badEventsWinterNight.slice();
                     } else {
                         controller.usableEvents = badEventsWinterDay.slice();
@@ -430,14 +588,40 @@ console.log("returning user party");
     //console.log(myarr[0]);
     //controller.animals.push(myarr[0]);
     if(myarr.length == 0){
-    console.log("no animals in party");
+    //console.log("no animals in party");
     }
     for (var i = 0; i < myarr.length; i++) {
         if(myarr[i].deathTime > Date.now()){
-            console.log("animal added");
+            //console.log("animal added");
             controller.animals.push(myarr[i]);
         } else {
-            console.log("animal removed");
+            //console.log("animal removed");
+        }
+    }
+}
+
+function returningUserEvents(){
+console.log("returning user Events");
+    var id = userID;
+    var key = "eventsBad";
+    var jsonData = JSON.parse(localStorage.getItem(id.toString()));
+    var myarr = jsonData[key.toString()];   
+    console.log(myarr);
+    var eventNames = ["drought", "epidemic", "eruption",
+                      "flash flood", "fog", "frozen lake",
+                      "heat wave", "hunter", "invasive species",
+                      "lightning storm", "low temperatures", "meteor",
+                      "predator", "rain storm", "river", 
+                      "scarce food", "sinkhole", "snowslide",
+                      "snow storm", "tornado", "treefall",
+                      "wildfire"]
+    //console.log(myarr[0]);
+    //controller.animals.push(myarr[0]);
+    for (var i = 0; i < eventNames.length; i++) {
+        var evt = eventNames[i];
+        if(myarr.evt > 0){
+            console.log("Event Added");
+            badEventsObj.evt = myarr.evt;
         }
     }
 }
@@ -485,6 +669,7 @@ function returningPackage(iD) {
     var prevArea = parseInt(getJsonItem(iD, "area"));
     //console.log("previous pSteps = " + prevArea);
     var prevAreaMax = getJsonItem(iD, "areaMax");
+    var prevEventsBad = getJsonItem(iD, "eventsBad");
     var prevTutProg = parseInt(getJsonItem(iD, "tutorialProgress"));
     
     var prevPartySize = parseInt(getJsonItem(iD, "partySize"));
@@ -537,6 +722,12 @@ function returningPackage(iD) {
         package.partyComp.push(controller.animals[i]);
         console.log(controller.animals[i].name + ": " +
                    controller.animals[i].levelUp);
+    }
+    
+    if (prevEventsBad !== undefined) {
+        console.log("Prev Events: " + prevEventsBad);
+    } else if (prevEventsBad === NaN) {
+        console.log("What can't I just get the string?");
     }
     
     jsonFile = JSON.stringify(package);

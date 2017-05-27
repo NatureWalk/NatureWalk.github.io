@@ -33,13 +33,13 @@ function menuSetup() {
     
     var charnum = "Settings".length
     settingsButton.hasTextValue = true;
-    settingsButton.setText(["Settings"], (settingsButton.width / 2) - (6.3 * charnum), 5);
+    settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     settingsButton.update = function () {
             if (this.isPressed) {
-                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (4 * charnum) - 5, 12); 
+                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
-                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (4 * charnum), 7); 
+                settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
             }
     }
 
@@ -50,10 +50,62 @@ function menuSetup() {
     //////////////////////////////////////////////////////////////////////////////////////////
 
     //Master Volume
+    var mVolLabel = new Button();
+    mVolLabel.setSpriteAttributes(110,110,0,0);
+    mVolLabel.hasTextValue = true;
+    mVolLabel.setText(["Master Volume"],0,0)
+    subSettings.pushButton(mVolLabel);
+    
+    var mVolText = new Button();
+    mVolText.setSpriteAttributes(310,110,0,0);
+    mVolText.hasTextValue = true;
+    mVolText.setText([Howler.volume()*10], 0,0);
 
+    mVolText.update = function() {
+    	mVolText.setText([Math.floor(Howler.volume()*10)],0,0);
+    }
+
+    subSettings.buttonArray.push(mVolText);
+
+    var mVolDown = new Button(function() {Howler.volume(Howler.volume()-.1)});
+    mVolDown.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
+    mVolDown.setSpriteAttributes(280,110,25,25);
+    subSettings.buttonArray.push(mVolDown);
+
+    var mVolUp = new Button(function() {Howler.volume(Howler.volume()+.1)});
+    mVolUp.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
+    mVolUp.setSpriteAttributes(340,110,25,25);
+    subSettings.buttonArray.push(mVolUp);
+    
     //Music Volume
+    var musVolLabel = new Button();
+    musVolLabel.setSpriteAttributes(110,140,0,0);
+    musVolLabel.hasTextValue = true;
+    musVolLabel.setText(["Music Volume"],0,0)
+    subSettings.pushButton(musVolLabel);
+    
+    var musVolText = new Button();
+    musVolText.setSpriteAttributes(310,140,0,0);
+    musVolText.hasTextValue = true;
+    musVolText.setText([soundMan.music.volume()*10], 0,0);
 
-    //SFX Volume
+    musVolText.update = function() {
+    	musVolText.setText([Math.floor(soundMan.music.volume()*10)],0,0);
+    }
+
+    subSettings.buttonArray.push(musVolText);
+
+    var musVolDown = new Button(function() {soundMan.music.volume(soundMan.music.volume()-.1)});
+    musVolDown.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
+    musVolDown.setSpriteAttributes(280,140,25,25);
+    subSettings.buttonArray.push(musVolDown);
+
+    var musVolUp = new Button(function() {soundMan.music.volume(soundMan.music.volume()+.1)});
+    musVolUp.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
+    musVolUp.setSpriteAttributes(340,140,25,25);
+    subSettings.buttonArray.push(musVolUp);
+
+    //SFX Volume FUCK
 
     //Click sounds
 
@@ -64,6 +116,55 @@ function menuSetup() {
     //Fitbit legal stuff
 
     //Privacy Policy
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	// Achievements
+	/////////////////////////////////////////////////////////////////////////////////////////
+    function openAchievements() {
+    	screenMan.pop();
+    	screenMan.push(subAchievements);
+    }
+    var achieveButton = new Button(openAchievements)
+    achieveButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
+    achieveButton.setSpriteAttributes(330,60,160,40);
+    var charnum = "Milestones".length
+    achieveButton.hasTextValue = true;
+    achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum), 3);
+
+    achieveButton.update = function () {
+        if (this.isPressed) {
+            achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum) - 5, 6); 
+        } else {
+            achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum), 3); 
+        }
+    }
+
+    gameMenu.buttonArray.push(achieveButton);
+
+    //Display Achievement List in menu screen
+	var achievList = new Button();
+    achievList.setSrc("image_resources/ClearSquare.png");
+	achievList.setSpriteAttributes(0,0,700,700);
+	achievList.fontSize = "10px";
+	achievList.draw = function () {
+		//ctx.fillText("Milestones:", 250, 70);
+		for(var i = 0; i < achievText.length; i++){
+			var X = 70;
+			var Y = 100+60*i;
+			//ctx.font = "10px Arial";
+			ctx.fillText(achievements[i] + ":  " + rewardText[i], X , Y);
+			ctx.fillText(achievText[i], X , Y+20 );
+			if(completed[i] == 1){
+				ctx.moveTo(X,Y+15);
+				ctx.lineTo(X+400,Y+15);
+				ctx.moveTo(X,Y+35);
+				ctx.lineTo(X+400,Y+35);
+				ctx.stroke(); 
+			}
+		}
+	}
+
+	subAchievements.buttonArray.push(achievList);
 	
 	/////////////////////////////////////////////////////////////////////////////////////////
 	// Event History
@@ -77,17 +178,17 @@ function menuSetup() {
 
     var historyButton = new Button(openHistory);
     historyButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    historyButton.setSpriteAttributes(250,60,120,40);
+    historyButton.setSpriteAttributes(215,60,120,40);
     
     var charnum = "History".length
     historyButton.hasTextValue = true;
-    historyButton.setText(["History"], (historyButton.width / 2) - (6.3 * charnum), 5);
+    historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum), 4);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     historyButton.update = function () {
             if (this.isPressed) {
-                historyButton.setText(["History"], (historyButton.width / 2) - (4 * charnum) - 5, 12); 
+                historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
-                historyButton.setText(["History"], (historyButton.width / 2) - (4 * charnum), 7); 
+                historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum), 3); 
             }
     }
 
@@ -104,14 +205,14 @@ function menuSetup() {
 	
 
         
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 20; i++) {
         var historyEntry = new Button();
         historyEntry.setSrc("image_resources/ClearSquare.png");
         historyEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
         subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
-        historyEntry.fontSize = '16px';
+        historyEntry.fontSize = '20px';
 
         (function(i) {
             var testRef = historyAry[i];
@@ -129,7 +230,7 @@ function menuSetup() {
                     if (this.text === undefined) {
             //console.log(this.name);
                     } else {
-                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 16);
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 20);
         }
     }
             }
