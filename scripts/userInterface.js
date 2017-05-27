@@ -21,6 +21,7 @@
 Most of these elements are in a SPECIFIC order to accomodate the code. 
 Something more general would probably be more efficient if we intend to add more animals or animal variations. 
 */
+
 var ui_values = {
     //Capitalized for the sake of displaying, 
     //when using these to acquire data from animal.js, 
@@ -39,6 +40,7 @@ var ui_values = {
                      ("image_resources/Icon_BunnyH.png")],
     
     //For gif animations, though I didn't figure out how to make them do gif things. 
+    /*
     animalStaticAry: [("image_resources/Static_BirdT.png"),
                       ("image_resources/Static_DeerT.png"),
                       ("image_resources/Static_FrogT.png"),
@@ -50,6 +52,18 @@ var ui_values = {
      ("image_resources/Static_DeerT_Hover.png"),
      ("image_resources/Static_FrogT_Hover.png"),
      ("image_resources/Static_BunnyT_Hover.png")],
+     */
+    animalStaticAry: [("image_resources/BirdStill.png"),
+                      ("image_resources/DeerStill.png"),
+                      ("image_resources/FrogStill.png"),
+                      ("image_resources/BunnyStill.png"),
+                      ("image_resources/EventLog.png")],
+    
+    animalStaticHover: 
+    [("image_resources/BirdStillAnim.png"),
+     ("image_resources/DeerStillAnim.png"),
+     ("image_resources/FrogStillAnim.png"),
+     ("image_resources/BunnyStillAnim.png")],
 
     animalWalkAry: [("image_resources/BirdWalk.png"),
                     ("image_resources/DeerWalk100_500x400.png"),
@@ -124,8 +138,8 @@ function buttonSetup() {
 //******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
         console.log("my user id is : " + userID);
         if(userID == undefined){
-         userID = "oiuert";
-         stepCount = 25000;
+         userID = "testing21";
+         stepCount = 70000;
         }
 //**************************************************************************************************
         //logs user data to local storage
@@ -142,6 +156,23 @@ function buttonSetup() {
     login.setText(["Login With Fitbit"],40,20)
     console.log(login.text);
     title.buttonArray.push(login);
+	
+	/////////////////////////////////////////////////
+    //Logout Button
+    /////////////////////////////////////////////////
+    //Opens the menu screen
+    function changeUser() {
+    	//createPackage();
+        //createData(lJson);
+    	//logout();
+    }
+
+    var logoutButton = new Button(changeUser);
+    logoutButton.setSrc("image_resources/user_logout.png","image_resources/ClearSquare.png");
+    logoutButton.setSpriteAttributes(40,120,30,30, "logoutButton");
+    interface.buttonArray.push(logoutButton);
+
+
 
     /////////////////////////////////////////////////
     //Menu Button
@@ -183,7 +214,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     var stepPane = new Button();
     stepPane.setSrc("image_resources/StepPaper.png");
-    stepPane.setSpriteAttributes(156, 35, 100, 50, "stepPane");
+    stepPane.setSpriteAttributes(146, 35, 110, 50, "stepPane");
     stepPane.hasTextValue = true;
     stepPane.fontSize = "20px";
 
@@ -192,15 +223,15 @@ function buttonSetup() {
     stepLogo.setSpriteAttributes(stepPane.x+10, stepPane.y+10, 25, 25, "stepLogo");
     
     //Arbitrary step setup if the player does not have any steps yet. 
-    if (stepCount != undefined) {
-        stepPane.setText([stepCount], (stepPane.width / 2) - 5 * numberLen(stepCount), stepPane.height / 4);
-    }
+    //console.log(stepCount);
+    stepPane.setText([stepCount], 150, stepPane.height / 4);
     
     //Changeing the button's update function to get the step count every frame. 
     stepPane.update = function() {
-        this.updateText([stepCount]);
-        this.textOffsetX = (stepPane.width / 2) - 5.5 * numberLen(stepCount + " Steps")
+        this.updateText([numberConversion(stepCount)]);
+        this.textOffsetX = (stepPane.width / 2) - 3.5 * numberLen(numberConversion(stepCount))
     };
+    
     interface.buttonArray.push(stepPane);
     interface.buttonArray.push(stepLogo);
     /////////////////////////////////////////////////
@@ -289,12 +320,12 @@ function buttonSetup() {
             animalIcon.update = function() {
                 var src; 
                 //var currIndex = ui_values.animalAry.indexOf(ui_values.currentAnimal);
-                if (this.hovered) {
-                    src = ui_values.animalSrcHover
-                } else {
-                    src = ui_values.animalSrcAry
-                }
                 //console.log(i);
+                if(ui_values.selected == 'base' && ui_values.animalAry[i] == ui_values.currentAnimal){
+                	src = ui_values.animalSrcHover;
+                } else {
+                	src = ui_values.animalSrcAry;
+                };
                 this.setSrc(src[i], src[i], false);  
             }
         })(i);
@@ -367,6 +398,9 @@ function buttonSetup() {
         /////////////////////////////////////////////////
         //ATTRIBUTE VALUES
         /////////////////////////////////////////////////
+    	var hoveredBase = false;
+    	var hoveredAnim = false;
+    	
         attNum = new Button(function () {});
         attNum.setSrc("image_resources/ClearSquare.png");
         
@@ -374,22 +408,63 @@ function buttonSetup() {
         
         attNum.hasTextValue = true;
         attNum.fontSize = '22px';
+        attNum.color = ["black"];
         
         (function(i) {
             attNum.update = function() {
                 if (ui_values.selected == "base") {
-                    var stats = (ui_values.currentAnimal).toLowerCase();
-                    var testRef = controller.getBaseData(stats);
+                	if(hoveredBase){
+                		this.color = ["green"];	
+                		var testRef = controller.getBaseLevelUp(ui_values.currentAnimal.toLowerCase());
+                        //console.log(testRef);
+                	}else{
+                		this.color = ["black"];	
+                    	var stats = (ui_values.currentAnimal).toLowerCase();
+                    	var testRef = controller.getBaseData(stats);
+                    };
+                    if(maxBaseHovered){
+                    	this.color = ["green"];
+                    	var testRef = controller.getBaseMaxUpgrade(ui_values.currentAnimal.toLowerCase());
+                    };
+                    //console.log(maxBaseHovered);
                 } else {
-                    var testRef = controller.getAnimalData()[ui_values.partyIndex];
-                    if (testRef == undefined) {
-                        ui_values.selected = "base"
-                        return;
-                    }
-                    if (testRef != undefined) {
-                        testRef.splice(0,1);
-                        testRef.splice(4,1);
-                    }
+                	if(hoveredAnim){
+                		this.color = ["green"];	
+                		var testRef = controller.getAnimalLevelUp()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+                	}else{
+                		this.color = ["red"];	
+                		var testRef = controller.getAnimalData()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+                    };
+                    if(maxAnimalHovered){
+                    	this.color = ["green"];
+                    	
+                    	var testRef = controller.getAnimalMaxUpgrade()[ui_values.partyIndex];
+                    	if (testRef == undefined) {
+                        	ui_values.selected = "base"
+                        	return;
+                    	}
+                    	if (testRef != undefined) {
+                        	testRef.splice(0,1);
+                        	testRef.splice(4,1);
+                    	}
+
+                    };
                     //console.log(testRef)
                 }
                 //Workaround, some event may be more broken
@@ -409,6 +484,7 @@ function buttonSetup() {
     //UPGRADE BUTTON
     /////////////////////////////////////////////////
     var upgradeBtn;
+ 
     upgradeBtn = new Button(function() {
         if (ui_values.selected == "base") {
             //upgrade_baseAnimalMax();
@@ -427,6 +503,16 @@ function buttonSetup() {
     upgradeBtn.setText(["UPGRADE"], (upgradeBtn.width / 2) - (6.3 * charnum), 5);
     //upgradeBtn.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     upgradeBtn.update = function () {
+    //////////////
+    if(this.hovered && ui_values.selected == "base"){
+    	hoveredBase = true;
+    } else if(this.hovered){
+    	hoveredAnim = true;
+    } else {
+    	hoveredBase = false;
+    	hoveredAnim = false;
+    };
+    
         if (ui_values.selected === "base") {
            charnum = "+1 (Base)".length;
             if (this.isPressed) {
@@ -504,11 +590,28 @@ function buttonSetup() {
         
         if (this.hovered) {
             src = ui_values.animalStaticHover;
-            console.log("Hovered");
+            this.setSrc(src[currIndex], src[currIndex], true);
+            switch (currIndex) {
+                case 0:
+                    this.setupAnim(27, 6, 6);
+                    break;
+                case 1:
+                    this.setupAnim(26, 6, 6);
+                    break;
+                case 2:
+                    this.setupAnim(26, 6, 6);
+                    break;
+                case 3:
+                    this.setupAnim(23, 5, 5);
+                    break;
+            }
+            
+            //console.log("Hovered");
         } else {
             src = ui_values.animalStaticAry;
+            this.setSrc(src[currIndex], src[currIndex], false);
         }
-        this.setSrc(src[currIndex], src[currIndex], false);
+        
         
         if (this.anim) {
             this.tickCount++; 
@@ -521,7 +624,7 @@ function buttonSetup() {
         if (ui_values.selected == "base") {
             var name = ui_values.currentAnimal;
             var charNum = numberLen(name);  
-            this.setText([name], -115 - (9 * charNum), -30);
+            this.setText([name], -115 - (25 * charNum), -30);
         } else {
 
             if (controller.animals[ui_values.partyIndex] == undefined) {
@@ -554,15 +657,26 @@ function buttonSetup() {
 
     /////////////////////////////////////////////////
 
+    /////////////////////////////////////////////////
+    //EVENT ANIMATIONS
+    /////////////////////////////////////////////////
+    var eventAnimation = new Button();
+    eventAnimation.setSrc("image_resources/ClearSquare.png");
+    //eventAnimation.setSrc("image_resources/PredatorEvent1s.png", "image_resources/PredatorEvent1s.png", true);
+    eventAnimation.setSpriteAttributes(865, 380, 150, 100, "eventAnimation");
+    
+    //eventAnimation.setupAnim(12, 4, 4);
+    interface.buttonArray.push(eventAnimation); 
+    /////////////////////////////////////////////////
     
     /////////////////////////////////////////////////
     //ANIMAL ANIMATIONS
     /////////////////////////////////////////////////
-    for (i = 0; i < 4; i++) {
+    for (i = 1; i <= 12; i++) {
         var animalAnimation = new Button();
         animalAnimation.setSrc(ui_values.animalWalkAry[i],                              ui_values.animalWalkAry[i], true);
-        animalAnimation.setSpriteAttributes(597 - (20*i), (40*i)+340, 100, 100, "animalAnimation");
-        
+        animalAnimation.setSpriteAttributes(707 + roll(60) - (80*((i-1)%3)), (10*Math.floor(i-1/4))+340, 100, 100, "animalAnimation");
+        /*
         if (i==0) {
             animalAnimation.setupAnim(4, 3, 3);
         } else if (i==1) {
@@ -572,7 +686,9 @@ function buttonSetup() {
         } else if (i==3) {
             animalAnimation.setupAnim(6, 3, 3);
         }
+        */
         (function(i) {
+            /*
             animalAnimation.update = function() { 
                var testRef = controller.getAnimalCount(ui_values.animalAry[i].toLowerCase());
                 if (testRef === 0) {
@@ -589,21 +705,53 @@ function buttonSetup() {
                     }
                 }
             }
+            */
+            animalAnimation.update = function() { 
+                var party_size = controller.getNumAnimals();
+                //console.log("Party Size " + party_size);
+                var animal_select;
+                if (party_size < i || party_size === 0) {
+                    this.setSrc("image_resources/ClearSquare.png", "image_resources/ClearSquare.png", false);
+                } else {
+                    animal_select = controller.animals[i-1];
+                    //console.log(animal_select.type);
+                    switch (animal_select.type) {
+                        case "bird":
+                            this.setSrc(ui_values.animalWalkAry[0],
+                                        ui_values.animalWalkAry[0], true);
+                            this.setupAnim(4, 3, 3);
+                            break;
+                        case "deer":
+                            this.setSrc(ui_values.animalWalkAry[1],
+                                        ui_values.animalWalkAry[1], true);
+                            this.setupAnim(16, 4, 5);
+                            break;
+                        case "frog":
+                            this.setSrc(ui_values.animalWalkAry[2],
+                                        ui_values.animalWalkAry[2], true);
+                            this.setupAnim(21, 5, 5);
+                            break;
+                        case "bunny":
+                            this.setSrc(ui_values.animalWalkAry[3],
+                                        ui_values.animalWalkAry[3], true);
+                            this.setupAnim(6, 3, 3);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if (this.anim) {
+                    this.tickCount++; 
+                    if (this.tickCount > this.ticksPerFrame) {
+                        this.frameIndex++;
+                        if (this.frameIndex > this.frameTotal) {this.frameIndex = 0;}
+                        this.tickCount = 0; 
+                    }
+                }
+            }
         })(i);
         interface.buttonArray.push(animalAnimation); 
     }
-    /////////////////////////////////////////////////
-    
-    /////////////////////////////////////////////////
-    //EVENT ANIMATIONS
-    /////////////////////////////////////////////////
-    var eventAnimation = new Button();
-    eventAnimation.setSrc("image_resources/ClearSquare.png");
-    //eventAnimation.setSrc("image_resources/PredatorEvent1s.png", "image_resources/PredatorEvent1s.png", true);
-    eventAnimation.setSpriteAttributes(865, 380, 150, 100, "eventAnimation");
-    
-    //eventAnimation.setupAnim(12, 4, 4);
-    interface.buttonArray.push(eventAnimation); 
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
@@ -625,7 +773,7 @@ function buttonSetup() {
     areaText.setSrc("image_resources/StepPaper.png");
     areaText.setSpriteAttributes(600, 235, 300, 50, "areaText");
     areaText.hasTextValue = true;
-    areaText.fontSize = '22px';
+    areaText.fontSize = '20px';
     areaText.update = function() {
         var daynight;
         if (controller.getAreaLevel() % 2 == 0) {
@@ -634,7 +782,7 @@ function buttonSetup() {
             daynight = "Day"
         }
         var text = "Area "+controller.getAreaLevel()+" " + toCapitalize(controller.areaSeason+", "+daynight);
-        this.setText([text], (areaText.width / 2) - (5 * text.length), 10);
+        this.setText([text], (areaText.width / 2) - (4.1 * text.length), 10);
         //this.setText(text, (areaText.width / 2) - (5 * text.length), 10);
     }
     interface.buttonArray.push(areaText);
@@ -694,7 +842,7 @@ function buttonSetup() {
     for (i = 0; i < 5; i++) {
         var eventLogEntry = new Button();
         eventLogEntry.setSrc("image_resources/ClearSquare.png");
-        eventLogEntry.setSpriteAttributes(567, (45*i)+55    , 452, 54, "eventLog");
+        eventLogEntry.setSpriteAttributes(567, (40*i)+45, 452, 54, "eventLog");
         interface.buttonArray.push(eventLogEntry);
 
         eventLogEntry.hasTextValue = true;
@@ -757,7 +905,8 @@ function buttonSetup() {
     interface.buttonArray.push(selectedAnimal);
 	//blank animal portraits for bottom left page + displays individual animal levels with portraits
 	var blankPortrait = function(){
-			var partyLimit = 5;
+			var party_limit = controller.party_limit;
+            var party_size = 0;
 			var coordX=500;
 			var coordY=500;
 	};
@@ -766,19 +915,29 @@ function buttonSetup() {
 		
 	};
 	blankPortrait.draw = function(){
-		var levels = [];
+		var party_limit = controller.party_limit;
+        var party_size = 0;
+        var levels = [];
 		
 		for(var i = 0; i < controller.animals.length; i++){
 			var X = 103+(i*60);
 			var Y = 457;
 			levels.push(controller.animals[i].level)
-			ctx.fillText("Lvl", X+10, Y + 40);
-			ctx.fillText(levels[i], X + 10, Y + 55);
+			//ctx.fillText("Lvl", X+10, Y + 40);
+			ctx.font = "14px handlee";
+            ctx.fillStyle="#00ff00";
+			ctx.fillText(levels[i], X + 27, Y + 19);
+            ctx.color = "black"
 		}
-		for (var i = 0; i < 5; i++){
-			this.coordX = 103+(i*60);
-			this.coordY = 457;
-			ctx.strokeRect(this.coordX, this.coordY , 37, 37);
+		for (var i = 0; i < 2; i++){
+            for (var j = 0; j < 6; j++){
+                if (party_size < party_limit){
+                    this.coordX = 103+(j*60);
+                    this.coordY = 457+(i*50);
+                    ctx.strokeRect(this.coordX, this.coordY , 37, 37);
+                    party_size++
+                }
+            }
 		}
 		
 	};
@@ -870,10 +1029,6 @@ function select_animal(animal_index) {
 
     ui_values.partyIndex = animal_index;
     soundMan.click.play();
-    
-    
-    
-    
 }
 
 /* add_animal() - For adding animals to the party. 
@@ -889,7 +1044,7 @@ function add_animal() {
     console.log("party: "+controller.getNumAnimals())
 
     if (status === true){
-        soundMan.click.play()
+        //soundMan.click.play()
         stepCount -= 2000;
         updateParty()
         dataObj.partySize = controller.getNumAnimals()
@@ -904,7 +1059,7 @@ function add_animal() {
         case 'Bunny':
             break;
     }
-    
+    console.log("Tutorial Progress: " + dataObj.tutorialProgress);
     if(dataObj.tutorialProgress == 12){
         startTutorialPartTwo();
     }
@@ -944,14 +1099,20 @@ function updateParty() {
 
 	var animals = controller.animals;
 	var partyIcon = new Button();
-	for (var i = 0; i < animals.length;i++) {
-		var num = aniToNum(animals[i].type);
-		console.log("animal number: "+num)
-		partyIcon = new Button(select_animal,[i]);
-		partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcAry[4]);
-		//@fix: Only does one row
-		partyIcon.setSpriteAttributes((101 + 60*i), (455), 40, 40, "party animal "+i);
-		partyButtons.push(partyIcon);
+	for (var i = 0; i < 2; i++) {
+        for (var j = 0; j < 6; j++) {
+            //console.log(animals[j+(6*i)]);
+            if (animals[j+(6*i)]!==undefined) {
+                //console.log(animals[j+(6*i)]);
+                var num = aniToNum(animals[j+(6*i)].type);
+                //console.log("animal number: "+num)
+                partyIcon = new Button(select_animal,[j+(6*i)]);
+                partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcHover[num]);
+                //@fix: Only does one row
+                partyIcon.setSpriteAttributes((101 + (60*j)), (455 + 50*i), 40, 40, "party animal "+i);
+                partyButtons.push(partyIcon); 
+            }
+        }
     }
 
     console.log(partyButtons);
@@ -1026,6 +1187,57 @@ function upgrade_animalMax() {
     }
     soundMan.up1.play();
 }
+
+function getMaxAnimalLevel() {
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    console.log("level " + level);
+    var tracks = dataObj.animalTracks;
+    console.log("tracks " + tracks);
+    while (tracks - (level* 2.75 * 500) > 0) {
+        tracks -= (level* 2.75 * 500);
+        level++;  
+    }
+    return level;
+}
+
+function getMaxAnimalCost() {
+	var prevTracks = dataObj.animalTracks;
+    var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    var tracks = prevTracks;
+    while (tracks - (level* 2.75 * 500) > 0) {
+        tracks -= (level* 2.75 * 500);
+        level++;  
+    }
+    return prevTracks - tracks;
+}
+
+function getSelectedMaxLevel() {
+    var level = controller.animals[ui_values.partyIndex].level;
+    var tracks = dataObj.animalTracks;
+    while (tracks - (level* 1.75 * 100) > 0) {
+        tracks -= (level* 1.75 * 100);
+        //controller.levelUpAnimal(ui_values.partyIndex);
+        level++;
+        //soundMan.up1.play();
+    }
+    return level;
+}
+
+function getSelectedMaxCost() {
+	var cost = 0;
+    var level = controller.animals[ui_values.partyIndex].level;
+    var tracks = dataObj.animalTracks;
+    while (tracks - (level* 1.75 * 100) > 0) {
+        tracks -= (level* 1.75 * 100);
+        cost += (level* 1.75 * 100);
+        //controller.levelUpAnimal(ui_values.partyIndex);
+        level++;
+        //soundMan.up1.play();
+    }
+    return cost;
+}
+
+
 
 //Get the animal number from the animal type
 function aniToNum(animal) {

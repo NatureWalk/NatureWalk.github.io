@@ -70,6 +70,11 @@ var badEventsObj = {
     wildfire: 0, 
 }
 
+var offlinePopupObj = {
+    events: [],
+    deaths: []
+}
+
 //Object for keeping track of the game state. Best for storing game loop data. 
 var gameState = {
     animalStats: ["Level", "Speed", "Evasion", "Strength"],
@@ -80,6 +85,7 @@ var gameState = {
     eventDisplayTimer: 0,
     everySecondTrig: 0,
     newToFitbit: false,
+    offlinePopup: true,
     sessionStartTime: 0,
     sprint: false,
     timeAccelFactor: 1,
@@ -209,6 +215,18 @@ function everySecond(seconds) {
     if (--gameState.eventDisplayTimer === 0) {
         displayEvent();
     }
+    
+    dataObj.areaMax = maxArea();
+    //console.log("Max Area: " + dataObj.areaMax);
+    var partySizeLimit = Math.floor(dataObj.areaMax / 25);
+    if (partySizeLimit > 7) {
+        partySizeLimit = 7 
+    }
+    for (var i = 0; i < partySizeLimit; i++) {
+        if (controller.party_limit <= 12) {
+            controller.partySizeUp();
+        }
+    }
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
@@ -217,15 +235,22 @@ function everySecond(seconds) {
             gameState.eventTrigger--;
             if (gameState.sprint) {
                 callSprint(gameState.newToFitbit);
-                gateState.sprint = false;
+                gameState.sprint = false;
+                gameState.offlinePopup = false;
             }
+            if (gameState.offlinePopup) {
+                callOfflinePopup();
+                gameState.offlinePopup = false;
+            }
+        } else {
+            
         }
     } else {
         var evtRoll = roll(100);
         ++gameState.eventCounter;
         //DEBUG: console.log("Event "+dataObj.eventCounter);
         eventChooser(evtRoll);
-        gameState.eventTrigger = 1;
+        gameState.eventTrigger = roll(5) + 12;
     }
     if (controller.animals.length != dataObj.partySize) {
         updateParty();
@@ -234,8 +259,25 @@ function everySecond(seconds) {
     
     if(firstTimeUserFlag == true){
         firstTimeUserFlag = false;
-        startTutorial();
+        if (dataObj.tutorialProgress <= 12) {
+            console.log("Tutorial Reset");
+            dataObj.tutorialProgress = 0;
+            startTutorial();
+        } else if (dataObj.tutorialProgress <= 20) {
+            dataObj.tutorialProgress = 12;
+            startTutorialPartTwo();
+        } else if (dataObj.tutorialProgress <= 32) {
+            dataObj.tutorialProgress = 20;
+            startTutorialPartThree();
+        } else if (dataObj.tutorialProgress <= 36) {
+            dataObj.tutorialProgress = 32;
+            startTutorialPartFour();
+        }
     }
+    if(loggedIn == true){
+        createPackage();
+        createData(lJson);
+    };
 }
 
 //Function that is called every thirty seconds. 
@@ -243,27 +285,8 @@ function everyThirty(seconds) {
     //DEBUG: console.log("tracks = " + tracks);
     //eventLogAry.shift();
     //dataObj.animalTracks += tracks;
-    if(loggedIn == true){
-        createPackage();
-        createData(lJson);
-    };
-    
-    if (dataObj.tutorialProgress >= 36) {
-        if (gameState.sprint) {
-            callSprint(gameState.newToFitbit);
-            gateState.sprint = false;
-        }
-    }
-    dataObj.areaMax = maxArea();
-    console.log(dataObj.areaMax);
-    var partySizeLimit = Math.floor(dataObj.areaMax / 25);
-    if (partySizeLimit > 4) {
-        partySizeLimit = 4 
-    }
-    for (var i = 0; i < partySizeLimit; i++) {
-        controller.partySizeUp();
-    }
-
+    console.log("Official Offline: " + offlinePopupObj.offlineTracks);
+    console.log("Official Offline Events: " + offlinePopupObj.events);
 }
 
 function everyMinute(minutes) {
@@ -347,7 +370,7 @@ function createPackage() {
     
     //Creating the json string for storage. 
     jsonFile = JSON.stringify(package);
-    
+    //console.log(jsonFile);
     //Copying the string to a global variable. 
     lJson = jsonFile;
 }
@@ -410,7 +433,7 @@ function roll(num, basenum) {
 	if(basenum != null){
 		return Math.floor(Math.random()*num) + basenum;
 	}else {
-    	return Math.round(Math.random()*num);
+    	return Math.floor(Math.random()*num);
 	}
 }
 /* sessonEnd() - Called when the window is closed (unfinished). Used to take data from dataObj{} and store it on server/local storage.
@@ -419,10 +442,8 @@ function roll(num, basenum) {
 */
 function sessionEnd() {
     this.timePlayed += getTime();
-    console.log("Time Played: " + dataObj["timePlayed"]);
-    //updateData(playerID, "timePlayed", dataObj["timePlayed"]);
-    console.log("Time Played: " + dataObj["timePlayed"]);
     //return "Are you sure?";
+    createPackage();
 }
 
 

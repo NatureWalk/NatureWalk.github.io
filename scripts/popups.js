@@ -1,4 +1,5 @@
-
+    	var maxBaseHovered = false;
+    	var maxAnimalHovered = false;
 //Creates a popup with default background.
 function addPopup(text,x,y,cutout,name="popup") {
 	var button = new Button(function() {
@@ -12,11 +13,11 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 2):
-               addPopup("Here on the left\npage, you can\ncall animals to explore\nthe world.",150, 90,[0,0,514,600]);
+               addPopup("Here on the left\npage, you can\ncall animals to explore\nthe world.",150, 90,[20,10,494,580]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 3):
-               addPopup("On the right\npage, you can\nsee your animals as\nthey explore.",700, 90,[514,0,514,600]);
+               addPopup("On the right\npage, you can\nsee your animals as\nthey explore.",700, 90,[514,10,494,580]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 4):
@@ -24,19 +25,19 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 5):
-               addPopup("These are your Steps.\nYou get these by walking\naround with your Fitbit\nand are used to call animals.",71, 90, [71,25,160,60]);
+               addPopup("These are your Steps.\nYou get these by walking\naround with your Fitbit\nand are used to call animals.",71, 90, [143,25,113,60]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 6):
-               addPopup("These are your Tracks.\nYour animals make these\nas they explore. You will\nuse tracks to upgrade\nyour animals.",240, 90, [225,25,252,57]);
+               addPopup("These are your Tracks.\nYour animals make these\nas they explore. You will\nuse tracks to upgrade\nyour animals.",240, 90, [282,27,175,55]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 7):
-               addPopup("There are four different\nanimal types you can\ncall to travel the world.",150, 200, [50,85,410,105]);
+               addPopup("There are four different\nanimal types you can\ncall to travel the world.",150, 200, [79,85,385,105]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 8):
-               addPopup("Each has their own\nstrengths and\nweaknesses.",150, 200, [50,85,410,105]);
+               addPopup("Each has their own\nstrengths and\nweaknesses.",150, 200, [79,85,385,105]);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 9):
@@ -68,7 +69,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 17):
-               addPopup("Failing these challenges \ncould slow down, or even \nkill your animals, so try \nand keep them healthy.",250, 300);
+               addPopup("Failing these challenges \ncould slow down, or even \nkill your animals, so level\nthem up when you can.",250, 300);
                dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 18):
@@ -146,11 +147,13 @@ function addPopup(text,x,y,cutout,name="popup") {
         }
 		removePopup(this);
 	});
+    console.log("Button Created");
 	button.setSrc("image_resources/Tooltip.png");
 	button.setSpriteAttributes(x,y,228,150, name)
 	button.hasTextValue = true;
 	button.fontSize = '20px';
 	charnum = text.length;
+    console.log("Button Created: " + button.x + " " + button.onMouseUpImageSrc);
 	button.setText([text], (button.width / 2) - (6.3 * charnum), 5);
     button.cutout = function (ary) {
         //console.log(ary);
@@ -214,9 +217,9 @@ function removePopup(popup) {
 
 
 function startTutorial() {
-    addPopup("Welcome to Nature Walk!\n\nClick on \fthese notecards\f\nto move on.",100, 40);
+    console.log("Tutorial Start");
+    addPopup("Welcome to Nature Walk!\n\nClick on these notecards\nto move on.",100, 40);
 	screenMan.push(popups);
-	
 }
 
 function startTutorialPartTwo(){
@@ -232,7 +235,7 @@ function startTutorialPartThree(){
 }
 
 function startTutorialPartFour(){
-    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",700, 300, [728,238,22,38]);
+    addPopup("When your area goes up\nyour animals get more\ntracks, but the challenge\nwill also increase.",680, 300, [708,238,22,38]);
     dataObj.tutorialProgress++;
     areaPrev.update();
     screenMan.push(popups);
@@ -243,17 +246,23 @@ function callSprint(newFitbit) {
     var sprintPopup = new Button(function() {
         removeInterface(this);
     });
+    newFitBit = true;
     if (newFitbit) {
         text = "This is a brand new Fitbit that has never been" +
                " used before, let's give you a cool multiplier" +
                " so you can get a lot of steps!"
+        dataObj.stepMultiplier = 2;
     } else {
         text = "You seem to already have some steps on your" +
                " Fitbit from before, let's pull some of those" +
                " steps in so you can use them right away!"
+        console.log(fitbitSteps);
+        stepCount += fitbitSteps/10;
+        dataObj.totalSteps += fitbitSteps/10;
+        dataObj.steps += fitbitSteps/10;
     } 
     sprintPopup.setSrc("image_resources/Tooltip.png");
-	sprintPopup.setSpriteAttributes(225,225,450,150, "sprintPopup");
+	sprintPopup.setSpriteAttributes(325,225,450,150, "sprintPopup");
     
 	sprintPopup.hasTextValue = true;
 	sprintPopup.fontSize = '20px';
@@ -262,13 +271,66 @@ function callSprint(newFitbit) {
 	sprintPopup.setText([text], 5, 5);
     console.log(sprintPopup.text);
     sprintPopup.draw = function() {
+        ctx.globalAlpha = 0.3;
+	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+	    ctx.globalAlpha = 1.0;
+        
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 450, 25);
     }
     pushInterface(sprintPopup)
     gameState.newToFitbit = false;
     gameState.sprint = false; 
-    dataObj.stepMultiplier = 2;
+    //dataObj.stepMultiplier = 2;
+}
+
+function callOfflinePopup() {
+    var text;
+    var offlineDistance = dataObj.totalSteps*0.000568182;
+    var offlinePopup = new Button(function() {
+        removeInterface(this);
+    });
+    text = "Welcome back! You have walked a total of " + offlineDistance.toFixed(3) + " miles since starting your nature walk. Your animals collected " + Math.floor(offlinePopupObj.offlineTracks) + " tracks" 
+    if (offlinePopupObj.events.length > 0) {
+        text += " while facing ";
+    } else {
+        text += ".";
+    }
+    
+    for (var i = 0; i < offlinePopupObj.events.length; i++) {
+        if (offlinePopupObj.events[i] !== 0) {
+            text += offlinePopupObj.events[i]
+            if (i === offlinePopupObj.events.length - 2) {
+                text += " and ";
+            } else if (i < offlinePopupObj.events.length - 2) {
+                text += "s, ";
+            } else {
+                text += "s! ";
+            }   
+        }
+        
+    }
+    
+    console.log(text);
+    offlinePopup.setSrc("image_resources/Tooltip.png");
+	offlinePopup.setSpriteAttributes(325,225,450,150, "sprintPopup");
+    
+	offlinePopup.hasTextValue = true;
+	offlinePopup.fontSize = '20px';
+	charnum = text.length;
+    
+	offlinePopup.setText([text], 5, 5);
+    console.log(offlinePopup.text);
+    offlinePopup.draw = function() {
+        ctx.globalAlpha = 0.3;
+	    ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+	    ctx.globalAlpha = 1.0;
+        
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 450, 25);
+    }
+    pushInterface(offlinePopup) 
+    //dataObj.stepMultiplier = 2;
 }
 
 /////////////////
@@ -289,9 +351,9 @@ popupController.prototype.contains = function(popup) {
         }
     }
 }
-/////////////////
-
-//Button that appears when player has enough tracks to do multiple upgrades
+	/////////////////////////////////////////////////////////////////////////////////////
+	//MAX BUTTON
+	////////////Button that appears when player has enough tracks to do multiple upgrades
 var fullUpgrade = new Button(function() {
     console.log("pushed");
     if (ui_values.selected == "base") {
@@ -310,7 +372,54 @@ fullUpgrade.hasTextValue = true;
 fullUpgrade.fontSize = '20px';
 charnum = "MAX".length;
 fullUpgrade.setText(["MAX"], (fullUpgrade.width / 2) - (6.3 * charnum), 5);
+fullUpgrade.update = function(){
+	//console.log("max available");
+	if(this.hovered && ui_values.selected == "base"){
+    	maxBaseHovered = true;
+    } else if(this.hovered){
+    	maxAnimalHovered = true;
+    } else {
+    	maxBaseHovered = false;
+    	maxAnimalHovered = false;
+    };
+};
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	
+    //////////////////////////////////////////////////////////////////////////////////////
+    //MAX COST
+    //////////////////////////////////////////////////////////////////////////////////////
+    var maxCost;
+    maxCost = new Button(function() {});
+    maxCost.setSrc("image_resources/StepPaper.png");
 
+    maxCost.setSpriteAttributes(186, 360, 65, 40, "upgradeCost");
+
+    maxCost.hasTextValue = true;
+    maxCost.fontSize = '20px';
+    maxCost.color = ['blue'];
+
+
+    maxCost.update = function() {
+        if (ui_values.selected == "base") {
+        	var displayNum = numberConversion(getMaxAnimalCost());
+            maxCost.setText([displayNum], (maxCost.width / 2) - (4 * displayNum.length), 5);
+
+        } else {
+            if (controller.animals[ui_values.partyIndex] == undefined) {
+                ui_values.selected = "base";
+                return;
+            }
+            //console.log(getSelectedMaxLevel());
+            var displayNum = numberConversion(getSelectedMaxCost());
+            maxCost.setText([displayNum], (maxCost.width / 2) - (4 * displayNum.length), 5);
+        }
+
+        
+    };
+	/////////////////////////////////////////////////////////////////////////////////////
+	
+	
 function p_maxUpgrade() {
 	var threshold;
 	if (ui_values.selected == "base") {
@@ -323,8 +432,12 @@ function p_maxUpgrade() {
 	if (dataObj.animalTracks - ((level * threshold) + (level+1)*threshold) > 0) {
 		if (interface.contains(fullUpgrade)) return;
 		pushInterface(fullUpgrade);
+		pushInterface(maxCost);
 	} else {
 		removeInterface(fullUpgrade);
+		removeInterface(maxCost);
+		maxBaseHovered = false;
+    	maxAnimalHovered = false;
 	}
 }
 

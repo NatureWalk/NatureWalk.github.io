@@ -273,6 +273,10 @@ Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
 Button.prototype.update = function () {
     //Vertical frame advancement (wrapping)
     //Stopping and repeating
+    if (this.randomFrameStart) {
+        this.frameIndex = roll(this.frameTotal);
+        this.randomFrameStart = false;
+    }
     if (this.anim) {
         this.tickCount++; 
         if (this.tickCount > this.ticksPerFrame) {
@@ -330,6 +334,7 @@ Button.prototype.setupAnim = function (frameCount, rows, cols) {
     this.frameTotal = frameCount;
     this.srcRows = rows;
     this.srcCols = cols;
+    //this.randomFrameStart = true;
 }
 Button.prototype.setText = setText;
 Button.prototype.updateText = updateText;

@@ -5,19 +5,29 @@ var player = {
 	lvlrewards : [true, false, false ,false, false, false, false ,false, false, false, false]
 };
 
+var pageNumber = 1;
+
 var achievements = [
-	"Mile High Club", "Animal Pack", "Upgrade Galore", "Novice Explorer",
-	"Intermediate Explorer", "Expert Explorer" , "Unlucky Year"
+	"Mile High Club:", "Animal Pack:", "Upgrade Galore:", "Novice Explorer:",
+	"Intermediate Explorer:", "Expert Explorer:" , "Unlucky Year:", "Young Hiker:",
+	"Trail Blazer:", "Mountain Climber:", "","","",""
 ];
 
 var achievText = [
 	"Gain 10000 tracks",
-	"Spawn 5 of the animal in the same party",
-	"Upgrade the base level of a animal 10 times",
+    "Call 5 of the same animal to your party",
+	"Upgrade the base level of an animal 10 times",
 	"Get to area 10",
 	"Get to area 30",
 	"Get to area 70",
-	"Lose 10 animals in one session"
+	"Lose 10 animals in one session",
+	"Gain 20000 steps",
+	"Gain 50000 steps",
+	"Gain 100000 steps",
+	"",
+	"",
+	"",
+	"",
 ];
 
 var rewardText = [
@@ -27,10 +37,17 @@ var rewardText = [
 	"+2500 Tracks",
 	"+10000 Tracks",
 	"+30000 Tracks",
-	"+5000 Tracks"
+	"+5000 Tracks",
+	"+2500 Tracks",
+	"+5000 Tracks",
+	"+10000 Tracks",
+	"",
+	"",
+	"",
+	"",
 ];
 //achievement list, prereq is when the pre-req for achievement is done, completed is when the achievement is done implementing
-var prereq = [0,0,0,0,0,0,0];
+var prereq = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 prereq['milehigh'] = false;
 prereq['animalpack'] = false;
 prereq['upgradegalore'] = false;
@@ -38,8 +55,11 @@ prereq['novice'] = false;
 prereq['intermediate'] = false;
 prereq['expert'] = false;
 prereq['unlucky'] = false;
+prereq['hiker'] = false;
+prereq['blazer'] = false;
+prereq['climber'] = false;
 
-var completed = [0,0,0,0,0,0,0];
+var completed = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 completed['milehigh'] = false;
 completed['animalpack'] = false;
 completed['upgradegalore'] = false;
@@ -47,6 +67,9 @@ completed['novice'] = false;
 completed['intermediate'] = false;
 completed['expert'] = false;
 completed['unlucky'] = false;
+completed['hiker'] = false;
+completed['blazer'] = false;
+completed['climber'] = false;
 
 //tracks the prereqs of the achievments
 function achievTracker(){
@@ -83,6 +106,15 @@ function achievTracker(){
 	
 	//unlucky year: player loses a total of 10 or more animals
 	if(dataObj.animalsDied >= 10) prereq['unlucky'] = true;
+	
+	// young hiker: get 20000 step total
+	if(dataObj.steps >= 20000) prereq['hiker'] = true;
+	
+	// trail blazer: get 50000 step total
+	if(dataObj.steps >= 50000) prereq['blazer'] = true;
+	
+	// mountain climber get 100000 step total
+	if(dataObj.steps >= 100000) prereq['climber'] = true;
 }
 
 //Tracks player Level and player level rewards
@@ -168,6 +200,25 @@ function updateLog(){
 			console.log("Unlucky Year achievement Success! Gained 100 xp!");
 			console.log("Player total XP is now : " + player.playerXP);
 			//console.log("Player Level is now : " + player.playerLevel);
+		}
+		
+		if( prereq['hiker'] == true && completed['hiker'] == false){
+			completed['hiker'] = true;
+			completed[7] = 1;
+			dataObj.animalTracks += 2500;
+			console.log("young hiker achievement Success! Gained 100 xp!");
+		}
+		if( prereq['blazer'] == true && completed['blazer'] == false){
+			completed['blazer'] = true;
+			completed[8] = 1;
+			dataObj.animalTracks += 5000;
+			console.log("trail blazer achievement Success! Gained 100 xp!");
+		}
+		if( prereq['climber'] == true && completed['climber'] == false){
+			completed['climber'] = true;
+			completed[9] = 1;
+			dataObj.animalTracks += 10000;
+			console.log("mountain climber achievement Success! Gained 100 xp!");
 		}
 
 }
