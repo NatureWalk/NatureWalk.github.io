@@ -16,7 +16,7 @@ function menuSetup() {
 
 	var menuButton = new Button(closeMenu);
     menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
-    menuButton.setSpriteAttributes(40,80,30,30, "menuButton_close");
+    menuButton.setSpriteAttributes(30,70,50,50, "menuButton_close");
     gameMenu.buttonArray.push(menuButton);
 
 	/////////////////////////////////////////////////
@@ -29,16 +29,18 @@ function menuSetup() {
 
     var settingsButton = new Button(openSettings);
     settingsButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    settingsButton.setSpriteAttributes(100,60,120,40);
+    settingsButton.setSpriteAttributes(100,60,120,40,"settings");
     
     var charnum = "Settings".length
     settingsButton.hasTextValue = true;
     settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     settingsButton.update = function () {
+            //console.log(gameMenu.buttonArray[1].text);
             if (this.isPressed) {
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
+                //console.log(this.text);
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
             }
     }
@@ -112,6 +114,66 @@ function menuSetup() {
     //Event sounds
 
     //Save features (download etc)?
+    //Clear Data
+    var clearData = new Button(function () {
+        //closeMenu();
+        var tooltip = new Button();
+        var text = "Warning: Confirming this action will completely erase all of game data, including animal levels, and your record of total steps travelled (This has no effect on your actual Fitbit statistics)." 
+        tooltip.setSrc("image_resources/Tooltip.png", "image_resources/Tooltip.png");
+        tooltip.setSpriteAttributes(300, 225, 400, 200, "ToolTip");
+        tooltip.hasTextValue = true;
+        tooltip.fontSize = '20px';
+        charnum = text.length;
+
+        tooltip.setText([text], 5, 5);
+        //console.log(offlinePopup.text);
+        tooltip.draw = function() {
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+            ctx.globalAlpha = 1.0;
+
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 25);
+        }
+        var confirm = new Button();
+        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        confirm.setSpriteAttributes(310, 325, 100, 50, "Confirm");
+        
+        //Send reference to all elements on the confirmation note.
+        var cancel = new Button(function () {
+            //console.log("PRessed");
+            //subSettings.buttonArray.pop();
+            //subSettings.buttonArray.pop();
+            screenMan.pop();
+            //gameMenu.buttonArray[1]                              .setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
+        });
+        cancel.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        cancel.setSpriteAttributes(460, 325, 100, 50, "ClearData");
+        
+        clearDataScreen.buttonArray.push(tooltip);
+        clearDataScreen.buttonArray.push(confirm);
+        clearDataScreen.buttonArray.push(cancel);
+        
+        console.log(clearDataScreen.buttonArray);
+        
+        screenMan.push(clearDataScreen);
+             
+    });
+    clearData.setSpriteAttributes(110,170,150,40);
+    clearData.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+    clearData.hasTextValue = true;
+    //clearData.setText(["Clear Data"],30,3);
+    clearData.update = function () {
+        //console.log(this.image.src);
+        //console.log(this.image.src);
+        if (this.isPressed) {
+            console.log("Pressed");
+            clearData.setText(["Clear Data"],25,8);
+        } else {
+            clearData.setText(["Clear Data"],30,3);
+        }
+    }
+    subSettings.pushButton(clearData);
 
     //Fitbit legal stuff
 

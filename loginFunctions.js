@@ -75,12 +75,6 @@ function createData(localJson){
 }
 
 
-//delete a key and its value from local storage
-function clearUser(myKey){
-	localStorage.removeItem(myKey);
-}
-
-
 //adjusts stepCount if a first time user has over 20000 steps
 function firstTimeUserSteps(){
     dataObj.steps = 2000;
@@ -474,6 +468,7 @@ function returningUserTracks(){
 // Event history stuff
 
 function deathHistory(){
+	console.log("death history");
 	if(deathNum > 0){
 		var printText = "";
 		if(deathNum == 1){
@@ -495,12 +490,17 @@ function deathHistory(){
 }
 
 function tripHistory(){
+	console.log("trip history");
 	if(tripNum > 0){
 		var printText = "";
 		if(tripNum == 1){
 			//eventLogAry.push(deadArr[0] + " unfortunately died.");
-			printText = tripArr[0] + " tripped and lost some tracks.";
-		}else if(tripNum == 2){
+			//printText = tripArr[0] + " tripped and lost some tracks.";
+			printText = "Your animals tripped and lost some tracks 1 time."
+		}else if(tripNum > 1){
+			printText = "Your animals tripped and lost some tracks " + tripNum + " times."
+		}
+		/*}else if(tripNum == 2){
 			//eventLogAry.push(deadArr[0] + "and " + dedArr[2] + " unfortunately died.");
 			printText = tripArr[0] + " and " + tripArr[1] + " tripped and lost some tracks.";
 		}else if(tripNum > 2){
@@ -508,7 +508,7 @@ function tripHistory(){
 				printText = printText.concat(tripArr[i], ", ");
 			}
 			printText = printText.concat("and ", tripArr[deathArr.length-1], " tripped and lost some tracks.");
-		}
+		}*/
 		historyAry.push(printText);
 	}
 	tripNum = 0;

@@ -264,12 +264,12 @@ Button.prototype.changeFunc = function(_function, _params) {
 }
 Button.prototype.constructor = Button;
 Button.prototype.setSpriteAttributes = setSpriteAttributes;
-Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
+/*Button.prototype.setSrc = function(srcPrimary, srcSecondary) {
     this.image = new Image();
     this.image.src = srcPrimary;
     this.onMouseUpImageSrc = srcPrimary;
     this.onMouseDownImageSrc = srcSecondary;
-}
+}*/
 Button.prototype.update = function () {
     //Vertical frame advancement (wrapping)
     //Stopping and repeating

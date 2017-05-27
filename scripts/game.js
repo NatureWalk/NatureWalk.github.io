@@ -38,11 +38,13 @@ var popups = new Screen(false, true);
 var gameMenu = new Screen(true, true);
 
 //Submenus
-var subSettings = new Screen(false, false);
+var subSettings = new Screen(true, true);
 
 var subHistory = new Screen(false, false);
 
 var subAchievements = new Screen(false, false);
+
+var clearDataScreen = new Screen(false, true);
 
 
 var pcontroller_i = new popupController();
@@ -154,7 +156,9 @@ gameMenu.init = function() {
     subSettings.displayButtons();
     subHistory.displayButtons();
     subAchievements.displayButtons();
+    clearDataScreen.displayButtons();
 }
+
 
 game.init = function() {	
 	background.setSrc("image_resources/bookBackground.png");
