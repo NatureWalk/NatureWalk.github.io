@@ -115,8 +115,17 @@ function menuSetup() {
 
     //Save features (download etc)?
     //Clear Data
+    
+    var confirm = new Button();
+        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        confirm.setSpriteAttributes(210, 170, 100, 40, "Confirm");
+        confirm.update = function() {
+            console.log("Updating: Confirm");
+        }
+        
     var clearData = new Button(function () {
         //closeMenu();
+        /*
         var tooltip = new Button();
         var text = "Warning: Confirming this action will completely erase all of game data, including animal levels, and your record of total steps travelled (This has no effect on your actual Fitbit statistics)." 
         tooltip.setSrc("image_resources/Tooltip.png", "image_resources/Tooltip.png");
@@ -157,7 +166,10 @@ function menuSetup() {
         console.log(clearDataScreen.buttonArray);
         
         screenMan.push(clearDataScreen);
-             
+        */
+        subSettings.buttonArray.push(confirm);
+        console.log(subSettings.displayButtons);
+        subSettings.displayButtons();
     });
     clearData.setSpriteAttributes(110,170,150,40);
     clearData.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
@@ -173,7 +185,7 @@ function menuSetup() {
             clearData.setText(["Clear Data"],30,3);
         }
     }
-    subSettings.pushButton(clearData);
+    subSettings.buttonArray.push(clearData);
 
     //Fitbit legal stuff
 

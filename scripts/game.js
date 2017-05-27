@@ -38,7 +38,7 @@ var popups = new Screen(false, true);
 var gameMenu = new Screen(true, true);
 
 //Submenus
-var subSettings = new Screen(true, true);
+var subSettings = new Screen(false, false);
 
 var subHistory = new Screen(false, false);
 
