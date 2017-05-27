@@ -264,14 +264,15 @@ function menuSetup() {
 	
 
         
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 20; i++) {
         var historyEntry = new Button();
         historyEntry.setSrc("image_resources/ClearSquare.png");
         historyEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
-        subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
         historyEntry.fontSize = '20px';
+
+        subHistory.buttonArray.push(historyEntry);
 
         (function(i) {
             var testRef = historyAry[i];
