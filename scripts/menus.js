@@ -150,10 +150,13 @@ function menuSetup() {
         cancel.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
         cancel.setSpriteAttributes(460, 325, 100, 50, "ClearData");
         
-        screenMan.push(clearDataScreen);
         clearDataScreen.buttonArray.push(tooltip);
         clearDataScreen.buttonArray.push(confirm);
         clearDataScreen.buttonArray.push(cancel);
+        
+        console.log(clearDataScreen.buttonArray);
+        
+        screenMan.push(clearDataScreen);
              
     });
     clearData.setSpriteAttributes(110,170,150,40);
