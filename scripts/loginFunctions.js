@@ -38,6 +38,7 @@ function loginPlayer(){
         createData(initPackage());
         firstTimeUserFlag = true;
         gameState.sprint = true;
+        soundMan.music.play()
     } else { 
         console.log("returning player");
         returningUserSteps();
@@ -53,6 +54,11 @@ function loginPlayer(){
             if (dataObj.tutorialProgress < 36) {
                 firstTimeUserFlag = true;
             }
+            soundMan.music.seek(Math.floor(Math.random()*(1080-120)+120));
+            soundMan.music.play()
+            soundMan.music.fade(0,.6)
+            soundMan.music.volume(.6)
+            console.log("Playing music.")
         }
         
         

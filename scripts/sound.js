@@ -7,6 +7,7 @@ var soundManager = function() {
 	this.muted = false
 	this.music = new Howl({
 	  src: ['sounds/musicV1.mp3'],
+	  volume: 0.6,
 	  buffer: true,
 	  loop: true,
 	  //onend: function() {volume = 0.1}
@@ -21,7 +22,19 @@ var soundManager = function() {
 	this.up1 = new Howl({
 		src: ['sounds/up1.wav'],
 		volume: 0.1,
-		buffer:true
+		buffer: true
+	})
+
+	this.bird = new Howl({
+		src: ['sounds/addBird.wav'],
+		volume: 0.5,
+		buffer: true
+	})
+
+	this.frog = new Howl({
+		src: ['sounds/addFrog.wav'],
+		volume: 0.5,
+		buffer: true
 	})
 }
 

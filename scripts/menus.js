@@ -66,7 +66,7 @@ function menuSetup() {
     mVolText.setText([Howler.volume()*10], 0,0);
 
     mVolText.update = function() {
-    	mVolText.setText([Math.floor(Howler.volume()*10)],0,0);
+    	mVolText.setText([Math.round(Howler.volume()*10)],0,0);
     }
 
     subSettings.buttonArray.push(mVolText);
@@ -94,7 +94,8 @@ function menuSetup() {
     musVolText.setText([soundMan.music.volume()*10], 0,0);
 
     musVolText.update = function() {
-    	musVolText.setText([Math.floor(soundMan.music.volume()*10)],0,0);
+        console.log(soundMan.music.volume()*10)
+    	musVolText.setText([Math.round(soundMan.music.volume()*10)],0,0);
     }
 
     subSettings.buttonArray.push(musVolText);
