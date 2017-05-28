@@ -12,6 +12,7 @@ function menuSetup() {
 	function closeMenu() {
 		screenMan.pop();
 		screenMan.pop();
+        soundMan.click.play();
 	}
 
 	var menuButton = new Button(closeMenu);
@@ -25,6 +26,7 @@ function menuSetup() {
     function openSettings() {
     	screenMan.pop()
     	screenMan.push(subSettings);
+        soundMan.click.play();
     }
 
     var settingsButton = new Button(openSettings);
@@ -197,6 +199,7 @@ function menuSetup() {
     function openAchievements() {
     	screenMan.pop();
     	screenMan.push(subAchievements);
+        soundMan.click.play();
     }
     var achieveButton = new Button(openAchievements)
     achieveButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
@@ -248,6 +251,7 @@ function menuSetup() {
 	function openHistory() {
 		screenMan.pop()
     	screenMan.push(subHistory);
+        soundMan.click.play();
     }
 
     var historyButton = new Button(openHistory);

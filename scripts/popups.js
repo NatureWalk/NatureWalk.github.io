@@ -213,6 +213,7 @@ function pushPopup(popup) {
 function removePopup(popup) {
 	popups.remove(popup);
 	popups.removeButton(popup);
+  soundMan.click.play();
 }
 
 

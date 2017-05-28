@@ -147,6 +147,7 @@ function buttonSetup() {
         logIn();
         screenMan.push(game);
         screenMan.push(interface);
+        //soundMan.click.play();
     }
 
     var login = new Button(loadGame);
@@ -181,6 +182,7 @@ function buttonSetup() {
     function openMenu() {
         screenMan.push(gameMenu);
         screenMan.push(subSettings);
+        soundMan.click.play();
     }
 
     var menuButton = new Button(openMenu);
@@ -774,6 +776,7 @@ function buttonSetup() {
     areaPrev = new Button(function() {
         if(controller.getAreaLevel() > 1) {
             controller.areaLevelDown();
+            soundMan.click.play();
         }
     });
 
@@ -791,7 +794,8 @@ function buttonSetup() {
 
     //areaNext = new Button(controller.areaLevelUp);
     areaNext = new Button(function() {
-            if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
+            if (areaEligible(controller.getAreaLevel())) {soundMan.click.play();
+                controller.areaLevelUp();}
         
             if(dataObj.tutorialProgress == 32){
                 startTutorialPartFour();
@@ -1051,7 +1055,7 @@ function add_animal() {
     if(dataObj.tutorialProgress == 12){
         startTutorialPartTwo();
     }
-    
+    soundMan.click.play(); //@todo: different sound
 }
 
 /////////////////////////////////////////////////
