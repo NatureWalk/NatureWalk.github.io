@@ -13,6 +13,7 @@ function menuSetup() {
 		screenMan.pop();
 		screenMan.pop();
         gameState.menuPause = false;
+        soundMan.click.play();
 	}
 
 	var menuButton = new Button(closeMenu);
@@ -26,6 +27,7 @@ function menuSetup() {
     function openSettings() {
     	screenMan.pop()
     	screenMan.push(subSettings);
+        soundMan.click.play();
     }
 
     var settingsButton = new Button(openSettings);
@@ -65,7 +67,7 @@ function menuSetup() {
     mVolText.setText([Howler.volume()*10], 0,0);
 
     mVolText.update = function() {
-    	mVolText.setText([Math.floor(Howler.volume()*10)],0,0);
+    	mVolText.setText([Math.round(Howler.volume()*10)],0,0);
     }
 
     subSettings.buttonArray.push(mVolText);
@@ -93,7 +95,8 @@ function menuSetup() {
     musVolText.setText([soundMan.music.volume()*10], 0,0);
 
     musVolText.update = function() {
-    	musVolText.setText([Math.floor(soundMan.music.volume()*10)],0,0);
+        console.log(soundMan.music.volume()*10)
+    	musVolText.setText([Math.round(soundMan.music.volume()*10)],0,0);
     }
 
     subSettings.buttonArray.push(musVolText);
@@ -210,6 +213,7 @@ function menuSetup() {
     function openAchievements() {
     	screenMan.pop();
     	screenMan.push(subAchievements);
+        soundMan.click.play();
     }
     var achieveButton = new Button(openAchievements)
     achieveButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
@@ -295,6 +299,7 @@ function menuSetup() {
 	function openHistory() {
 		screenMan.pop()
     	screenMan.push(subHistory);
+        soundMan.click.play();
     }
 
     var historyButton = new Button(openHistory);

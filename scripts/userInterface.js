@@ -201,6 +201,7 @@ function buttonSetup() {
         gameState.menuPause = true;
         screenMan.push(gameMenu);
         screenMan.push(subSettings);
+        soundMan.click.play();
     }
 
     var menuButton = new Button(openMenu);
@@ -856,6 +857,7 @@ function buttonSetup() {
     areaPrev = new Button(function() {
         if(controller.getAreaLevel() > 1) {
             controller.areaLevelDown();
+            soundMan.click.play();
         }
     });
 
@@ -873,7 +875,8 @@ function buttonSetup() {
 
     //areaNext = new Button(controller.areaLevelUp);
     areaNext = new Button(function() {
-            if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
+            if (areaEligible(controller.getAreaLevel())) {soundMan.click.play();
+                controller.areaLevelUp();}
         
             if(dataObj.tutorialProgress == 33){
                 startTutorialPartFour();
@@ -1130,7 +1133,7 @@ function select_animal(animal_index) {
  * Returns: None. 
 */
 function add_animal() {
-    if (stepCount - 2000 < 0) {
+    if (stepCount - 2000 < 0 || controller.party_limit == controller.getNumAnimals()) {
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
@@ -1145,19 +1148,23 @@ function add_animal() {
     }
     switch (ui_values.currentAnimal) {
         case 'Bird':
+            soundMan.bird.play()
             break;
         case 'Deer':
+            soundMan.click.play()
             break;
         case 'Frog':
+            soundMan.frog.play()
             break;
         case 'Bunny':
+            soundMan.click.play()
             break;
     }
     //console.log("Tutorial Progress: " + dataObj.tutorialProgress);
     if(dataObj.tutorialProgress == 13){
         startTutorialPartTwo();
     }
-    
+    //soundMan.click.play(); //@todo: different sound
 }
 
 /////////////////////////////////////////////////
