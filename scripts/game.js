@@ -38,13 +38,13 @@ var popups = new Screen(false, true);
 var gameMenu = new Screen(true, true);
 
 //Submenus
-var subSettings = new Screen(false, false);
+var subSettings = new Screen(true, true);
 
 var subHistory = new Screen(false, false);
 
 var subAchievements = new Screen(false, false);
 
-var clearDataScreen = new Screen(false, true);
+var clearDataScreen = new Screen(false, false);
 
 
 var pcontroller_i = new popupController();

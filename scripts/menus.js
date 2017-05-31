@@ -12,6 +12,7 @@ function menuSetup() {
 	function closeMenu() {
 		screenMan.pop();
 		screenMan.pop();
+        gameState.menuPause = false;
 	}
 
 	var menuButton = new Button(closeMenu);
@@ -116,12 +117,7 @@ function menuSetup() {
     //Save features (download etc)?
     //Clear Data
     
-    var confirm = new Button();
-        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
-        confirm.setSpriteAttributes(210, 170, 100, 40, "Confirm");
-        confirm.update = function() {
-            console.log("Updating: Confirm");
-        }
+    
         
     var clearData = new Button(function () {
         //closeMenu();
@@ -167,11 +163,29 @@ function menuSetup() {
         
         screenMan.push(clearDataScreen);
         */
-        subSettings.buttonArray.push(confirm);
-        console.log(subSettings.displayButtons);
-        subSettings.displayButtons();
+        if (subSettings.objects[subSettings.objects.length - 1].name !== "Confirm") {
+            var confirm = new Button(function () {
+                clearUser(userID);
+                location.reload();
+            });
+            confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+            confirm.setSpriteAttributes(260, 170, 200, 40, "Confirm");
+            confirm.hasTextValue = true;
+            //clearData.setText(["Clear Data"],30,3);
+            confirm.update = function () {
+                //console.log(this.image.src);
+                //console.log(this.image.src);
+                if (this.isPressed) {
+                    confirm.setText(["Are you sure?"],40,8);
+                } else {
+                    confirm.setText(["Are you sure?"],45,3);
+                }
+            }
+            subSettings.push(confirm);
+            subSettings.pushButton(confirm);
+        }
     });
-    clearData.setSpriteAttributes(110,170,150,40);
+    clearData.setSpriteAttributes(110,170,150,40,"Clear Data");
     clearData.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
     clearData.hasTextValue = true;
     //clearData.setText(["Clear Data"],30,3);
@@ -179,7 +193,6 @@ function menuSetup() {
         //console.log(this.image.src);
         //console.log(this.image.src);
         if (this.isPressed) {
-            console.log("Pressed");
             clearData.setText(["Clear Data"],25,8);
         } else {
             clearData.setText(["Clear Data"],30,3);
@@ -221,132 +234,10 @@ function menuSetup() {
 	achievList.setSpriteAttributes(0,0,700,700);
 	achievList.fontSize = "10px";
 	achievList.draw = function () {
-		//ctx.fillText("Milestones:", 250, 70);
-		for(var i = 0; i < achievText.length; i++){
-			var X = 70;
-			var Y = 100+60*i;
-			//ctx.font = "10px Arial";
-			ctx.fillText(achievements[i] + ":  " + rewardText[i], X , Y);
-			ctx.fillText(achievText[i], X , Y+20 );
-			if(completed[i] == 1){
-				ctx.moveTo(X,Y+15);
-				ctx.lineTo(X+400,Y+15);
-				ctx.moveTo(X,Y+35);
-				ctx.lineTo(X+400,Y+35);
-				ctx.stroke(); 
-			}
-		}
-	}
-
-	subAchievements.buttonArray.push(achievList);
-	
-	/////////////////////////////////////////////////////////////////////////////////////////
-	// Event History
-	/////////////////////////////////////////////////////////////////////////////////////////
-	
-	// History Button
-	function openHistory() {
-		screenMan.pop()
-    	screenMan.push(subHistory);
-    }
-
-    var historyButton = new Button(openHistory);
-    historyButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    historyButton.setSpriteAttributes(215,60,120,40);
-    
-    var charnum = "History".length
-    historyButton.hasTextValue = true;
-    historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum), 4);
-    //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
-    historyButton.update = function () {
-            if (this.isPressed) {
-                historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum) - 5, 6); 
-            } else {
-                historyButton.setText(["History"], (historyButton.width / 2) - (5 * charnum), 3); 
-            }
-    }
-
-
-    gameMenu.buttonArray.push(historyButton);
-	
-	
-	// History Pane 
-	// Uses same code as event log
-	/*var historyPane = new Button();
-    historyPane.setSrc("image_resources/EventLog.png");
-    historyPane.setSpriteAttributes(30, 70, 500, 200, "eventLog");
-    subHistory.buttonArray.push(historyPane);*/
-	
-	
-
-        
-    for (i = 0; i < 20; i++) {
-        var historyEntry = new Button();
-        historyEntry.setSrc("image_resources/ClearSquare.png");
-        historyEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
-
-        historyEntry.hasTextValue = true;
-        historyEntry.fontSize = '20px';
-
-        subHistory.buttonArray.push(historyEntry);
-
-        (function(i) {
-            var testRef = historyAry[i];
-            //console.log(testRef);
-            historyEntry.update = function() {
-                if (historyAry[i]) {
-                    this.updateText([historyAry[i]]);
-                } else {this.updateText([""]);}
-            }
-        })(i);
-        
-        (function(i) {
-            historyEntry.draw = function() {
-                if ((this.hovered && this.text !== undefined) || this.hasTextValue){
-                    if (this.text === undefined) {
-            //console.log(this.name);
-                    } else {
-                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 20);
-        }
-    }
-            }
-        })(i);
-    }
-
-	/////////////////////////////////////////////////////////////////////////////////////////
-	// Achievements
-	/////////////////////////////////////////////////////////////////////////////////////////
-    function openAchievements() {
-    	screenMan.pop();
-    	screenMan.push(subAchievements);
-    }
-    var achieveButton = new Button(openAchievements)
-    achieveButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    achieveButton.setSpriteAttributes(330,60,160,40);
-    var charnum = "Milestones".length
-    achieveButton.hasTextValue = true;
-    achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum), 3);
-
-    achieveButton.update = function () {
-        if (this.isPressed) {
-            achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum) - 5, 6); 
-        } else {
-            achieveButton.setText(["Milestones"], (achieveButton.width / 2) - (7 * charnum), 3); 
-        }
-    }
-
-    gameMenu.buttonArray.push(achieveButton);
-
-    //Display Achievement List in menu screen
-	var achievList = new Button();
-    achievList.setSrc("image_resources/ClearSquare.png");
-	achievList.setSpriteAttributes(0,0,700,700);
-	achievList.fontSize = "10px";
-	achievList.draw = function () {
-		ctx.fillText(pageNumber, 235, 500);
+		ctx.fillText(pageNumber, 265, 500);
 		for(var i = 0; i < 7; i++){
 			var X = 70;
-			var Y = 100+50*i;
+			var Y = 120+50*i;
 			var Z = i + 7*(pageNumber - 1);
 			var N = i + 7;
 			ctx.font = "20px handlee";
@@ -376,7 +267,7 @@ function menuSetup() {
     }
 	
 	achievNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
-	achievNext.setSpriteAttributes(300,500,30,30);
+	achievNext.setSpriteAttributes(330,500,30,30);
 	
 	subAchievements.buttonArray.push(achievNext);
 	
@@ -392,7 +283,7 @@ function menuSetup() {
     }
 	
 	achievPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
-	achievPrev.setSpriteAttributes(150,500,30,30);
+	achievPrev.setSpriteAttributes(180,500,30,30);
 	
 	subAchievements.buttonArray.push(achievPrev);
 	

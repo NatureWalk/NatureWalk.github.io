@@ -41,13 +41,17 @@ function loginPlayer(){
     } else { 
         console.log("returning player");
         returningUserSteps();
+        returningUserAchieves();
         returningUserEvents();
         returningUserTracks();
         returningBaseLevels();
+        console.log("NAN: " + NaNReset);
         if (NaNReset) {
+            dataCorruptionApology()
             clearUser(userID); 
-            firstTimeUserFlag = true;
-            loginPlayer();
+            location.reload();
+            //firstTimeUserFlag = true;
+            //loginPlayer();
         } else {
             createData(returningPackage(userID));
             if (dataObj.tutorialProgress < 36) {
@@ -77,6 +81,7 @@ function createData(localJson){
 
 //delete a key and its value from local storage
 function clearUser(myKey){
+    console.log(myKey);
 	localStorage.removeItem(myKey);
 }
 
@@ -105,20 +110,23 @@ function returningUserSteps(){
     var playerSteps = parseFloat(getJsonItem(userID, "playerSteps"));
     var stepMult = parseFloat(getJsonItem(userID, "stepMultiplier"));
     //var temp = parseFloat(stepMult);
-    if (priorSteps === NaN || totalSteps === NaN || playerSteps === NaN || stepMult === NaN) {
-        NanReset = true;
+    if (isNaN(priorSteps) || isNaN(totalSteps)|| isNaN(playerSteps) || isNaN(stepMult)) {
+        NaNReset = true;
+        
     }
-    console.log("Prior: " + priorSteps);
-    console.log("Total: " + totalSteps);
-    console.log("Player: " + playerSteps);
-    console.log("Mult: " + stepMult);
+    
+    //console.log("Prior: " + priorSteps);
+    //console.log("Total: " + totalSteps);
+    //console.log("Player: " + playerSteps);
+    //console.log(isNaN(playerSteps));
+    //console.log("Mult: " + stepMult);
     //console.log(stepMult * 2);
     dataObj.priorSteps = priorSteps;
     //dataObj.totalSteps = fitbitSteps - priorSteps;
     dataObj.totalSteps = totalSteps;
     //Add the additional steps from the step multiplier to the total. 
     dataObj.multipliedSteps += ((playerSteps*stepMult) - playerSteps);
-    console.log("Multiplied Steps: " + ((playerSteps*stepMult) - playerSteps));
+    //console.log("Multiplied Steps: " + ((playerSteps*stepMult) - playerSteps));
     dataObj.totalSteps += ((playerSteps*stepMult) - playerSteps);
     dataObj.steps = stepCount;
     
@@ -126,7 +134,7 @@ function returningUserSteps(){
     stepCount =  (fitbitSteps - priorSteps) + playerSteps;
     //stepCount =  (fitbitSteps - priorSteps - totalSteps) + playerSteps;
     
-    console.log("returning steps ===== " + stepCount);
+    //console.log("returning steps ===== " + stepCount);
 }
 
 function returningUserTracks(){
@@ -537,6 +545,13 @@ function returningBaseLevels(){
     }
 }
 
+function returningUserAchieves(){
+    var data;
+    data = JSON.parse(localStorage.getItem(userID));
+    completed = data["achievementsCompleted"]
+    prereq = data["achievementsPrereq"]
+}
+
 function returningUserArea(){
     //console.log("current area is " + parseInt(getJsonItem(userID, "area")));
     controller.area_level = parseInt(getJsonItem(userID, "area"));
@@ -614,7 +629,7 @@ console.log("returning user Events");
     var key = "eventsBad";
     var jsonData = JSON.parse(localStorage.getItem(id.toString()));
     var myarr = jsonData[key.toString()];   
-    console.log(myarr);
+    //console.log(myarr);
     var eventNames = ["drought", "epidemic", "eruption",
                       "flash flood", "fog", "frozen lake",
                       "heat wave", "hunter", "invasive species",
@@ -628,7 +643,7 @@ console.log("returning user Events");
     for (var i = 0; i < eventNames.length; i++) {
         var evt = eventNames[i];
         if(myarr.evt > 0){
-            console.log("Event Added");
+            //console.log("Event Added");
             badEventsObj.evt = myarr.evt;
         }
     }

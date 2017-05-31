@@ -133,29 +133,48 @@ function buttonSetup() {
     //Title Login
     /////////////////////////////////////////////////
     //Replace with a function that ensures the game data is loaded before the game is pushed.
-    function loadGame() {
+    function loadGame(str) {
         //Would also include pulling from the server.
-//******function for testing without fitbit data COMMENT OUT ONCE FITBITSTART() IS BEING CALLED*****
-        console.log("my user id is : " + userID);
-        if(userID == undefined){
-         userID = "testing21";
-         stepCount = 70000;
+        if (str === "fit") {
+            fitbit_start();
+            console.log("my user id is : " + userID);
+            if(userID == undefined){
+             userID = "testing21";
+             stepCount = 70000;
+            }
+
+            //logs user data to local storage
+            //console.log(userID);
+            
+        } else if (str === "not") {
+            userID = "testing21";
+            stepCount = 70000;
+            logIn();
         }
-//**************************************************************************************************
-        //logs user data to local storage
-        console.log(userID);
-        logIn();
+        
         screenMan.push(game);
-        screenMan.push(interface);
+        screenMan.push(interface); 
     }
 
-    var login = new Button(loadGame);
-    login.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
-    login.setSpriteAttributes(392,248,240,80, "login button")
-    login.hasTextValue = true;
-    login.setText(["Login With Fitbit"],40,20)
+    var loginFit = new Button(function () {
+        loadGame("fit");
+    });
+    loginFit.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
+    loginFit.setSpriteAttributes(232,248,240,80, "login button")
+    loginFit.hasTextValue = true;
+    loginFit.setText(["Login With Fitbit"],40,20)
     //console.log(login.text);
-    title.buttonArray.push(login);
+    title.buttonArray.push(loginFit);
+    
+    var loginNot = new Button(function () {
+        loadGame("not");
+    });
+    loginNot.setSrc("image_resources/StepPaper.png","image_resources/TracksPaper.png")
+    loginNot.setSpriteAttributes(532,248,240,80, "login button")
+    loginNot.hasTextValue = true;
+    loginNot.setText(["Login Without Fitbit"],20,20)
+    //console.log(login.text);
+    title.buttonArray.push(loginNot);
 	
 	/////////////////////////////////////////////////
     //Logout Button
@@ -179,6 +198,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //Opens the menu screen
     function openMenu() {
+        gameState.menuPause = true;
         screenMan.push(gameMenu);
         screenMan.push(subSettings);
     }
@@ -212,7 +232,7 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //STEP PANE
     /////////////////////////////////////////////////
-    var stepPane = new Button();
+    var stepPane = new Button(function() {});
     stepPane.setSrc("image_resources/StepPaper.png");
     stepPane.setSpriteAttributes(146, 35, 110, 50, "stepPane");
     stepPane.hasTextValue = true;
@@ -311,9 +331,9 @@ function buttonSetup() {
         
         animalIcon.setSrc(ui_values.animalSrcAry[i], ui_values.animalSrcAry[4]);
         
-        animalIcon.setSpriteAttributes((89 +(100*i)), 110, 60, 60, "animal_icon" + i);
+        animalIcon.setSpriteAttributes((89 +(100*i)), 120, 60, 60, "animal_icon" + i);
         animalIcon.hasTextValue = true;
-        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -24);
+        animalIcon.setText([ui_values.animalAry[i]], (5-ui_values.animalAry[i].length)*5, -27);
         
         (function(i) {
             animalIcon.update = function() {
@@ -329,35 +349,14 @@ function buttonSetup() {
             }
         })(i);
         interface.buttonArray.push(animalIcon);
-        
         /////////////////////////////////////////////////
-        //ANIMAL COUNT
-        /////////////////////////////////////////////////
-        /*animalCount = new Button(function() {})
-        animalCount.setSrc("image_resources/ClearSquare.png");
-        animalCount.setSpriteAttributes((140 +(100*i)), 125, 0, 0, "animal_count" + i);
-        animalCount.hasTextValue = true;
-        
-        //This is a closure that declares a function with a parameter 'i' then immediately calls it with i.
-        //Changing the update 
-        (function(i) {
-            animalCount.update = function() {
-                var testRef = controller.getAnimalCount(animal_types[i]);
-                var charNum = numberLen(testRef);  
-                this.setText(controller.getAnimalCount(animal_types[i]), (animalCount.width / 2) - (5 * charNum), 0);
-            }
-        })(i);
-        interface.buttonArray.push(animalCount);*/
-        /////////////////////////////////////////////////
-        
-        
         
         /////////////////////////////////////////////////
         //ANIMAL LEVEL
         /////////////////////////////////////////////////
         animalLevel = new Button(function() {})
         animalLevel.setSrc("image_resources/ClearSquare.png");
-        animalLevel.setSpriteAttributes((121 +(100*i)), 165, 0, 0, "animal_level" + i);
+        animalLevel.setSpriteAttributes((121 +(100*i)), 175, 0, 0, "animal_level" + i);
         animalLevel.hasTextValue = true;
         animalLevel.fontSize = "16px";
         
@@ -642,18 +641,56 @@ function buttonSetup() {
     animalImageCost = new Button(add_animal);
     animalImageCost.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
     animalImageCost.setSpriteAttributes(286, 405, 170, 40, "animal_cost");
-    interface.buttonArray.push(animalImageCost);
+    
     
     animalImageCost.hasTextValue = true;
     animalImageCost.fontSize = '22px';
-    animalImageCost.update = function() {
+    animalImageCost.flashingOpacity = 0.5;
+    animalImageCost.fadeIn = true;
+                
+    animalImageCost.update = function () {
         if (this.isPressed) {
             animalImageCost.setText([2000 + " Steps"], 31, 7);
         } else {
             animalImageCost.setText([2000 + " Steps"], 36, 2);
         }
-    }
     
+        if (dataObj.tutorialProgress == 13) {
+            if (this.fadeIn) {
+                this.flashingOpacity += .03;
+            } else {
+                this.flashingOpacity -= .03;
+            }
+
+            if (this.flashingOpacity > .75) {
+                this.fadeIn = false;
+            } else if (this.flashingOpacity < .4) {
+                this.fadeIn = true;
+            }
+        }
+    }
+
+    animalImageCost.draw = function () {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height); 
+        if(dataObj.tutorialProgress == 13){
+            ctx.globalAlpha = this.flashingOpacity;
+            ctx.fillStyle="#f0f800";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.globalAlpha = 1.0
+            ctx.fillStyle="#000000"
+        }
+        if ((this.hovered && this.text !== undefined) || this.hasTextValue || this.hasTooltip){
+            if (this.text === undefined) {
+                //console.log(this.name);
+            } else {
+                drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, this.color);
+            }
+            if (this.tooltip != undefined && cursor.x != undefined && cursor.y != undefined && this.hovered) {
+                drawText(this.tooltip,cursor.x+5,cursor.y+5)
+            }
+        }   
+    }
+    interface.buttonArray.push(animalImageCost);
 
     /////////////////////////////////////////////////
 
@@ -838,7 +875,7 @@ function buttonSetup() {
     areaNext = new Button(function() {
             if (areaEligible(controller.getAreaLevel())) {controller.areaLevelUp()}
         
-            if(dataObj.tutorialProgress == 32){
+            if(dataObj.tutorialProgress == 33){
                 startTutorialPartFour();
             }
         });
@@ -850,12 +887,51 @@ function buttonSetup() {
         } else {
             areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
         }
+        if (dataObj.tutorialProgress == 33) {
+            if (this.fadeIn) {
+                this.flashingOpacity += .03;
+            } else {
+                this.flashingOpacity -= .03;
+            }
+            
+            if (this.flashingOpacity > .75) {
+                this.fadeIn = false;
+            } else if (this.flashingOpacity < .4) {
+                this.fadeIn = true;
+            }
+        }
     }
 
     areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
 
     areaNext.setSpriteAttributes(850, 245, 25, 25, "areaNext");
-
+    areaNext.flashingOpacity = 0.5;
+    areaNext.fadeIn = true;
+    areaNext.draw = function () {
+        
+        if(dataObj.tutorialProgress == 33){
+            ctx.globalAlpha = this.flashingOpacity;
+            ctx.fillStyle="#f0f800";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.globalAlpha = 1.0
+            ctx.fillStyle="#000000"
+        }
+       
+        
+        ctx.drawImage(
+            this.image, 
+            //(this.frameIndex % 7) * this.width, 
+            //Math.floor(this.frameIndex/7) * this.height, 
+            (this.frameIndex % this.srcCols) * this.width, 
+            Math.floor(this.frameIndex/this.srcCols) * this.height,
+            this.width, 
+            this.height, 
+            this.x,
+            this.y,
+            this.width,
+            this.height);
+           
+    }
     interface.buttonArray.push(areaNext);
 
     /////////////////////////////////////////////////
@@ -906,6 +982,8 @@ function buttonSetup() {
     var selectedAnimal = new Button();
     selectedAnimal.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
     selectedAnimal.setSpriteAttributes(101,455,40,40, "selected animal")
+    selectedAnimal.flashingOpacity = 0.5;
+    selectedAnimal.fadeIn = true;
     selectedAnimal.draw = function () {
         if (partyButtons == undefined || partyButtons.length < 1 || ui_values.selected != "party") return;
         ctx.save();
@@ -917,7 +995,7 @@ function buttonSetup() {
         ctx.rect(517, 0, 475, 578);
         
         //console.log(tutorialProgress);
-        if(dataObj.tutorialProgress == 20){
+        if(dataObj.tutorialProgress == 21){
             startTutorialPartThree();
         }
     }
@@ -1075,8 +1153,8 @@ function add_animal() {
         case 'Bunny':
             break;
     }
-    console.log("Tutorial Progress: " + dataObj.tutorialProgress);
-    if(dataObj.tutorialProgress == 12){
+    //console.log("Tutorial Progress: " + dataObj.tutorialProgress);
+    if(dataObj.tutorialProgress == 13){
         startTutorialPartTwo();
     }
     
@@ -1134,11 +1212,48 @@ function updateParty() {
                 partyIcon.fontSize = "14px";
                 partyIcon.color = ["#00ff00"];
                 
+                partyIcon.flashingOpacity = 0.5;
+                partyIcon.fadeIn = true;
                 
                 (function(i, j) {
                     partyIcon.update = function () {
-                    this.setText([controller.animals[j+(6*i)].level], 33 - numberLen(levels[j+(6*i)]) * 4.5, 22)
-                }
+                        this.setText([controller.animals[j+(6*i)].level], 33 - numberLen(levels[j+(6*i)]) * 5.5, 22);
+                        if (dataObj.tutorialProgress == 21) {
+                            if (this.fadeIn) {
+                                this.flashingOpacity += .03;
+                            } else {
+                                this.flashingOpacity -= .03;
+                            }
+
+                            if (this.flashingOpacity > .75) {
+                                this.fadeIn = false;
+                            } else if (this.flashingOpacity < .4) {
+                                this.fadeIn = true;
+                            }
+                        }
+                    }
+                    console.log(this.flashingOpacity);
+                        
+                    partyIcon.draw = function () {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height); 
+                        if(dataObj.tutorialProgress == 21){
+                            ctx.globalAlpha = this.flashingOpacity;
+                            ctx.fillStyle="#f0f800";
+                            ctx.fillRect(this.x, this.y, this.width, this.height);
+                            ctx.globalAlpha = 1.0
+                            ctx.fillStyle="#000000"
+                        }
+                        if ((this.hovered && this.text !== undefined) || this.hasTextValue || this.hasTooltip){
+                            if (this.text === undefined) {
+                                //console.log(this.name);
+                            } else {
+                            drawText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, this.color);
+                            }
+                            if (this.tooltip != undefined && cursor.x != undefined && cursor.y != undefined && this.hovered) {
+                        drawText(this.tooltip,cursor.x+5,cursor.y+5)
+                            }
+                        }
+                    }
                 })(i, j);
                 
                 //ctx.fillText(levels[j+(6*i)], partyIcon.coordX + 27 - (numberLen(levels[j+(6*i)]) * 3), partyIcon.coordY + 19);
@@ -1149,8 +1264,6 @@ function updateParty() {
             }
         }
     }
-
-    console.log(partyButtons);
     for (var b=0; b<partyButtons.length; b++) {
     	interface.buttonArray.push(partyButtons[b]);
         interface.push(partyButtons[b]);

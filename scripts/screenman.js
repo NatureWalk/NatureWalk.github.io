@@ -105,7 +105,6 @@ ScreenManager.prototype.push = function(screen){
         }
     }
     this.screens.push(screen);
-    console.log(this.screens);
 }
 
 ScreenManager.prototype.pop = function(){
