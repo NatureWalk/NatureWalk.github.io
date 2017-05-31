@@ -12,11 +12,12 @@ function menuSetup() {
 	function closeMenu() {
 		screenMan.pop();
 		screenMan.pop();
+        soundMan.click.play();
 	}
 
 	var menuButton = new Button(closeMenu);
     menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
-    menuButton.setSpriteAttributes(40,80,30,30, "menuButton_close");
+    menuButton.setSpriteAttributes(30,70,50,50, "menuButton_close");
     gameMenu.buttonArray.push(menuButton);
 
 	/////////////////////////////////////////////////
@@ -25,20 +26,23 @@ function menuSetup() {
     function openSettings() {
     	screenMan.pop()
     	screenMan.push(subSettings);
+        soundMan.click.play();
     }
 
     var settingsButton = new Button(openSettings);
     settingsButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    settingsButton.setSpriteAttributes(100,60,120,40);
+    settingsButton.setSpriteAttributes(100,60,120,40,"settings");
     
     var charnum = "Settings".length
     settingsButton.hasTextValue = true;
     settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     settingsButton.update = function () {
+            //console.log(gameMenu.buttonArray[1].text);
             if (this.isPressed) {
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
+                //console.log(this.text);
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
             }
     }
@@ -62,7 +66,7 @@ function menuSetup() {
     mVolText.setText([Howler.volume()*10], 0,0);
 
     mVolText.update = function() {
-    	mVolText.setText([Math.floor(Howler.volume()*10)],0,0);
+    	mVolText.setText([Math.round(Howler.volume()*10)],0,0);
     }
 
     subSettings.buttonArray.push(mVolText);
@@ -90,7 +94,8 @@ function menuSetup() {
     musVolText.setText([soundMan.music.volume()*10], 0,0);
 
     musVolText.update = function() {
-    	musVolText.setText([Math.floor(soundMan.music.volume()*10)],0,0);
+        console.log(soundMan.music.volume()*10)
+    	musVolText.setText([Math.round(soundMan.music.volume()*10)],0,0);
     }
 
     subSettings.buttonArray.push(musVolText);
@@ -112,6 +117,78 @@ function menuSetup() {
     //Event sounds
 
     //Save features (download etc)?
+    //Clear Data
+    
+    var confirm = new Button();
+        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        confirm.setSpriteAttributes(210, 170, 100, 40, "Confirm");
+        confirm.update = function() {
+            console.log("Updating: Confirm");
+        }
+        
+    var clearData = new Button(function () {
+        //closeMenu();
+        /*
+        var tooltip = new Button();
+        var text = "Warning: Confirming this action will completely erase all of game data, including animal levels, and your record of total steps travelled (This has no effect on your actual Fitbit statistics)." 
+        tooltip.setSrc("image_resources/Tooltip.png", "image_resources/Tooltip.png");
+        tooltip.setSpriteAttributes(300, 225, 400, 200, "ToolTip");
+        tooltip.hasTextValue = true;
+        tooltip.fontSize = '20px';
+        charnum = text.length;
+
+        tooltip.setText([text], 5, 5);
+        //console.log(offlinePopup.text);
+        tooltip.draw = function() {
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+            ctx.globalAlpha = 1.0;
+
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 25);
+        }
+        var confirm = new Button();
+        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        confirm.setSpriteAttributes(310, 325, 100, 50, "Confirm");
+        
+        //Send reference to all elements on the confirmation note.
+        var cancel = new Button(function () {
+            //console.log("PRessed");
+            //subSettings.buttonArray.pop();
+            //subSettings.buttonArray.pop();
+            screenMan.pop();
+            //gameMenu.buttonArray[1]                              .setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
+        });
+        cancel.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        cancel.setSpriteAttributes(460, 325, 100, 50, "ClearData");
+        
+        clearDataScreen.buttonArray.push(tooltip);
+        clearDataScreen.buttonArray.push(confirm);
+        clearDataScreen.buttonArray.push(cancel);
+        
+        console.log(clearDataScreen.buttonArray);
+        
+        screenMan.push(clearDataScreen);
+        */
+        subSettings.buttonArray.push(confirm);
+        console.log(subSettings.displayButtons);
+        subSettings.displayButtons();
+    });
+    clearData.setSpriteAttributes(110,170,150,40);
+    clearData.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+    clearData.hasTextValue = true;
+    //clearData.setText(["Clear Data"],30,3);
+    clearData.update = function () {
+        //console.log(this.image.src);
+        //console.log(this.image.src);
+        if (this.isPressed) {
+            console.log("Pressed");
+            clearData.setText(["Clear Data"],25,8);
+        } else {
+            clearData.setText(["Clear Data"],30,3);
+        }
+    }
+    subSettings.buttonArray.push(clearData);
 
     //Fitbit legal stuff
 
@@ -123,6 +200,7 @@ function menuSetup() {
     function openAchievements() {
     	screenMan.pop();
     	screenMan.push(subAchievements);
+        soundMan.click.play();
     }
     var achieveButton = new Button(openAchievements)
     achieveButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
@@ -174,6 +252,7 @@ function menuSetup() {
 	function openHistory() {
 		screenMan.pop()
     	screenMan.push(subHistory);
+        soundMan.click.play();
     }
 
     var historyButton = new Button(openHistory);
@@ -205,14 +284,15 @@ function menuSetup() {
 	
 
         
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 10; i++) {
         var historyEntry = new Button();
         historyEntry.setSrc("image_resources/ClearSquare.png");
         historyEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
-        subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
         historyEntry.fontSize = '20px';
+
+        subHistory.buttonArray.push(historyEntry);
 
         (function(i) {
             var testRef = historyAry[i];
@@ -226,6 +306,43 @@ function menuSetup() {
         
         (function(i) {
             historyEntry.draw = function() {
+                if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+                    if (this.text === undefined) {
+            //console.log(this.name);
+                    } else {
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 20);
+        }
+    }
+            }
+        })(i);
+    }
+	
+	
+	// Recent history pane
+	// Same setup as history pane
+	
+	for (i = 0; i < 10; i++) {
+        var recentEntry = new Button();
+        recentEntry.setSrc("image_resources/ClearSquare.png");
+        recentEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
+
+        recentEntry.hasTextValue = true;
+        recentEntry.fontSize = '20px';
+
+        subHistory.buttonArray.push(recentEntry);
+
+        (function(i) {
+            var testRef = recentAry[i];
+            //console.log(testRef);
+            recentEntry.update = function() {
+                if (recentAry[i]) {
+                    this.updateText([recentAry[i]]);
+                } else {this.updateText([""]);}
+            }
+        })(i);
+        
+        (function(i) {
+            recentEntry.draw = function() {
                 if ((this.hovered && this.text !== undefined) || this.hasTextValue){
                     if (this.text === undefined) {
             //console.log(this.name);
