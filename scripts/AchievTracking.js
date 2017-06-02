@@ -83,38 +83,38 @@ function achievTracker(){
 	
 	//mile high : when player reaches over 10000 tracks
 	//if(dataObj.animalTracks >= 10000) achievements.milehigh[0] = true;
-	if(dataObj.animalTracks >= 10000) prereq['milehigh'] = true;
+	if(dataObj.animalTracks >= 10000) prereq[0] = 1;
 	
 	//animalpack: when player makes a 5 party of the same animal
 	for(var i = 0 ; i < animalcount.length; i++){
-		if(animalcount[i] >= 5) prereq['animalpack'] = true;
+		if(animalcount[i] >= 5) prereq[1] = 1;
 	}
 	
 	//upgradegalore: when player upgrades the same animal's base level 10 times
 	for(var j = 0; j < animallevel.length; j++){
-		if(animallevel[j] >= 10) prereq['upgradegalore'] = true;
+		if(animallevel[j] >= 10) prereq[2] = 1;
 	}
 	
 	//novice explorer: when player reaches area 10
-	if(controller.area_level >= 10) prereq['novice'] = true;
+	if(controller.area_level >= 10) prereq[3] = 1;
 	
 	//intermediate explorer: when player reaches area 30
-	if(controller.area_level >= 30) prereq['intermediate'] = true;
+	if(controller.area_level >= 30) prereq[4] = 1;
 	
 	//expert explorer: when player reaches area 70
-	if(controller.area_level >= 70) prereq['expert'] = true;
+	if(controller.area_level >= 70) prereq[5] = 1;
 	
 	//unlucky year: player loses a total of 10 or more animals
-	if(dataObj.animalsDied >= 10) prereq['unlucky'] = true;
+	if(dataObj.animalsDied >= 10) prereq[6] = 1;
 	
 	// young hiker: get 20000 step total
-	if(dataObj.steps >= 20000) prereq['hiker'] = true;
+	if(dataObj.steps >= 20000) prereq[7] = 1;
 	
 	// trail blazer: get 50000 step total
-	if(dataObj.steps >= 50000) prereq['blazer'] = true;
+	if(dataObj.steps >= 50000) prereq[8] = 1;
 	
 	// mountain climber get 100000 step total
-	if(dataObj.steps >= 100000) prereq['climber'] = true;
+	if(dataObj.steps >= 100000) prereq[9] = 1;
 }
 
 //Tracks player Level and player level rewards
@@ -140,8 +140,7 @@ function updateLog(){
 	achievTracker();
 	//playerTracker();
 	//console.log("area is : " + dataObj.animalsDied);
-		if(prereq['milehigh'] == true &&  completed['milehigh'] == false){
-			completed['milehigh'] = true;
+		if(prereq[0] == 1 &&  completed[0] == 0){
 			completed[0] = 1;
 			dataObj.animalTracks += 2500;
 			console.log("MileHigh achievement Success! Gained 100 xp!");
@@ -149,8 +148,7 @@ function updateLog(){
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
 		
-		if(prereq['animalpack'] == true &&  completed['animalpack'] == false){
-			completed['animalpack'] = true;
+		if(prereq[1] == 1 &&  completed[1] == 0){
 			completed[1] = 1;
 			dataObj.animalTracks += 2000;
 			console.log("AnimalPack achievement Success! Gained 100 xp!");
@@ -158,16 +156,14 @@ function updateLog(){
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
 		
-		if( prereq['upgradegalore'] == true && completed['upgradegalore'] == false){
-			completed['upgradegalore'] = true;
+		if( prereq[2] == 1 && completed[2] == 0){
 			dataObj.animalTracks += 5000;
 			completed[2] = 1;
 			console.log("Upgrade Galore achievement Success! Gained 100 xp!");
 			console.log("Player total XP is now : " + player.playerXP);
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
-		if( prereq['novice'] == true && completed['novice'] == false){
-			completed['novice'] = true;
+		if( prereq[3] == 1 && completed[3] == 0){
 			completed[3] = 1;
 			dataObj.animalTracks += 2500;
 			console.log("Novice Explorer achievement Success! Gained 100 xp!");
@@ -175,8 +171,7 @@ function updateLog(){
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
 		
-		if( prereq['intermediate'] == true && completed['intermediate'] == false){
-			completed['intermediate'] = true;
+		if( prereq[4] == 1 && completed[4] == 0){
 			completed[4] = 1;
 			dataObj.animalTracks += 10000;
 			console.log("Intermediate Explorer achievement Success! Gained 100 xp!");
@@ -184,8 +179,7 @@ function updateLog(){
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
 		
-		if( prereq['expert'] == true && completed['expert'] == false){
-			completed['expert'] = true;
+		if( prereq[5] == 1 && completed[5] == 0){
 			completed[5] = 1;
 			dataObj.animalTracks += 30000;
 			console.log("Expert Explorer achievement Success! Gained 100 xp!");
@@ -193,8 +187,7 @@ function updateLog(){
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
 		
-		if( prereq['unlucky'] == true && completed['unlucky'] == false){
-			completed['unlucky'] = true;
+		if( prereq[6] == 1 && completed[6] == 0){
 			completed[6] = 1;
 			dataObj.animalTracks += 5000;
 			console.log("Unlucky Year achievement Success! Gained 100 xp!");
@@ -202,20 +195,17 @@ function updateLog(){
 			//console.log("Player Level is now : " + player.playerLevel);
 		}
 		
-		if( prereq['hiker'] == true && completed['hiker'] == false){
-			completed['hiker'] = true;
+		if( prereq[7] == 1 && completed[7] == 0){
 			completed[7] = 1;
 			dataObj.animalTracks += 2500;
 			console.log("young hiker achievement Success! Gained 100 xp!");
 		}
-		if( prereq['blazer'] == true && completed['blazer'] == false){
-			completed['blazer'] = true;
+		if( prereq[8] == 1 && completed[8] == 0){
 			completed[8] = 1;
 			dataObj.animalTracks += 5000;
 			console.log("trail blazer achievement Success! Gained 100 xp!");
 		}
-		if( prereq['climber'] == true && completed['climber'] == false){
-			completed['climber'] = true;
+		if( prereq[9] == 1 && completed[9] == 0){
 			completed[9] = 1;
 			dataObj.animalTracks += 10000;
 			console.log("mountain climber achievement Success! Gained 100 xp!");

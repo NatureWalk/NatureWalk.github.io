@@ -12,11 +12,12 @@ function menuSetup() {
 	function closeMenu() {
 		screenMan.pop();
 		screenMan.pop();
+        gameState.menuPause = false;
 	}
 
 	var menuButton = new Button(closeMenu);
     menuButton.setSrc("image_resources/menu.png","image_resources/ClearSquare.png");
-    menuButton.setSpriteAttributes(40,80,30,30, "menuButton_close");
+    menuButton.setSpriteAttributes(30,70,50,50, "menuButton_close");
     gameMenu.buttonArray.push(menuButton);
 
 	/////////////////////////////////////////////////
@@ -29,16 +30,18 @@ function menuSetup() {
 
     var settingsButton = new Button(openSettings);
     settingsButton.setSrc("image_resources/Button.png","image_resources/ButtonPressed.png")
-    settingsButton.setSpriteAttributes(100,60,120,40);
+    settingsButton.setSpriteAttributes(100,60,120,40,"settings");
     
     var charnum = "Settings".length
     settingsButton.hasTextValue = true;
     settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3);
     //settingsButton.setTooltip("This upgrades the "+ui_values.selected+" animal to the next level.");
     settingsButton.update = function () {
+            //console.log(gameMenu.buttonArray[1].text);
             if (this.isPressed) {
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
+
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
             }
     }
@@ -112,6 +115,90 @@ function menuSetup() {
     //Event sounds
 
     //Save features (download etc)?
+    //Clear Data
+    
+    
+        
+    var clearData = new Button(function () {
+        //closeMenu();
+        /*
+        var tooltip = new Button();
+        var text = "Warning: Confirming this action will completely erase all of game data, including animal levels, and your record of total steps travelled (This has no effect on your actual Fitbit statistics)." 
+        tooltip.setSrc("image_resources/Tooltip.png", "image_resources/Tooltip.png");
+        tooltip.setSpriteAttributes(300, 225, 400, 200, "ToolTip");
+        tooltip.hasTextValue = true;
+        tooltip.fontSize = '20px';
+        charnum = text.length;
+
+        tooltip.setText([text], 5, 5);
+        //console.log(offlinePopup.text);
+        tooltip.draw = function() {
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+            ctx.globalAlpha = 1.0;
+
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 25);
+        }
+        var confirm = new Button();
+        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        confirm.setSpriteAttributes(310, 325, 100, 50, "Confirm");
+        
+        //Send reference to all elements on the confirmation note.
+        var cancel = new Button(function () {
+            //console.log("PRessed");
+            //subSettings.buttonArray.pop();
+            //subSettings.buttonArray.pop();
+            screenMan.pop();
+            //gameMenu.buttonArray[1]                              .setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
+        });
+        cancel.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+        cancel.setSpriteAttributes(460, 325, 100, 50, "ClearData");
+        
+        clearDataScreen.buttonArray.push(tooltip);
+        clearDataScreen.buttonArray.push(confirm);
+        clearDataScreen.buttonArray.push(cancel);
+        
+        console.log(clearDataScreen.buttonArray);
+        
+        screenMan.push(clearDataScreen);
+        */
+        if (subSettings.objects[subSettings.objects.length - 1].name !== "Confirm") {
+            var confirm = new Button(function () {
+                clearUser(userID);
+                location.reload();
+            });
+            confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+            confirm.setSpriteAttributes(260, 170, 200, 40, "Confirm");
+            confirm.hasTextValue = true;
+            //clearData.setText(["Clear Data"],30,3);
+            confirm.update = function () {
+                //console.log(this.image.src);
+                //console.log(this.image.src);
+                if (this.isPressed) {
+                    confirm.setText(["Are you sure?"],40,8);
+                } else {
+                    confirm.setText(["Are you sure?"],45,3);
+                }
+            }
+            subSettings.push(confirm);
+            subSettings.pushButton(confirm);
+        }
+    });
+    clearData.setSpriteAttributes(110,170,150,40,"Clear Data");
+    clearData.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
+    clearData.hasTextValue = true;
+    //clearData.setText(["Clear Data"],30,3);
+    clearData.update = function () {
+        //console.log(this.image.src);
+        //console.log(this.image.src);
+        if (this.isPressed) {
+            clearData.setText(["Clear Data"],25,8);
+        } else {
+            clearData.setText(["Clear Data"],30,3);
+        }
+    }
+    subSettings.buttonArray.push(clearData);
 
     //Fitbit legal stuff
 
@@ -147,10 +234,10 @@ function menuSetup() {
 	achievList.setSpriteAttributes(0,0,700,700);
 	achievList.fontSize = "10px";
 	achievList.draw = function () {
-		ctx.fillText(pageNumber, 235, 500);
+		ctx.fillText(pageNumber, 265, 500);
 		for(var i = 0; i < 7; i++){
 			var X = 70;
-			var Y = 100+50*i;
+			var Y = 120+50*i;
 			var Z = i + 7*(pageNumber - 1);
 			var N = i + 7;
 			ctx.font = "20px handlee";
@@ -180,7 +267,7 @@ function menuSetup() {
     }
 	
 	achievNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
-	achievNext.setSpriteAttributes(300,500,30,30);
+	achievNext.setSpriteAttributes(330,500,30,30);
 	
 	subAchievements.buttonArray.push(achievNext);
 	
@@ -196,7 +283,7 @@ function menuSetup() {
     }
 	
 	achievPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
-	achievPrev.setSpriteAttributes(150,500,30,30);
+	achievPrev.setSpriteAttributes(180,500,30,30);
 	
 	subAchievements.buttonArray.push(achievPrev);
 	

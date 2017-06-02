@@ -84,6 +84,7 @@ var gameState = {
     eventTrigger: 5,
     eventDisplayTimer: 0,
     everySecondTrig: 0,
+    menuPause: false,
     newToFitbit: false,
     offlinePopup: true,
     sessionStartTime: 0,
@@ -173,7 +174,11 @@ function readableTime(milliseconds) {
 */
 function timeHandler(timeAry) {
     if (timeAry[1] === gameState.everySecondTrig) {
-        everySecond(timeAry[1]);
+       
+        if (!gameState.menuPause) {
+            
+             everySecond(timeAry[1]);
+        }
         if (timeAry[1] === 59) {
             gameState.everySecondTrig = 0;
         } else {
@@ -201,8 +206,11 @@ function timeHandler(timeAry) {
 
 //Function that will be called every second. 
 function everySecond(seconds) {
-    //Track generation code. 
-	
+    //Track generation code.
+    //console.log("NaN: " + NaNReset);
+	if (NaNReset) {
+        dataCorruptionApology();
+    }
 	updateLog();
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
@@ -230,8 +238,9 @@ function everySecond(seconds) {
     //DEBUG: console.log(seconds);
     //Decrement the event trigger timer. 
     //When it hits 0, roll an event. 
+    
     if (gameState.eventTrigger > 0) {
-        if (dataObj.tutorialProgress >= 36) {
+        if (dataObj.tutorialProgress > 35) {
             gameState.eventTrigger--;
             if (gameState.sprint) {
                 callSprint(gameState.newToFitbit);
@@ -259,14 +268,13 @@ function everySecond(seconds) {
     
     if(firstTimeUserFlag == true){
         firstTimeUserFlag = false;
-        if (dataObj.tutorialProgress <= 12) {
-            console.log("Tutorial Reset");
+        if (dataObj.tutorialProgress <= 13) {
             dataObj.tutorialProgress = 0;
             startTutorial();
-        } else if (dataObj.tutorialProgress <= 20) {
+        } else if (dataObj.tutorialProgress <= 21) {
             dataObj.tutorialProgress = 12;
             startTutorialPartTwo();
-        } else if (dataObj.tutorialProgress <= 32) {
+        } else if (dataObj.tutorialProgress <= 33) {
             dataObj.tutorialProgress = 20;
             startTutorialPartThree();
         } else if (dataObj.tutorialProgress <= 36) {
@@ -282,11 +290,7 @@ function everySecond(seconds) {
 
 //Function that is called every thirty seconds. 
 function everyThirty(seconds) {
-    //DEBUG: console.log("tracks = " + tracks);
-    //eventLogAry.shift();
-    //dataObj.animalTracks += tracks;
-    console.log("Official Offline: " + offlinePopupObj.offlineTracks);
-    console.log("Official Offline Events: " + offlinePopupObj.events);
+    
 }
 
 function everyMinute(minutes) {
@@ -327,7 +331,11 @@ function createPackage() {
      * - time: The time, in milliseconds of the save. 
      * - tutorialProgress: The place in the tutorial that the player has completed.
      */
+    //console.log("In game completed: " + completed); 
+    //console.log("In game prereq: " + prereq);
     package = { 
+        achievementsCompleted: completed,
+        achievementsPrereq: prereq,
         animalsDied: 0,
         animalsLeft: 0,
         animalsTripped: 0,

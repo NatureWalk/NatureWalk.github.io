@@ -6,7 +6,7 @@ var s11 = ' Patrick Hand';
 var s17 = ' Walter Turncoat';
 
 function drawText(text, x, y, size='24px', color=['black']) {
-    //console.log(size);
+    //console.log("Text: " + text);
     ctx.font = size + s3;
     for (var t=0; t<text.length; t++) {
         if (t < color.length) ctx.fillStyle = color[t]; 
