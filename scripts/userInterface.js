@@ -137,7 +137,7 @@ function buttonSetup() {
         //Would also include pulling from the server.
         if (str === "fit") {
             fitbit_start();
-            console.log("my user id is : " + userID);
+            //console.log("my user id is : " + userID);
             if(userID == undefined){
              userID = "testing21";
              stepCount = 70000;
@@ -149,11 +149,14 @@ function buttonSetup() {
         } else if (str === "not") {
             userID = "testing21";
             stepCount = 70000;
-            logIn();
+            
         }
-        
+        logIn();
         screenMan.push(game);
-        screenMan.push(interface); 
+        screenMan.push(interface);
+        console.log("What comes after this?");
+        gameState.setupComplete = true;
+        //gameState.setupTimer = 1; 
     }
 
     var loginFit = new Button(function () {
@@ -982,33 +985,32 @@ function buttonSetup() {
     /////////////////////////////////////////////////
     //Selected Party Animal Indicator
     /////////////////////////////////////////////////
-    var selectedAnimal = new Button();
+    var selectedAnimal = new Button(function () {
+        if(dataObj.tutorialProgress == 21){
+            startTutorialPartThree(); 
+        }
+    });
     selectedAnimal.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png");
     selectedAnimal.setSpriteAttributes(101,455,40,40, "selected animal")
     selectedAnimal.flashingOpacity = 0.5;
     selectedAnimal.fadeIn = true;
-    selectedAnimal.draw = function () {
-        if (partyButtons == undefined || partyButtons.length < 1 || ui_values.selected != "party") return;
-        ctx.save();
-        ctx.strokeStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(this.x+this.width/2,this.y+this.width/2,this.width/2,0,2*Math.PI);
-        ctx.stroke();
-        ctx.restore();
-        ctx.rect(517, 0, 475, 578);
-        
-        //console.log(tutorialProgress);
-        if(dataObj.tutorialProgress == 21){
-            startTutorialPartThree();
-        }
-    }
+    
     selectedAnimal.update = function() {
         if (controller.animals[ui_values.partyIndex] == undefined || partyButtons[ui_values.partyIndex] == undefined) {
             ui_values.selected = "base";
             return;
         }
-        this.x = partyButtons[ui_values.partyIndex].x;
-        this.y = partyButtons[ui_values.partyIndex].y;
+      
+        //Reset all party buttons to their original asset sources. 
+        for (var pB = 0; pB < partyButtons.length; pB++) {
+           var num = aniToNum(controller.animals[pB].type);  partyButtons[pB].setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcHover[num])
+        }
+        // Get the current animal being selected. 
+      var num = aniToNum(controller.animals[ui_values.partyIndex].type);
+        //Set that icon to be constantly colored in. 
+        partyButtons[ui_values.partyIndex].setSrc(ui_values.animalSrcHover[num],ui_values.animalSrcHover[num]);
+        //this.x = partyButtons[ui_values.partyIndex].x;
+        //this.y = partyButtons[ui_values.partyIndex].y;
         
     }
     interface.buttonArray.push(selectedAnimal);
@@ -1042,6 +1044,7 @@ function buttonSetup() {
 	};
 
 	interface.push(blankPortrait);
+    gameState.setupComplete = true;
 }
 
 /* select_base() - For changing the spawn button image and the unlockables connected to it. . 
@@ -1148,13 +1151,15 @@ function add_animal() {
     }
     switch (ui_values.currentAnimal) {
         case 'Bird':
-            soundMan.bird.play()
+            //soundMan.bird.play()
+            soundMan.click.play()
             break;
         case 'Deer':
             soundMan.click.play()
             break;
         case 'Frog':
-            soundMan.frog.play()
+            //soundMan.frog.play()
+            soundMan.click.play()
             break;
         case 'Bunny':
             soundMan.click.play()
@@ -1215,7 +1220,7 @@ function updateParty() {
                 partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcHover[num]);
                 partyIcon.setSpriteAttributes((101 + (60*j)), (455 + 50*i), 40, 40, "party animal "+i);
                 partyIcon.hasTextValue = true; 
-                
+                //partyIcon.isToggleButton = true;
                 partyIcon.fontSize = "14px";
                 partyIcon.color = ["#00ff00"];
                 
@@ -1224,7 +1229,7 @@ function updateParty() {
                 
                 (function(i, j) {
                     partyIcon.update = function () {
-                        this.setText([controller.animals[j+(6*i)].level], 33 - numberLen(levels[j+(6*i)]) * 5.5, 22);
+                        this.setText([controller.animals[j+(6*i)].level], 23 - numberLen(levels[j+(6*i)]) * 5.5, 22);
                         if (dataObj.tutorialProgress == 21) {
                             if (this.fadeIn) {
                                 this.flashingOpacity += .03;
@@ -1239,7 +1244,7 @@ function updateParty() {
                             }
                         }
                     }
-                    console.log(this.flashingOpacity);
+                    //console.log(this.flashingOpacity);
                         
                     partyIcon.draw = function () {
                         ctx.drawImage(this.image, this.x, this.y, this.width, this.height); 
@@ -1345,9 +1350,9 @@ function upgrade_animalMax() {
 
 function getMaxAnimalLevel() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    console.log("level " + level);
+    //console.log("level " + level);
     var tracks = dataObj.animalTracks;
-    console.log("tracks " + tracks);
+    //console.log("tracks " + tracks);
     while (tracks - (level* 2.75 * 500) > 0) {
         tracks -= (level* 2.75 * 500);
         level++;  

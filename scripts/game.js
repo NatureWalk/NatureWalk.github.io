@@ -139,14 +139,10 @@ interface.init = function() {
     } else {
         land.layer1.setSrc("image_resources/ClearSquare.png");
     }
-<<<<<<< HEAD
     if (interface.buttonArray !== undefined) {
         interface.buttonArray.forEach( function(elem) {interface.push(elem);} );
     }
     
-=======
-    interface.displayButtons();
->>>>>>> dan
     this.push(pcontroller_i);
 
     //addPopup("This is a test.",w/2,h/2);

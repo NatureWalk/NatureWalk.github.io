@@ -2,11 +2,18 @@
     	var maxAnimalHovered = false;
 //Creates a popup with default background.
 function addPopup(text,x,y,cutout,name="popup") {
+    interface.buttonArray.forEach(function (elem) {
+        if (elem.name === "animal_image") {
+            var currIndex = ui_values.animalAry.indexOf(ui_values.currentAnimal);
+            var src = ui_values.animalStaticAry;
+            elem.setSrc(src[currIndex], src[currIndex], false);
+        }
+    });
 	var button = new Button(function() {
 	    switch(true){
 	       case(dataObj.tutorialProgress == 0):
 	           addPopup("It's your first time here,\nso I'm going to show\nyou around the place!",100, 40);
-	           //dataObj.tutorialProgress++;
+	           interface.draw();
 	           break;
 	       case(dataObj.tutorialProgress == 1):
 	           addPopup("This is your Nature\nJournal.",150, 90);
@@ -102,7 +109,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                break;
            
            case(dataObj.tutorialProgress == 26):
-               addPopup("Right now you can have\na maximum of five\nanimals, and each animal\nwill only walk with you\nfor 8 hours before leaving",250, 300, [83,450,320,55]);
+               addPopup("Right now you can have\na maximum of five\nanimals, and each animal\nwill only walk with you\nfor 24 hours before leaving",250, 300, [83,450,320,55]);
                //dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 27):
@@ -124,6 +131,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                dataObj.steps += 4000;
                stepCount += 4000
                dataObj.totalSteps += 4000;
+               dataObj.priorSteps -= 4000;
                //dataObj.tutorialProgress++;
                areaNext.update();
                break;
@@ -150,6 +158,9 @@ function addPopup(text,x,y,cutout,name="popup") {
 	});
 	button.setSrc("image_resources/Tooltip.png");
 	button.setSpriteAttributes(x,y,228,150, name)
+    if (dataObj.tutorialProgress === 22) {
+        button.setSpriteAttributes(x,y,228,170, name)
+    }
 	button.hasTextValue = true;
 	button.fontSize = '20px';
 	charnum = text.length;
@@ -233,8 +244,9 @@ function startTutorialPartTwo(){
 
 function startTutorialPartThree(){
     dataObj.tutorialProgress++;
-    addPopup("There you go!\nNow you can see your\nanimal's name and its\nindividual statistics.",250, 400);
-    //dataObj.tutorialProgress++;
+    console.log(dataObj.tutorialProgress);
+    addPopup("There you go!\n\nNow you can see your\nanimal's name and its\nindividual statistics.", 286, 230);
+    
     screenMan.push(popups);
 }
 
@@ -256,7 +268,7 @@ function callSprint(newFitbit) {
                " Unfortunately, without a Fitbit your nature" +
                " walk will not go very far. You can continue" +
                " to play without one, but we at team Nature Walk" + 
-               " encourage you to purchase a Fitbit and starting" + 
+               " encourage you to get a Fitbit and begin" + 
                " your nature walk for real!"
     } else {
         if (newFitbit) {
@@ -273,6 +285,7 @@ function callSprint(newFitbit) {
             stepCount += Math.floor(fitbitSteps/10);
             //console.log(stepCount);
             dataObj.totalSteps += Math.floor(fitbitSteps/10);
+            dataObj.priorSteps -= Math.floor(fitbitSteps/10);
             dataObj.steps += Math.floor(fitbitSteps/10);
         } 
     }

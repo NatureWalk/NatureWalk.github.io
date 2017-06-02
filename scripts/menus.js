@@ -258,31 +258,36 @@ function menuSetup() {
 
 	subAchievements.buttonArray.push(achievList);
 	
+    var maxPages = 2;
 	//page traversal in achievement list
-	var achievNext = new Button(function(){});
-	achievNext.update = function () {
-        if (this.isPressed && pageNumber < 2) {
+	var achievNext = new Button(function(){
+        if (pageNumber < maxPages) {
             pageNumber++;
-			achievNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
+        }
+    });
+	achievNext.update = function () {
+        if (pageNumber < maxPages) {
+            achievNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
 			console.log("page number is :" + pageNumber);
         } else {
-            areaNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png"); 
+            achievNext.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png"); 
         }
     }
-	
-	achievNext.setSrc("image_resources/ArrowsRight.png","image_resources/ArrowsRightPressed.png");
 	achievNext.setSpriteAttributes(330,500,30,30);
 	
 	subAchievements.buttonArray.push(achievNext);
 	
-	var achievPrev = new Button(function(){});
-	achievPrev.update = function () {
-        if (this.isPressed && pageNumber >= 2) {
+	var achievPrev = new Button(function(){
+        if (pageNumber > 1) {
             pageNumber--;
-			achievPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
+        }
+    });
+	achievPrev.update = function () {
+        if (pageNumber > 1) {
+	achievPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
 			console.log("page number is :" + pageNumber);
         } else {
-            areaPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png"); 
+            achievPrev.setSrc("image_resources/ClearSquare.png","image_resources/ClearSquare.png"); 
         }
     }
 	

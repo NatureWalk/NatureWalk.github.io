@@ -88,6 +88,8 @@ var gameState = {
     newToFitbit: false,
     offlinePopup: true,
     sessionStartTime: 0,
+    setupComplete: false,
+    setupTimer: 1,
     sprint: false,
     timeAccelFactor: 1,
 }
@@ -211,6 +213,14 @@ function everySecond(seconds) {
 	if (NaNReset) {
         dataCorruptionApology();
     }
+    if (!gameState.setupComplete) {
+        console.log(gameState.setupComplete);
+        if (gameState.setupTimer > 0) {
+            gameState.setupTimer--; 
+            return;
+        }
+        //return;
+    }
 	updateLog();
     var areaMult = 2.16;
     var areaTracks = controller.area_level*areaMult;
@@ -218,7 +228,7 @@ function everySecond(seconds) {
 
     //DEBUG: console.log("Tracks: " + dataObj.animalTracks);
     //DEBUG: console.log(Math.floor(areaTracks*animTracks));
-    dataObj.animalTracks += Math.floor(areaTracks*animTracks);
+    dataObj.animalTracks += (areaTracks*animTracks);
     
     if (--gameState.eventDisplayTimer === 0) {
         displayEvent();

@@ -87,6 +87,7 @@ function achievTracker(){
 	
 	//animalpack: when player makes a 5 party of the same animal
 	for(var i = 0 ; i < animalcount.length; i++){
+        console.log(animalcount[i]);
 		if(animalcount[i] >= 5) prereq['animalpack'] = true;
 	}
 	
@@ -108,6 +109,7 @@ function achievTracker(){
 	if(dataObj.animalsDied >= 10) prereq['unlucky'] = true;
 	
 	// young hiker: get 20000 step total
+    //console.log(prereq);
 	if(dataObj.steps >= 20000) prereq['hiker'] = true;
 	
 	// trail blazer: get 50000 step total

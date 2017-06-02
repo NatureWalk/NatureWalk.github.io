@@ -35,7 +35,7 @@ animal_data['bunny'] = [1.4, 1.4, 1.2];
 animal_data['deer'] = [1.4, 1.2, 1.6];
 animal_data['bird'] = [1.4, 1.6, 1.2];
 
-lifetime = 8;
+lifetime = 24;
 
 
 

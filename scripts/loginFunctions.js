@@ -60,7 +60,7 @@ function loginPlayer(){
             }
             soundMan.music.seek(Math.floor(Math.random()*(1080-120)+120));
             soundMan.music.play()
-            soundMan.music.fade(0,.6)
+            //soundMan.music.fade(0,.6)
             soundMan.music.volume(.6)
             console.log("Playing music.")
         }
@@ -98,7 +98,7 @@ function firstTimeUserSteps(){
     dataObj.totalSteps = 2000;
     console.log("Fitbit Steps: " + fitbitSteps);
     if (fitbitSteps) {
-        dataObj.priorSteps = fitbitSteps;
+        dataObj.priorSteps = fitbitSteps - 2000;
         gameState.newToFitbit = false; 
     } else {
         dataObj.priorSteps = 0;
