@@ -132,6 +132,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                stepCount += 4000
                dataObj.totalSteps += 4000;
                dataObj.priorSteps -= 4000;
+
                //dataObj.tutorialProgress++;
                areaNext.update();
                break;
@@ -244,9 +245,7 @@ function startTutorialPartTwo(){
 
 function startTutorialPartThree(){
     dataObj.tutorialProgress++;
-    console.log(dataObj.tutorialProgress);
     addPopup("There you go!\n\nNow you can see your\nanimal's name and its\nindividual statistics.", 286, 230);
-    
     screenMan.push(popups);
 }
 

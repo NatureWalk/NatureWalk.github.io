@@ -291,7 +291,6 @@ function menuSetup() {
         }
     }
 	
-	achievPrev.setSrc("image_resources/ArrowsLeft.png","image_resources/ArrowsLeftPressed.png");
 	achievPrev.setSpriteAttributes(180,500,30,30);
 	
 	subAchievements.buttonArray.push(achievPrev);

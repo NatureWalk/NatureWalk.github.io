@@ -137,7 +137,6 @@ function buttonSetup() {
         //Would also include pulling from the server.
         if (str === "fit") {
             fitbit_start();
-            //console.log("my user id is : " + userID);
             if(userID == undefined){
              userID = "testing21";
              stepCount = 70000;
@@ -188,7 +187,6 @@ function buttonSetup() {
         //createData(lJson);
     	logout();
     }
-
     var logoutButton = new Button(changeUser);
     logoutButton.setSrc("image_resources/user_logout.png","image_resources/ClearSquare.png");
     logoutButton.setSpriteAttributes(40,120,30,30, "logoutButton");
@@ -994,7 +992,7 @@ function buttonSetup() {
     selectedAnimal.setSpriteAttributes(101,455,40,40, "selected animal")
     selectedAnimal.flashingOpacity = 0.5;
     selectedAnimal.fadeIn = true;
-    
+
     selectedAnimal.update = function() {
         if (controller.animals[ui_values.partyIndex] == undefined || partyButtons[ui_values.partyIndex] == undefined) {
             ui_values.selected = "base";
@@ -1220,7 +1218,6 @@ function updateParty() {
                 partyIcon.setSrc(ui_values.animalSrcAry[num],ui_values.animalSrcHover[num]);
                 partyIcon.setSpriteAttributes((101 + (60*j)), (455 + 50*i), 40, 40, "party animal "+i);
                 partyIcon.hasTextValue = true; 
-                //partyIcon.isToggleButton = true;
                 partyIcon.fontSize = "14px";
                 partyIcon.color = ["#00ff00"];
                 
@@ -1244,7 +1241,6 @@ function updateParty() {
                             }
                         }
                     }
-                    //console.log(this.flashingOpacity);
                         
                     partyIcon.draw = function () {
                         ctx.drawImage(this.image, this.x, this.y, this.width, this.height); 

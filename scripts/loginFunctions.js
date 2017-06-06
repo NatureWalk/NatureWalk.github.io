@@ -63,6 +63,7 @@ function loginPlayer(){
             //soundMan.music.fade(0,.6)
             soundMan.music.volume(.6)
             console.log("Playing music.")
+
         }
         
         
