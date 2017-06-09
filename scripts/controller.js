@@ -30,10 +30,10 @@ for(var i = 0; i < animal_types.length; i++){
  */
 
 animal_data = [];
-animal_data['frog'] = [1.6, 1.4, 1.2];
-animal_data['bunny'] = [1.4, 1.4, 1.2];
-animal_data['deer'] = [1.4, 1.2, 1.6];
-animal_data['bird'] = [1.4, 1.6, 1.2];
+animal_data['frog'] = [1.26, 1.2, 1.15];
+animal_data['bunny'] = [1.22, 1.18, 1.22];
+animal_data['deer'] = [1.2, 1.26, 1.15];
+animal_data['bird'] = [1.2, 1.26, 1.15];
 
 lifetime = 24;
 
@@ -492,8 +492,8 @@ function master_controller() {
         data.push(this.base_levels[animal]+1);
         for(var i = 0; i < 3; i++){
         var stat = 2 * animal_data[animal][i];
-           if(stat > 2.5){
-					if (stat >= 3){
+           if(stat > 2.35){
+					if (stat >= 2.5){
 						stat = 3;
 					} else {
 						stat = 2;
@@ -532,8 +532,8 @@ function master_controller() {
 			dat.push((this.animals[i].level)+1)
 			for(var j = 0; j < 3; j++){
 				var stat = 2 * animal_data[this.animals[i].type][j];
-				if(stat > 2.5){
-					if (stat >= 3){
+				if(stat > 2.35){
+					if (stat >= 2.5){
 						stat = 3;
 					} else {
 						stat = 2;
