@@ -36,6 +36,18 @@ var soundManager = function() {
 		volume: 0.5,
 		buffer: true
 	})
+
+	this.error = new Howl({
+		src: ['sounds/error.wav'],
+		volume: 0.1,
+		buffer: true
+	})
+
+	this.achiev = new Howl({
+		src: ['sounds/achiev.wav'],
+		volume: 0.7,
+		buffer: true
+	})
 }
 
 soundManager.prototype.update = function() {}
