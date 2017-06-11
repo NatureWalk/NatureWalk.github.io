@@ -13,6 +13,7 @@ function menuSetup() {
 		screenMan.pop();
 		screenMan.pop();
         gameState.menuPause = false;
+
         soundMan.click.play();
 	}
 
@@ -43,7 +44,6 @@ function menuSetup() {
             if (this.isPressed) {
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum) - 5, 6); 
             } else {
-
                 settingsButton.setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
             }
     }
@@ -119,9 +119,7 @@ function menuSetup() {
 
     //Save features (download etc)?
     //Clear Data
-    
-    
-        
+            
     var clearData = new Button(function () {
         if (subSettings.objects[subSettings.objects.length - 1].name !== "Confirm") {
             var confirm = new Button(function () {
@@ -146,6 +144,7 @@ function menuSetup() {
         }
     });
     clearData.setSpriteAttributes(110,170,150,40,"Clear Data");
+
     clearData.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
     clearData.hasTextValue = true;
     //clearData.setText(["Clear Data"],30,3);
@@ -289,17 +288,15 @@ function menuSetup() {
     historyPane.setSpriteAttributes(30, 70, 500, 200, "eventLog");
     subHistory.buttonArray.push(historyPane);*/
 	
-	
-
-        
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 10; i++) {
         var historyEntry = new Button();
         historyEntry.setSrc("image_resources/ClearSquare.png");
         historyEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
-        subHistory.buttonArray.push(historyEntry);
 
         historyEntry.hasTextValue = true;
         historyEntry.fontSize = '20px';
+
+        subHistory.buttonArray.push(historyEntry);
 
         (function(i) {
             var testRef = historyAry[i];
@@ -313,6 +310,43 @@ function menuSetup() {
         
         (function(i) {
             historyEntry.draw = function() {
+                if ((this.hovered && this.text !== undefined) || this.hasTextValue){
+                    if (this.text === undefined) {
+            //console.log(this.name);
+                    } else {
+                        drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 20);
+        }
+    }
+            }
+        })(i);
+    }
+	
+	
+	// Recent history pane
+	// Same setup as history pane
+	
+	for (i = 0; i < 10; i++) {
+        var recentEntry = new Button();
+        recentEntry.setSrc("image_resources/ClearSquare.png");
+        recentEntry.setSpriteAttributes(100, (45*i)+115    , 452, 54, "historyLog");
+
+        recentEntry.hasTextValue = true;
+        recentEntry.fontSize = '20px';
+
+        subHistory.buttonArray.push(recentEntry);
+
+        (function(i) {
+            var testRef = recentAry[i];
+            //console.log(testRef);
+            recentEntry.update = function() {
+                if (recentAry[i]) {
+                    this.updateText([recentAry[i]]);
+                } else {this.updateText([""]);}
+            }
+        })(i);
+        
+        (function(i) {
+            recentEntry.draw = function() {
                 if ((this.hovered && this.text !== undefined) || this.hasTextValue){
                     if (this.text === undefined) {
             //console.log(this.name);

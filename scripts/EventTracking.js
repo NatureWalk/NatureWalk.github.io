@@ -57,6 +57,9 @@ var eventLogAry = [];
 // History of past events
 var historyAry = [];
 
+// Recent history
+var recentAry = [];
+
 //Roll what kind of event is rolled. Good, Bad, Neutral.
 function eventChooser(evtRoll) {
     for (var i = eventLogAry.length-1; i >= 0; i--) {
@@ -86,12 +89,16 @@ function goodEventHandler(evtRoll) {
         case evtRoll < 30:
             //console.log(goodEvents[0]);
             eventLogAry.push("You picked up a step multiplier.");
+			recentAry.push("You picked up a step multiplier.");
             stepMultiplier();
             break;
         //Extra Tracks
         case evtRoll >= 30 && evtRoll < 55:
             //console.log(goodEvents[1]);
             eventLogAry.push("You find some animal tracks! +" + Math.floor(dataObj.animalTracks/1000) + " Tracks");
+
+			recentAry.push("You find some animal tracks! +" + Math.floor(dataObj.animalTracks/1000) + " Tracks");
+            
 			dataObj.animalTracks += Math.floor(dataObj.animalTracks/1000);
             break;
         //Restful Meadow
@@ -170,7 +177,7 @@ function badEventHandler(evtRoll) {
 				}
 				
 				eventLogAry.push("You encountered a " + b[0][0] + ". It tested " + b[0][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
-                
+                recentAry.push("You encountered a " + b[0][0] + ". It tested " + b[0][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 //Display the event on screen. 
                 displayEvent(b[0][0]);
                 
@@ -197,7 +204,7 @@ function badEventHandler(evtRoll) {
 				
 				diffPrint();
 				eventLogAry.push("You encountered a " + b[1][0] + ". It tested " + b[1][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
-                
+                recentAry.push("You encountered a " + b[1][0] + ". It tested " + b[1][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 displayEvent(b[1][0]);
                 
 				deadPrint();
@@ -223,7 +230,7 @@ function badEventHandler(evtRoll) {
 				
 				diffPrint();
 				eventLogAry.push("You encountered a " + b[2][0] + ". It tested " + b[2][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
-                
+                recentAry.push("You encountered a " + b[2][0] + ". It tested " + b[2][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 displayEvent(b[2][0]);
                 
 				//animalDeadGrammarCheck();
@@ -261,7 +268,7 @@ function badEventHandler(evtRoll) {
 				
 				diffPrint();
 				eventLogAry.push("You encountered a " + b[3][0] + ". It tested "  + b[3][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
-                
+                recentAry.push("You encountered a " + b[3][0] + ". It tested "  + b[3][1] + ". This obstacle was " + eventDiffPrint + " to overcome.");
                 displayEvent(b[3][0]);
                 
 				deadPrint();
@@ -415,6 +422,7 @@ function deadPrint(){
 			printText = printText.concat("and ", deadArr[deadArr.length-1], " unfortunately died.");
 		}
 		eventLogAry.push(printText);
+		recentAry.push(printText);
 	}
 	numAnimalsDead = 0;
 	deadArr.splice(0, deadArr.length);
@@ -438,6 +446,7 @@ function safePrint(){
 			printText = printText.concat("and ", safeArr[safeArr.length-1], " escaped unharmed.");
 		}
 		eventLogAry.push(printText);
+		recentAry.push(printText);
 	}
 	numAnimalsSafe = 0;
 	safeArr.splice(0, safeArr.length);
@@ -457,6 +466,7 @@ function tripPrint(){
 			printText = printText.concat("and ", tripArr[tripArr.length-1], " tripped and lost some tracks.");
 		}
 		eventLogAry.push(printText);
+		recentAry.push(printText);
 	}
 	numAnimalsTrip = 0;
 	tripArr.splice(0, tripArr.length);
