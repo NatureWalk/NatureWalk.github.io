@@ -1297,21 +1297,26 @@ partyIndicator.setSpriteAttributes((161), (455), 40, 40, "party indicator");
 */
 function upgrade_baseAnimal() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    if (dataObj.animalTracks - (level* 2.75 * 500) < 0) {
+    //var upgradeFormula = (level* 2.75 * 500);
+    var upgradeFormula = (Math.pow(level, 1.01) * 2.75 * 500);
+    if (dataObj.animalTracks - upgradeFormula < 0) {
         return;
     } else {
-        dataObj.animalTracks -= (level* 2.75 * 500);
+        dataObj.animalTracks -= upgradeFormula;
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
     }
     soundMan.up1.play();
 }
 
 function upgrade_animal() {
+    
     var level = controller.animals[ui_values.partyIndex].level;
-    if (dataObj.animalTracks - (level* 1.75 * 100) < 0) {
+    //var upgradeFormula = (level* 1.75 * 100);
+    var upgradeFormula = (Math.pow(level, 1.01)* 1.75 * 100);
+    if (dataObj.animalTracks - upgradeFormula < 0) {
         return;
     } else {
-        dataObj.animalTracks -= (level* 1.75 * 100);
+        dataObj.animalTracks -= upgradeFormula;
         controller.levelUpAnimal(ui_values.partyIndex);
     }
     soundMan.up1.play();
@@ -1323,8 +1328,9 @@ function upgrade_animal() {
 */
 function upgrade_baseAnimalMax() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
-    while (dataObj.animalTracks - (level* 2.75 * 500) > 0) {
-        dataObj.animalTracks -= (level* 2.75 * 500);
+    var upgradeFormula = (Math.pow(level, 1.01) * 2.75 * 500);
+    while (dataObj.animalTracks - upgradeFormula > 0) {
+        dataObj.animalTracks -= upgradeFormula;
         controller.baseLevelUp(ui_values.currentAnimal.toLowerCase());
         controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
         level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
@@ -1335,8 +1341,9 @@ function upgrade_baseAnimalMax() {
 
 function upgrade_animalMax() {
     var level = controller.animals[ui_values.partyIndex].level;
-    while (dataObj.animalTracks - (level* 1.75 * 100) > 0) {
-        dataObj.animalTracks -= (level* 1.75 * 100);
+    var upgradeFormula = (Math.pow(level, 1.01)* 1.75 * 100);
+    while (dataObj.animalTracks - upgradeFormula > 0) {
+        dataObj.animalTracks -= upgradeFormula;
         controller.levelUpAnimal(ui_values.partyIndex);
         level = controller.animals[ui_values.partyIndex].level;
         //soundMan.up1.play();
@@ -1346,11 +1353,12 @@ function upgrade_animalMax() {
 
 function getMaxAnimalLevel() {
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    var upgradeFormula = (Math.pow(level, 1.01) * 2.75 * 500);
     //console.log("level " + level);
     var tracks = dataObj.animalTracks;
     //console.log("tracks " + tracks);
-    while (tracks - (level* 2.75 * 500) > 0) {
-        tracks -= (level* 2.75 * 500);
+    while (tracks - upgradeFormula > 0) {
+        tracks -= upgradeFormula;
         level++;  
     }
     return level;
@@ -1359,9 +1367,10 @@ function getMaxAnimalLevel() {
 function getMaxAnimalCost() {
 	var prevTracks = dataObj.animalTracks;
     var level = controller.getAnimalBaseLevel((ui_values.currentAnimal).toLowerCase());
+    var upgradeFormula = (Math.pow(level, 1.01) * 2.75 * 500);
     var tracks = prevTracks;
-    while (tracks - (level* 2.75 * 500) > 0) {
-        tracks -= (level* 2.75 * 500);
+    while (tracks - upgradeFormula > 0) {
+        tracks -= upgradeFormula;
         level++;  
     }
     return prevTracks - tracks;
@@ -1370,8 +1379,9 @@ function getMaxAnimalCost() {
 function getSelectedMaxLevel() {
     var level = controller.animals[ui_values.partyIndex].level;
     var tracks = dataObj.animalTracks;
-    while (tracks - (level* 1.75 * 100) > 0) {
-        tracks -= (level* 1.75 * 100);
+    var upgradeFormula = (Math.pow(level, 1.01)* 1.75 * 100);
+    while (tracks - upgradeFormula > 0) {
+        tracks -= upgradeFormula;
         //controller.levelUpAnimal(ui_values.partyIndex);
         level++;
         //soundMan.up1.play();
@@ -1383,9 +1393,10 @@ function getSelectedMaxCost() {
 	var cost = 0;
     var level = controller.animals[ui_values.partyIndex].level;
     var tracks = dataObj.animalTracks;
-    while (tracks - (level* 1.75 * 100) > 0) {
-        tracks -= (level* 1.75 * 100);
-        cost += (level* 1.75 * 100);
+    var upgradeFormula = (Math.pow(level, 1.01)* 1.75 * 100);
+    while (tracks - upgradeFormula > 0) {
+        tracks -= upgradeFormula;
+        cost += upgradeFormula;
         //controller.levelUpAnimal(ui_values.partyIndex);
         level++;
         //soundMan.up1.play();
