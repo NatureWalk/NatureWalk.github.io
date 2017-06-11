@@ -212,6 +212,7 @@ function updateLog(){
 		}
     //text = "Hello World";
     if (success) {
+    	soundMan.achiev.play();
         var achievementPopup = new Button(function() {
             removeInterface(this);
         });

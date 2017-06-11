@@ -1135,6 +1135,7 @@ function select_animal(animal_index) {
 */
 function add_animal() {
     if (stepCount - 2000 < 0 || controller.party_limit == controller.getNumAnimals()) {
+        soundMan.error.play();
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
@@ -1299,6 +1300,7 @@ function upgrade_baseAnimal() {
     //var upgradeFormula = (level* 2.75 * 500);
     var upgradeFormula = (Math.pow(level, 1.01) * 2.75 * 500);
     if (dataObj.animalTracks - upgradeFormula < 0) {
+        soundMan.error.play();
         return;
     } else {
         dataObj.animalTracks -= upgradeFormula;
@@ -1313,6 +1315,7 @@ function upgrade_animal() {
     //var upgradeFormula = (level* 1.75 * 100);
     var upgradeFormula = (Math.pow(level, 1.01)* 1.75 * 100);
     if (dataObj.animalTracks - upgradeFormula < 0) {
+        soundMan.error.play();
         return;
     } else {
         dataObj.animalTracks -= upgradeFormula;
