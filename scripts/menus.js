@@ -123,49 +123,6 @@ function menuSetup() {
     
         
     var clearData = new Button(function () {
-        //closeMenu();
-        /*
-        var tooltip = new Button();
-        var text = "Warning: Confirming this action will completely erase all of game data, including animal levels, and your record of total steps travelled (This has no effect on your actual Fitbit statistics)." 
-        tooltip.setSrc("image_resources/Tooltip.png", "image_resources/Tooltip.png");
-        tooltip.setSpriteAttributes(300, 225, 400, 200, "ToolTip");
-        tooltip.hasTextValue = true;
-        tooltip.fontSize = '20px';
-        charnum = text.length;
-
-        tooltip.setText([text], 5, 5);
-        //console.log(offlinePopup.text);
-        tooltip.draw = function() {
-            ctx.globalAlpha = 0.3;
-            ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
-            ctx.globalAlpha = 1.0;
-
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-            drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 395, 25);
-        }
-        var confirm = new Button();
-        confirm.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
-        confirm.setSpriteAttributes(310, 325, 100, 50, "Confirm");
-        
-        //Send reference to all elements on the confirmation note.
-        var cancel = new Button(function () {
-            //console.log("PRessed");
-            //subSettings.buttonArray.pop();
-            //subSettings.buttonArray.pop();
-            screenMan.pop();
-            //gameMenu.buttonArray[1]                              .setText(["Settings"], (settingsButton.width / 2) - (5 * charnum), 3); 
-        });
-        cancel.setSrc("image_resources/Button.png", "image_resources/ButtonPressed.png");
-        cancel.setSpriteAttributes(460, 325, 100, 50, "ClearData");
-        
-        clearDataScreen.buttonArray.push(tooltip);
-        clearDataScreen.buttonArray.push(confirm);
-        clearDataScreen.buttonArray.push(cancel);
-        
-        console.log(clearDataScreen.buttonArray);
-        
-        screenMan.push(clearDataScreen);
-        */
         if (subSettings.objects[subSettings.objects.length - 1].name !== "Confirm") {
             var confirm = new Button(function () {
                 clearUser(userID);

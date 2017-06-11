@@ -1138,8 +1138,6 @@ function add_animal() {
         return;
     }
     var status = controller.addAnimal(ui_values.currentAnimal.toLowerCase());
-    console.log(status)
-    console.log("party: "+controller.getNumAnimals())
 
     if (status === true){
         //soundMan.click.play()
@@ -1165,6 +1163,7 @@ function add_animal() {
     }
     //console.log("Tutorial Progress: " + dataObj.tutorialProgress);
     if(dataObj.tutorialProgress == 13){
+        controller.animals[0].canDie = false;
         startTutorialPartTwo();
     }
     //soundMan.click.play(); //@todo: different sound

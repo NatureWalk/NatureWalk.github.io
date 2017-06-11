@@ -56,7 +56,7 @@ function addPopup(text,x,y,cutout,name="popup") {
                //dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 11):
-               addPopup("Don't worry about the\nsteps, we gave you a \nfew to start off.",60, 250, [283,400,175,47]);
+               addPopup("Choose wisely! This animal\nwill be with you for your\nentire nature walk.",60, 250, [283,400,175,47]);
                //dataObj.tutorialProgress++;
                break;
            case(dataObj.tutorialProgress == 13):
@@ -167,6 +167,10 @@ function addPopup(text,x,y,cutout,name="popup") {
 	charnum = text.length;
     //console.log("Button Created: " + button.x + " " + button.onMouseUpImageSrc);
 	button.setText([text], (button.width / 2) - (6.3 * charnum), 5);
+    if (dataObj.tutorialProgress === 11) {
+        console.log("Check Progress: " + dataObj.tutorialProgress);
+        button.updateText([text], ['red'])
+    }
     button.cutout = function (ary) {
         //console.log(ary);
         ctx.globalAlpha = 0.3
