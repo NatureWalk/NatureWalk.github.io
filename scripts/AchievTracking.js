@@ -138,80 +138,101 @@ function achievTracker(){
 
 // implements achievements and updates console for player and acheivement progression
 function updateLog(){
+    var text, success = false;
 	achievTracker();
 	//playerTracker();
 	//console.log("area is : " + dataObj.animalsDied);
 		if(prereq[0] == 1 &&  completed[0] == 0){
 			completed[0] = 1;
 			dataObj.animalTracks += 2500;
-			console.log("MileHigh achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+            success = true;
+			text = "Mile High Club achievement completed! Gained +2500 Tracks!";
 		}
 		
 		if(prereq[1] == 1 &&  completed[1] == 0){
 			completed[1] = 1;
 			dataObj.animalTracks += 2000;
-			console.log("AnimalPack achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+            success = true;
+			text = "Animal Pack achievement completed! Gained +2000 Tracks!";
 		}
 		
 		if( prereq[2] == 1 && completed[2] == 0){
 			dataObj.animalTracks += 5000;
+            success = true;
 			completed[2] = 1;
-			console.log("Upgrade Galore achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+			text = "Upgrade Galore achievement completed! Gained +5000 Tracks!";
 		}
 		if( prereq[3] == 1 && completed[3] == 0){
 			completed[3] = 1;
 			dataObj.animalTracks += 2500;
-			console.log("Novice Explorer achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+            success = true;
+			text = "Novice Explorer achievement completed! Gained +2500 Tracks!";
 		}
 		
 		if( prereq[4] == 1 && completed[4] == 0){
 			completed[4] = 1;
 			dataObj.animalTracks += 10000;
-			console.log("Intermediate Explorer achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+            success = true;
+			text = "Intermediate Explorer achievement completed! Gained +10000 Tracks!";
 		}
 		
 		if( prereq[5] == 1 && completed[5] == 0){
 			completed[5] = 1;
 			dataObj.animalTracks += 30000;
-			console.log("Expert Explorer achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+            success = true;
+			text = "Expert Explorer achievement completed! Gained +30000 Tracks!";
 		}
 		
 		if( prereq[6] == 1 && completed[6] == 0){
 			completed[6] = 1;
 			dataObj.animalTracks += 5000;
-			console.log("Unlucky Year achievement Success! Gained 100 xp!");
-			console.log("Player total XP is now : " + player.playerXP);
-			//console.log("Player Level is now : " + player.playerLevel);
+            success = true;
+			text = "Unlucky Year achievement completed! Gained +5000 Tracks!";
 		}
 		
 		if( prereq[7] == 1 && completed[7] == 0){
 			completed[7] = 1;
 			dataObj.animalTracks += 2500;
-			console.log("young hiker achievement Success! Gained 100 xp!");
+            success = true;
+			text = "Young Hiker achievement completed! Gained +2500 Tracks!";
 		}
 
 		if( prereq[8] == 1 && completed[8] == 0){
 			completed[8] = 1;
 			dataObj.animalTracks += 5000;
-			console.log("trail blazer achievement Success! Gained 100 xp!");
+            success = true;
+			text = "Trail Blazer achievement completed! Gained +5000 Tracks!";
 		}
 
 		if( prereq[9] == 1 && completed[9] == 0){
 			completed[9] = 1;
 			dataObj.animalTracks += 10000;
-			console.log("mountain climber achievement Success! Gained 100 xp!");
+            success = true;
+			text = "Mountain Climber achievement completed! Gained +10000 Tracks!";
 		}
+    //text = "Hello World";
+    if (success) {
+        var achievementPopup = new Button(function() {
+            removeInterface(this);
+        });
+        achievementPopup.setSrc("image_resources/Tooltip.png");
+        achievementPopup.setSpriteAttributes(385,275,250,100, "sprintPopup");
 
+        achievementPopup.hasTextValue = true;
+        achievementPopup.fontSize = '20px';
+        charnum = text.length;
+
+        achievementPopup.setText([text], 5, 5);
+        //console.log(sprintPopup.text);
+        achievementPopup.draw = function() {
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(0, 0, canvas.width, canvas.height, 'black');
+            ctx.globalAlpha = 1.0;
+
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            drawWrappedText(this.text, this.x + this.textOffsetX, this.y + this.textOffsetY, this.fontSize, 245, 25);
+        }
+        pushInterface(achievementPopup)
+    }
+    success = false;
 }
